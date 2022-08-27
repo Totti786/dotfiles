@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+#options="Yes\nNo"
+options="\n"
+
+echo -e $options | rofi -dmenu\
+     -i\
+     -no-fixed-num-lines\
+     -p "Are You Sure? : "\
+     -theme ~/.config/polybar/rofi/themes/confirm.rasi
+
+#chosen=$(echo -e $options | rofi -dmenu -p "Confirm" -i -theme ~/.config/polybar/rofi/themes/powermenu.rasi) 
+#echo $chosen

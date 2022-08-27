@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+## This script should work with any Arch based system that uses systemd
+## The logout option works with Openbox, i3 and BSPWM
+
+DIR="$HOME/.config/polybar"
+
+rofi_command="rofi -theme $DIR/rofi/themes/powermenu.rasi"
+
+current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
+
+uptime=$(uptime -p | sed -e 's/up //g')
+
+# Options
+shutdown=""
+reboot=""
+lock=""
+suspend=""
+logout=""
+confirm=""
+
+# Variable passed to rofi
+options="$shutdown\n$reboot\n$lock\n$suspend\n$logout"
+
+chosen="$(echo -e "$options" | $rofi_command -p "UP - $uptime" -dmenu -selected-row 2)"
+case $chosen in
+    $shutdown)
+		ans=$($HOME/.config/polybar/rofi/bin/confirm &)
+		if [[ $ans == $confirm ]]; then
+			systemctl poweroff
+		fi
+        ;;
+    $reboot)
+		ans=$($HOME/.config/polybar/rofi/bin/confirm &)
+		if [[ $ans == $confirm ]]; then
+			systemctl reboot
+        fi
+        ;;
+    $lock)
+			playerctl pause
+			betterlockscreen -l
+       	;;
+    $suspend)
+		ans=$($HOME/.config/polybar/rofi/bin/confirm &)
+		if [[ $ans == $confirm ]]; then
+			playerctl -a stop 
+			betterlockscreen --suspend
+		fi
+        ;;
+    $logout)
+		ans=$($HOME/.config/polybar/rofi/bin/confirm &)
+		if [[ $ans == $confirm ]]; then
+			if [[ $current_desktop == "Openbox" ]]; then
+				openbox --exit
+			elif [[ $current_desktop == "i3" ]]; then
+				i3 exit
+			elif [[ $current_desktop == "bspwm" ]]; then
+				bspc quit
+			fi
+        fi
+        ;;
+esac

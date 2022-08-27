@@ -1,0 +1,15 @@
+#!/bin/bash
+
+file=$(yad --title="Choose File" --center --geometry 800x500 --file)
+type=$(echo "${file#*.}")
+
+
+if [ ! -z "$file" ]; then 
+	if [ "$type" == "pdf" ] || [ "$type" == "epub" ] || [ "$type" == "cbz" ]; then 
+	/usr/bin/zathura "$file"
+	else 
+		echo "This file is unsupported"
+	fi
+else 
+	echo "Error"
+fi 

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
+
+# Variables and functions
+if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
+	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
+	exit 1
+fi
+
+valid_colors=(Adwaita Black Blue Bluegrey Breeze Brown
+		 Carmine Cyan Darkcyan Deeporange Green Grey
+		 Indigo Magenta Nordic Orange Palebrown Paleorange
+		 Pink Purple Red Teal Violet White Yaru Yellow)
+
+main(){
+	
+	menuStart
+	for color in "${valid_colors[@]}"; do 
+		menuItem "${color%.*}" "$0 ${color}"
+	done
+	menuEnd
+	
+	for color in "${valid_colors[@]}"; do 
+		if [[ "$1" == "$color" ]]; then
+			papirus-folders -C "$( echo "$1" | tr '[:upper:]' '[:lower:]')"
+		fi
+	done
+}
+
+main "$1"

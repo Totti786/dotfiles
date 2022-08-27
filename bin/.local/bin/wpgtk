@@ -1,0 +1,309 @@
+#!/bin/bash
+
+##TODO 
+# add a colormix to the discord --background-1:
+
+# Color files
+alacritty="$HOME/.config/alacritty/colors.yml"
+polybar="$HOME/.config/polybar/colors.ini"
+rofi="$HOME/.config/polybar/rofi/themes/colors.rasi"
+discord="$HOME/.config/BetterDiscord/data/stable/custom.css"
+dunst="$HOME/.config/dunst/dunstrc"
+geany="$HOME/.config/geany/colorschemes/Pywal.conf"
+zathura="$HOME/.config/zathura/zathurarc"
+gzathura="$HOME/.config/zathura/genzathurarc"
+systray="$HOME/.config/stalonetrayrc"
+cava="$HOME/.config/cava/config"
+eww="$HOME/.config/eww/eww.scss"
+Wallpapers="$HOME/Pictures/Wallpapers"
+
+## Change colors
+change_colors() {
+	run &&
+	# polybar	
+	cat > $polybar <<- EOF
+		[color]
+		;; main colors
+		background = ${BG}97
+		foreground = $FG
+		primary = $FG
+		red = $bright_red
+		green = $bright_green
+		yellow = $bright_yellow
+		blue = $bright_blue
+		magenta = $bright_magenta
+		cyan = $bright_cyan
+		white = $white
+		
+		EOF
+				
+	# rofi
+	cat > $rofi <<- EOF
+	/* colors */
+	* {
+		background:       ${BG}; 
+		background-alt:   ${BG};
+		foreground:       ${FG}FF;
+		selected:         ${bright_red};
+		highlight:        ${bright_yellow};
+		urgent:           ${bright_blue};
+		on:               ${bright_magenta};
+		off:              ${bright_black};
+	}
+		EOF
+	
+	# alacritty 
+	cat > $alacritty <<- EOF 
+	#Colors 
+	colors:
+	  primary:
+	    background: '$BG'
+	    foreground: '$FG'
+	  cursor:
+	    text:       '$black'
+	    cursor:     '$white'
+	  normal:
+	    black:      '$black'
+	    red:        '$red'
+	    green:      '$green'
+	    yellow:     '$yellow'
+	    blue:       '$blue'
+	    magenta:    '$magenta'
+	    cyan:       '$cyan'
+	    white:      '$white'
+	  bright:
+	    black:      '$bright_black'
+	    red:        '$bright_red'
+	    green:      '$bright_green'
+	    yellow:     '$bright_yellow'
+	    blue:       '$bright_blue'
+	    magenta:    '$bright_magenta'
+	    cyan:       '$bright_cyan'
+	    white:      '$bright_white'
+	EOF
+	
+	# eww
+	cat > $eww <<- EOF
+	/** Colors *******************************************/
+	\$bg: $BG;
+	\$bg-alt: $bright_black;
+	\$fg: $FG;
+	\$fg-alt: $bright_white;
+	\$red: $bright_red;
+	\$green: $bright_green;
+	\$yellow: $bright_yellow;
+	\$blue: $bright_magenta;
+	\$purple: $bright_blue;
+	\$cyan: $bright_cyan;
+	\$gray: $bright_white;;
+	\$gray-alt: @white;
+		
+		@import "./System-Menu/eww.scss";
+	EOF
+	
+	# discord
+	if [[ -f $discord ]]; then 
+	sed -i -e "s/--accent-color: #.*/--accent-color: ${FG};/g" $discord
+	sed -i -e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" $discord
+	sed -i -e "s/--background-1: #.*/--background-1: ${BG};/g" $discord
+	sed -i -e "s/--background-2: #.*/--background-2: ${BG};/g" $discord
+	sed -i -e "s/--background-modifier-hover: #.*/--background-modifier-hover: ${bright_magenta};/g" $discord
+	sed -i -e "s/--background-accent: #.*/--background-accent: ${BG};/g" $discord
+	sed -i -e "s/--button-destructive: #.*/--button-destructive: ${bright_yellow};/g" $discord
+	sed -i -e "s/--button-background-hover: #.*/--button-background-hover: ${bright_red};/g" $discord
+	sed -i -e "s/--tab-selected: #.*/--tab-selected: ${bright_blue};/g" $discord
+	sed -i -e "s/--text-muted: #.*/--text-muted: ${FG};/g" $discord
+	fi 
+	
+	# dunst
+	sed -i -e "s/background = \"#.*\"/background = \"${BG}\"/g" $dunst
+	sed -i -e "s/foreground = \"#.*\"/foreground = \"${FG}\"/g" $dunst
+	sed -i -e "s/highlight = \"#.*\"/highlight = \"${FG}\"/g" $dunst
+	sed -i -e "s/frame_color = \"#.*\"/frame_color = \"${yellow}\"/g" $dunst
+
+	# stalonetray 
+	sed -i -e "s/background \"#.*\"/background \"$BG\"/g" $systray
+	
+	# zathura
+	$gzathura > $zathura
+		
+	# spotify
+	# Spotify can be themed using the xrdb backend i.e. ${xrdb:color0:#222}
+	
+	# cava 
+	sed -i -e "s/gradient_color_1= \'#.*\'/gradient_color_1= \'${bright_red}\'/g" $cava
+	sed -i -e "s/gradient_color_2= \'#.*\'/gradient_color_2= \'${bright_green}\'/g" $cava
+	sed -i -e "s/gradient_color_3= \'#.*\'/gradient_color_3= \'${bright_blue}\'/g" $cava
+	sed -i -e "s/gradient_color_4= \'#.*\'/gradient_color_4= \'${bright_yellow}\'/g" $cava
+	sed -i -e "s/gradient_color_5= \'#.*\'/gradient_color_5= \'${bright_magenta}\'/g" $cava
+	sed -i -e "s/gradient_color_6= \'#.*\'/gradient_color_6= \'${bright_cyan}\'/g" $cava
+	
+	# geany
+	sed -i -e "s/bg=#.*/bg=${BG}/g" $geany
+	sed -i -e "s/fg=#.*/fg=${FG}/g" $geany
+	sed -i -e "s/tag_yellow=#.*/tag_yellow=${bright_cyan}/g" $geany
+	sed -i -e "s/fold_bg_grey=#.*/fold_bg_grey=${bright_red}/g" $geany
+	sed -i -e "s/keyword_orange=#.*/keyword_orange=${bright_magenta}/g" $geany
+	sed -i -e "s/string_green=#.*/string_green=${bright_green}/g" $geany
+	sed -i -e "s/margin_bg_grey=#.*/margin_bg_grey=${black}/g" $geany
+	sed -i -e "s/error_red=#.*/error_red=${bright_magenta}/g" $geany
+	
+
+	
+}
+
+## Change the wallpaper for both sddm and grub 
+# this function only works with the themes included in the install script 
+lockWal(){
+	## remove the background file for sddm and replace it with a hard link of the wallpaper 
+	if [[ -d "/usr/share/sddm/themes/arch" ]]; then
+		sudo rm /usr/share/sddm/themes/arch/components/artwork/background.jpg && \
+		sudo ln ~/.config/wpg/wallpapers/wallpaper-1.jpg \
+		/usr/share/sddm/themes/arch/components/artwork/background.jpg
+	else 
+		echo "Can't find a compatible sddm theme"
+	fi
+	## remove the background file for grub and replace it with a symbolic  link of the wallpaper 
+	if [[ -d "/usr/share/grub/themes/Arch" ]]; then
+		sudo rm /usr/share/grub/themes/Arch/background.jpg && \
+		sudo ln -s ~/.config/wpg/wallpapers/wallpaper-1.jpg \
+		/usr/share/grub/themes/Arch/background.jpg
+	else 
+		echo "Can't find a compatible grub theme"
+	fi
+	}
+
+## Send a signal to phone to change wallpaper (requires automate to be set up)
+phoneWal(){
+	if command -v kdeconnect-cli &> /dev/null; then 
+		deviceID=$(kdeconnect-cli -a --id-only)  
+		kdeconnect-cli -d $deviceID --share \
+		$HOME/.config/wpg/wallpapers/wallpaper.jpg && kdeconnect-cli -d $deviceID --ping 
+		exit 0
+	else 
+		echo "KDE Connect is not installed"
+	fi
+	}
+
+## Kill already running process
+kill(){
+	#_ps=(dunst)
+	#for _prs in "${_ps[@]}"; do
+		#if [[ `pidof ${_prs}` ]]; then
+			#killall -9 ${_prs} 
+			#${_prs} 
+		#fi
+		if [[ `pidof $1` ]]; then
+			killall -9 $1
+			$1 
+		fi
+	#done
+	}
+	
+## Check if the command exists and then runs it
+check(){
+	if command -v $1 &> /dev/null; then 
+		$1 $2 $3
+	else 
+		echo "$1 is not installed"
+	fi
+	}
+	
+# change the wpg config file so this script can run whenever wpg is invoked 
+wpgConfig(){
+	sed -i -e 's/execute_cmd = false/execute_cmd = true/g' ~/.config/wpg/wpg.conf
+	sed -i -e 's/auto_adjust = false/auto_adjust = true/g' ~/.config/wpg/wpg.conf
+	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.scripts\/wpgtk main/g" ~/.config/wpg/wpg.conf
+	}	
+
+setWall(){
+	if [ -z "$1" ]; then
+	echo "No image was selected"
+	else 
+	wpg -A "$1" && wpg -s "$1"
+	rm "$1""_wal_sample.png"
+	fi
+	}
+
+
+# this function uses implements a sxiv to create a wallpaper selector for wpg 
+# to set a wallpaper you should select a wallpaper by pressing "m" and then quitting the sxiv
+pick(){
+	wal=$(sxiv -torb $Wallpapers)
+	if [ -z "$wal" ]; then
+	echo "No image was selected"
+	else 
+	wpg -A "$wal" && wpg -s "$wal"
+	rm "$wal""_wal_sample.png"
+	fi
+	}	
+	
+main(){
+	change_colors 
+	sh ~/.config/polybar/launch.sh 
+	kill dunst &
+	check razer-cli -a &
+	check openbox --reconfigure 
+	check spicetify update 
+	phoneWal &
+	check wal-telegram --wal 
+	check betterlockscreen -u $wallpaper
+	}
+
+## Check if wpg is installed and get colors
+run(){
+if [[ -f "/usr/bin/wpg" ]]; then
+	## check if the files exists and import colors from wpg
+	if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+		. "$HOME/.cache/wal/colors.sh"
+		# Normal colors
+		BG=`printf "%s\n" "$background"`
+		ST=`printf "%s\n" "$background"`
+		FG=`printf "%s\n" "$foreground"`
+		FGA=`printf "%s\n" "$foreground"`
+		black=`printf "%s\n" "$color0"`
+		red=`printf "%s\n" "$color1"`
+		green=`printf "%s\n" "$color2"`
+		yellow=`printf "%s\n" "$color3"`
+		blue=`printf "%s\n" "$color4"`
+		magenta=`printf "%s\n" "$color5"`
+		cyan=`printf "%s\n" "$color6"`
+		white=`printf "%s\n" "$color7"`
+		# Bright colors
+		bright_black=`printf "%s\n" "$color8"`
+		bright_red=`printf "%s\n" "$color9"`
+		bright_green=`printf "%s\n" "$color10"`
+		bright_yellow=`printf "%s\n" "$color11"`
+		bright_blue=`printf "%s\n" "$color12"`
+		bright_magenta=`printf "%s\n" "$color13"`
+		bright_cyan=`printf "%s\n" "$color14"`
+		bright_white=`printf "%s\n" "$color15"`
+		# check if the image is a png file and convert it to jpg and then copy it to the directory
+		if [ "$(echo $(file --extension $wallpaper | sed -e 's/.*://'))" = "png" ]; then
+			cp $wallpaper ~/.config/wpg/wallpapers/ && 
+			mogrify -format jpg ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").png &&
+			rm ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev) &&
+			cp ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").jpg ~/.config/wpg/wallpapers/wallpaper.jpg &&
+			rm ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").jpg
+		else	
+			# copy the current wallpaper so it can be used with kdeconnect and sddm and grub
+			cp $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
+		fi
+		# merging the Xresources files with the main one
+		xrdb -merge ~/.cache/wal/colors.Xresources
+		# rescaling the image to 16:9 so it works with grub
+		convert -resize 1920x1080! ~/.config/wpg/wallpapers/wallpaper.jpg ~/.config/wpg/wallpapers/wallpaper-1.jpg
+		
+
+	fi 
+	
+else
+	echo "[!] 'wpgtk' is not installed."
+	echo "Installing from the AUR..." 
+	yay -S wpgtk-git
+	wpgConfig
+	# this command installs rofi, gtk, and openbox themes
+	wpg-install.sh -r -g -o
+fi
+}
+"$@"

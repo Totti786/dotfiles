@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+## Commands Executed By Openbox Powermenu
+
+## Options #############################################
+if  [[ $1 = "--logout" ]]; then
+	openbox --exit
+elif  [[ $1 = "--lock" ]]; then
+	playerctl pause
+	betterlockscreen --lock
+elif  [[ $1 = "--suspend" ]]; then
+	playerctl -a stop
+	#amixer set Master mute
+	betterlockscreen --suspend
+elif  [[ $1 = "--reboot" ]]; then
+	systemctl reboot
+elif  [[ $1 = "--shutdown" ]]; then
+	systemctl poweroff
+fi
