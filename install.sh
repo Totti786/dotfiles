@@ -49,7 +49,7 @@ changeTheme(){
 	}
 
 wpgtk(){
-	sh $DIR/bin/.local/bin/wpgtk &&
+	sh $DIR/bin/.local/bin/wpgtk run &&
 	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
 	sh $DIR/bin/.local/bin/wpgtk lockWal
 	}
