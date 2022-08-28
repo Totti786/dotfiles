@@ -5,7 +5,7 @@ DIR="$HOME/.config/"
 BackupDir="$HOME/Documents/GitHub/dot-files/"
 
 for bapps in "${apps[@]}"; do
-	cp -r $DIR/$bapps $BackupDir/cfg/.config
+	cp -r $DIR/$bapps $BackupDir/cfg/
 done
 rm -R $BackupDir/bin/.local/bin/ && cp -r $HOME/.local/bin $BackupDir/bin/.local
 cp -r $DIR/wpg/wallpapers/wallpaper.jpg $BackupDir/deps/background.jpg

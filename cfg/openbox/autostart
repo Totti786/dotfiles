@@ -49,10 +49,10 @@ stalonetray &
 
 
 ## Excute Screenshot script
-#exec sh ~/.scripts/check.sh &
+exec sh ~/.scripts/check.sh &
 
 ## Discord Launch
-#exec discord &
+exec discord &
 
 ## Trackma Launch
 #exec trackma-gtk &
