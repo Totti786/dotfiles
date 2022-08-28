@@ -213,7 +213,7 @@ check(){
 wpgConfig(){
 	sed -i -e 's/execute_cmd = false/execute_cmd = true/g' ~/.config/wpg/wpg.conf
 	sed -i -e 's/auto_adjust = false/auto_adjust = true/g' ~/.config/wpg/wpg.conf
-	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.scripts\/wpgtk main/g" ~/.config/wpg/wpg.conf
+	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" ~/.config/wpg/wpg.conf
 	}	
 
 setWall(){
