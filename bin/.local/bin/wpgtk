@@ -154,22 +154,40 @@ change_colors() {
 
 ## Change the wallpaper for both sddm and grub 
 # this function only works with the themes included in the install script 
-lockWal(){
-	## remove the background file for sddm and replace it with a hard link of the wallpaper 
-	if [[ -d "/usr/share/sddm/themes/arch" ]]; then
-		sudo rm /usr/share/sddm/themes/arch/components/artwork/background.jpg && \
-		sudo ln ~/.config/wpg/wallpapers/wallpaper-1.jpg \
-		/usr/share/sddm/themes/arch/components/artwork/background.jpg
-	else 
-		echo "Can't find a compatible sddm theme"
-	fi
-	## remove the background file for grub and replace it with a symbolic  link of the wallpaper 
+# I'm gonna be commenting this function out because it only works with systems 
+# that don't have a seperate home partition
+#lockWal(){
+	### remove the background file for sddm and replace it with a hard link of the wallpaper 
+	#if [[ -d "/usr/share/sddm/themes/arch" ]]; then
+		#sudo rm /usr/share/sddm/themes/arch/components/artwork/background.jpg && \
+		#sudo ln -s ~/.config/wpg/wallpapers/wallpaper-1.jpg \
+		#/usr/share/sddm/themes/arch/components/artwork/background.jpg
+	#else 
+		#echo "Can't find a compatible sddm theme"
+	#fi
+	### remove the background file for grub and replace it with a symbolic  link of the wallpaper 
+	#if [[ -d "/usr/share/grub/themes/Arch" ]]; then
+		#sudo rm /usr/share/grub/themes/Arch/background.jpg && \
+		#sudo ln -s ~/.config/wpg/wallpapers/wallpaper-1.jpg \
+		#/usr/share/grub/themes/Arch/background.jpg
+	#else 
+		#echo "Can't find a compatible grub theme"
+	#fi
+	#}
+copyWal(){
+	# copy background to grub theme
 	if [[ -d "/usr/share/grub/themes/Arch" ]]; then
-		sudo rm /usr/share/grub/themes/Arch/background.jpg && \
-		sudo ln -s ~/.config/wpg/wallpapers/wallpaper-1.jpg \
+		cp ~/.config/wpg/wallpapers/wallpaper-1.jpg \
 		/usr/share/grub/themes/Arch/background.jpg
 	else 
 		echo "Can't find a compatible grub theme"
+	fi
+	# copy background to sddm theme
+	if [[ -d "/usr/share/sddm/themes/arch" ]]; then
+		cp ~/.config/wpg/wallpapers/wallpaper.jpg \
+		/usr/share/sddm/themes/arch/components/artwork/background.jpg
+	else 
+		echo "Can't find a compatible sddm theme"
 	fi
 	}
 
@@ -293,8 +311,7 @@ if [[ -f "/usr/bin/wpg" ]]; then
 		xrdb -merge ~/.cache/wal/colors.Xresources
 		# rescaling the image to 16:9 so it works with grub
 		convert -resize 1920x1080! ~/.config/wpg/wallpapers/wallpaper.jpg ~/.config/wpg/wallpapers/wallpaper-1.jpg
-		
-
+		copyWal
 	fi 
 	
 else
