@@ -26,7 +26,7 @@ checkYay(){
 	}
 
 installDependencies(){
-		yay -Sy - < $DIR/deps/minimal.txt --needed --noconfirm
+		sudo pacman -Sy - < $DIR/deps/minimal.txt --needed --noconfirm
 		sudo pacman -U $DIR/deps/packages/* --needed
 	}
 
