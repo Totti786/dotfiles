@@ -38,6 +38,7 @@ moveConfigs(){
 	# extracts the icons and moves them to the correct directory
 	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons 
 	# extracts the fonts and moves them to the correct directory
+	if [[ ! -d "~/.local/share/fonts" ]]; then mkdir ~/.local/share/fonts ;fi
 	tar -xzf $DIR/deps/fonts.tar.gz -C ~/.local/share/fonts 
 	}
 
