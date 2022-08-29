@@ -152,7 +152,7 @@ main(){
 	
 	case $CHOICE in
 		1)
-			install 
+			install &&
 			main
 			;;
 		2)
