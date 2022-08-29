@@ -82,24 +82,24 @@ change_colors() {
 	    white:      '$bright_white'
 	EOF
 	
-	# eww
-	cat > $eww <<- EOF
-	/** Colors *******************************************/
-	\$bg: $BG;
-	\$bg-alt: $bright_black;
-	\$fg: $FG;
-	\$fg-alt: $bright_white;
-	\$red: $bright_red;
-	\$green: $bright_green;
-	\$yellow: $bright_yellow;
-	\$blue: $bright_magenta;
-	\$purple: $bright_blue;
-	\$cyan: $bright_cyan;
-	\$gray: $bright_white;;
-	\$gray-alt: @white;
+	## eww
+	#cat > $eww <<- EOF
+	#/** Colors *******************************************/
+	#\$bg: $BG;
+	#\$bg-alt: $bright_black;
+	#\$fg: $FG;
+	#\$fg-alt: $bright_white;
+	#\$red: $bright_red;
+	#\$green: $bright_green;
+	#\$yellow: $bright_yellow;
+	#\$blue: $bright_magenta;
+	#\$purple: $bright_blue;
+	#\$cyan: $bright_cyan;
+	#\$gray: $bright_white;;
+	#\$gray-alt: @white;
 		
-		@import "./System-Menu/eww.scss";
-	EOF
+		#@import "./System-Menu/eww.scss";
+	#EOF
 	
 	# discord
 	if [[ -f $discord ]]; then 
@@ -158,7 +158,7 @@ lockWal(){
 	## remove the background file for sddm and replace it with a hard link of the wallpaper 
 	if [[ -d "/usr/share/sddm/themes/arch" ]]; then
 		sudo rm /usr/share/sddm/themes/arch/components/artwork/background.jpg && \
-		sudo ln ~/.config/wpg/wallpapers/wallpaper-1.jpg \
+		sudo ln -s ~/.config/wpg/wallpapers/wallpaper-1.jpg \
 		/usr/share/sddm/themes/arch/components/artwork/background.jpg
 	else 
 		echo "Can't find a compatible sddm theme"
