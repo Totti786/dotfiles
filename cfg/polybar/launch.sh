@@ -10,9 +10,6 @@ INTERFACE="$(ip link | awk '/state UP/ {print $2}' | tr -d :)"
 BATTERY=$(upower -i `upower -e | grep 'BAT'` | grep 'native-path' | cut -d':' -f2 | tr -d '[:blank:]')
 ADAPTER=$(upower -i `upower -e | grep 'AC'` | grep 'native-path' | cut -d':' -f2 | tr -d '[:blank:]')
 current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
-TEMP="$(for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done | grep -i 'Package id' | cut -d " " -f5)"
-
-# hwmon-path = 
 
 
 # Fix backlight and network modules
