@@ -158,7 +158,7 @@ lockWal(){
 	## remove the background file for sddm and replace it with a hard link of the wallpaper 
 	if [[ -d "/usr/share/sddm/themes/arch" ]]; then
 		sudo rm /usr/share/sddm/themes/arch/components/artwork/background.jpg && \
-		sudo ln -s ~/.config/wpg/wallpapers/wallpaper-1.jpg \
+		sudo ln ~/.config/wpg/wallpapers/wallpaper-1.jpg \
 		/usr/share/sddm/themes/arch/components/artwork/background.jpg
 	else 
 		echo "Can't find a compatible sddm theme"
