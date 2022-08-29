@@ -7,6 +7,6 @@ sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.ta
 echo "[chaotic-aur]
 Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf > /dev/null
 
-sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 7/g" /etc/pacman.conf
+sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
 sudo sed -i -e "s/#Color/Color/g" /etc/pacman.conf
 
