@@ -73,7 +73,7 @@ noto-fonts
 noto-fonts-emoji
 brightnessctl
 blueman
-bluez
+bluez-git
 kdeconnect
 xorg-xkill
 appimagelauncher
