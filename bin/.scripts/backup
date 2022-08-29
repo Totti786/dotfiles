@@ -1,6 +1,6 @@
 #! /bin/bash
 
-apps=(polybar openbox i3 zathura dunst alacritty ranger htop) 
+apps=(polybar openbox i3 zathura dunst alacritty htop picom.conf stalonetrayrc) 
 DIR="$HOME/.config/"
 BackupDir="$HOME/Documents/GitHub/dot-files/"
 
