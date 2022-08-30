@@ -9,23 +9,19 @@
 
 /*****----- Configuration -----*****/
 configuration {
-  location: 						0;
-    background-color:             	@background;
-    fixed-num-lines: 				true;
-    show-icons: 					true;
-    sidebar-mode: 					true;
-    scroll-method: 					2;
-    window-format: 					"[{w}] ··· {c} ···   {t}";
-    click-to-exit: 					true;
-    combi-hide-mode-prefix: 		false;
-    display-window: 				"";
-    display-windowcd: 				"";
-    display-drun: 					"";
-    display-filebrowser:     		"";
-    display-calc:     	   			"";
-    display-emoji:     	   			"";
-    display-clipboard:     	   		"";
-    display-combi: 					"";
+	modi:                       "drun,run,filebrowser,window";
+    show-icons:                 true;
+    display-drun:               "";
+    display-run:                "";
+    display-filebrowser:        "";
+    display-window:             "";
+    display-calc:     	   		"";
+    display-emoji:     	   		"";
+    display-clipboard:     		"";
+    display-combi: 				"";
+	drun-display-format:        "{name}";
+	window-format:              "{w} · {c} · {t}";
+	
 }
 
 /*****----- Global Properties -----*****/
@@ -40,13 +36,13 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       700px;
+    width:                       400px;
     x-offset:                    0px;
     y-offset:                    0px;
 
     /* properties for all widgets */
     enabled:                     true;
-    border-radius:               20px;
+    border-radius:               15px;
     background-color:            @background;
 }
 
@@ -64,43 +60,38 @@ listbox {
     padding:                     20px;
     background-color:            transparent;
     orientation:                 vertical;
-    children:                    [ "message", "listview" ];
+    children:                    [ "message", "listview", "mode-switcher" ];
 }
 
 /*****----- Inputbar -----*****/
 inputbar {
     enabled:                     true;
     spacing:                     10px;
-    padding:                     80px 60px;
+    padding:                     100px 40px;
     background-color:            transparent;
     background-image:            url("~/.config/wpg/wallpapers/wallpaper.jpg", width);
     text-color:                  @foreground;
     orientation:                 horizontal;
-    children:                    [ "textbox-prompt-colon", "entry", "dummy", "mode-switcher" ];
+    children:                    [ "textbox-prompt-colon", "entry" ];
 }
 textbox-prompt-colon {
     enabled:                     false;
     expand:                      false;
     str:                         "";
     padding:                     12px 15px;
-    border-radius:               100%;
+    border-radius:               15px;
     background-color:            @background-alt;
     text-color:                  inherit;
 }
 entry {
     enabled:                     true;
-    expand:                      false;
-    width:                       250px;
+    expand:                      true;
     padding:                     12px 16px;
-    border-radius:               100%;
+    border-radius:               15px;
     background-color:            @background-alt;
     text-color:                  inherit;
     placeholder:                 "Search";
     placeholder-color:           inherit;
-}
-dummy {
-    expand:                      true;
-    background-color:            transparent;
 }
 
 /*****----- Mode Switcher -----*****/
@@ -109,19 +100,15 @@ mode-switcher{
     spacing:                     10px;
     background-color:            transparent;
     text-color:                  @foreground;
-
 }
 button {
-    width:                       40px;
     padding:                     12px;
-    border-radius:               100%;
+    border-radius:               15px;
     background-color:            @background-alt;
     text-color:                  inherit;
-    vertical-align:              0.0;
-    horizontal-align:            0.4;
 }
 button selected {
-    background-color:            @on;
+    background-color:            @highlight;
     text-color:                  @foreground;
 }
 
@@ -129,7 +116,7 @@ button selected {
 listview {
     enabled:                     true;
     columns:                     1;
-    lines:                       7;
+    lines:                       5;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;
@@ -147,8 +134,8 @@ listview {
 element {
     enabled:                     true;
     spacing:                     10px;
-    padding:                     4px;
-    border-radius:               100%;
+    padding:                     12px;
+    border-radius:               15px;
     background-color:            transparent;
     text-color:                  @foreground;
 }
@@ -160,8 +147,8 @@ element normal.urgent {
     background-color:            @urgent;
     text-color:                  @foreground;
 }
-element normal.highlight {
-    background-color:            @highlight;
+element normal.active {
+    background-color:            @on;
     text-color:                  @foreground;
 }
 element selected.normal {
@@ -172,7 +159,7 @@ element selected.urgent {
     background-color:            @urgent;
     text-color:                  @foreground;
 }
-element selected.highlight {
+element selected.active {
     background-color:            @urgent;
     text-color:                  @foreground;
 }
@@ -194,15 +181,15 @@ message {
 }
 textbox {
     padding:                     12px;
-    border-radius:               100%;
+    border-radius:               15px;
     background-color:            @background-alt;
     text-color:                  @foreground;
     vertical-align:              0.5;
     horizontal-align:            0.0;
 }
 error-message {
-    padding:                     12px;
-    border-radius:               20px;
+    padding:                     15px;
+    border-radius:               0px;
     background-color:            @background;
     text-color:                  @foreground;
 }
