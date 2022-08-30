@@ -52,7 +52,12 @@ changeTheme(){
 wpgtk(){
 	sh $DIR/bin/.local/bin/wpgtk run &&
 	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
-	sh $DIR/bin/.local/bin/wpgtk lockWal
+	if dialog --yesno "Do you want your sddm and grub background to sync with your wallpaper?" 20 60 ;then
+		sh $DIR/bin/.local/bin/wpgtk lockPerms &&
+		sh $DIR/bin/.local/bin/wpgtk copyWal
+	else
+		exit
+	fi
 	}
 
 minimal(){
@@ -62,7 +67,6 @@ minimal(){
 	xdg-user-dirs-gtk-update
 	moveConfigs
 	changeTheme
-	wpgtk
 	}
 
 #---- Additional configurations ----------
@@ -122,16 +126,20 @@ additionalPrograms(){
 }
 
 update(){
-	moveConfigs
+	sudo cp -r $DIR/bin/bin/ /usr/local/ 
+	cp -r $DIR/bin/.scripts/ ~/ 
+	cp -r $DIR/cfg/* ~/.config 
+	cp -r $DIR/bin/.local/ ~/
 	progressBar "Updating... "
 	}
 
 install(){
-	installOptions=$(dialog --radiolist  "Choose one of the following options:"  15 40 4\
+	installOptions=$(dialog --radiolist  "Choose one of the following options:"  15 60 4\
 		minimal "Minimal Install" off\
 		zsh "Zsh Configuration" off\
 		sddm "SDDM Theme" off\
 		grub "Grub Theme" off\
+		wpgtk "Generate color-schemes from wallpapers" off\
 		2>&1 >/dev/tty)
 	$installOptions
 	}
@@ -180,3 +188,4 @@ else
 	sudo pacman -S dialog &&
 	main
 fi
+
