@@ -176,13 +176,21 @@ change_colors() {
 	#}
 
 # this functions should only be used if you have a system with a seperate home partition 
-lockPermissions(){
+lockPerms(){
 	## give the user read and write permissions to the grub themes directory
+	if [[ -d "/usr/share/grub/themes/Arch" ]]; then
 	sudo chgrp -R $(whoami) /usr/share/grub/themes/
 	sudo chmod -R ug+rwX  /usr/share/grub/themes/
+	else 
+		echo "Can't find a compatible grub theme"
+	fi
 	## give the user read and write permissions to the sddm directory
+	if [[ -d "/usr/share/sddm/themes/arch" ]]; then
 	sudo chgrp -R $(whoami) /usr/share/sddm/
 	sudo chmod -R ug+rwX  /usr/share/sddm/
+	else 
+		echo "Can't find a compatible sddm theme"
+	fi
 	}
 
 # this funcction only works after using the lockPermissions function
@@ -278,6 +286,7 @@ main(){
 	phoneWal &
 	check wal-telegram --wal 
 	check betterlockscreen -u $wallpaper
+	copyWal
 	}
 
 ## Check if wpg is installed and get colors
@@ -322,8 +331,7 @@ if [[ -f "/usr/bin/wpg" ]]; then
 		# merging the Xresources files with the main one
 		xrdb -merge ~/.cache/wal/colors.Xresources
 		# rescaling the image to 16:9 so it works with grub
-		convert -resize 1920x1080! ~/.config/wpg/wallpapers/wallpaper.jpg ~/.config/wpg/wallpapers/wallpaper-1.jpg
-		copyWal
+		convert -resize 1920x1080! ~/.config/wpg/wallpapers/wallpaper.jpg ~/.config/wpg/wallpapers/wallpaper-1.jpg		
 	fi 
 	
 else
