@@ -100,5 +100,5 @@ elif [[ "$1" == "--stat" ]]; then
 	cat ${cache_weather_stat}
 elif [[ "$1" == "--full" ]]; then
 	get_weather_data &> /dev/null
-	cat ${cache_weather_icon} ${cache_weather_degree} ${cache_weather_stat} | tr -d '\n'
+	cat ${cache_weather_degree} ${cache_weather_stat} | tr -d '\n'
 fi
