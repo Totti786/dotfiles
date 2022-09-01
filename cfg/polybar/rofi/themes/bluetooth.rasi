@@ -22,7 +22,7 @@ window {
     border:                  		0px;
     border-color:                  	@selected;
     border-radius:                  12px;
-    width:                          300px;
+    width:                          250px;
     height:                         330px;
     location:                       northwest;
     anchor:                         west;
