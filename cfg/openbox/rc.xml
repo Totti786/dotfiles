@@ -758,8 +758,11 @@
     <keybind key="W-q">
       <action name="Close"/>
     </keybind>
-    <keybind key="A-F4">
-      <action name="ToggleOmnipresent"/>
+    <keybind key="W-S-f">
+      <action name="ToggleMaximize"/>
+    </keybind>
+    <keybind key="W-d">
+      <action name="ToggleShowDesktop"/>
     </keybind>
     <keybind key="A-F5">
       <action name="Iconify"/>
@@ -767,17 +770,11 @@
     <keybind key="A-F6">
       <action name="ToggleDecorations"/>
     </keybind>
-    <keybind key="A-F8">
+    <keybind key="A-F7">
       <action name="ToggleAlwaysOnTop"/>
     </keybind>
-    <keybind key="W-S-f">
-      <action name="ToggleMaximize"/>
-    </keybind>
-    <keybind key="A-F7">
-      <action name="ToggleDecorations"/>
-    </keybind>
-    <keybind key="W-d">
-      <action name="ToggleShowDesktop"/>
+    <keybind key="A-F8">
+      <action name="ToggleOmnipresent"/>
     </keybind>
     <!-- Activate Move/Resize -->
     <keybind key="A-r">
