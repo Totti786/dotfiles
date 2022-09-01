@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-CITY="Idlib"
-COUNTRY="Syria"
+CITY=""
+COUNTRY=""
 
 DIR="$HOME/.config"
 DAY="$(( $(date +"%d")-1))"
@@ -10,6 +10,20 @@ YEAR="$(date +"%Y")"
 prayer_rofi="$HOME/.cache/prayer_rofi_$DAY:$MONTH"
 prayer_cache="$HOME/.cache/prayertimes_$MONTH:$YEAR"
 
+convert(){
+	if [[ "$1" > 11 ]]; then
+		hr=$(echo "$1" | cut -d ":" -f1)
+		mn=$(echo "$1" | cut -d ":" -f2)
+		if [[ "$hr" == 12 ]]; then
+			echo $hr:$mn "PM" 
+		else
+			echo $(( $hr - 12 )):$mn "PM" 
+		fi
+	else  
+		ti=$(echo "$1" | cut -c 2-5)
+		echo $ti "AM"
+	fi
+}
 
 if [ ! -f "$prayer_cache" ]; then
 echo `curl -X GET --header 'Accept: application/json' 'http://api.aladhan.com/v1/calendarByCity?city=Idlib&country=Syria&month=$MONTH&year=$YEAR&method=4'` > ${prayer_cache}
@@ -17,16 +31,15 @@ fi
 
 if [ -f "$prayer_cache" ]; then
 	if [ ! -f "$prayer_rofi" ]; then
-		fajr=`cat $prayer_cache | jq -r ".data[$DAY].timings.Fajr" | cut -d " " -f1`
-		sunrise=`cat $prayer_cache | jq -r ".data[$DAY].timings.Sunrise" | cut -d " " -f1`
-		duhr=`cat $prayer_cache | jq -r ".data[$DAY].timings.Dhuhr" | cut -d " " -f1`
-		asr=`cat $prayer_cache | jq -r ".data[$DAY].timings.Asr" | cut -d " " -f1`
-		maghrib=`cat $prayer_cache| jq -r ".data[$DAY].timings.Maghrib" | cut -d " " -f1` 
-		isha=`cat $prayer_cache | jq -r ".data[$DAY].timings.Isha" | cut -d " " -f1`
+		fajr=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Fajr" | cut -d " " -f1)`
+		sunrise=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Sunrise" | cut -d " " -f1)`
+		duhr=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Dhuhr" | cut -d " " -f1)`
+		asr=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Asr" | cut -d " " -f1)`
+		maghrib=`convert $(cat $prayer_cache| jq -r ".data[$DAY].timings.Maghrib" | cut -d " " -f1)`
+		isha=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Isha" | cut -d " " -f1)`
 		
 		echo -e "City: $CITY \nFajr: $fajr \nSunrise: $sunrise \nDuhr: $duhr \nAsr: $asr \nMaghrib: $maghrib \nIsha: $isha" > ${prayer_rofi}
 	fi
 fi
-
 
 cat $prayer_rofi | rofi -dmenu -p "Prayer Times" -theme "$DIR"/rofi/themes/prayer.rasi
