@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+CITY="Idlib"
+COUNTRY="Syria"
+
+DIR="$HOME/.config/polybar"
+DAY="$(( $(date +"%d")-1))"
+MONTH="$(date +"%m")"
+YEAR="$(date +"%Y")"
+prayer_rofi="$HOME/.cache/prayer_rofi_$DAY:$MONTH"
+prayer_cache="$HOME/.cache/prayertimes_$MONTH:$YEAR"
+
+
+if [ ! -f "$prayer_cache" ]; then
+echo `curl -X GET --header 'Accept: application/json' 'http://api.aladhan.com/v1/calendarByCity?city=Idlib&country=Syria&month=$MONTH&year=$YEAR&method=4'` > ${prayer_cache}
+fi
+
+if [ -f "$prayer_cache" ]; then
+	if [ ! -f "$prayer_rofi" ]; then
+		fajr=`cat $prayer_cache | jq -r ".data[$DAY].timings.Fajr" | cut -d " " -f1`
+		sunrise=`cat $prayer_cache | jq -r ".data[$DAY].timings.Sunrise" | cut -d " " -f1`
+		duhr=`cat $prayer_cache | jq -r ".data[$DAY].timings.Dhuhr" | cut -d " " -f1`
+		asr=`cat $prayer_cache | jq -r ".data[$DAY].timings.Asr" | cut -d " " -f1`
+		maghrib=`cat $prayer_cache| jq -r ".data[$DAY].timings.Maghrib" | cut -d " " -f1` 
+		isha=`cat $prayer_cache | jq -r ".data[$DAY].timings.Isha" | cut -d " " -f1`
+		
+		echo -e "City: $CITY \nFajr: $fajr \nSunrise: $sunrise \nDuhr: $duhr \nAsr: $asr \nMaghrib: $maghrib \nIsha: $isha" > ${prayer_rofi}
+	fi
+fi
+
+
+cat $prayer_rofi | rofi -dmenu -p "Prayer Times" -theme "$DIR"/rofi/themes/prayer.rasi
