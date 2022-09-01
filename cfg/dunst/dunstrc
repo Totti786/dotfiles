@@ -75,26 +75,38 @@
 
     icon_position = left
 
-    icon_size = 48
-
     max_icon_size = 80
+    
+    always_run_script = true
+
+    mouse_left_click = do_action, close_current
+    
+    mouse_middle_click = do_action, close_current
+    
+    mouse_right_click = close_all
+    
+    browser = /usr/bin/firefox -new-tab
+    
+
+[log_notifs]
+    script = ~/.local/bin/dunst-logger
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#0C1415"
-    foreground = "#f7ffff"
+    background = "#0b0b0c"
+    foreground = "#dfffff"
     highlight  = "#b6beca"
-    timeout = 6
+    timeout = 5
 
 [urgency_normal]
-    background = "#0C1415"
-    foreground = "#f7ffff"
-    highlight  = "#b6beca"
-    timeout = 6
-
-[urgency_critical]
-    background = "#0C1415"
-    foreground = "#f7ffff"
+    background = "#0b0b0c"
+    foreground = "#dfffff"
     highlight  = "#b6beca"
     timeout = 10
+
+[urgency_critical]
+    background = "#0b0b0c"
+    foreground = "#dfffff"
+    highlight  = "#b6beca"
+    timeout = 15
