@@ -38,7 +38,7 @@ moveConfigs(){
 	# extracts the icons and moves them to the correct directory
 	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons 
 	# extracts the fonts and moves them to the correct directory
-	if [[ ! -d "~/.local/share/fonts" ]]; then mkdir ~/.local/share/fonts ;fi
+	if [[ ! -d "$HOME/.local/share/fonts" ]]; then mkdir ~/.local/share/fonts ;fi
 	tar -xzf $DIR/deps/fonts.tar.gz -C ~/.local/share/fonts 
 	}
 
@@ -63,8 +63,7 @@ wpgtk(){
 minimal(){
 	checkChaotic &&
 	installDependencies &&
-	xdg-user-dirs-update &&
-	xdg-user-dirs-gtk-update
+	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
 	changeTheme
 	}
