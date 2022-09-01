@@ -7,10 +7,16 @@ cache_weather_degree=${cache_dir}/weather-degree
 cache_weather_icon=${cache_dir}/weather-icon
 cache_weather_rofi=${cache_dir}/weather-rofi
 
+# in order to use all the features of this script you need to sign up for an API key
+# on https://www.weatherbit.io/account/create and then you need to verify your account
+
+# you also need to sign up on https://home.openweathermap.org to get an API key 
+
 ## Weather data
 KEY="7e6ed49a1a7b802ad1299faa3a5f008d"
 ID="169389"
 UNIT="metric"	# Available options : 'metric' or 'imperial'
+WBKEY="738403d68f69400f8872711b7a70fb7c"
 COUNTRY="Syria"
 CITY="Idlib"
 
@@ -22,7 +28,7 @@ fi
 ## Get data
 get_weather_data() {
 	weather=`curl -sf "http://api.openweathermap.org/data/2.5/weather?APPID="$KEY"&id="$ID"&units="$UNIT""`
-	altweather=`curl -X GET --header 'Accept: application/json' 'https://api.weatherbit.io/v2.0/current?city=$CITY&country=$COUNTRY&key=754802f8df8d48f999ae6a283c2a3801'`
+	altweather=`curl -X GET --header 'Accept: application/json' 'https://api.weatherbit.io/v2.0/current?city=$CITY&country=$COUNTRY&key=738403d68f69400f8872711b7a70fb7c'`
 	echo ${weather}
 
 	if [ ! -z "$weather" ]; then
