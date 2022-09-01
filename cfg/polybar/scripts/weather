@@ -13,12 +13,12 @@ cache_weather_rofi=${cache_dir}/weather-rofi
 # you also need to sign up on https://home.openweathermap.org to get an API key 
 
 ## Weather data
-KEY="7e6ed49a1a7b802ad1299faa3a5f008d"
-ID="169389"
+KEY=""  # put your Opeanweather API key here
+ID="" # put your city id here, it can be found on here https://openweathermap.org/find
 UNIT="metric"	# Available options : 'metric' or 'imperial'
-WBKEY="738403d68f69400f8872711b7a70fb7c"
-COUNTRY="Syria"
-CITY="Idlib"
+WBKEY=""  # put your WeatherBit API key here 
+COUNTRY="" # put your country name here 
+CITY="" # put your city name here
 
 ## Make cache dir
 if [[ ! -d "$cache_dir" ]]; then
@@ -38,8 +38,8 @@ get_weather_data() {
 		city=`echo "$weather" | jq -r ".name"` 
 		humidity=`echo "$weather" | jq -r ".main.humidity"` 
 		windspeed=`echo "$weather" | jq -r ".wind.speed"` 
-		sunrise=`date -d @"$(echo "$weather" | jq -r ".sys.sunrise")" | cut -d ' ' -f4-5 | cut --complement -c 6-8 | cut -c 2-8`
-		sunset=`date -d @"$(echo "$weather" | jq -r ".sys.sunset")" | cut -d ' ' -f4-5 | cut --complement -c 6-8 | cut -c 2-8` 
+		sunrise=`date -d @"$(echo "$weather" | jq -r ".sys.sunrise")" | cut -d ' ' -f5-6 | cut --complement -c 6-8 | cut -c 2-8`
+		sunset=`date -d @"$(echo "$weather" | jq -r ".sys.sunset")" | cut -d ' ' -f5-6 | cut --complement -c 6-8 | cut -c 2-8` 
 		uv=`echo "$altweather"| jq -r ".data[].uv" | cut -c 1-4`
 		aqi=`echo "$altweather"| jq -r ".data[].aqi"`
 		
@@ -49,7 +49,7 @@ get_weather_data() {
 		elif [ "$weather_icon_code" == "50n"  ]; then
 			weather_icon=" "
 		elif [ "$weather_icon_code" == "01d"  ]; then
-			weather_icon=" "
+			weather_icon="盛 "
 		elif [ "$weather_icon_code" == "01n"  ]; then
 			weather_icon=" "
 		elif [ "$weather_icon_code" == "02d"  ]; then
@@ -91,10 +91,6 @@ get_weather_data() {
 		echo "$weather_description" > ${cache_weather_stat}
 		echo "$weather_temp""° " > ${cache_weather_degree}
 		echo -e "City: $city \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nWindspeed: $windspeed m/s \nSunrise: $sunrise \nSunset: $sunset" > ${cache_weather_rofi}	
-		#echo """%" > ${cache_weather_rofi}	
-		#echo "$windspeed""m/s" > ${cache_weather_rofi}	
-		#echo "$sunrise" > ${cache_weather_rofi}	
-		#echo "$sunset" > ${cache_weather_rofi}	
 	else
 		echo "Weather Unavailable" > ${cache_weather_stat}
 		echo " " > ${cache_weather_icon}
@@ -119,5 +115,5 @@ elif [[ "$1" == "--stat" ]]; then
 	cat ${cache_weather_stat}
 elif [[ "$1" == "--full" ]]; then
 	get_weather_data &> /dev/null
-	cat ${cache_weather_degree} ${cache_weather_stat} | tr -d '\n'
+	cat ${cache_weather_icon} ${cache_weather_degree} ${cache_weather_stat} | tr -d '\n'
 fi
