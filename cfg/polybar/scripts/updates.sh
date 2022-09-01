@@ -3,8 +3,6 @@
 ## Copyright (C) 2020-2021 Aditya Shakya <adi1090x@gmail.com>
 ## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
 
-NOTIFY_ICON=/usr/share/icons/Papirus/32x32/apps/system-software-update.svg
-
 get_total_updates() { UPDATES=$(checkupdates 2>/dev/null | wc -l); }
 
 while true; do
