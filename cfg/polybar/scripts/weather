@@ -4,13 +4,15 @@
 cache_dir="$HOME/.cache/weather"
 cache_weather_stat=${cache_dir}/weather-stat
 cache_weather_degree=${cache_dir}/weather-degree
-cache_weather_hex=${cache_dir}/weather-hex
 cache_weather_icon=${cache_dir}/weather-icon
+cache_weather_rofi=${cache_dir}/weather-rofi
 
 ## Weather data
 KEY="7e6ed49a1a7b802ad1299faa3a5f008d"
 ID="169389"
 UNIT="metric"	# Available options : 'metric' or 'imperial'
+COUNTRY="Syria"
+CITY="Idlib"
 
 ## Make cache dir
 if [[ ! -d "$cache_dir" ]]; then
@@ -20,13 +22,21 @@ fi
 ## Get data
 get_weather_data() {
 	weather=`curl -sf "http://api.openweathermap.org/data/2.5/weather?APPID="$KEY"&id="$ID"&units="$UNIT""`
+	altweather=`curl -X GET --header 'Accept: application/json' 'https://api.weatherbit.io/v2.0/current?city=$CITY&country=$COUNTRY&key=754802f8df8d48f999ae6a283c2a3801'`
 	echo ${weather}
 
 	if [ ! -z "$weather" ]; then
 		weather_temp=`echo "$weather" | jq ".main.temp" | cut -d "." -f 1`
 		weather_icon_code=`echo "$weather" | jq -r ".weather[].icon" | head -1`
 		weather_description=`echo "$weather" | jq -r ".weather[].description" | head -1 | sed -e "s/\b\(.\)/\u\1/g"`
-
+		city=`echo "$weather" | jq -r ".name"` 
+		humidity=`echo "$weather" | jq -r ".main.humidity"` 
+		windspeed=`echo "$weather" | jq -r ".wind.speed"` 
+		sunrise=`date -d @"$(echo "$weather" | jq -r ".sys.sunrise")" | cut -d ' ' -f4-5 | cut --complement -c 6-8 | cut -c 2-8`
+		sunset=`date -d @"$(echo "$weather" | jq -r ".sys.sunset")" | cut -d ' ' -f4-5 | cut --complement -c 6-8 | cut -c 2-8` 
+		uv=`echo "$altweather"| jq -r ".data[].uv" | cut -c 1-4`
+		aqi=`echo "$altweather"| jq -r ".data[].aqi"`
+		
 		#Big long if statement of doom
 		if [ "$weather_icon_code" == "50d"  ]; then
 			weather_icon=" "
@@ -74,12 +84,15 @@ get_weather_data() {
 		echo "$weather_icon" >  ${cache_weather_icon}
 		echo "$weather_description" > ${cache_weather_stat}
 		echo "$weather_temp""° " > ${cache_weather_degree}
-		echo "$weather_hex" > ${cache_weather_hex}
+		echo -e "City: $city \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nWindspeed: $windspeed m/s \nSunrise: $sunrise \nSunset: $sunset" > ${cache_weather_rofi}	
+		#echo """%" > ${cache_weather_rofi}	
+		#echo "$windspeed""m/s" > ${cache_weather_rofi}	
+		#echo "$sunrise" > ${cache_weather_rofi}	
+		#echo "$sunset" > ${cache_weather_rofi}	
 	else
 		echo "Weather Unavailable" > ${cache_weather_stat}
 		echo " " > ${cache_weather_icon}
 		echo "-" > ${cache_weather_degree}
-		echo "#adadff" > ${tcache_weather_hex}
 	fi
 }
 
