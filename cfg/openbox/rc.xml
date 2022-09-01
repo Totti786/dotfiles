@@ -560,37 +560,37 @@
     <!-- Rofi -->
     <keybind key="A-F1">
       <action name="Execute">
-        <command>~/.config/polybar/rofi/bin/launcher</command>
+        <command>~/.config/rofi/bin/launcher</command>
       </action>
     </keybind>
     <keybind key="W-n">
       <action name="Execute">
-        <command>~/.config/polybar/rofi/bin/network_menu</command>
+        <command>~/.config/rofi/bin/network_menu</command>
       </action>
     </keybind>
     <keybind key="W-m">
       <action name="Execute">
-        <command>~/.config/polybar/rofi/bin/media</command>
+        <command>~/.config/rofi/bin/media</command>
       </action>
     </keybind>
     <keybind key="W-x">
       <action name="Execute">
-        <command>~/.config/polybar/rofi/bin/powermenu</command>
+        <command>~/.config/rofi/bin/powermenu</command>
       </action>
     </keybind>
     <keybind key="W-s">
       <action name="Execute">
-        <command>~/.config/polybar/rofi/bin/screenshot</command>
+        <command>~/.config/rofi/bin/screenshot</command>
       </action>
     </keybind>
     <keybind key="W-i">
       <action name="Execute">
-        <command>~/.config/polybar/rofi/bin/network</command>
+        <command>~/.config/rofi/bin/network</command>
       </action>
     </keybind>
     <keybind key="W-r">
       <action name="Execute">
-        <command>~/.config/polybar/rofi/bin/asroot</command>
+        <command>~/.config/rofi/bin/asroot</command>
       </action>
     </keybind>
     <keybind key="W-p">
@@ -637,7 +637,7 @@
     <!-- Lockscreen -->
     <keybind key="C-A-l">
       <action name="Execute">
-        <command>~/.config/polybar/bin/i3lock.sh</command>
+        <command>~/.config/bin/i3lock.sh</command>
       </action>
     </keybind>
     <!-- CLI Apps -->

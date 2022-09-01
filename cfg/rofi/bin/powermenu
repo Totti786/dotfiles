@@ -3,7 +3,7 @@
 ## This script should work with any Arch based system that uses systemd
 ## The logout option works with Openbox, i3 and BSPWM
 
-DIR="$HOME/.config/polybar"
+DIR="$HOME/.config"
 
 rofi_command="rofi -theme $DIR/rofi/themes/powermenu.rasi"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DIR="$HOME/.config/polybar"
+DIR="$HOME/.config"
 
 rofi \
 	-show drun \
@@ -12,4 +12,4 @@ rofi \
 	-no-drun-show-actions \
 	-terminal alacritty \
 	-kb-cancel Alt-F1 \
-	-theme "$DIR"/rofi/themes/launcher.rasi
+	-theme $HOME/.config/rofi/themes/launcher.rasi

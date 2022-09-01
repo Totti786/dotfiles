@@ -19,12 +19,12 @@ window {
     border:                  		0px;
     border-color:                  	@selected;
     border-radius:                  12px;
-    width:                          450px;
-    height:                         470px;
-    location:                       center;
+    width:                          300px;
+    height:                         350px;
+    location:                       north;
     anchor:                         center;
     x-offset:                       0;
-    y-offset:                       0;
+    y-offset:                       209;
 }
 
 prompt {
@@ -49,7 +49,7 @@ textbox-prompt-colon {
 
 entry {
     background-color:               @background;
-    text-color:                     @background;
+    text-color:                     @foreground;
     placeholder-color:              @background;
     placeholder:                    "";
     expand:                         true;

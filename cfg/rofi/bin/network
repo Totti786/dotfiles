@@ -3,7 +3,7 @@
 ## Copyright (C) 2020-2021 Aditya Shakya <adi1090x@gmail.com>
 ## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
 
-rofi_command="rofi -theme $HOME/.config/polybar/rofi/themes/network.rasi"
+rofi_command="rofi -theme $HOME/.config/rofi/themes/network.rasi"
 
 ## Get info
 IFACE="$(nmcli | grep -i interface | head -n1 | cut -d' ' -f2)"

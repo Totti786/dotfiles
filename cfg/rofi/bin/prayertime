@@ -3,7 +3,7 @@
 CITY="Idlib"
 COUNTRY="Syria"
 
-DIR="$HOME/.config/polybar"
+DIR="$HOME/.config"
 DAY="$(( $(date +"%d")-1))"
 MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"

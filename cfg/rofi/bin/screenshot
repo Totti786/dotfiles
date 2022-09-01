@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DIR="$HOME/.config/polybar"
+DIR="$HOME/.config"
 rofi_command="rofi -theme $DIR/rofi/themes/screenshot.rasi"
 
 time=`date +%Y-%m-%d-%H-%M-%S`
