@@ -147,9 +147,6 @@ change_colors() {
 	sed -i -e "s/string_green=#.*/string_green=${bright_green}/g" $geany
 	sed -i -e "s/margin_bg_grey=#.*/margin_bg_grey=${black}/g" $geany
 	sed -i -e "s/error_red=#.*/error_red=${bright_magenta}/g" $geany
-	
-
-	
 }
 
 ## Change the wallpaper for both sddm and grub 
@@ -197,7 +194,7 @@ lockPerms(){
 copyWal(){
 	# copy background to grub theme
 	if [[ -d "/usr/share/grub/themes/Arch" ]]; then
-		cp ~/.config/wpg/wallpapers/wallpaper-1.jpg \
+		cp ~/.config/wpg/wallpapers/wallpaper.jpg \
 		/usr/share/grub/themes/Arch/background.jpg
 	else 
 		echo "Can't find a compatible grub theme"
@@ -224,19 +221,19 @@ phoneWal(){
 	}
 
 ## Kill already running process
-kill(){
-	#_ps=(dunst)
-	#for _prs in "${_ps[@]}"; do
-		#if [[ `pidof ${_prs}` ]]; then
-			#killall -9 ${_prs} 
-			#${_prs} 
+#kill(){
+	##_ps=(dunst)
+	##for _prs in "${_ps[@]}"; do
+		##if [[ `pidof ${_prs}` ]]; then
+			##killall -9 ${_prs} 
+			##${_prs} 
+		##fi
+		#if [[ `pidof $1` ]] &> /dev/null; then
+			#killall -9 $1
+			#$1 
 		#fi
-		if [[ `pidof $1` ]]; then
-			killall -9 $1
-			$1 
-		fi
-	#done
-	}
+	##done
+	#}
 	
 ## Check if the command exists and then runs it
 check(){
@@ -263,7 +260,6 @@ setWall(){
 	fi
 	}
 
-
 # this function uses implements a sxiv to create a wallpaper selector for wpg 
 # to set a wallpaper you should select a wallpaper by pressing "m" and then quitting the sxiv
 pick(){
@@ -279,14 +275,14 @@ pick(){
 main(){
 	change_colors 
 	sh ~/.config/polybar/launch.sh 
-	kill dunst &
-	check razer-cli -a &
-	check openbox --reconfigure 
-	check spicetify update 
-	phoneWal &
-	check wal-telegram --wal 
-	check betterlockscreen -u $wallpaper
+	#pkill dunst 
+	#dunst
+	#check razer-cli -a &
+	#check spicetify update 
+	#check wal-telegram --wal 
+	#check betterlockscreen -u $wallpaper
 	copyWal
+	#phoneWal &
 	}
 
 ## Check if wpg is installed and get colors
@@ -317,21 +313,23 @@ if [[ -f "/usr/bin/wpg" ]]; then
 		bright_magenta=`printf "%s\n" "$color13"`
 		bright_cyan=`printf "%s\n" "$color14"`
 		bright_white=`printf "%s\n" "$color15"`
-		# check if the image is a png file and convert it to jpg and then copy it to the directory
-		if [ "$(echo $(file --extension $wallpaper | sed -e 's/.*://'))" = "png" ]; then
-			cp $wallpaper ~/.config/wpg/wallpapers/ && 
-			mogrify -format jpg ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").png &&
-			rm ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev) &&
-			cp ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").jpg ~/.config/wpg/wallpapers/wallpaper.jpg &&
-			rm ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").jpg
-		else	
-			# copy the current wallpaper so it can be used with kdeconnect and sddm and grub
-			cp $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
-		fi
-		# merging the Xresources files with the main one
+		## merging the Xresources files with the main one
 		xrdb -merge ~/.cache/wal/colors.Xresources
-		# rescaling the image to 16:9 so it works with grub
-		convert -resize 1920x1080! ~/.config/wpg/wallpapers/wallpaper.jpg ~/.config/wpg/wallpapers/wallpaper-1.jpg		
+		cp $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
+		## check if the image is a png file and convert it to jpg and then copy it to the directory
+		#if [ "$(echo $(file --extension $wallpaper | sed -e 's/.*://'))" = "png" ]; then
+			#cp $wallpaper ~/.config/wpg/wallpapers/ && 
+			#mogrify -format jpg ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").png &&
+			#rm ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev) &&
+			#cp ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").jpg ~/.config/wpg/wallpapers/wallpaper.jpg &&
+			#rm ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").jpg
+		#else	
+			## copy the current wallpaper so it can be used with kdeconnect and sddm and grub
+			#cp $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
+		#fi
+		## rescaling the image to 16:9 so it works with grub
+		#convert -resize 1920x1080! ~/.config/wpg/wallpapers/wallpaper.jpg ~/.config/wpg/wallpapers/wallpaper-1.jpg		
+		
 	fi 
 	
 else
