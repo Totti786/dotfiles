@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+DIR="$HOME/.config/polybar"
+cache="$HOME/.cache/weather/weather-rofi"
+
+cat $cache | rofi -dmenu -p "Weather" -theme "$DIR"/rofi/themes/weather.rasi
