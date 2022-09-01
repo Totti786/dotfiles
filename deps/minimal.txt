@@ -19,6 +19,7 @@ gnome-disk-utility
 breeze
 stalonetray
 thunar
+fd
 thunar-archive-plugin
 thunar-media-tags-plugin
 redshift
