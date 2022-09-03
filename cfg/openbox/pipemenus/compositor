@@ -6,7 +6,7 @@
 ## Openbox Pipemenu For Picom Compositor
 
 # User's config dir
-dir="$HOME/.config/"
+dir="$HOME/.config/picom/"
 MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
 
 # Variables and functions
@@ -49,7 +49,7 @@ check_border=$(cat $dir/picom.conf | grep 'round-borders =' | cut -d'=' -f2 | tr
 check_shadow=$(cat $dir/picom.conf | grep 'shadow =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
 check_fading=$(cat $dir/picom.conf | grep 'fading =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
 check_blur=$(cat $dir/picom.conf | grep 'method =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
-check_animations=$(cat ~/.config/picom.conf | grep 'animations: ' | head -n1 | cut -d':' -f2 | tr -d ';,[:blank:],"')
+check_animations=$(cat $dir/picom.conf | grep 'animations: ' | head -n1 | cut -d':' -f2 | tr -d ';,[:blank:],"')
 
 ## Kill picom
 forcekill_picom() {
@@ -63,13 +63,13 @@ forcekill_picom() {
 
 ##-- Edit config ---------------------
 if [[ $1 = '--edit' ]]; then # Edit picom settings
-    if ! [ -e "$HOME/.config/picom.conf" ]; then
+    if ! [ -e "$HOME/.config/picom/picom.conf" ]; then
         cp '~/.config/openbox/picom.conf' "$HOME/.config/picom.conf"
     fi
     if hash exo-open &>/dev/null; then
-        exo-open "$HOME/.config/picom.conf"
+        exo-open "$HOME/.config/picom/picom.conf"
     else
-        geany "$HOME/.config/picom.conf"
+        geany "$HOME/.config/picom/picom.conf"
     fi
 
 elif [[ $1 = '--start' ]]; then
@@ -91,7 +91,7 @@ elif [[ $1 = '--restart' ]]; then
     fi
 
 elif [[ $1 = '--watch' ]]; then
-    while inotifywait -e close_write "$HOME/.config/picom.conf"; do
+    while inotifywait -e close_write "$HOME/.config/picom/picom.conf"; do
         "$0" --restart
     done
 
