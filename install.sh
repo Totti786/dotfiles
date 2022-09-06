@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## TODO
+# xfconf-query -c xfce4-session -p /general/LockCommand -t string -s i3lock --create
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 #---- Core functions ---------------------
