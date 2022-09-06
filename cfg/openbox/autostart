@@ -45,13 +45,13 @@ exec sh ~/.config/polybar/launch.sh &
 copyq --start-server &
 
 ## Stalonetray 
-stalonetray &
+~/.config/polybar/scripts/systray &
 
 ## Excute Screenshot script
-#exec sh ~/.scripts/check.sh &
+exec sh ~/.scripts/check.sh &
 
 ## Discord Launch
-#exec discord &
+exec discord &
 
 ## Trackma Launch
 #exec trackma-gtk &
