@@ -1,7 +1,9 @@
-<?xml version="1.0" ?><!-- ################################ General Settings ################################ --><openbox_config xmlns="http://openbox.org/3.4/rc" xmlns:xi="http://www.w3.org/2001/XInclude">
+<?xml version="1.0"?>
+<!-- ################################ General Settings ################################ -->
+<openbox_config xmlns="http://openbox.org/3.4/rc" xmlns:xi="http://www.w3.org/2001/XInclude">
   <resistance>
     <strength>10</strength>
-    <screen_edge_strength>20</screen_edge_strength>
+    <screen_edge_strength>55</screen_edge_strength>
   </resistance>
   <focus>
     <focusNew>yes</focusNew>
@@ -532,9 +534,14 @@
         <command>alacritty</command>
       </action>
     </keybind>
+    <keybind key="A-Return">
+      <action name="Execute">
+        <command>tdrop -ma -w -20 -y "0"  alacritty</command>
+      </action>
+    </keybind>
     <keybind key="W-t">
       <action name="Execute">
-        <command>~/.config/polybar/bin/fulscreenterm</command>
+        <command>~/.config/polybar/bin/fulscreenterm --full</command>
       </action>
     </keybind>
     <keybind key="W-e">
@@ -722,13 +729,13 @@
     <!-- Rofi Calculator -->
     <keybind key="W-S-c">
       <action name="Execute">
-        <command>rofi -modi &quot;calc&quot; -show</command>
+        <command>rofi -modi "calc" -show</command>
       </action>
     </keybind>
     <!-- Rofi Emoji Menu-->
     <keybind key="W-S-e">
       <action name="Execute">
-        <command>rofi -modi &quot;emoji&quot; -show</command>
+        <command>rofi -modi "emoji" -show</command>
       </action>
     </keybind>
     <!-- Spotify -->
@@ -1035,7 +1042,7 @@
       </mousebind>
     </context>
     <context name="Root"><mousebind action="Press" button="Middle"><action name="ShowMenu"><menu>client-list-combined-menu</menu></action></mousebind>
-s      <mousebind action="Press" button="A-Right"><action name="ShowMenu"><menu>client-list-combined-menu</menu></action></mousebind>
+      <mousebind action="Press" button="A-Right"><action name="ShowMenu"><menu>client-list-combined-menu</menu></action></mousebind>
       <mousebind action="Press" button="Right"><action name="ShowMenu"><menu>root-menu</menu></action></mousebind>
     </context>
   </mouse>
@@ -1160,7 +1167,10 @@ s      <mousebind action="Press" button="A-Right"><action name="ShowMenu"><menu>
       <layer>default</layer>
       <maximized>yes</maximized>
     </application>
-  <application name="stalonetray" class="stalonetray" title="stalonetray" type="dock"><desktop>all</desktop></application>
-</applications>
-</openbox_config><!-- vim:sw=2
+    <application name="stalonetray" class="stalonetray" title="stalonetray" type="dock">
+      <desktop>all</desktop>
+    </application>
+  </applications>
+</openbox_config>
+<!-- vim:sw=2
 -->
