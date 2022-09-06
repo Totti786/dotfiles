@@ -24,8 +24,8 @@ export PATH="${PATH}:$HOME/.local/bin"
 workspaces() {
 	name=1
 	for monitor in `bspc query -M`; do
-		bspc monitor ${monitor} -n "$name" -d '一' '二' '三' '四' '五' '六' '七' '八' '九' '十'
-		#bspc monitor ${monitor} -n "$name" -d '' '' '' '' '' '' '' ''
+		bspc monitor ${monitor} -n "$name" -d '一' '二' '三' '四' '五' '六' '七' '八'
+		#bspc monitor ${monitor} -n "$name" -d '' '' '' '' '' '' '' '' '九' '十'
 		let name++
 	done
 }
@@ -107,7 +107,6 @@ sh ~/.scripts/wpgtk run &
 exec sh ~/.config/polybar/launch.sh &
 bspc config -m focused top_padding 23 
 bspc config -m focused bottom_padding 23 
-xdo lower -N Polybar 
 
 ## Picom	
 picom --experimental-backends &
@@ -121,12 +120,18 @@ copyq --start-server &
 ## Excute Screenshot script
 exec sh ~/.scripts/check.sh &
 
+## Thunar Daemon
+exec thunar --daemon &
+
+## Touchegg
+exec touchegg --daemon &
+exec touchegg &
+
 ## Discord Launch
 exec discord &
 
 ## Trackma Launch
 #exec trackma-gtk &
-
 
 ## KDE Conenct
 exec kdeconnect-indicator &

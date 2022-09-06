@@ -30,9 +30,6 @@ if command -v sddm &> /dev/null; then
 		if [ -f "/etc/sddm.conf.d/theme.conf" ];then
 			echo "theme conf file found moving files" 
 			sudo sed -i -e "s/Current=.*/Current=$theme/g" /etc/sddm.conf.d/theme.conf
-			cp -r $DIR/.face ~/.face
-			sudo rm /usr/share/sddm/faces/.face.icon
-			sudo ln ~/.face /usr/share/sddm/faces/.face.icon
 		else
 			echo "theme conf file not found creating and moving files" 
 			sudo mkdir /etc/sddm.conf.d/ &&

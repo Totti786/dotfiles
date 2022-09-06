@@ -2,4 +2,13 @@
 
 CONFIG="$HOME/.config/alacritty/alacritty.yml"
 
-alacritty --class 'Fullscreen,Fullscreen' --config-file "$CONFIG" -o window.startup_mode=fullscreen window.padding.x=30 window.padding.y=30 window.opacity=0.6 font.size=12
+
+if [ "$1" == "--float" ]; then
+	alacritty --class 'alacritty-float,alacritty-float' --config-file "$CONFIG"
+elif [ "$1" == "--full" ]; then
+	alacritty --class 'Fullscreen,Fullscreen' --config-file "$CONFIG" \
+	-o window.startup_mode=fullscreen window.padding.x=30 window.padding.y=30 \
+	window.opacity=0.6 font.size=12
+else
+	alacritty --config-file "$CONFIG"
+fi

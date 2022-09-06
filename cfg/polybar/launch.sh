@@ -24,26 +24,24 @@ fix_modules() {
 		sed -i -e 's/bna/sep backlight/g' "$DIR"/config.ini
 	fi
 	
-	# check if device has a battery and enable battery module (temporary solution)
-	# only works with the provided config file, where the battery module has to be
-	# in the 58th column of the line 59
+	# check if device has a battery and enable battery module
 	if [[ -z "$BATTERY" ]]; then
-		sed -i -e 's/ battery sep//g' "$DIR"/config.ini
+		sed -i -e 's/battery/bat/g' "$DIR"/config.ini
 	else
-		sed -i -e '59s/.\{58\}/& battery sep/' "$DIR"/config.ini
+		sed -i -e 's/bat/battery/g' "$DIR"/config.ini
 	fi
 	
 	# check if bspwm is the curren wm and changes the workspaces module 
-	#if [[ $current_desktop == "bspwm" ]]; then
-		#sed -i -e 's/modules-center = workspaces/modules-center = bspwm/g' "$DIR"/config.ini
-		#sed -i -e 's/margin-bottom = 10/margin-top = 0/g' "$DIR"/config.ini
-		#sed -i -e 's/margin-top = 10/margin-bottom = 0/g' "$DIR"/config.ini
-		
-	#else 
-		#sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' "$DIR"/config.ini
-		#sed -i -e 's/margin-bottom = 0/margin-top = 10/g' "$DIR"/config.ini
-		#sed -i -e 's/margin-top = 0/margin-bottom = 10/g' "$DIR"/config.ini
-	#fi
+	if [[ $current_desktop == "bspwm" ]]; then
+		sed -i -e 's/modules-center = workspaces/modules-center = bspwm/g' "$DIR"/config.ini 
+		sed -i -e 's/override-redirect = .*/override-redirect = true/g' "$DIR"/config.ini 	
+		sed -i -e 's/titlex/title/g' "$DIR"/config.ini
+	else 
+		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' "$DIR"/config.ini
+		sed -i -e 's/override-redirect = .*/override-redirect = false/g' "$DIR"/config.ini
+		sed -i -e 's/title/titlex/g' "$DIR"/config.ini
+		openbox --reconfigure	
+	fi
 }
 
 ## Write values to `system` file
@@ -60,7 +58,6 @@ set_values() {
 	if [[ "$INTERFACE" ]]; then
 		sed -i -e "s/network_interface = .*/network_interface = $INTERFACE/g" 	${SFILE}
 	fi	
-			
 }
 
 
@@ -77,4 +74,3 @@ launch_bar() {
 set_values
 fix_modules
 launch_bar
-openbox --reconfigure

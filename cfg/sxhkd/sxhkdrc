@@ -5,7 +5,7 @@
 # /____/_/|_/_/ /_/_/|_|\__,_/   
 #        
 
-##---------- Keybindings for bspwm ----------##
+##---------- Keybindings ----------##
 
 # Terminal (alacritty)
 super + Return
@@ -38,18 +38,18 @@ super + n
 	 ~/.config/rofi/bin/network_menu
 
 # Rofi Menus/Applets
-super + shift + {w,m,x,r,s,i}
-	sh ~/.config/rofi/bin/{windows,media,powermenu,asroot,screenshot,network}
+super + {m,x,r,s,i,c,e}
+	sh ~/.config/rofi/bin/{media,powermenu,asroot,screenshot,network}
 
 ##---------- Applications ----------##
 
 # Launch Apps
-super + {e,f,w,o,g,s,b,y,a,z}
-	{thunar,firefox,geany,obs,zathura,spotify,rofi-bluetooth,ytfzf -fD,aniwrapper,discord}
+super + {e,f,w,o,g,b,y,a,z}
+	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,discord}
 
 # Launch CopyQ
-super + shift + v 
-	copyq show
+super + shift + {v,s}
+	{copyq show, spotify}
 
 # Terminal Apps
 ctrl + alt + {v,n,r,h,b}
@@ -179,5 +179,9 @@ alt + shift + {Left,Down,Up,Right}
 # Hide/Unhide Window
 super + shift + d
 	~/.config/bspwm/winmask		
+	
+# Restart Polybar
+super + shift + m	
+	 sh ~/.config/polybar/launch.sh
 
 ##---------- EOF ----------##

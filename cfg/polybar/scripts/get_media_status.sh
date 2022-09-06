@@ -29,6 +29,8 @@ PlayerName="$(playerctl -l | head -n1 | cut -f1 -d ".")"
 	  ;;
 	  kdeconnect) echo $Current 
 	  ;;  
+	  vlc) echo $Current 嗢
+	  ;;  
 	  rhythmbox) echo $Current 蓼
 	  ;;
 	  *) echo $Current

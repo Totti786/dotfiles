@@ -11,6 +11,7 @@
 configuration {
     show-icons:                 false;
     hover-select: true;
+    hover-select: true;
 	me-select-entry: "";
 	me-accept-entry: [ MousePrimary, MouseSecondary, MouseDPrimary ];
 }
@@ -78,7 +79,7 @@ dummy {
 textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
-    str:                         "";
+    str:                         "";
     padding:                     12px 16px;
     border-radius:               0px;
     background-color:            @urgent;

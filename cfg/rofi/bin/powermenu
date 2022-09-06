@@ -25,13 +25,13 @@ options="$shutdown\n$reboot\n$lock\n$suspend\n$logout"
 chosen="$(echo -e "$options" | $rofi_command -p "UP - $uptime" -dmenu -selected-row 2)"
 case $chosen in
     $shutdown)
-		ans=$($HOME/.config/polybar/rofi/bin/confirm &)
+		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ $ans == $confirm ]]; then
 			systemctl poweroff
 		fi
         ;;
     $reboot)
-		ans=$($HOME/.config/polybar/rofi/bin/confirm &)
+		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ $ans == $confirm ]]; then
 			systemctl reboot
         fi
@@ -41,14 +41,14 @@ case $chosen in
 			betterlockscreen -l
        	;;
     $suspend)
-		ans=$($HOME/.config/polybar/rofi/bin/confirm &)
+		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ $ans == $confirm ]]; then
 			playerctl -a stop 
 			betterlockscreen --suspend
 		fi
         ;;
     $logout)
-		ans=$($HOME/.config/polybar/rofi/bin/confirm &)
+		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ $ans == $confirm ]]; then
 			if [[ $current_desktop == "Openbox" ]]; then
 				openbox --exit

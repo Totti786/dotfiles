@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-CITY=""
-COUNTRY=""
+CITY="Idlib"
+COUNTRY="Syria"
 
 DIR="$HOME/.config"
 DAY="$(( $(date +"%d")-1))"

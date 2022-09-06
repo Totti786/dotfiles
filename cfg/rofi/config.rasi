@@ -1,12 +1,21 @@
 configuration {
-  show-icons:         true;
-  icon-theme:         "Papirus-Apps";
-  terminal:           "alacritty";
-  cycle:              false;
-  hide-scrollbar:     true;
-  disable-history:    false;
+	show-icons:         true;
+	icon-theme:         "Papirus-Dark";
+	terminal:           "alacritty";
+	cycle:              false;
+	hide-scrollbar:     true;
+	disable-history:    false;
+	show-icons:                 true;
+	display-drun:               "";
+	display-run:                "";
+	display-filebrowser:        "";
+	display-window:             "";
+	display-calc:     	   		"";
+	display-emoji:     	   		"";
+	display-clipboard:     		"";
+	display-combi: 				"";
+	drun-display-format:        "{name}";
+	window-format:              "{w} · {c} · {t}";
 }
 
-
-@theme "~/.config/polybar/rofi/themes/launcher.rasi"
-
+@theme "~/.config/rofi/themes/launcher.rasi"

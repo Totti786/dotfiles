@@ -1,6 +1,6 @@
 #! /bin/bash
 
-apps=(polybar openbox i3 zathura dunst alacritty htop picom stalonetrayrc) 
+apps=(polybar openbox zathura dunst alacritty htop picom stalonetrayrc rofi bspwm sxhkd jgmenu) 
 DIR="$HOME/.config/"
 BackupDir="$HOME/Documents/GitHub/dot-files/"
 
@@ -10,3 +10,9 @@ done
 rm -R $BackupDir/bin/.local/bin/ && cp -r $HOME/.local/bin $BackupDir/bin/.local
 cp -r $DIR/wpg/wallpapers/wallpaper.jpg $BackupDir/deps/background.jpg
 rm -R $BackupDir/bin/.scripts && cp -r $HOME/.scripts $BackupDir/bin
+
+cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
+	~/Documents/GitHub/dot-files/deps/sddm/arch/components/artwork/background.jpg
+
+cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
+	~/Documents/GitHub/dot-files/deps/grub/Arch/background.jpg

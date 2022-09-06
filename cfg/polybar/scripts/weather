@@ -13,12 +13,12 @@ cache_weather_rofi=${cache_dir}/weather-rofi
 # you also need to sign up on https://home.openweathermap.org to get an API key 
 
 ## Weather data
-KEY=""  # put your Opeanweather API key here
-ID="" # put your city id here, it can be found on here https://openweathermap.org/find
+KEY="7e6ed49a1a7b802ad1299faa3a5f008d"  # put your Opeanweather API key here
+ID="169389" # put your city id here, it can be found on here https://openweathermap.org/find
 UNIT="metric"	# Available options : 'metric' or 'imperial'
-WBKEY=""  # put your WeatherBit API key here 
-COUNTRY="" # put your country name here 
-CITY="" # put your city name here
+WBKEY="754802f8df8d48f999ae6a283c2a3801"  # put your WeatherBit API key here 
+COUNTRY="Syria" # put your country name here 
+CITY="Idlib" # put your city name here
 
 ## Make cache dir
 if [[ ! -d "$cache_dir" ]]; then
@@ -28,7 +28,7 @@ fi
 ## Get data
 get_weather_data() {
 	weather=`curl -sf "http://api.openweathermap.org/data/2.5/weather?APPID="$KEY"&id="$ID"&units="$UNIT""`
-	altweather=`curl -X GET --header 'Accept: application/json' 'https://api.weatherbit.io/v2.0/current?city=$CITY&country=$COUNTRY&key=738403d68f69400f8872711b7a70fb7c'`
+	altweather=`curl -X GET --header 'Accept: application/json' "https://api.weatherbit.io/v2.0/current?city=Idlib&country=Syria&key=754802f8df8d48f999ae6a283c2a3801"`
 	echo ${weather}
 
 	if [ ! -z "$weather" ]; then
@@ -40,8 +40,9 @@ get_weather_data() {
 		windspeed=`echo "$weather" | jq -r ".wind.speed"` 
 		sunrise=`date -d @"$(echo "$weather" | jq -r ".sys.sunrise")" | cut -d ' ' -f5-6 | cut --complement -c 6-8 | cut -c 2-8`
 		sunset=`date -d @"$(echo "$weather" | jq -r ".sys.sunset")" | cut -d ' ' -f5-6 | cut --complement -c 6-8 | cut -c 2-8` 
-		uv=`echo "$altweather"| jq -r ".data[].uv" | cut -c 1-4`
-		aqi=`echo "$altweather"| jq -r ".data[].aqi"`
+		uv=`echo "$altweather" | jq -r ".data[].uv" | cut -c 1-4`
+		aqi=`echo "$altweather" | jq -r ".data[].aqi"`
+		precipitation=`echo "$altweather" | jq -r ".data[].precip"`
 		
 		#Big long if statement of doom
 		if [ "$weather_icon_code" == "50d"  ]; then
@@ -90,7 +91,7 @@ get_weather_data() {
 		echo "$weather_icon" >  ${cache_weather_icon}
 		echo "$weather_description" > ${cache_weather_stat}
 		echo "$weather_temp""° " > ${cache_weather_degree}
-		echo -e "City: $city \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nWindspeed: $windspeed m/s \nSunrise: $sunrise \nSunset: $sunset" > ${cache_weather_rofi}	
+		echo -e "City: $city \nHumidity: $humidity% \nUV Index: $uv \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \nSunrise: $sunrise \nSunset: $sunset" > ${cache_weather_rofi}	
 	else
 		echo "Weather Unavailable" > ${cache_weather_stat}
 		echo " " > ${cache_weather_icon}

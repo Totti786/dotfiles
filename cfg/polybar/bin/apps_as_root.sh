@@ -4,7 +4,7 @@
 ## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
 
 ## rofi sudo askpass helper
-export SUDO_ASKPASS=~/.config/polybar/rofi/bin/askpass.sh
+export SUDO_ASKPASS=~/.config/rofi/bin/askpass.sh
 
 ## execute the application
 sudo -A $1

@@ -299,7 +299,7 @@ show_menu() {
 }
 
 # Rofi command to pipe into, can add any options here
-rofi_command="rofi -dmenu -p "Bluetooth" -theme ~/.config/polybar/rofi/themes/bluetooth.rasi"
+rofi_command="rofi -dmenu -p "Bluetooth" -theme ~/.config/rofi/themes/bluetooth.rasi"
 
 case "$1" in
     --status)

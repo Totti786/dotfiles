@@ -75,7 +75,7 @@
 
     icon_position = left
 
-    max_icon_size = 80
+    max_icon_size = 100
     
     always_run_script = true
 
@@ -94,19 +94,19 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#0b0b0c"
-    foreground = "#dfffff"
+    background = "#0F131C"
+    foreground = "#d4ffff"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#0b0b0c"
-    foreground = "#dfffff"
+    background = "#0F131C"
+    foreground = "#d4ffff"
     highlight  = "#b6beca"
     timeout = 10
 
 [urgency_critical]
-    background = "#0b0b0c"
-    foreground = "#dfffff"
+    background = "#0F131C"
+    foreground = "#d4ffff"
     highlight  = "#b6beca"
     timeout = 15
