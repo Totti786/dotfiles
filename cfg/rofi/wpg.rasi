@@ -1,24 +1,24 @@
 /*-*- mode: css; -*-*/
 
 * {
-    color0:		#0F131C;
-    color1:		#4A636A;
-    color2:		#346A71;
-    color3:		#2F5B64;
-    color4:		#1F5C63;
-    color5:		#3E7A84;
-    color6:		#499B9D;
-    color7:		#9fc6c7;
-    color8:		#20283c;
-    color9:		#548795;
-    color10:	#38929d;
-    color11:	#337c8b;
-    color12:	#1f7e89;
-    color13:	#43a7b8;
-    color14:	#4fd7db;
-    color15:	#d4ffff;
-    active:		#436b77;
-    inactive:	#2e4a51;
+    color0:		#100f0f;
+    color1:		#D12E22;
+    color2:		#5F4832;
+    color3:		#D44B28;
+    color4:		#942E23;
+    color5:		#AE3429;
+    color6:		#A5452D;
+    color7:		#c1a6a4;
+    color8:		#292727;
+    color9:		#ff2e1c;
+    color10:	#845d37;
+    color11:	#ff5723;
+    color12:	#cc3221;
+    color13:	#f03727;
+    color14:	#e4512c;
+    color15:	#ffdddb;
+    active:		#bf2c1f;
+    inactive:	#831e15;
 
 	background:						@color0;
     foreground:						@color15;

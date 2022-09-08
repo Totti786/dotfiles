@@ -54,7 +54,7 @@ bspc rule -r *:*
 
 ## special rules
 declare -a floating=(alacritty-float obs  Onboard Yad 'Firefox:Places' \
-Viewnior feh Nm-connection-editor stalonetray copyq xfce4-settings-manager AudioRelay)
+Viewnior feh Nm-connection-editor stalonetray copyq kotatogram-desktop xfce4-settings-manager AudioRelay)
 for i in ${floating[@]}; do
    bspc rule -a $i state=floating follow=on focus=on; done
    
