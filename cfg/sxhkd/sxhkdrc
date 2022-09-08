@@ -103,10 +103,10 @@ XF86Audio{Next,Prev,Play,Pause,Stop}
 ##---------- Bspwm ----------##
 
 # Close App
-super + {_,shift + }c
-	bspc node -{c,k}
+super + {q,c}
+	bspc node -c
 
-# s kill window
+# Kill window
 super + Escape
 	xkill
 	
@@ -160,9 +160,9 @@ ctrl + alt + {Left,Right}
 super + {Tab,grave}
 	bspc {node,desktop} -f last
 
-# Send focused window to another workspace
+# Send focused window to another workspace and switch to the workspace
 super + {_,shift + }{1-8}
-	bspc {desktop -f,node -d} '^{1-8}'
+	bspc {desktop -f,node -d} '^{1-8}' --follow
 
 # Expanding windows
 super + control + {Left,Right,Up,Down}
@@ -174,7 +174,12 @@ super + alt + {Left,Right,Up,Down}
 	
 ## Move floating windows
 alt + shift + {Left,Down,Up,Right}
-	bspc node -v {-20 0,0 20,0 -20,20 0}
+	bspc node -v {-20 0,0 20,0 -20,20 0}jj
+## 
+super + u : {h,j,k,l}
+    STEP=20; SELECTION={1,2,3,4}; \
+    bspc node -z $(echo "left -$STEP 0,bottom 0 $STEP,top 0 -$STEP,right $STEP 0" | cut -d',' -f$SELECTION) || \
+    bspc node -z $(echo "right -$STEP 0,top 0 $STEP,bottom 0 -$STEP,left $STEP 0" | cut -d',' -f$SELECTION)
 
 # Hide/Unhide Window
 super + shift + d
