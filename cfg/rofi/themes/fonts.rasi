@@ -1,6 +1,6 @@
 /* fonts */
 * {
-    font:                        "JetBrains Mono Medium 10";
+    font:                        "JetBrainsMonoMedium Nerd Font Medium 10";
     background-color:             	@background;
 
 }

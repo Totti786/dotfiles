@@ -38,8 +38,8 @@ get_weather_data() {
 		city=`echo "$weather" | jq -r ".name"` 
 		humidity=`echo "$weather" | jq -r ".main.humidity"` 
 		windspeed=`echo "$weather" | jq -r ".wind.speed"` 
-		sunrise=`date -d @"$(echo "$weather" | jq -r ".sys.sunrise")" | cut -d ' ' -f5-6 | cut --complement -c 6-8 | cut -c 2-8`
-		sunset=`date -d @"$(echo "$weather" | jq -r ".sys.sunset")" | cut -d ' ' -f5-6 | cut --complement -c 6-8 | cut -c 2-8` 
+		sunrise=`date -d @"$(echo "$weather" | jq -r ".sys.sunrise")" | cut -d ' ' -f4-6 | cut --complement -c 6-8 | cut -c 2-8`
+		sunset=`date -d @"$(echo "$weather" | jq -r ".sys.sunset")" | cut -d ' ' -f4-6 | cut --complement -c 6-8 | cut -c 2-8` 
 		uv=`echo "$altweather" | jq -r ".data[].uv" | cut -c 1-4`
 		aqi=`echo "$altweather" | jq -r ".data[].aqi"`
 		precipitation=`echo "$altweather" | jq -r ".data[].precip"`
