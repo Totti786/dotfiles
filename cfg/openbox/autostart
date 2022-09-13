@@ -25,9 +25,9 @@ dunst &
 picom --experimental-backends &
 
 ## Restore Wallpaper
-#wal -Re &
-sh .fehbg &
-sh ~/.scripts/wpgtk run &
+wal -Re &
+#sh .fehbg &
+#sh ~/.scripts/wpgtk run &
 
 # Enable power management
 xfce4-power-manager &
@@ -44,6 +44,9 @@ copyq --start-server &
 
 ## Stalonetray 
 ~/.config/polybar/scripts/systray &
+
+## Plank
+exec plank &
 
 ## Excute Screenshot script
 #exec sh ~/.scripts/check.sh &
