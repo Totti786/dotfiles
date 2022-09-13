@@ -53,8 +53,9 @@ bspc config focus_follows_pointer true
 bspc rule -r *:*
 
 ## special rules
-declare -a floating=(alacritty-float obs  Onboard Yad 'Firefox:Places' \
+declare -a floating=(alacritty-float obs Onboard Yad 'Firefox:Picture-in-Picture' \
 Viewnior feh Nm-connection-editor stalonetray copyq kotatogram-desktop xfce4-settings-manager AudioRelay)
+
 for i in ${floating[@]}; do
    bspc rule -a $i state=floating follow=on focus=on; done
    
@@ -85,12 +86,12 @@ fi
 
 ## Fix cursor
 #xsetroot -cursor_name left_ptr
-	
-## Dunst
-dunst &
 
 ## xfce4-settings daemon
 xfsettingsd &
+
+## Dunst
+dunst &
 
 # Enable power management
 xfce4-power-manager &
@@ -118,20 +119,20 @@ picom --experimental-backends &
 copyq --start-server &
 
 ## Excute Screenshot script
-exec sh ~/.scripts/check.sh &
+#exec sh ~/.scripts/check.sh &
 
 ## Thunar Daemon
 exec thunar --daemon &
 
 ## Touchegg
-exec touchegg --daemon &
-exec touchegg &
+#exec touchegg --daemon &
+#exec touchegg &
+
+## Plank
+exec plank &
 
 ## Discord Launch
-exec discord &
-
-## Trackma Launch
-#exec trackma-gtk &
+#exec discord &
 
 ## KDE Conenct
-exec kdeconnect-indicator &
+#exec kdeconnect-indicator &
