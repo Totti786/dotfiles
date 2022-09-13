@@ -20,6 +20,7 @@ configuration {
     display-combi: 				"";
 	drun-display-format:        "{name}";
 	window-format:              "{w} · {c} · {t}";
+	kb-cancel: 					"Escape,Alt+F1";
 }
 
 /*****----- Global Properties -----*****/
