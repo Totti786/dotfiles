@@ -11,5 +11,4 @@ rofi \
 	-drun-display-format "{name}" \
 	-no-drun-show-actions \
 	-terminal alacritty \
-	-kb-cancel Alt-F1 \
 	-theme $HOME/.config/rofi/themes/launcher.rasi
