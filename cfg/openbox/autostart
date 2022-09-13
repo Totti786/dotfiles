@@ -10,18 +10,16 @@
 	#fi
 #done
 
-
-
 ## Polkit agent
 #if [[ ! `pidof xfce-polkit` ]]; then
 	#/usr/lib/xfce-polkit/xfce-polkit &
 #fi 
 	
-## Dunst
-dunst &
-
 ## xfce4-settings daemon
 xfsettingsd &
+
+## Dunst
+dunst &
 
 ## Picom	
 picom --experimental-backends &
@@ -48,10 +46,10 @@ copyq --start-server &
 ~/.config/polybar/scripts/systray &
 
 ## Excute Screenshot script
-exec sh ~/.scripts/check.sh &
+#exec sh ~/.scripts/check.sh &
 
 ## Discord Launch
-exec discord &
+#exec discord &
 
 ## Trackma Launch
 #exec trackma-gtk &
@@ -60,4 +58,4 @@ exec discord &
 #xiccd &
 
 ## KDE Conenct
-exec kdeconnect-indicator &
+#exec kdeconnect-indicator &
