@@ -76,8 +76,8 @@ bspc rule -a Zathura state=tiled
 exec sxhkd &
 
 # Enable Super Keys For Menu
-ksuperkey -e 'Super_L=Alt_L|F1' &
-ksuperkey -e 'Super_R=Alt_L|F1' &
+xcape -e 'Super_L=Alt_L|F1' &
+xcape -e 'Super_R=Alt_L|F1' &
 
 # Polkit agent
 if [[ ! `pidof xfce-polkit` ]]; then
