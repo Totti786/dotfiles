@@ -75,6 +75,7 @@ fd
 brightnessctl
 blueman
 bluez-git
+xcape
 kdeconnect
 xorg-xkill
 appimagelauncher
@@ -85,3 +86,4 @@ plank
 mugshot
 rofi-calc
 rofi-emoji
+xorg-xsetroot
