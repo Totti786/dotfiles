@@ -182,7 +182,7 @@ super + u : {h,j,k,l}
     bspc node -z $(echo "right -$STEP 0,top 0 $STEP,bottom 0 -$STEP,left $STEP 0" | cut -d',' -f$SELECTION)
 
 # Hide/Unhide Window
-super + shift + d
+super + d
 	~/.config/bspwm/winmask		
 	
 # Restart Polybar
