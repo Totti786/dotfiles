@@ -85,7 +85,7 @@ if [[ ! `pidof xfce-polkit` ]]; then
 fi 
 
 ## Fix cursor
-#xsetroot -cursor_name left_ptr
+xsetroot -cursor_name left_ptr
 
 ## xfce4-settings daemon
 xfsettingsd &
@@ -100,9 +100,9 @@ xfce4-power-manager &
 xiccd &
 
 ## Restore Wallpaper
-#wal -Re &
-sh .fehbg &
-sh ~/.scripts/wpgtk run &
+wal -Re &
+#sh .fehbg &
+#sh ~/.scripts/wpgtk run &
 
 ## Launch Polybar
 exec sh ~/.config/polybar/launch.sh &
