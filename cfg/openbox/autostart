@@ -33,8 +33,8 @@ wal -Re &
 xfce4-power-manager &
 
 # Enable Super Keys For Menu
-ksuperkey -e 'Super_L=Alt_L|F1' &
-ksuperkey -e 'Super_R=Alt_L|F1' &
+xcape -e 'Super_L=Alt_L|F1' &
+xcape -e 'Super_R=Alt_L|F1' &
 
 ## Launch Polybar
 exec sh ~/.config/polybar/launch.sh &
