@@ -16,3 +16,6 @@ cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
 
 cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
 	~/Documents/GitHub/dot-files/deps/grub/Arch/background.jpg
+
+rm -R ~/Documents/GitHub/dot-files/bin/.local/share/themes/colorbamboo &&
+cp -r ~/.local/share/themes/colorbamboo ~/Documents/GitHub/dot-files/bin/.local/share/themes/colorbamboo
