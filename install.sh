@@ -54,11 +54,12 @@ changeTheme(){
 
 wpgtk(){
 	sh $DIR/bin/.local/bin/wpgtk run &&
-	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
 	if dialog --yesno "Do you want your sddm and grub background to sync with your wallpaper?" 20 60 ;then
+		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
 		sh $DIR/bin/.local/bin/wpgtk lockPerms &&
 		sh $DIR/bin/.local/bin/wpgtk copyWal
 	else
+		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg &
 		exit
 	fi
 	}
