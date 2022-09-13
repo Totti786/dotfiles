@@ -1,9 +1,9 @@
 openbox
+bspwm
 polybar
 dunst
 rofi
-rofi-calc
-rofi-emoji
+jgmenu
 feh
 nm-connection-editor
 htop
@@ -19,7 +19,6 @@ gnome-disk-utility
 breeze
 stalonetray
 thunar
-fd
 thunar-archive-plugin
 thunar-media-tags-plugin
 redshift
@@ -65,13 +64,13 @@ mkvtoolnix-cli
 grub-customizer
 rhythmbox
 networkmanager-openvpn
-networkmanager-dmenu-git
 python
-mkvtoolnix-cli
 xdotool
 obconf
 noto-fonts
 noto-fonts-emoji
+fzf
+fd
 brightnessctl
 blueman
 bluez-git
@@ -83,3 +82,5 @@ qt5-styleplugins
 xfce4-power-manager
 plank
 mugshot
+rofi-calc
+rofi-emoji
