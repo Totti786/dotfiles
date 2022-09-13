@@ -35,11 +35,11 @@ fix_modules() {
 	if [[ $current_desktop == "bspwm" ]]; then
 		sed -i -e 's/modules-center = workspaces/modules-center = bspwm/g' "$DIR"/config.ini 
 		sed -i -e 's/override-redirect = .*/override-redirect = true/g' "$DIR"/config.ini 	
-		sed -i -e 's/titlex/title/g' "$DIR"/config.ini
+		sed -i -e 's/titlex\b/title/g' "$DIR"/config.ini
 	else 
 		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' "$DIR"/config.ini
 		sed -i -e 's/override-redirect = .*/override-redirect = false/g' "$DIR"/config.ini
-		sed -i -e 's/title/titlex/g' "$DIR"/config.ini
+		sed -i -e 's/title\b/titlex/g' "$DIR"/config.ini
 		openbox --reconfigure	
 	fi
 }
