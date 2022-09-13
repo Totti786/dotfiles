@@ -3,6 +3,7 @@ bspwm
 polybar
 dunst
 rofi
+sxhkd
 jgmenu
 feh
 nm-connection-editor
