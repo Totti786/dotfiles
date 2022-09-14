@@ -102,18 +102,18 @@ change_colors() {
 	#EOF
 	
 	# discord
-	if [[ -f $discord ]]; then 
-	sed -i -e "s/--accent-color: #.*/--accent-color: ${FG};/g" $discord
-	sed -i -e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" $discord
-	sed -i -e "s/--background-1: #.*/--background-1: ${BG};/g" $discord
-	sed -i -e "s/--background-2: #.*/--background-2: ${BG};/g" $discord
-	sed -i -e "s/--background-modifier-hover: #.*/--background-modifier-hover: ${bright_magenta};/g" $discord
-	sed -i -e "s/--background-accent: #.*/--background-accent: ${BG};/g" $discord
-	sed -i -e "s/--button-destructive: #.*/--button-destructive: ${bright_yellow};/g" $discord
-	sed -i -e "s/--button-background-hover: #.*/--button-background-hover: ${bright_red};/g" $discord
-	sed -i -e "s/--tab-selected: #.*/--tab-selected: ${bright_blue};/g" $discord
-	sed -i -e "s/--text-muted: #.*/--text-muted: ${FG};/g" $discord
-	fi 
+	#if [[ -f $discord ]]; then 
+	#sed -i -e "s/--accent-color: #.*/--accent-color: ${FG};/g" $discord
+	#sed -i -e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" $discord
+	#sed -i -e "s/--background-1: #.*/--background-1: ${BG};/g" $discord
+	#sed -i -e "s/--background-2: #.*/--background-2: ${BG};/g" $discord
+	#sed -i -e "s/--background-modifier-hover: #.*/--background-modifier-hover: ${bright_magenta};/g" $discord
+	#sed -i -e "s/--background-accent: #.*/--background-accent: ${BG};/g" $discord
+	#sed -i -e "s/--button-destructive: #.*/--button-destructive: ${bright_yellow};/g" $discord
+	#sed -i -e "s/--button-background-hover: #.*/--button-background-hover: ${bright_red};/g" $discord
+	#sed -i -e "s/--tab-selected: #.*/--tab-selected: ${bright_blue};/g" $discord
+	#sed -i -e "s/--text-muted: #.*/--text-muted: ${FG};/g" $discord
+	#fi 
 	
 	# dunst
 	sed -i -e "s/background = \"#.*\"/background = \"${BG}\"/g" $dunst
@@ -232,23 +232,16 @@ phoneWal(){
 
 ## Kill already running process
 kill(){
-	#_ps=(dunst)
-	#for _prs in "${_ps[@]}"; do
-		#if [[ `pidof ${_prs}` ]]; then
-			#killall -9 ${_prs} 
-			#${_prs} 
-		#fi
-		if [[ `pidof $1` ]] &> /dev/null; then
-			killall -9 $1
-			$1 
-		fi
-	#done
+	if [[ `pidof $1` ]] &> /dev/null; then
+		killall -9 $1
+		$1 
+	fi
 	}
 	
 ## Check if the command exists and then runs it
 check(){
 	if command -v $1 &> /dev/null; then 
-		$1 $2 $3
+		$1 $2 $3 &
 	else 
 		echo "$1 is not installed"
 	fi
@@ -289,65 +282,52 @@ main(){
 	copyWal &
 	sh ~/.config/polybar/launch.sh
 	check spicetify update &
+	phoneWal &
 	#check wal-telegram --wal 
 	#check betterlockscreen -u $wallpaper
-	#phoneWal &
 	}
 
 ## Check if wpg is installed and get colors
 run(){
-if [[ -f "/usr/bin/wpg" ]]; then
-	## check if the files exists and import colors from wpg
-	if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
-		. "$HOME/.cache/wal/colors.sh"
-		# Normal colors
-		BG=`printf "%s\n" "$background"`
-		ST=`printf "%s\n" "$background"`
-		FG=`printf "%s\n" "$foreground"`
-		FGA=`printf "%s\n" "$foreground"`
-		black=`printf "%s\n" "$color0"`
-		red=`printf "%s\n" "$color1"`
-		green=`printf "%s\n" "$color2"`
-		yellow=`printf "%s\n" "$color3"`
-		blue=`printf "%s\n" "$color4"`
-		magenta=`printf "%s\n" "$color5"`
-		cyan=`printf "%s\n" "$color6"`
-		white=`printf "%s\n" "$color7"`
-		# Bright colors
-		bright_black=`printf "%s\n" "$color8"`
-		bright_red=`printf "%s\n" "$color9"`
-		bright_green=`printf "%s\n" "$color10"`
-		bright_yellow=`printf "%s\n" "$color11"`
-		bright_blue=`printf "%s\n" "$color12"`
-		bright_magenta=`printf "%s\n" "$color13"`
-		bright_cyan=`printf "%s\n" "$color14"`
-		bright_white=`printf "%s\n" "$color15"`
-		## merging the Xresources files with the main one
-		xrdb -merge ~/.cache/wal/colors.Xresources
-		convert -resize 1920x1080! $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
-		## check if the image is a png file and convert it to jpg and then copy it to the directory
-		#if [ "$(echo $(file --extension $wallpaper | sed -e 's/.*://'))" = "png" ]; then
-			#cp $wallpaper ~/.config/wpg/wallpapers/ && 
-			#mogrify -format jpg ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").png &&
-			#rm ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev) &&
-			#cp ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").jpg ~/.config/wpg/wallpapers/wallpaper.jpg &&
-			#rm ~/.config/wpg/wallpapers/$(echo "$wallpaper" | rev |cut -f1 -d "/" | rev | cut -f1 -d ".").jpg
-		#else	
-			## copy the current wallpaper so it can be used with kdeconnect and sddm and grub
-			#cp $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
-		#fi
-		## rescaling the image to 16:9 so it works with grub
-		#convert -resize 1920x1080! ~/.config/wpg/wallpapers/wallpaper.jpg ~/.config/wpg/wallpapers/wallpaper-1.jpg		
+	if [[ -f "/usr/bin/wpg" ]]; then
+		## check if the files exists and import colors from wpg
+		if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+			. "$HOME/.cache/wal/colors.sh"
+			# Normal colors
+			BG=`printf "%s\n" "$background"`
+			ST=`printf "%s\n" "$background"`
+			FG=`printf "%s\n" "$foreground"`
+			FGA=`printf "%s\n" "$foreground"`
+			black=`printf "%s\n" "$color0"`
+			red=`printf "%s\n" "$color1"`
+			green=`printf "%s\n" "$color2"`
+			yellow=`printf "%s\n" "$color3"`
+			blue=`printf "%s\n" "$color4"`
+			magenta=`printf "%s\n" "$color5"`
+			cyan=`printf "%s\n" "$color6"`
+			white=`printf "%s\n" "$color7"`
+			# Bright colors
+			bright_black=`printf "%s\n" "$color8"`
+			bright_red=`printf "%s\n" "$color9"`
+			bright_green=`printf "%s\n" "$color10"`
+			bright_yellow=`printf "%s\n" "$color11"`
+			bright_blue=`printf "%s\n" "$color12"`
+			bright_magenta=`printf "%s\n" "$color13"`
+			bright_cyan=`printf "%s\n" "$color14"`
+			bright_white=`printf "%s\n" "$color15"`
+			## merging the Xresources files with the main one
+			xrdb -merge ~/.cache/wal/colors.Xresources
+			convert -resize 1920x1080! $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
+		fi 
 		
-	fi 
-	
-else
-	echo "[!] 'wpgtk' is not installed."
-	echo "Installing from the AUR..." 
-	yay -S wpgtk-git
-	wpgConfig
-	# this command installs rofi, gtk, and openbox themes
-	wpg-install.sh -r -g -o
-fi
+	else
+		echo "[!] 'wpgtk' is not installed."
+		echo "Installing from the AUR..." 
+		yay -S wpgtk-git
+		wpgConfig
+		# this command installs rofi, gtk, and openbox themes
+		wpg-install.sh -r -g -o
+	fi
 }
+
 "$@"
