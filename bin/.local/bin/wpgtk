@@ -291,7 +291,7 @@ main(){
 	check spicetify update &
 	#check wal-telegram --wal 
 	#check betterlockscreen -u $wallpaper
-	phoneWal &
+	#phoneWal &
 	}
 
 ## Check if wpg is installed and get colors
