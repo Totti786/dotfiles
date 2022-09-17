@@ -88,7 +88,7 @@ OpenBox Keybinds
 84	C-A-h         				alacritty -e htop
 85	C-A-d         				alacritty -e ncdu
 86	C-A-b         				sh .fehbg
-87	C-A-l         				~/.config/bin/i3lock.sh
+87	C-A-l         				~/.config/polybar/bin/i3lock.sh
 88	W-a           				aniwrapper
 89	W-y           				ytfzf -fD
 90	W-o           				obs

@@ -644,7 +644,7 @@
     <!-- Lockscreen -->
     <keybind key="C-A-l">
       <action name="Execute">
-        <command>~/.config/bin/i3lock.sh</command>
+        <command>~/.config/polybar/bin/i3lock.sh</command>
       </action>
     </keybind>
     <!-- CLI Apps -->
@@ -826,7 +826,7 @@
         <action name="Raise"/>
         <action name="Unshade"/>
       </mousebind>
-      <mousebind action="Drag" button="A-Right">
+      <mousebind action="Drag" button="W-Right">
         <action name="Resize"/>
       </mousebind>
     </context>
