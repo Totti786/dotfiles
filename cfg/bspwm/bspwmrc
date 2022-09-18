@@ -110,11 +110,11 @@ picom --experimental-backends &
 ## CopyQ
 copyq --start-server &
 
-## Excute Screenshot script
-#exec sh ~/.scripts/check.sh &
-
 ## Thunar Daemon
 exec thunar --daemon &
+
+## Excute Screenshot script
+#exec sh ~/.scripts/check.sh &
 
 ## Touchegg
 #exec touchegg --daemon &
@@ -124,7 +124,7 @@ exec thunar --daemon &
 #exec trackma-gtk &
 
 ## Plank
-#exec plank &
+exec plank &
 
 ## Discord Launch
 #exec discord &
