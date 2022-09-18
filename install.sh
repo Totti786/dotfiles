@@ -44,12 +44,42 @@ moveConfigs(){
 	if [[ ! -d "$HOME/.local/share/fonts" ]]; then mkdir ~/.local/share/fonts ;fi
 	tar -xzf $DIR/deps/fonts.tar.gz -C ~/.local/share/fonts 
 	}
+	
+# This function allows you to change the plank configuration (taken from Archcraft by @adi1090x)
+change_dock() {
+	cat > "$HOME"/.cache/plank.conf <<- _EOF_
+		[dock1]
+		alignment='center'
+		auto-pinning=true
+		current-workspace-only=false
+		dock-items=['xfce-settings-manager.dockitem', 'Alacritty.dockitem', 'thunar.dockitem', 'firefox.dockitem', 'geany.dockitem']
+		hide-delay=0
+		hide-mode='window-dodge'
+		icon-size=32
+		items-alignment='center'
+		lock-items=false
+		monitor=''
+		offset=0
+		pinned-only=false
+		position='left'
+		pressure-reveal=false
+		show-dock-item=false
+		theme='Transparent'
+		tooltips-enabled=true
+		unhide-delay=0
+		zoom-enabled=true
+		zoom-percent=120
+	_EOF_
+}
 
 changeTheme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark"	
+	change_dock && cat "$HOME"/.cache/plank.conf | dconf load /net/launchpad/plank/docks/
 	cp -r $DIR/bin/.icons ~/
-	echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
+	if ! [[ "$(grep -i "qt5ct" /etc/environment | head -n1)" == "QT_QPA_PLATFORMTHEME=\"qt5ct\"" ]]; then
+		echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
+	fi
 	}
 
 wpgtk(){
@@ -88,12 +118,12 @@ grub(){
 wallpapers(){
 	if [[ -d "$HOME/Pictures/Wallpapers" ]]; then
 		git clone https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers1 &&
-		mv ~/Pictures/Wallpapers1/* ~/Pictures/Wallpapers &&
+		mv -u ~/Pictures/Wallpapers1/* ~/Pictures/Wallpapers &&
 		rm -rf ~/Pictures/Wallpapers	
 	else 
 		mkdir ~/Pictures/Wallpapers &&
 		git clone https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers1 &&
-		mv ~/Pictures/Wallpapers1/* ~/Pictures/Wallpapers &&
+		mv -u ~/Pictures/Wallpapers1/* ~/Pictures/Wallpapers &&
 		rm -rf ~/Pictures/Wallpapers	
 	fi
 }
@@ -128,10 +158,12 @@ additionalPrograms(){
 }
 
 update(){
+	installDependencies
 	sudo cp -r $DIR/bin/bin/ /usr/local/ 
 	cp -r $DIR/bin/.scripts/ ~/ 
 	cp -r $DIR/cfg/* ~/.config 
 	cp -r $DIR/bin/.local/ ~/
+	changeTheme
 	progressBar "Updating... "
 	}
 
