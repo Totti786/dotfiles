@@ -144,17 +144,17 @@ change_colors() {
 # that don't have a seperate home partition
 #lockWal(){
 	### remove the background file for sddm and replace it with a hard link of the wallpaper 
-	#if [[ -d "/usr/share/sddm/themes/arch" ]]; then
-		#sudo rm /usr/share/sddm/themes/arch/components/artwork/background.jpg && \
-		#sudo ln -s ~/.config/wpg/wallpapers/wallpaper-1.jpg \
-		#/usr/share/sddm/themes/arch/components/artwork/background.jpg
+	#if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
+		#sudo rm /usr/share/sddm/themes/Arch/components/artwork/background.jpg && \
+		#sudo ln -s ~/.config/wpg/wallpapers/wallpaper.jpg \
+		#/usr/share/sddm/themes/Arch/components/artwork/background.jpg
 	#else 
 		#echo "Can't find a compatible sddm theme"
 	#fi
 	### remove the background file for grub and replace it with a symbolic  link of the wallpaper 
 	#if [[ -d "/usr/share/grub/themes/Arch" ]]; then
 		#sudo rm /usr/share/grub/themes/Arch/background.jpg && \
-		#sudo ln -s ~/.config/wpg/wallpapers/wallpaper-1.jpg \
+		#sudo ln -s ~/.config/wpg/wallpapers/wallpaper.jpg \
 		#/usr/share/grub/themes/Arch/background.jpg
 	#else 
 		#echo "Can't find a compatible grub theme"
@@ -171,7 +171,7 @@ lockPerms(){
 		echo "Can't find a compatible grub theme"
 	fi
 	## give the user read and write permissions to the sddm directory
-	if [[ -d "/usr/share/sddm/themes/arch" ]]; then
+	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
 	sudo chgrp -R $(whoami) /usr/share/sddm/
 	sudo chmod -R ug+rwX  /usr/share/sddm/
 	else 
@@ -189,9 +189,9 @@ copyWal(){
 		echo "Can't find a compatible grub theme"
 	fi
 	# copy background to sddm theme
-	if [[ -d "/usr/share/sddm/themes/arch" ]]; then
+	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
 		cp ~/.config/wpg/wallpapers/wallpaper.jpg \
-		/usr/share/sddm/themes/arch/components/artwork/background.jpg
+		/usr/share/sddm/themes/Arch/components/artwork/background.jpg
 	else 
 		echo "Can't find a compatible sddm theme"
 	fi
