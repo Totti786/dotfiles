@@ -94,7 +94,6 @@ xiccd &
 ## Restore Wallpaper
 wal -Re &
 sh ~/.scripts/wpgtk run &
-#sh .fehbg &
 
 ## Launch Polybar
 sh ~/.config/polybar/launch.sh &
