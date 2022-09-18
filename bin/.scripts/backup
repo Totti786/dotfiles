@@ -7,12 +7,13 @@ BackupDir="$HOME/Documents/GitHub/dot-files/"
 for bapps in "${apps[@]}"; do
 	cp -r $DIR/$bapps $BackupDir/cfg/
 done
+cp -r $DIR/geany/colorschemes/Pywal.conf $BackupDir/cfg/geany/colorschemes/Pywal.conf
 rm -R $BackupDir/bin/.local/bin/ && cp -r $HOME/.local/bin $BackupDir/bin/.local
 cp -r $DIR/wpg/wallpapers/wallpaper.jpg $BackupDir/deps/background.jpg
 rm -R $BackupDir/bin/.scripts && cp -r $HOME/.scripts $BackupDir/bin
 
 cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
-	~/Documents/GitHub/dot-files/deps/sddm/arch/components/artwork/background.jpg
+	~/Documents/GitHub/dot-files/deps/sddm/Arch/components/artwork/background.jpg
 
 cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
 	~/Documents/GitHub/dot-files/deps/grub/Arch/background.jpg
