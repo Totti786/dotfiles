@@ -14,7 +14,6 @@ picom --experimental-backends &
 ## Restore Wallpaper
 wal -Re &
 sh ~/.scripts/wpgtk run &
-#sh .fehbg &
 
 # Enable power management
 xfce4-power-manager &
@@ -32,8 +31,11 @@ copyq --start-server &
 ## Stalonetray (System Tray)
 ~/.config/polybar/scripts/systray &
 
+## Thunar Daemon
+exec thunar --daemon &
+
 ## Plank (Dock)
-#exec plank &
+exec plank &
 
 ## Excute Screenshot script
 #exec sh ~/.scripts/check.sh &
