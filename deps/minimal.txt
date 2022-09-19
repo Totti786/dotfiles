@@ -87,3 +87,4 @@ mugshot
 rofi-calc
 rofi-emoji
 xorg-xsetroot
+xorg-xrdb
