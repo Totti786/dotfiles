@@ -119,12 +119,12 @@ wallpapers(){
 	if [[ -d "$HOME/Pictures/Wallpapers" ]]; then
 		git clone https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers1 &&
 		mv -u ~/Pictures/Wallpapers1/* ~/Pictures/Wallpapers &&
-		rm -rf ~/Pictures/Wallpapers	
+		rm -rf ~/Pictures/Wallpapers1	
 	else 
 		mkdir ~/Pictures/Wallpapers &&
 		git clone https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers1 &&
 		mv -u ~/Pictures/Wallpapers1/* ~/Pictures/Wallpapers &&
-		rm -rf ~/Pictures/Wallpapers	
+		rm -rf ~/Pictures/Wallpapers1	
 	fi
 }
 
