@@ -47,5 +47,7 @@ touchegg
 trackma-git
 virtualbox
 visual-studio-code-bin
+wget
 wine
 winetricks
+
