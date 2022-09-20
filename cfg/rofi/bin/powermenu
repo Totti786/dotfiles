@@ -37,14 +37,12 @@ case $chosen in
         fi
         ;;
     $lock)
-			playerctl pause
-			betterlockscreen -l
+		lockscreen
        	;;
     $suspend)
 		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ $ans == $confirm ]]; then
-			playerctl -a stop 
-			betterlockscreen --suspend
+			systemctl suspend
 		fi
         ;;
     $logout)

@@ -644,7 +644,7 @@
     <!-- Lockscreen -->
     <keybind key="C-A-l">
       <action name="Execute">
-        <command>~/.config/polybar/bin/i3lock.sh</command>
+        <command>lockscreen</command>
       </action>
     </keybind>
     <!-- CLI Apps -->

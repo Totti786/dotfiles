@@ -61,7 +61,7 @@ super + p
 
 # Lockscreen
 ctrl + alt + l
-   sh ~/.config/polybar/bin/i3lock.sh
+   lockscreen
 
 ##---------- System Keys ----------##
 

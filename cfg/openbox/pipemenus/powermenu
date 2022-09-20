@@ -6,8 +6,7 @@
 if  [[ $1 = "--logout" ]]; then
 	openbox --exit
 elif  [[ $1 = "--lock" ]]; then
-	playerctl pause
-	betterlockscreen --lock
+	lockscreen
 elif  [[ $1 = "--suspend" ]]; then
 	playerctl -a stop
 	#amixer set Master mute
