@@ -231,6 +231,7 @@ check(){
 # change the wpg config file so this script can run whenever wpg is invoked 
 wpgConfig(){
 	sed -i -e 's/execute_cmd = false/execute_cmd = true/g' ~/.config/wpg/wpg.conf
+	sed -i -e 's/reload = true/reload = false/g' ~/.config/wpg/wpg.conf
 	sed -i -e 's/auto_adjust = false/auto_adjust = true/g' ~/.config/wpg/wpg.conf
 	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" ~/.config/wpg/wpg.conf
 	}	
@@ -245,7 +246,7 @@ setWall(){
 	}
 
 # this function uses implements a sxiv to create a wallpaper selector for wpg 
-# to set a wallpaper you should select a wallpaper by pressing "m" and then quitting the sxiv
+# to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
 pick(){
 	wal=$(sxiv -torb $Wallpapers)
 	if [ -z "$wal" ]; then
@@ -265,7 +266,6 @@ main(){
 	check spicetify update &
 	phoneWal &
 	#check wal-telegram --wal 
-	#check betterlockscreen -u $wallpaper
 	}
 
 ## Check if wpg is installed and get colors
