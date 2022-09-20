@@ -22,7 +22,6 @@ gnome-disk-utility
 gpick
 grub-customizer
 htop
-i3lock-color
 imagemagick
 jgmenu
 kdeconnect
@@ -67,7 +66,6 @@ ttf-dejavu
 ttf-liberation
 tumbler
 viewnior
-wget
 wmctrl
 xarchiver
 xcape
