@@ -55,13 +55,10 @@ qt5ct
 yad
 ncdu
 ranger
-betterlockscreen
-megatools
 imagemagick
 wget
 scrot
 light
-mkvtoolnix-cli
 grub-customizer
 rhythmbox
 networkmanager-openvpn
