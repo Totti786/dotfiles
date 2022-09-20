@@ -15,6 +15,7 @@ heroic-games-launcher-bin
 steam
 obs-studio-browser
 polychromatic
+megatools
 teamviewer
 discord
 qbittorrent-enhanced-qt5
