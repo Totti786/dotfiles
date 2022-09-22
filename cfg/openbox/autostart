@@ -37,14 +37,5 @@ exec thunar --daemon &
 ## Plank (Dock)
 exec plank &
 
-## Excute Screenshot script
-#exec sh ~/.scripts/check.sh &
-
-## Discord Launch
-#exec discord &
-
-## Trackma Launch
-#exec trackma-gtk &
-
 ## KDE Conenct
 exec kdeconnect-indicator &
