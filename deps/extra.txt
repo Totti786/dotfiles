@@ -16,6 +16,7 @@ gnome-system-monitor
 gnome-weather
 gparted
 gping
+grub-customizer
 handbrake
 heroic-games-launcher-bin
 jre-openjdk
