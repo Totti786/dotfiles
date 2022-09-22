@@ -79,7 +79,7 @@
     
     always_run_script = true
 
-    mouse_left_click = context, close_current
+    mouse_left_click = do_action, close_current
     
     mouse_middle_click = do_action, close_current
     
@@ -94,19 +94,19 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#05081D"
-    foreground = "#ffcbe3"
+    background = "#110918"
+    foreground = "#ffd2ff"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#05081D"
-    foreground = "#ffcbe3"
+    background = "#110918"
+    foreground = "#ffd2ff"
     highlight  = "#b6beca"
     timeout = 10
 
 [urgency_critical]
-    background = "#05081D"
-    foreground = "#ffcbe3"
+    background = "#110918"
+    foreground = "#ffd2ff"
     highlight  = "#b6beca"
     timeout = 15
