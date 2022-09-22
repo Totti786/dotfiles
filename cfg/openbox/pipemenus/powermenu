@@ -4,13 +4,18 @@
 
 ## Options #############################################
 if  [[ $1 = "--logout" ]]; then
-	openbox --exit
+	current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
+	if [[ $current_desktop == "Openbox" ]]; then
+		openbox --exit
+	elif [[ $current_desktop == "i3" ]]; then
+		i3 exit
+	elif [[ $current_desktop == "bspwm" ]]; then
+		bspc quit
+	fi
 elif  [[ $1 = "--lock" ]]; then
 	lockscreen
 elif  [[ $1 = "--suspend" ]]; then
-	playerctl -a stop
-	#amixer set Master mute
-	betterlockscreen --suspend
+	systemctl suspend
 elif  [[ $1 = "--reboot" ]]; then
 	systemctl reboot
 elif  [[ $1 = "--shutdown" ]]; then
