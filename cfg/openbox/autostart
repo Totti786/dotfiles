@@ -9,7 +9,7 @@ xfsettingsd &
 dunst &
 
 ## Picom (Compositor)	
-picom --experimental-backends &
+picom -b --experimental-backends &
 
 ## Restore Wallpaper
 wal -Re &
