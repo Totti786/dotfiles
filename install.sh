@@ -1,8 +1,5 @@
 #!/bin/bash
 
-## TODO
-# xfconf-query -c xfce4-session -p /general/LockCommand -t string -s i3lock --create
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 #---- Core functions ---------------------
@@ -45,7 +42,7 @@ moveConfigs(){
 	tar -xzf $DIR/deps/fonts.tar.gz -C ~/.local/share/fonts 
 	}
 	
-# This function allows you to change the plank configuration (taken from Archcraft by @adi1090x)
+# This function allows you to change the plank configuration (courtesy of Archcraft by @adi1090x)
 change_dock() {
 	cat > "$HOME"/.cache/plank.conf <<- _EOF_
 		[dock1]
@@ -183,7 +180,8 @@ main(){
 	         2 "Install Additional Packages"
 	         3 "Update"
 	         4 "Download Wallpapers"
-	         5 "Exit")
+	         5 "Update Script"
+	         6 "Exit")
 	
 	CHOICE=$(dialog --clear \
 	                --title "Install Script" \
@@ -211,6 +209,10 @@ main(){
 			main
 			;;
 		5)
+			git pull
+			main
+			;;
+		6)
 			exit
 			;;
 	esac
