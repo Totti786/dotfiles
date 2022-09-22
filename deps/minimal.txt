@@ -20,7 +20,6 @@ geany
 geany-plugins
 gnome-disk-utility
 gpick
-grub-customizer
 htop
 imagemagick
 jgmenu
