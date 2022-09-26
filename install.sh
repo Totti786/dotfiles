@@ -77,6 +77,7 @@ changeTheme(){
 	if ! [[ "$(grep -i "qt5ct" /etc/environment | head -n1)" == "QT_QPA_PLATFORMTHEME=\"qt5ct\"" ]]; then
 		echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
 	fi
+	papirus-folders -R
 	}
 
 wpgtk(){
