@@ -78,7 +78,7 @@ if [[ ! `pidof xfce-polkit` ]]; then
 fi 
 
 ## Fix cursor
-xsetroot -cursor_name left_ptr
+xsetroot -cursor_name left_ptr &
 
 ## xfce4-settings daemon
 xfsettingsd &
@@ -87,7 +87,7 @@ xfsettingsd &
 dunst &
 
 ## Enable power management
-xfce4-power-manager &
+xfce4-power-manager --daemon &
 
 ## Color Profile 
 xiccd &
@@ -115,7 +115,7 @@ exec touchegg --daemon &
 exec touchegg &
 
 ## Plank
-exec plank &
+#exec plank &
 
 ## KDE Conenct
 exec kdeconnect-indicator &
