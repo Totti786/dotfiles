@@ -1,6 +1,6 @@
 #! /bin/bash
 
-apps=(polybar openbox zathura dunst alacritty picom stalonetrayrc rofi bspwm sxhkd jgmenu) 
+apps=(polybar openbox zathura dunst alacritty picom stalonetrayrc rofi bspwm sxhkd jgmenu papirus-folders) 
 DIR="$HOME/.config/"
 BackupDir="$HOME/Documents/GitHub/dot-files/"
 
