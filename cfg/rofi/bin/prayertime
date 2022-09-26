@@ -26,7 +26,8 @@ convert(){
 }
 
 if [ ! -f "$prayer_cache" ]; then
-echo `curl -X GET --header 'Accept: application/json' 'http://api.aladhan.com/v1/calendarByCity?city=Idlib&country=Syria&month=$MONTH&year=$YEAR&method=4'` > ${prayer_cache}
+	echo `curl -X GET --header 'Accept: application/json'\
+	"http://api.aladhan.com/v1/calendarByCity?city=$CITY&country=$COUNTRY&month=$MONTH&year=$YEAR&method=4"` > ${prayer_cache}
 fi
 
 if [ -f "$prayer_cache" ]; then
