@@ -8,6 +8,7 @@ for bapps in "${apps[@]}"; do
 	cp -r $DIR/$bapps $BackupDir/cfg/
 done
 cp -r $DIR/geany/colorschemes/Pywal.conf $BackupDir/cfg/geany/colorschemes/Pywal.conf
+cp -r $DIR/copyq/themes/pywal.ini $BackupDir/cfg/copyq/themes/pywal.ini
 rm -R $BackupDir/bin/.local/bin/ && cp -r $HOME/.local/bin $BackupDir/bin/.local
 cp -r $DIR/wpg/wallpapers/wallpaper.jpg $BackupDir/deps/background.jpg
 rm -R $BackupDir/bin/.scripts && cp -r $HOME/.scripts $BackupDir/bin

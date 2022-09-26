@@ -14,7 +14,7 @@ zathura="$HOME/.config/zathura/zathurarc"
 gzathura="$HOME/.config/zathura/genzathurarc"
 systray="$HOME/.config/stalonetrayrc"
 cava="$HOME/.config/cava/config"
-eww="$HOME/.config/eww/eww.scss"
+copyq="$HOME/.config/copyq/pywal.ini"
 jgmenu="$HOME/.config/jgmenu/jgmenurc"
 Wallpapers="$HOME/Pictures/Wallpapers"
 
@@ -88,6 +88,7 @@ change_colors() {
 	sed -i -e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" $discord
 	sed -i -e "s/--background-1: #.*/--background-1: ${BG};/g" $discord
 	sed -i -e "s/--background-2: #.*/--background-2: ${BG};/g" $discord
+	sed -i -e "s/--border-color: #.*/--border-color: $bright_black;/g" $discord
 	sed -i -e "s/--background-modifier-hover: #.*/--background-modifier-hover: ${bright_magenta};/g" $discord
 	sed -i -e "s/--background-accent: #.*/--background-accent: ${BG};/g" $discord
 	sed -i -e "s/--button-destructive: #.*/--button-destructive: ${bright_yellow};/g" $discord
@@ -136,6 +137,16 @@ change_colors() {
 	sed -i -e "s/string_green=#.*/string_green=${bright_green}/g" $geany
 	sed -i -e "s/margin_bg_grey=#.*/margin_bg_grey=${black}/g" $geany
 	sed -i -e "s/error_red=#.*/error_red=${bright_magenta}/g" $geany
+	
+	# copyq 
+	sed -i -e "s/bg=#.*/bg=${BG}/g" $copyq
+	sed -i -e "s/alt_bg=#.*/alt_bg=$bright_black/g" $copyq
+	sed -i -e "s/fg=#.*/fg=${FG}/g" $copyq
+	sed -i -e "s/sel_bg=#.*/sel_bg=$cyan/g" $copyq
+	sed -i -e "s/sel_fg=#.*/sel_fg${FG}/g" $copyq
+	
+	# resize and move wallpaper for use by other programs
+	convert -resize 1920x1080! $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
 }
 
 ## Change the wallpaper for both sddm and grub 
@@ -297,8 +308,7 @@ run(){
 			bright_cyan=`printf "%s\n" "$color14"`
 			bright_white=`printf "%s\n" "$color15"`
 			## merging the Xresources files with the main one
-			xrdb -merge ~/.cache/wal/colors.Xresources
-			convert -resize 1920x1080! $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
+			xrdb -merge ~/.cache/wal/colors.Xresources			
 		fi 
 		
 	else
