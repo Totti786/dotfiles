@@ -89,6 +89,7 @@ wpgtk(){
 		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg
 		exit
 	fi
+	exit
 	}
 
 minimal(){
