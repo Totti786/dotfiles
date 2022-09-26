@@ -2,7 +2,7 @@
 
 apps=(polybar openbox zathura dunst alacritty picom stalonetrayrc rofi bspwm sxhkd jgmenu papirus-folders) 
 DIR="$HOME/.config/"
-BackupDir="$HOME/Documents/GitHub/dot-files/"
+BackupDir="$HOME/Documents/GitHub/dotfiles/"
 
 for bapps in "${apps[@]}"; do
 	cp -r $DIR/$bapps $BackupDir/cfg/
@@ -14,10 +14,10 @@ cp -r $DIR/wpg/wallpapers/wallpaper.jpg $BackupDir/deps/background.jpg
 rm -R $BackupDir/bin/.scripts && cp -r $HOME/.scripts $BackupDir/bin
 
 cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
-	~/Documents/GitHub/dot-files/deps/sddm/Arch/components/artwork/background.jpg
+	$BackupDir/deps/sddm/Arch/components/artwork/background.jpg
 
 cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
-	~/Documents/GitHub/dot-files/deps/grub/Arch/background.jpg
+	$BackupDir/deps/grub/Arch/background.jpg
 
-rm -R ~/Documents/GitHub/dot-files/bin/.local/share/themes/colorbamboo &&
-cp -r ~/.local/share/themes/colorbamboo ~/Documents/GitHub/dot-files/bin/.local/share/themes/colorbamboo
+rm -R $BackupDir/bin/.local/share/themes/colorbamboo &&
+cp -r ~/.local/share/themes/colorbamboo $BackupDir/bin/.local/share/themes/colorbamboo
