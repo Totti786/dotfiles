@@ -27,6 +27,7 @@ kdeconnect
 light
 lxappearance-obconf
 mpv
+mpv-mpris
 mugshot
 ncdu
 networkmanager-openvpn
