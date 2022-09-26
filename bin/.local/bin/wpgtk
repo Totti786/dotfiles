@@ -14,7 +14,7 @@ zathura="$HOME/.config/zathura/zathurarc"
 gzathura="$HOME/.config/zathura/genzathurarc"
 systray="$HOME/.config/stalonetrayrc"
 cava="$HOME/.config/cava/config"
-copyq="$HOME/.config/copyq/pywal.ini"
+copyq="$HOME/.config/copyq/copyq.conf"
 jgmenu="$HOME/.config/jgmenu/jgmenurc"
 Wallpapers="$HOME/Pictures/Wallpapers"
 
