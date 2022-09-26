@@ -1,12 +1,5 @@
 #!/bin/bash
 
-## Collect data
-cache_dir="$HOME/.cache/weather"
-cache_weather_stat=${cache_dir}/weather-stat
-cache_weather_degree=${cache_dir}/weather-degree
-cache_weather_icon=${cache_dir}/weather-icon
-cache_weather_rofi=${cache_dir}/weather-rofi
-
 # in order to use all the features of this script you need to sign up for an API key
 # on https://www.weatherbit.io/account/create and then you need to verify your account
 
@@ -20,6 +13,14 @@ WBKEY="754802f8df8d48f999ae6a283c2a3801"  # put your WeatherBit API key here
 COUNTRY="Syria" # put your country name here 
 CITY="Idlib" # put your city name here
 
+
+## Collect data
+cache_dir="$HOME/.cache/weather"
+cache_weather_stat=${cache_dir}/weather-stat
+cache_weather_degree=${cache_dir}/weather-degree
+cache_weather_icon=${cache_dir}/weather-icon
+cache_weather_rofi=${cache_dir}/weather-rofi
+
 ## Make cache dir
 if [[ ! -d "$cache_dir" ]]; then
 	mkdir -p ${cache_dir}
@@ -28,7 +29,7 @@ fi
 ## Get data
 get_weather_data() {
 	weather=`curl -sf "http://api.openweathermap.org/data/2.5/weather?APPID="$KEY"&id="$ID"&units="$UNIT""`
-	altweather=`curl -X GET --header 'Accept: application/json' "https://api.weatherbit.io/v2.0/current?city=Idlib&country=Syria&key=754802f8df8d48f999ae6a283c2a3801"`
+	altweather=`curl -X GET --header 'Accept: application/json' "https://api.weatherbit.io/v2.0/current?city="$CITY"&country="$COUNTRY"&key=754802f8df8d48f999ae6a283c2a3801"`
 	echo ${weather}
 
 	if [ ! -z "$weather" ]; then
