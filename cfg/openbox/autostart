@@ -32,7 +32,7 @@ copyq --start-server &
 exec thunar --daemon &
 
 ## Plank (Dock)
-#exec plank &
+exec plank &
 
 ## KDE Conenct
 exec kdeconnect-indicator &
