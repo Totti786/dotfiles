@@ -12,7 +12,7 @@ fi
 valid_colors=(Adwaita Black Blue Bluegrey Breeze Brown
 		 Carmine Cyan Darkcyan Deeporange Green Grey
 		 Indigo Magenta Nordic Orange Palebrown Paleorange
-		 Pink Purple Red Teal Violet White Yaru Yellow)
+		 Pink Red Teal Violet White Yaru Yellow)
 
 main(){
 	

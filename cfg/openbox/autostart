@@ -28,9 +28,6 @@ sh ~/.config/polybar/launch.sh &
 ## CopyQ (Clipboard Daemon)
 copyq --start-server &
 
-## Stalonetray (System Tray)
-~/.config/polybar/scripts/systray &
-
 ## Thunar Daemon
 exec thunar --daemon &
 
