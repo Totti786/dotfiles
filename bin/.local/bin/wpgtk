@@ -173,6 +173,7 @@ change_colors() {
 	#}
 
 # this functions should only be used if you have a system with a seperate home partition 
+# (this is bad)
 lockPerms(){
 	## give the user read and write permissions to the grub themes directory
 	if [[ -d "/usr/share/grub/themes/Arch" ]]; then
