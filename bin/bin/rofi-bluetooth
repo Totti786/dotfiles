@@ -17,7 +17,7 @@
 #   Arch repositories: rofi, bluez-utils (contains bluetoothctl)
 
 # Constants
-divider="---------"
+divider=" "
 goback="Back"
 
 # Checks if bluetooth controller is powered on
@@ -32,8 +32,7 @@ power_on() {
 # Toggles power state
 toggle_power() {
     if power_on; then
-        bluetoothctl power off
-        show_menu
+        bluetoothctl power off        
     else
         if rfkill list bluetooth | grep -q 'blocked: yes'; then
             rfkill unblock bluetooth && sleep 3
@@ -144,6 +143,12 @@ device_paired() {
         return 1
     fi
 }
+
+#Change Alias
+device_name(){
+		bluetoothctl set-alias $1
+}
+
 
 # Toggles device paired state
 toggle_paired() {
@@ -257,7 +262,7 @@ show_menu() {
         # Human-readable names of devices, one per line
         # If scan is off, will only list paired devices
         devices=$(bluetoothctl devices | grep Device | cut -d ' ' -f 3-)
-
+		
         # Get controller flags
         scan=$(scan_on)
         pairable=$(pairable_on)
