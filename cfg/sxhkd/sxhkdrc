@@ -13,7 +13,7 @@ super + Return
 
 # Terminal (floating)
 super + shift + Return
-	sh ~/.config/polybar/bin/fulscreenterm --float
+	furminal --float
 
 # Drop Down Terminal
 alt + Return
@@ -21,7 +21,7 @@ alt + Return
 	
 # Terminal (fullscreen)
 super + t
-	sh ~/.config/polybar/bin/fulscreenterm --full
+	furminal --full
 
 ##---------- Rofi Launcher & Menus ----------##
 
