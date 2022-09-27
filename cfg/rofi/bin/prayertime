@@ -20,7 +20,7 @@ convert(){
 			echo $(( $hr - 12 )):$mn "PM" 
 		fi
 	else  
-		ti=$(echo "$1" | sed 's/^0*//')
+		ti=$(echo "$1" | sed 's/^0*//') 
 		echo $ti "AM"
 	fi
 }
