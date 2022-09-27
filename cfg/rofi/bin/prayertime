@@ -11,7 +11,7 @@ prayer_rofi="$HOME/.cache/prayer_rofi_$DAY:$MONTH"
 prayer_cache="$HOME/.cache/prayertimes_$MONTH:$YEAR"
 
 convert(){
-	if [[ "$1" > 11 ]]; then
+	if ! [[ "$1" < 12 ]]; then
 		hr=$(echo "$1" | cut -d ":" -f1)
 		mn=$(echo "$1" | cut -d ":" -f2)
 		if [[ "$hr" == 12 ]]; then
@@ -20,7 +20,7 @@ convert(){
 			echo $(( $hr - 12 )):$mn "PM" 
 		fi
 	else  
-		ti=$(echo "$1" | cut -c 2-5)
+		ti=$(echo "$1" | sed 's/^0*//')
 		echo $ti "AM"
 	fi
 }

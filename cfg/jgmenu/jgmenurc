@@ -27,4 +27,4 @@ color_norm_fg        = #f7ffff 100
 color_sel_bg         = #1d3235 60
 color_sel_fg         = #5c9076 100
 color_sep_fg         = #458175 40
-csv_cmd              = cat ~/.config/jgmenu/openbox.csv 
+csv_cmd              = cat ~/.config/jgmenu/menu.csv 
