@@ -42,6 +42,7 @@ pavucontrol
 plank
 playerctl
 polybar
+pulseaudio-equalizer
 python
 qt5ct
 qt5-styleplugins
