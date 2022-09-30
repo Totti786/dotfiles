@@ -821,12 +821,18 @@
       <mousebind action="Drag" button="W-Left">
         <action name="Move"/>
       </mousebind>
+      <mousebind action="Drag" button="A-Left">
+        <action name="Move"/>
+      </mousebind>
       <mousebind action="Press" button="A-Right">
         <action name="Focus"/>
         <action name="Raise"/>
         <action name="Unshade"/>
       </mousebind>
       <mousebind action="Drag" button="W-Right">
+        <action name="Resize"/>
+      </mousebind>
+      <mousebind action="Drag" button="A-Right">
         <action name="Resize"/>
       </mousebind>
     </context>
@@ -1062,7 +1068,7 @@
   <!-- ################################ Menu Settings ################################ -->
   <menu>
     <file>menu.xml</file>
-    <hideDelay>400</hideDelay>
+    <hideDelay>200</hideDelay>
     <middle>no</middle>
     <submenuShowDelay>100</submenuShowDelay>
     <submenuHideDelay>200</submenuHideDelay>
