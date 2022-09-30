@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# in order to use all the features of this script you need to sign up for an API key
+# on https://www.weatherbit.io/account/create and then you need to verify your account
+
+# you also need to sign up on https://home.openweathermap.org to get an API key 
+
+## Weather data
+KEY="7e6ed49a1a7b802ad1299faa3a5f008d"  # put your Opeanweather API key here
+WBKEY="754802f8df8d48f999ae6a283c2a3801"  # put your WeatherBit API key here 
+UNIT="metric"	# Available options : 'metric' or 'imperial'
+
+COUNTRY="Syria" # put your country name here 
+CITY="Idlib" # put your city name here
