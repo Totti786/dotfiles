@@ -34,6 +34,7 @@ Back,^back()
 Restart,sh ~/.config/polybar/launch.sh
 Edit Config,exo-open ~/.config/polybar/config.ini
 Edit Modules,exo-open ~/.config/polybar/modules.ini
+Edit Weather Data,exo-open ~/.config/polybar/scripts/info
 
 ^tag(bspwm)
 Back,^back()
