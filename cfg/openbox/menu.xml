@@ -84,6 +84,11 @@
 						<command>exo-open ~/.config/polybar/modules.ini</command>
 					</action>
 				</item>
+				<item label="Edit Weather Data">
+					<action name="Execute">
+						<command>exo-open ~/.config/polybar/scripts/info</command>
+					</action>
+				</item>
 			</menu>
 			<menu id="CompositingPipeMenu" execute="&pipes;/compositor" label="Compositor"/>
 			<separator/>
