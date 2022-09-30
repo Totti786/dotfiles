@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-CITY="Idlib"
-COUNTRY="Syria"
+## get city and country from a differnt file
+source ~/.config/polybar/scripts/info
 
-DIR="$HOME/.config"
+DIR="$HOME/.config" 
 DAY="$(( $(date +"%d")-1))"
 MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"
