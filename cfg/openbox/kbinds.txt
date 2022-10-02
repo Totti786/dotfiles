@@ -1,124 +1,121 @@
-OpenBox Keybinds
----------------------------
-
- 0	W-1           				GoToDesktop
- 1	W-2           				GoToDesktop
- 2	W-3           				GoToDesktop
- 3	W-4           				GoToDesktop
- 4	W-5           				GoToDesktop
- 5	W-6           				GoToDesktop
- 6	W-7           				GoToDesktop
- 7	W-8           				GoToDesktop
- 8	W-9           				GoToDesktop
- 9	W-0           				GoToDesktop
-10	S-W-1         				SendToDesktop
-11	S-W-2         				SendToDesktop
-12	S-W-3         				SendToDesktop
-13	S-W-4         				SendToDesktop
-14	S-W-5         				SendToDesktop
-15	S-W-6         				SendToDesktop
-16	A-Tab         				NextWindow
-17	W-Tab         				NextWindow
-18	W-Left        				UnmaximizeFull
-19	W-Right       				UnmaximizeFull
-20	W-Up          				MaximizeFull
-21	W-Down        				UnmaximizeFull
-22	A-k           				Unmaximize
-23	A-h           				Unmaximize
-24	A-j           				Unmaximize
-25	A-l           				Unmaximize
-26	A-z           				Unmaximize
-27	A-x           				Unmaximize
-28	A-c           				Unmaximize
-29	W-KP_1        				UnmaximizeFull
-30	W-KP_2        				UnmaximizeFull
-31	W-KP_3        				UnmaximizeFull
-32	W-KP_4        				UnmaximizeFull
-33	W-KP_5        				MaximizeFull
-34	W-KP_6        				UnmaximizeFull
-35	W-KP_7        				UnmaximizeFull
-36	W-KP_8        				UnmaximizeFull
-37	W-KP_9        				UnmaximizeFull
-38	W-A-Up        				MoveRelative
-39	W-A-Down      				MoveRelative
-40	W-A-Left      				MoveRelative
-41	W-A-Right     				MoveRelative
-42	C-A-Right     				ResizeRelative
-43	C-A-Left      				ResizeRelative
-44	C-A-Down      				ResizeRelative
-45	C-A-Up        				ResizeRelative
-46	W-C-Left      				SendToDesktopLeft
-47	W-C-Right     				SendToDesktopRight
-48	XF86AudioRaiseVolume	volume --inc
-49	XF86AudioLowerVolume	volume --dec
-50	XF86AudioMute  			volume --toggle
-51	XF86AudioStop  			playerctl -a stop
-52	XF86AudioPlay  			playerctl play-pause
-53	XF86AudioPause 			playerctl play-pause
-54	XF86AudioPrev  			playerctl previous
-55	XF86AudioNext  			playerctl next
-56	XF86Tools     				playerctld shift
-57	XF86Search     			~/.local/bin/dmenu.sh
-58	XF86MonBrightnessUp	brightness --inc
-59	XF86MonBrightnessDown	brightness --dec
-60	Print         				flameshot full -p ~/Pictures/Screenshots
-61	A-Print       				flameshot gui
-62	S-Print       				flameshot full -c
-63	C-Print       				takeshot --win
-64	C-A-Print     				takeshot --area
-65	W-Return      				alacritty
-66	A-Return      				tdrop -ma -w -20 -y "0"  alacritty
-67	W-t           				~/.config/polybar/bin/fulscreenterm --full
-68	W-e           				thunar
-69	W-f           				firefox
-70	W-w           				geany
-71	W-S-r         				rhythmbox
-72	A-F1          				~/.config/rofi/bin/launcher
-73	W-n           				~/.config/rofi/bin/network_menu
-74	W-m           				~/.config/rofi/bin/media
-75	W-x           				~/.config/rofi/bin/powermenu
-76	W-s           				~/.config/rofi/bin/screenshot
-77	W-i           				~/.config/rofi/bin/network
-78	W-r           				~/.config/rofi/bin/asroot
-79	W-p           				color-gpick
-80	C-A-t         				alacritty
-81	C-A-v         				alacritty -e vim
-82	C-A-n         				alacritty -e nvim
-83	C-A-r         				alacritty -e ranger
-84	C-A-h         				alacritty -e htop
-85	C-A-d         				alacritty -e ncdu
-86	C-A-b         				sh .fehbg
-87	C-A-l         				lockscreen
-88	W-a           				aniwrapper
-89	W-y           				ytfzf -fD
-90	W-o           				obs
-91	W-g           				zathura
-92	W-z           				discord
-93	W-v           				copyq show
-94	W-b           				rofi-bluetooth
-95	W-S-a         				alacritty -e aniwrapper -c
-96	W-S-y         				alacritty -e ytfzf -tf
-97	W-S-d         				~/.local/bin/dmenu.sh
-98	W-S-m         				~/.config/polybar/launch.sh
-99	W-S-b         				~/.local/bin/bluetoothC
-100	W-S-w         				~/.local/bin/wpgtk pick
-101	W-S-c         				rofi -modi "calc" -show
-102	W-S-e         				rofi -modi "emoji" -show
-103	W-S-s         				spotify
-104	C-S-Escape     			Exit
-105	C-S-BackSpace  			Restart
-106	C-S-R         				Reconfigure
-107	W-Escape      				xkill
-108	W-c           				Close
-109	W-q           				Close
-110	W-S-f         				ToggleMaximize
-111	W-d           				ToggleShowDesktop
-112	A-F5          				Iconify
-113	A-F6          				ToggleDecorations
-114	A-F7          				ToggleAlwaysOnTop
-115	A-F8          				ToggleOmnipresent
-116	A-r           				Resize
-117	A-m           				Move
-118	W-space       				root-menu
-119	C-A-space     				app-menu
-120	A-space       				client-menu
+o W-1             	GoToDesktop
+o W-2             	GoToDesktop
+o W-3             	GoToDesktop
+o W-4             	GoToDesktop
+o W-5             	GoToDesktop
+o W-6             	GoToDesktop
+o W-7             	GoToDesktop
+o W-8             	GoToDesktop
+o W-9             	GoToDesktop
+o W-0             	GoToDesktop
+o S-W-1           	SendToDesktop
+o S-W-2           	SendToDesktop
+o S-W-3           	SendToDesktop
+o S-W-4           	SendToDesktop
+o S-W-5           	SendToDesktop
+o S-W-6           	SendToDesktop
+o A-Tab           	NextWindow
+o W-Tab           	NextWindow
+o W-Left          	UnmaximizeFull
+o W-Right         	UnmaximizeFull
+o W-Up            	MaximizeFull
+o W-Down          	UnmaximizeFull
+o A-k             	Unmaximize
+o A-h             	Unmaximize
+o A-j             	Unmaximize
+o A-l             	Unmaximize
+o A-z             	Unmaximize
+o A-x             	Unmaximize
+o A-c             	Unmaximize
+o W-KP_1          	UnmaximizeFull
+o W-KP_2          	UnmaximizeFull
+o W-KP_3          	UnmaximizeFull
+o W-KP_4          	UnmaximizeFull
+o W-KP_5          	MaximizeFull
+o W-KP_6          	UnmaximizeFull
+o W-KP_7          	UnmaximizeFull
+o W-KP_8          	UnmaximizeFull
+o W-KP_9          	UnmaximizeFull
+o W-A-Up          	MoveRelative
+o W-A-Down        	MoveRelative
+o W-A-Left        	MoveRelative
+o W-A-Right       	MoveRelative
+o C-A-Right       	ResizeRelative
+o C-A-Left        	ResizeRelative
+o C-A-Down        	ResizeRelative
+o C-A-Up          	ResizeRelative
+o W-C-Left        	SendToDesktopLeft
+o W-C-Right       	SendToDesktopRight
+x XF86AudioRaiseVolume	volume --inc
+x XF86AudioLowerVolume	volume --dec
+x XF86AudioMute   	volume --toggle
+x XF86AudioStop   	playerctl -a stop
+x XF86AudioPlay   	playerctl play-pause
+x XF86AudioPause  	playerctl play-pause
+x XF86AudioPrev   	playerctl previous
+x XF86AudioNext   	playerctl next
+x XF86Tools       	playerctld shift
+x XF86Search      	~/.local/bin/dmenu.sh
+x XF86MonBrightnessUp	brightness --inc
+x XF86MonBrightnessDown	brightness --dec
+x Print           	flameshot full -p ~/Pictures/Screenshots
+x A-Print         	flameshot gui
+x S-Print         	flameshot full -c
+x C-Print         	takeshot --win
+x C-A-Print       	takeshot --area
+x W-Return        	alacritty
+x A-Return        	tdrop -ma -w -20 -y "0"  alacritty
+x W-t             	furminal --full
+x W-e             	thunar
+x W-f             	firefox
+x W-w             	geany
+x W-S-r           	rhythmbox
+x A-F1            	~/.config/rofi/bin/launcher
+x W-n             	~/.config/rofi/bin/network_menu
+x W-m             	~/.config/rofi/bin/media
+x W-x             	~/.config/rofi/bin/powermenu
+x W-s             	~/.config/rofi/bin/screenshot
+x W-i             	~/.config/rofi/bin/network
+x W-r             	~/.config/rofi/bin/asroot
+x W-p             	color-gpick
+x C-A-t           	alacritty
+x C-A-v           	alacritty -e vim
+x C-A-n           	alacritty -e nvim
+x C-A-r           	alacritty -e ranger
+x C-A-h           	alacritty -e htop
+x C-A-d           	alacritty -e ncdu
+x C-A-b           	sh .fehbg
+x C-A-l           	lockscreen
+x W-a             	aniwrapper
+x W-y             	ytfzf -fD
+x W-o             	obs
+x W-g             	zathura
+x W-z             	discord
+x W-v             	copyq show
+x W-b             	rofi-bluetooth
+x W-S-a           	alacritty -e aniwrapper -c
+x W-S-y           	alacritty -e ytfzf -tf
+x W-S-d           	~/.local/bin/dmenu.sh
+x W-S-m           	~/.config/polybar/launch.sh
+x W-S-b           	~/.local/bin/bluetoothC
+x W-S-w           	~/.local/bin/wpgtk pick
+x W-S-c           	rofi -modi "calc" -show
+x W-S-e           	rofi -modi "emoji" -show
+x W-S-s           	spotify
+o C-S-Escape      	Exit
+o C-S-BackSpace   	Restart
+o C-S-R           	Reconfigure
+x W-Escape        	xkill
+o W-c             	Close
+o W-q             	Close
+o W-S-f           	ToggleMaximize
+o W-d             	ToggleShowDesktop
+o A-F5            	Iconify
+o A-F6            	ToggleDecorations
+o A-F7            	ToggleAlwaysOnTop
+o A-F8            	ToggleOmnipresent
+o A-r             	Resize
+o A-m             	Move
+o W-space         	root-menu
+o C-A-space       	app-menu
+o A-space         	client-menu

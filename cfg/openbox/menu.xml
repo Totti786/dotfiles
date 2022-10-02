@@ -47,7 +47,7 @@
 				<separator/>
 				<item label="Edit Menu">
 					<action name="Execute">
-						<command>exo-open ~/.config/openbox/menu-simple.xml</command>
+						<command>exo-open ~/.config/openbox/menu.xml</command>
 					</action>
 				</item>
 				<item label="Edit Keybinds">
@@ -125,7 +125,7 @@
 		</menu>
 		<item label="Keybinds">
 			<action name="Execute">
-				<command>~/.config/openbox/pipemenus/keybinds -g</command>
+				<command>sh ~/.local/bin/conky.sh</command>
 			</action>
 		</item>
 		<item label="Settings Manager">
