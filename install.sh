@@ -49,7 +49,7 @@ change_dock() {
 		alignment='center'
 		auto-pinning=true
 		current-workspace-only=false
-		dock-items=['Alacritty.dockitem', 'thunar.dockitem', 'firefox.dockitem', 'geany.dockitem', 'xfce-settings-manager.dockitem']
+		dock-items=['applications.dockitem', 'Alacritty.dockitem', 'thunar.dockitem', 'firefox.dockitem', 'geany.dockitem', 'xfce-settings-manager.dockitem']
 		hide-delay=0
 		hide-mode='window-dodge'
 		icon-size=32
