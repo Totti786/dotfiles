@@ -8,6 +8,7 @@ bluez-git
 breeze
 brightnessctl
 bspwm
+conky
 copyq
 dmenu
 dunst
