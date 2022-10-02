@@ -868,9 +868,8 @@ def run():  # pylint: disable=too-many-locals
     else:
         saved_actions = [Action("Saved connections", prompt_saved, [saved_cons])]
 
-    actions = combine_actions(eth_actions, ap_actions, vpn_actions, wg_actions,
-                              gsm_actions, blue_actions, wwan_actions,
-                              other_actions, saved_actions)
+    actions = combine_actions(eth_actions, ap_actions, wg_actions, vpn_actions,
+                              gsm_actions, other_actions, blue_actions, wwan_actions, saved_actions)
     sel = get_selection(actions)
     sel()
 
