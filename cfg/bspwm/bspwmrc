@@ -115,7 +115,7 @@ exec touchegg --daemon &
 exec touchegg &
 
 ## Plank
-#exec plank &
+exec plank &
 
 ## KDE Conenct
 exec kdeconnect-indicator &
