@@ -129,7 +129,7 @@ wallpapers(){
 
 #---- TUI functions  ---------------------
 
-Dialog="gdialog"
+Dialog="dialog"
 
 menu(){
 	if $Dialog --yesno "$1" 20 60 ;then
