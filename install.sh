@@ -82,7 +82,7 @@ changeTheme(){
 
 wpgtk(){
 	sh $DIR/bin/.local/bin/wpgtk run &&
-	if dialog --yesno "Do you want your sddm and grub background to sync with your wallpaper?" 20 60 ;then
+	if $Dialog --yesno "Do you want your sddm and grub background to sync with your wallpaper?" 20 60 ;then
 		sh $DIR/bin/.local/bin/wpgtk lockPerms &&
 		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
 	else
@@ -129,8 +129,10 @@ wallpapers(){
 
 #---- TUI functions  ---------------------
 
+Dialog="gdialog"
+
 menu(){
-	if dialog --yesno "$1" 20 60 ;then
+	if $Dialog --yesno "$1" 20 60 ;then
 		$2
 	else
 		$3
@@ -141,13 +143,13 @@ progressBar(){
 	for i in `seq 1 100`;do
 	date +"`printf $i $i`"
 	sleep .0005
-	done | dialog --gauge "$1" 20 60 0
+	done | $Dialog --gauge "$1" 20 60 0
 	}
 
 additionalPrograms(){
-	if dialog --yesno "Do you want to select wich additional apps you want to install?\n	
+	if $Dialog --yesno "Do you want to select wich additional apps you want to install?\n	
 		Seleceting \"No\" will install all the additional apps" 20 60 ;then
-	  	progs=$(dialog --no-items --checklist "Choose the programs you want installed:"  20 60 12 \
+	  	progs=$($Dialog --no-items --checklist "Choose the programs you want installed:"  20 60 12 \
 		$(for app in $(cat $DIR/deps/extra.txt); do	echo "$app" off ;done) \
 		2>&1 >/dev/tty) &&
 		sudo pacman -Sy $progs --needed
@@ -167,7 +169,7 @@ update(){
 	}
 
 install(){
-	installOptions=$(dialog --radiolist  "Choose one of the following options:"  15 60 4\
+	installOptions=$($Dialog --radiolist  "Choose one of the following options:"  15 60 4\
 		minimal "Minimal Install" off\
 		zsh "Zsh Configuration" off\
 		sddm "SDDM Theme" off\
@@ -185,7 +187,7 @@ main(){
 	         5 "Update Script"
 	         6 "Exit")
 	
-	CHOICE=$(dialog --clear \
+	CHOICE=$($Dialog --clear \
 	                --title "Install Script" \
 	                --menu "Choose one of the following options:" \
 	                15 40 4 \
@@ -220,10 +222,10 @@ main(){
 	esac
 }
 
-if command -v dialog &> /dev/null; then 
+if command -v $Dialog &> /dev/null; then 
 	main
 else 
-	sudo pacman -S dialog &&
+	sudo pacman -S $Dialog &&
 	main
 fi
 
