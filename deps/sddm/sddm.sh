@@ -29,7 +29,7 @@ if command -v sddm &> /dev/null; then
 			sudo sed -i -e "s/Current=.*/Current=$theme/g" /etc/sddm.conf.d/theme.conf
 		else
 			echo "theme conf file not found, creating and moving files" 
-			if ! [ -d  "/etc/sddm.conf.d/" ]
+			if ! [ -d  "/etc/sddm.conf.d/" ]; then 
 				sudo mkdir /etc/sddm.conf.d/
 			fi 
 			sudo cp $DIR/theme.conf /etc/sddm.conf.d/ &&
