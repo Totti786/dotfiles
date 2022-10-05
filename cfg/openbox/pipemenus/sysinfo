@@ -42,6 +42,7 @@ swappiness="`cat /proc/sys/vm/swappiness`%"
 init=`cat /proc/1/comm`
 
 ##-- BATTERY ------------------------
+BATTERY=$(upower -i `upower -e | grep 'BAT'` | grep 'native-path' | cut -d':' -f2 | tr -d '[:blank:]')
 b_stat=`acpi -b | grep Battery | cut -d' ' -f3 | tr -d ,`
 b_perc=`acpi -b | grep Battery | cut -d' ' -f4 | tr -d ,`
 b_cap=`acpi -i | tail -n1 | cut -d'=' -f2 | tr -d "[:blank:]"`
@@ -49,7 +50,7 @@ b_cap=`acpi -i | tail -n1 | cut -d'=' -f2 | tr -d "[:blank:]"`
 ##-- BACKLIGHT ------------------------
 g_card=`ls /sys/class/backlight | head -n1`
 b_value=`cat /sys/class/backlight/$g_card/brightness`
-backlight="$(($b_value*100/255))%"
+backlight="$(brightnessctl  | grep -i '(' | cut -d " " -f4 | tr -d '()')%"
 
 ##-- UPTIME ------------------------
 uptime=`uptime -p | awk '{print $2 " " $3 " " $4 " " $5}'`
@@ -72,10 +73,12 @@ menuItem "  KERNEL     :  $kernel" 'echo'
 menuItem "  CPU        : $cpu" 'echo'
 menuItem "  MEMORY     :  $m_used ∙ $m_free ∙ $m_total" 'echo'
 menuItem "  SWAP       :  $s_used ∙ $s_free ∙ $s_total ∙ $swappiness" 'echo'
+if ! [[ -z "$BATTERY" ]]; then
+	menuItem "  BATTERY    :  $b_perc ∙ $b_stat ∙ Capacity, $b_cap" 'echo'
+fi
 menuItem "  INIT       :  $init" 'echo'
-menuItem "  BATTERY    :  $b_perc ∙ $b_stat ∙ Capacity, $b_cap" 'echo'
 menuItem "  BACKLIGHT  :  $backlight" 'echo'
 menuItem "  UPTIME     :  $uptime" 'echo'
 menuItem "  LOAD       :  $load" 'echo'
-menuItem "  WIFI       :  $interface ∙ $status ∙ $ssid" 'echo'
+#menuItem "  WIFI       :  $interface ∙ $status ∙ $ssid" 'echo'
 menuEnd
