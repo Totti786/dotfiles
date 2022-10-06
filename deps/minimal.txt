@@ -76,7 +76,7 @@ xdo
 xdotool
 xfce4-power-manager
 xfce4-settings
-xorg-xbacklight 
+xorg-xbacklight
 xorg-xkill
 xorg-xrdb
 xorg-xsetroot
