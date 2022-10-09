@@ -26,7 +26,7 @@ change_colors() {
 	cat > $polybar <<- EOF
 		[color]
 		;; main colors
-		background = ${BG}99
+		background = ${BG}00
 		foreground = $FG
 		primary = $FG
 		red = $bright_red
