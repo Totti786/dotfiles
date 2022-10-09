@@ -5,6 +5,9 @@
 ## xfce4-settings daemon
 xfsettingsd &
 
+# Enable power management
+xfce4-power-manager --daemon &
+
 ## Dunst (Notifications Daemon)
 dunst &
 
@@ -14,9 +17,6 @@ picom -b --experimental-backends &
 ## Restore Wallpaper
 wal -Re &
 sh ~/.scripts/wpgtk run &
-
-# Enable power management
-xfce4-power-manager --daemon &
 
 # Enable Super Keys For Menu
 xcape -e 'Super_L=Alt_L|F1' &
