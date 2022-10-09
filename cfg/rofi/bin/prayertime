@@ -4,12 +4,13 @@
 source ~/.config/polybar/scripts/info
 
 DIR="$HOME/.config" 
-DAY="$(( $(date +"%d")-1))"
+DAY="$(expr $(date "+%d") - 1)"
 MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"
 prayer_rofi="$HOME/.cache/prayer_rofi_$DAY:$MONTH"
 prayer_cache="$HOME/.cache/prayertimes_$MONTH:$YEAR"
 
+# pure jank
 convert(){
 	if ! [[ "$1" < 12 ]]; then
 		hr=$(echo "$1" | cut -d ":" -f1)
@@ -27,17 +28,17 @@ convert(){
 
 if [ ! -f "$prayer_cache" ]; then
 	echo `curl -X GET --header 'Accept: application/json'\
-	"http://api.aladhan.com/v1/calendarByCity?city=$CITY&country=$COUNTRY&month=$MONTH&year=$YEAR&method=4"` > ${prayer_cache}
+	"http://api.aladhan.com/v1/calendarByCity?city="$CITY"&country="$COUNTRY"&month="$MONTH"&year="$YEAR"&method=4"` > ${prayer_cache}
 fi
 
 if [ -f "$prayer_cache" ]; then
 	if [ ! -f "$prayer_rofi" ]; then
-		fajr=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Fajr" | cut -d " " -f1)`
-		sunrise=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Sunrise" | cut -d " " -f1)`
-		duhr=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Dhuhr" | cut -d " " -f1)`
-		asr=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Asr" | cut -d " " -f1)`
-		maghrib=`convert $(cat $prayer_cache| jq -r ".data[$DAY].timings.Maghrib" | cut -d " " -f1)`
-		isha=`convert $(cat $prayer_cache | jq -r ".data[$DAY].timings.Isha" | cut -d " " -f1)`
+		fajr=`convert $(cat $prayer_cache | jq -r ".data["$DAY"].timings.Fajr" | cut -d " " -f1)`
+		sunrise=`convert $(cat $prayer_cache | jq -r ".data["$DAY"].timings.Sunrise" | cut -d " " -f1)`
+		duhr=`convert $(cat $prayer_cache | jq -r ".data["$DAY"].timings.Dhuhr" | cut -d " " -f1)`
+		asr=`convert $(cat $prayer_cache | jq -r ".data["$DAY"].timings.Asr" | cut -d " " -f1)`
+		maghrib=`convert $(cat $prayer_cache| jq -r ".data["$DAY"].timings.Maghrib" | cut -d " " -f1)`
+		isha=`convert $(cat $prayer_cache | jq -r ".data["$DAY"].timings.Isha" | cut -d " " -f1)`
 		
 		echo -e "City: $CITY \nFajr: $fajr \nSunrise: $sunrise \nDuhr: $duhr \nAsr: $asr \nMaghrib: $maghrib \nIsha: $isha" > ${prayer_rofi}
 	fi
