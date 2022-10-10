@@ -159,8 +159,8 @@ additionalPrograms(){
 }
 
 update(){
-	progressBar "Updating... "
 	installDependencies
+	progressBar "Updating... "
 	sudo cp -r $DIR/bin/bin/ /usr/local/ 
 	cp -r $DIR/bin/.scripts/ ~/ 
 	cp -r $DIR/cfg/* ~/.config 
