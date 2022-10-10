@@ -159,13 +159,14 @@ additionalPrograms(){
 }
 
 update(){
+	progressBar "Updating... "
 	installDependencies
 	sudo cp -r $DIR/bin/bin/ /usr/local/ 
 	cp -r $DIR/bin/.scripts/ ~/ 
 	cp -r $DIR/cfg/* ~/.config 
 	cp -r $DIR/bin/.local/ ~/
-	changeTheme
-	progressBar "Updating... "
+	papirus-folders -R
+	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg
 	}
 
 install(){
