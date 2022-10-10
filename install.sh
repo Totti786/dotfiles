@@ -166,7 +166,7 @@ update(){
 	cp -r $DIR/cfg/* ~/.config 
 	cp -r $DIR/bin/.local/ ~/
 	papirus-folders -R
-	feh --no-fehbg --bg-fill '$DIR/deps/background.jpg'
+	feh --no-fehbg --bg-fill $DIR/deps/background.jpg
 	}
 
 install(){
