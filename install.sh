@@ -165,9 +165,9 @@ update(){
 	cp -r $DIR/bin/.scripts/ ~/ 
 	cp -r $DIR/cfg/* ~/.config 
 	cp -r $DIR/bin/.local/ ~/
-	papirus-folders -R
 	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
-	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg
+	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
+	papirus-folders -R
 	}
 
 install(){
