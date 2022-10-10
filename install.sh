@@ -166,7 +166,7 @@ update(){
 	cp -r $DIR/cfg/* ~/.config 
 	cp -r $DIR/bin/.local/ ~/
 	papirus-folders -R
-	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg
+	feh --no-fehbg --bg-fill '$DIR/deps/background.jpg'
 	}
 
 install(){
