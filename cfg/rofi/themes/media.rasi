@@ -19,14 +19,15 @@ window {
     transparency:                   "real";
     background-color:               @background;
     text-color:                     @foreground;
-    border:                  		2px;
-    border-color:                  	@border;
-    border-radius:                  10px;
-    width:                          550px;
-    location:                       center;
-    anchor:                         center;
-    x-offset:                       0;
-    y-offset:                       0;
+    border:                  		0px;
+    border-color:                  	@selected;
+    border-radius:                  12px;
+    width:                          1000px;
+    
+    location:                       southwest;
+    anchor:                         west;
+    x-offset:                       10;
+    y-offset:                       -123;
 }
 
 prompt {
@@ -44,6 +45,7 @@ textbox-prompt-colon {
 	expand: 						false;
 	str: 							"";
     border-radius:                  8px;
+    padding:    					6px 0px 6px 0px;
     background-color:               @on;
     text-color:                     @background;
     padding:    					6px 10px 6px 10px;
@@ -92,17 +94,35 @@ listview {
 }
 
 mainbox {
-    background-color:               @background;
-    children:                       [ inputbar, listview ];
-    spacing:                       	10px;
-    padding:                        20px;
+    enabled:                     true;
+    spacing:                     0px;
+    background-color:            transparent;
+    orientation:                 horizontal;
+    children:                    [ "imagebox", "listview" ];
 }
+
+imagebox {
+    padding:                     20px;
+    background-color:            transparent;
+    background-image:            url("~/.config/wpg/wallpapers/wallpaper.jpg", height);
+    orientation:                 vertical;
+    children:                    [ "inputbar", "mode-switcher" ];
+}
+
+listbox {
+    spacing:                     20px;
+    padding:                     20px;
+    background-color:            transparent;
+    orientation:                 vertical;
+    children:                    [ "message", "listview" ];
+}
+
 
 element {
     background-color:               @background-alt;
     text-color:                     @foreground;
     orientation:                    horizontal;
-    border-radius:                  10px;
+    border-radius:             		100%;
     padding:                        25px;
 }
 
