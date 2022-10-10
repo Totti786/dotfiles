@@ -765,9 +765,6 @@
     <keybind key="W-q">
       <action name="Close"/>
     </keybind>
-    <keybind key="W-S-f">
-      <action name="ToggleMaximize"/>
-    </keybind>
     <keybind key="W-d">
       <action name="ToggleShowDesktop"/>
     </keybind>
