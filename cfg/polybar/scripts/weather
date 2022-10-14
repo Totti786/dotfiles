@@ -18,7 +18,7 @@ fi
 ## Get data
 get_weather_data() {
 	weather=`curl -sf "https://api.openweathermap.org/data/2.5/weather?q="$CITY","$COUNTRY"&appid="$KEY"&units="$UNIT""`
-	altweather=`curl -X GET --header 'Accept: application/json' "https://api.weatherbit.io/v2.0/current?city="$CITY"&country="$COUNTRY"&key=754802f8df8d48f999ae6a283c2a3801"`
+	altweather=`curl -X GET --header 'Accept: application/json' "https://api.weatherbit.io/v2.0/current?city="$CITY"&country="$COUNTRY"&key="$WBKEY""`
 	echo ${weather}
 
 	if [ ! -z "$weather" ]; then
@@ -82,17 +82,14 @@ get_weather_data() {
 		echo "$weather_icon" >  ${cache_weather_icon}
 		echo "$weather_description" > ${cache_weather_stat}
 		echo "$weather_temp""° " > ${cache_weather_degree}
-		echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}	
+		echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}
+
 	else
 		echo "Weather Unavailable" > ${cache_weather_stat}
 		echo " " > ${cache_weather_icon}
 		echo "-" > ${cache_weather_degree}
 	fi
 }
-
-update(){
-	get_weather_data &> /dev/null
-	}
 
 ## Execute
 if [[ "$1" == "--getdata" ]]; then
@@ -105,6 +102,8 @@ elif [[ "$1" == "--hex" ]]; then
 	tail -F ${cache_weather_hex}
 elif [[ "$1" == "--stat" ]]; then
 	cat ${cache_weather_stat}
+elif [[ "$1" == "--rofi" ]]; then
+	rofi_menu
 elif [[ "$1" == "--full" ]]; then
 	get_weather_data &> /dev/null
 	cat ${cache_weather_icon} ${cache_weather_degree} ${cache_weather_stat} | tr -d '\n'
