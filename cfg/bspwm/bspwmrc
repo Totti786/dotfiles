@@ -117,9 +117,6 @@ exec touchegg &
 ## Plank
 exec plank &
 
-## KDE Conenct
-exec kdeconnect-indicator &
-
 ## Autostart programs in ~/.config/autostart
 dir="$HOME/.config/autostart/*.desktop"
 

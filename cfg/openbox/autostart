@@ -33,6 +33,3 @@ exec thunar --daemon &
 
 ## Plank (Dock)
 exec plank &
-
-## KDE Conenct
-exec kdeconnect-indicator &
