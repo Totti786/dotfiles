@@ -61,6 +61,7 @@ for i in ${floating[@]}; do
    bspc rule -a $i state=floating follow=on focus=on; done
    
 bspc rule -a Zathura state=tiled
+bspc rule -a Plank state=floating
 
 
 ## Autostart Programs ----------------------------------------#
@@ -109,10 +110,6 @@ copyq --start-server &
 
 ## Thunar Daemon
 exec thunar --daemon &
-
-## Touchegg
-exec touchegg --daemon &
-exec touchegg &
 
 ## Plank
 exec plank &
