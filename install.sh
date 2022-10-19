@@ -161,10 +161,14 @@ additionalPrograms(){
 update(){
 	installDependencies
 	progressBar "Updating... "
+	if [[ -f "$HOME/.config/polybar/scripts/info" ]]; then 
+		cp $HOME/.config/polybar/scripts/info /tmp/info
+	fi
 	sudo cp -r $DIR/bin/bin/ /usr/local/ 
 	cp -r $DIR/bin/.scripts/ ~/ 
 	cp -r $DIR/cfg/* ~/.config 
 	cp -r $DIR/bin/.local/ ~/
+	cp /tmp/info ~/.config/polybar/scripts/info
 	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
 	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
 	papirus-folders -R
