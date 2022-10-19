@@ -32,16 +32,16 @@ Audio Settings,pavucontrol
 ^tag(polybar)
 Back,^back()
 Restart,sh ~/.config/polybar/launch.sh
-Edit Config,exo-open ~/.config/polybar/config.ini
-Edit Modules,exo-open ~/.config/polybar/modules.ini
-Edit Weather Data,exo-open ~/.config/polybar/scripts/info
+Edit config,exo-open ~/.config/polybar/config.ini
+Edit modules,exo-open ~/.config/polybar/modules.ini
+Edit weather Data,exo-open ~/.config/polybar/scripts/info
 
 ^tag(bspwm)
 Back,^back()
-Restart BSPWM,bspc wm -r 
-Restart SXHKD,pkill -USR1 -x sxhkd
-Edit Config,exo-open ~/.config/bspwm/bspwmrc
-Edit Keybinds,exo-open ~/.config/sxhkd/sxhkdrc
+Restart bspwm,bspc wm -r 
+Restart sxhkd,pkill -USR1 -x sxhkd
+Edit config,exo-open ~/.config/bspwm/bspwmrc
+Edit keybinds,exo-open ~/.config/sxhkd/sxhkdrc
 
 
 ^tag(Exit)
