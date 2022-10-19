@@ -207,6 +207,7 @@ main(){
 			main
 			;;
 		3)
+			git pull
 			update
 			main		
 			;;
