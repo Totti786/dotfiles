@@ -14,7 +14,7 @@ System,^checkout(Exit)
 
 ^tag(preferences)
 Back,^back()
-BSPWM,^checkout(bspwm)
+Bspwm,^checkout(bspwm)
 Polybar,^checkout(polybar)
 Compositor,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//compositor" --tag="Compositor")
 ^sep()
