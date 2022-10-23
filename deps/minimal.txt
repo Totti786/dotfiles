@@ -70,6 +70,7 @@ viewnior
 wmctrl
 xarchiver
 xcape
+xdg-autostart
 xdg-user-dirs
 xdg-user-dirs-gtk
 xdo
