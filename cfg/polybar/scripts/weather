@@ -85,9 +85,14 @@ get_weather_data() {
 		echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}
 
 	else
-		echo "Weather Unavailable" > ${cache_weather_stat}
+		if [[ -z $CITY ]]; then 
+			geo=$(wget --timeout=2 http://ipinfo.io/city -qO -)
+			echo $(curl wttr.in/$geo?format="%l:+%t+%C\n") > ${cache_weather_stat}
+		else
+			echo $(curl wttr.in/$CITY?format="%t+%C\n") > ${cache_weather_stat}
+		fi
 		echo " " > ${cache_weather_icon}
-		echo "-" > ${cache_weather_degree}
+		echo " " > ${cache_weather_degree}
 	fi
 }
 
