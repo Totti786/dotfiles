@@ -51,7 +51,6 @@ redshift
 rhythmbox
 rofi
 rofi-calc
-rofi-emoji
 rtorrent
 scrot
 stalonetray
