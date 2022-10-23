@@ -64,6 +64,7 @@ bspc rule -a Zathura state=tiled
 bspc rule -a Plank layer=above manage=on border=off
 
 ## Autostart Programs ----------------------------------------#
+xdg-autostart &
 
 ## Keybinds
 exec sxhkd &
@@ -87,10 +88,10 @@ xfsettingsd &
 dunst &
 
 ## Enable power management
-xfce4-power-manager --daemon &
+#xfce4-power-manager --daemon &
 
 ## Color Profile 
-xiccd &
+#xiccd &
 
 ## Restore Wallpaper
 wal -Re &
@@ -114,9 +115,9 @@ exec thunar --daemon &
 exec plank &
 
 ## Autostart programs in ~/.config/autostart
-dir="$HOME/.config/autostart/*.desktop"
+#dir="$HOME/.config/autostart/*.desktop"
 
-for file in $dir; do 
-	$(grep '^Exec' $file | tail -1 | sed 's/^Exec=//' | sed 's/%.//' \
-	| sed 's/^"//g' | sed 's/" *$//g') &
-done
+#for file in $dir; do 
+	#$(grep '^Exec' $file | tail -1 | sed 's/^Exec=//' | sed 's/%.//' \
+	#| sed 's/^"//g' | sed 's/" *$//g') &
+#done

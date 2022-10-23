@@ -1,12 +1,13 @@
 #!/bin/bash
 
 ## Autostart Programs
-	
+xdg-autostart &
+
 ## xfce4-settings daemon
 xfsettingsd &
 
 # Enable power management
-xfce4-power-manager --daemon &
+#xfce4-power-manager --daemon &
 
 ## Dunst (Notifications Daemon)
 dunst &
