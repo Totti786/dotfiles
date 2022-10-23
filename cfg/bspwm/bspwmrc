@@ -61,8 +61,7 @@ for i in ${floating[@]}; do
    bspc rule -a $i state=floating follow=on focus=on; done
    
 bspc rule -a Zathura state=tiled
-bspc rule -a Plank state=floating
-
+bspc rule -a Plank layer=above manage=on border=off
 
 ## Autostart Programs ----------------------------------------#
 
