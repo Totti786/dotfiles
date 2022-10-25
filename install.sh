@@ -70,7 +70,7 @@ change_dock() {
 }
 
 fixOpenbox(){
-	if [ -f ~/.config/wpg/templates/ob_colorbamboo.base ]; then
+	if [ -f "$HOME/.config/wpg/templates/ob_colorbamboo.base" ]; then
 		sed  -i -e 's/osd.bg: .*/osd.bg: Flat/g' ~/.config/wpg/templates/ob_colorbamboo.base
 		sed  -i -e 's/osd.border.color: .*/osd.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
 		sed  -i -e 's/menu.border.width: .*/menu.border.width: 8/g' ~/.config/wpg/templates/ob_colorbamboo.base
@@ -99,7 +99,7 @@ wpgtk(){
 		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg
 		exit
 	fi
-	changeTheme
+	fixOpenbox
 	exit
 	}
 
