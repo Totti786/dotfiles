@@ -234,7 +234,7 @@ main(){
 			;;
 		5)
 			git pull
-			main
+			sh $DIR/install.sh
 			;;
 		6)
 			exit
