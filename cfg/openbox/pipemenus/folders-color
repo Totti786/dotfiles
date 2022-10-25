@@ -1,5 +1,6 @@
 #!/bin/bash
 
+## Openbox script to change Papirus folder colors with papirus-folders
 
 MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
 
