@@ -504,7 +504,7 @@
     <!-- Screenshot Keys -->
     <keybind key="Print">
       <action name="Execute">
-        <command>flameshot full -p ~/Pictures/Screenshots</command>
+        <command>takeshot --now</command>
       </action>
     </keybind>
     <keybind key="A-Print">
@@ -512,12 +512,12 @@
         <command>flameshot gui</command>
       </action>
     </keybind>
-    <keybind key="S-Print">
+    <keybind key="C-Print">
       <action name="Execute">
         <command>flameshot full -c</command>
       </action>
     </keybind>
-    <keybind key="C-Print">
+    <keybind key="S-Print">
       <action name="Execute">
         <command>takeshot --win</command>
       </action>
