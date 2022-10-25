@@ -15,27 +15,47 @@ update_hooks() {
 # Format of the information displayed
 # Eg. {{ artist }} - {{ album }} - {{ title }}
 # See more attributes here: https://github.com/altdesktop/playerctl/#printing-properties-and-metadata
-#FORMAT1="{{ title }} - {{ artist }} - {{duration(position) }} "/" {{ duration(mpris:length)}}"
-FORMAT="{{ title }}: {{ artist }}"
+Format="{{ title }}: {{ artist }}"
+Duration="{{duration(position) }} "/" {{ duration(mpris:length)}}"
 
 player(){
-Current="$(playerctl metadata --format "$FORMAT")"
-#Current1="$(playerctl metadata --format "$FORMAT1")"
-PlayerName="$(playerctl -l | head -n1 | cut -f1 -d ".")"
+	Current="$(playerctl metadata --format "$Format")"
+	PlayerName="$(playerctl -l | head -n1 | cut -f1 -d ".")"
 	case $PlayerName in
-	  spotify) echo $Current 
+	  spotify) echo $Current 
 	  ;;
-	  firefox) echo $Current 
+	  firefox) echo $Current 
 	  ;;
-	  kdeconnect) echo $Current 
+	  kdeconnect) echo $Current 
 	  ;;  
-	  vlc) echo $Current 嗢
+	  vlc) echo $Current 
 	  ;;  
-	  rhythmbox) echo $Current 蓼
+	  mpv) echo $Current 
+	  ;;  
+	  rhythmbox) echo $Current 
 	  ;;
 	  *) echo $Current
 	esac
 }
+duration(){
+	CurrentD="$(playerctl metadata --format "$Duration")"
+	PlayerName="$(playerctl -l | head -n1 | cut -f1 -d ".")"
+	case $PlayerName in
+	  spotify) echo " $CurrentD "
+	  ;;
+	  firefox) echo " "
+	  ;;
+	  kdeconnect) echo " $CurrentD "
+	  ;;  
+	  vlc) echo " $CurrentD 嗢"
+	  ;;  
+	  mpv) echo " $CurrentD "
+	  ;;  
+	  rhythmbox) echo " $CurrentD 蓼"
+	  ;;
+	  *) echo ""
+	esac
+	}
 
 PLAYERCTL_STATUS=$(playerctl status 2>/dev/null)
 EXIT_CODE=$?
@@ -48,7 +68,7 @@ fi
 
 if [ "$1" == "--status" ]; then
     echo "$STATUS"
-else
+elif [ "$1" == "--name" ]; then
     if [ "$STATUS" = "Stopped" ]; then
         echo "No music is playing"
     elif [ "$STATUS" = "Paused"  ]; then
@@ -60,4 +80,14 @@ else
         update_hooks "$PARENT_BAR_PID" 1
 		player
     fi
+elif [ "$1" == "--duration" ]; then
+	 if [ "$STATUS" = "Stopped" ]; then
+        echo ""
+    elif [ "$STATUS" = "Paused"  ]; then
+        duration
+    elif [ "$STATUS" = "No player is running"  ]; then
+        echo ""
+    else
+		duration
+	fi
 fi
