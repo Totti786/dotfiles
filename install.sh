@@ -69,6 +69,15 @@ change_dock() {
 	_EOF_
 }
 
+fixOpenbox(){
+	if [ -f ~/.config/wpg/templates/ob_colorbamboo.base ]; then
+		sed  -i -e 's/osd.bg: .*/osd.bg: Flat/g' ~/.config/wpg/templates/ob_colorbamboo.base
+		sed  -i -e 's/osd.border.color: .*/osd.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
+		sed  -i -e 's/menu.border.width: .*/menu.border.width: 8/g' ~/.config/wpg/templates/ob_colorbamboo.base
+		sed  -i -e 's/window.active.border.color: .*/window.active.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
+	fi
+	}
+
 changeTheme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark"	
@@ -77,12 +86,7 @@ changeTheme(){
 	if ! [[ "$(grep -i "qt5ct" /etc/environment | head -n1)" == "QT_QPA_PLATFORMTHEME=\"qt5ct\"" ]]; then
 		echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
 	fi
-	if [ -f ~/.config/wpg/templates/ob_colorbamboo.base ]; then
-		sed  -i -e 's/osd.bg: .*/osd.bg: Flat/g' ~/.config/wpg/templates/ob_colorbamboo.base
-		sed  -i -e 's/osd.border.color: .*/osd.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
-		sed  -i -e 's/menu.border.width: .*/menu.border.width: 8/g' ~/.config/wpg/templates/ob_colorbamboo.base
-		sed  -i -e 's/window.active.border.color: .*/window.active.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
-	fi
+	fixOpenbox
 	papirus-folders -R
 	}
 
@@ -178,6 +182,7 @@ update(){
 	cp /tmp/info ~/.config/polybar/scripts/info
 	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
 	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
+	fixOpenbox
 	papirus-folders -R
 	exit
 	}
