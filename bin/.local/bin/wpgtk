@@ -152,7 +152,6 @@ change_colors() {
 	sed -i -e "s/color1 = '#.*',/color1 = '${FG}',/g" $conky
 	sed -i -e "s/color2 = '#.*',/color2 = '${bright_blue}',/g" $conky
 	sed -i -e "s/color3 = '#.*',/color3 = '${bright_yellow}',/g" $conky
-
 	
 	# resize and move wallpaper for use by other programs
 	convert -resize 1920x1080! $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
