@@ -5,7 +5,7 @@ window.label.text.justify: Center
 window.client.padding.width: 0
 window.handle.width: 0
 
-menu.border.width: 0
+menu.border.width: 10
 menu.items.active.bg: Solid Flat
 menu.items.active.bg.color: {active}
 menu.items.active.text.color: {color15}
@@ -27,11 +27,11 @@ osd.bg.color: {color0}
 osd.bg.colorTo: {color0}
 osd.bg.border.color: {active}
 osd.border.color: {active}
-osd.border.width: 1
+osd.border.width: 2
 osd.label.bg: parentrelative
 osd.label.text.color: {color15}
 
-window.active.border.color: {active}
+window.active.border.color: {inactive}
 window.inactive.border.color: {inactive}
 window.active.button.disabled.bg: Solid Flat
 window.active.button.disabled.bg.color: {active}
