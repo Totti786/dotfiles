@@ -33,4 +33,7 @@ copyq --start-server &
 thunar --daemon &
 
 ## Plank (Dock)
-exec plank &
+plank &
+
+## Conky (Keybind Menu)
+sh ~/.local/bin/conky.sh
