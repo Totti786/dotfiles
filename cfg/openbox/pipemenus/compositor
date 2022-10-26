@@ -15,10 +15,10 @@ if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
 	exit 1
 fi
 
-readonly EXECXCOMP='picom --experimental-backends'
+readonly EXECXCOMP='picom'
 readonly RESTART_ATTEMPTS=20
 readonly HELP='
-ac-compositor an openbox pipe menu for use with picom
+compositor an openbox pipe menu for use with picom
 It should normally be called from an openbox menu.
 
 Options (passed from the menu):
