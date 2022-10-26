@@ -44,21 +44,24 @@ super + {m,x,r,s,i,c,e}
 ##---------- Applications ----------##
 
 # Launch Apps
-super + {e,f,w,o,g,b,y,a,z}
-	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,discord}
+super + {e,f,w,o,g,b,y,a,z,v}
+	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,discord,copyq show}
 
 # Launch CopyQ
-super + shift + {v,s}
-	{copyq show, spotify}
+super + shift + {s,w,r}
+	{spotify, sh ~/.local/bin/wpgtk pick,rhythmbox}
 
 # Terminal Apps
-ctrl + alt + {v,n,r,h,b}
-	alacritty -e {vim,nvim,ranger,htop,bashtop}
+ctrl + alt + {v,n,r,h}
+	alacritty -e {vim,nvim,ranger,htop}
 
 # Color Picker
 super + p
 	color-gpick
 
+# Dmenu
+super + shift + d
+	~/.local/bin/dmenu.sh
 # Lockscreen
 ctrl + alt + l
    lockscreen
@@ -119,7 +122,7 @@ ctrl + shift + {q,r}
 	bspc {quit,wm -r}
 	
 # Split horizontal, vertical or cancel
-super + {h,v,q}
+super + shift + {h,v,c}
 	bspc node -p {east,south,cancel}
 
 # Preselect the ratio
@@ -164,14 +167,17 @@ super + {Tab,grave}
 super + {_,shift + }{1-8}
 	bspc {desktop -f,node -d} '^{1-8}' --follow
 
-# Expanding windows
-super + control + {Left,Right,Up,Down}
-	bspc node -z {left -20 0,right 20 0,top 0 -20,bottom 0 20}
+## Resizing windows
+super + alt + Left
+	bspc node -z right -20 0 & bspc node -z left +20 0
+super + alt + Right
+	bspc node -z right +20 0 & bspc node -z left -20 0
+super + alt + Up
+	bspc node -z top 0 -20 & bspc node -z bottom 0 +20
+super + alt + Down
+	bspc node -z top 0 +20 & bspc node -z bottom 0 -20
 	
-## Shrinking windows
-super + alt + {Left,Right,Up,Down}
-	bspc node -z {left 20 0,right -20 0,top 0 20,bottom 0 -20}
-	
+
 ## Move floating windows
 alt + shift + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}jj
