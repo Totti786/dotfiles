@@ -18,13 +18,16 @@ flameshot
 fzf
 geany
 geany-plugins
+gnome-calculator
 gnome-disk-utility
 gpick
+gradience
 htop
 imagemagick
 jgmenu
 kdeconnect
 light
+linux-wifi-hotspot
 lxappearance-obconf
 mpv
 mpv-mpris
@@ -34,6 +37,7 @@ networkmanager-openvpn
 nm-connection-editor
 noto-fonts
 noto-fonts-emoji
+nvtop
 obconf
 openbox
 openssh
