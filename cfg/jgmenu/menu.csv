@@ -9,6 +9,7 @@ Applications,^pipe(jgmenu_run ob --cmd="obmenu-generator" --tag="Applications")
 Screenshot,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//shots" --tag="Screenshot")
 Screen Recorder,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//record" --tag="Screen Recorder")
 Preferences,^checkout(preferences)
+Keybinds, sh ~/.local/bin/conky.sh
 Settings Manager,xfce4-settings-manager
 System,^checkout(Exit)
 
