@@ -13,7 +13,7 @@ xfce4-power-manager --daemon &
 dunst &
 
 ## Picom (Compositor)	
-picom -b --experimental-backends &
+picom -b &
 
 ## Restore Wallpaper
 wal -Re &
@@ -30,7 +30,7 @@ sh ~/.config/polybar/launch.sh &
 copyq --start-server &
 
 ## Thunar Daemon
-exec thunar --daemon &
+thunar --daemon &
 
 ## Plank (Dock)
 exec plank &
