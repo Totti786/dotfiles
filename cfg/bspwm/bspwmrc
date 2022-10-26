@@ -53,14 +53,15 @@ bspc config focus_follows_pointer true
 bspc rule -r *:*
 
 ## special rules
-declare -a floating=(alacritty-float obs Onboard Yad 'Firefox:Picture-in-Picture' \
-Viewnior feh Nm-connection-editor stalonetray copyq kotatogram-desktop \
-xfce4-settings-manager AudioRelay)
+declare -a floating=(alacritty-float obs Onboard Yad '*:*:Picture in picture' \
+Viewnior feh Nm-connection-editor stalonetray copyq KotatogramDesktop '*:*:Library' \
+xfce4-settings-manager AudioRelay Sxiv Trackma-gtk)
 
 for i in ${floating[@]}; do
    bspc rule -a $i state=floating follow=on focus=on; done
    
 bspc rule -a Zathura state=tiled
+bspc rule -a conky state=floating border=off
 bspc rule -a Plank layer=above manage=on border=off
 
 ## Autostart Programs ----------------------------------------#
@@ -113,6 +114,9 @@ thunar --daemon &
 
 ## Plank
 plank &
+
+## Conky
+sh ~/.local/bin/conky.sh
 
 ## Autostart programs in ~/.config/autostart
 #dir="$HOME/.config/autostart/*.desktop"
