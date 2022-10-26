@@ -17,7 +17,7 @@ super + shift + Return
 
 # Drop Down Terminal
 alt + Return
-	tdrop -ma -w -20 -y "0"  alacritty
+	tdrop -a -y 24  alacritty
 	
 # Terminal (fullscreen)
 super + t
