@@ -2,7 +2,7 @@
 
 ## Weather data
 # you need to get a free API key from https://home.openweathermap.org for the script to be functional 
-KEY=""  # put your Opeanweather API key here
+KEY="1f6e449790b8cf73a3cab8d5715483f8"  # put your Opeanweather API key here
 
 # you also need to sign up on https://www.weatherbit.io/account/create  
 # in order to use all the features of this script you need to sign up for an API key
