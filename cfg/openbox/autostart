@@ -35,5 +35,5 @@ thunar --daemon &
 ## Plank (Dock)
 plank &
 
-## Conky (Keybind Menu)
+## Conky (Keybinds Menu)
 sh ~/.local/bin/conky.sh
