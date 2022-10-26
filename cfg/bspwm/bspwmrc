@@ -74,9 +74,9 @@ xcape -e 'Super_L=Alt_L|F1' &
 xcape -e 'Super_R=Alt_L|F1' &
 
 # Polkit agent
-if [[ ! `pidof xfce-polkit` ]]; then
-	/usr/lib/xfce-polkit/xfce-polkit &
-fi 
+#if [[ ! `pidof xfce-polkit` ]]; then
+	#/usr/lib/xfce-polkit/xfce-polkit &
+#fi 
 
 ## Fix cursor
 xsetroot -cursor_name left_ptr &
@@ -103,16 +103,16 @@ bspc config -m focused top_padding 23
 bspc config -m focused bottom_padding 23 
 
 ## Picom	
-picom -b --experimental-backends &
+picom &
 
 ## CopyQ
 copyq --start-server &
 
 ## Thunar Daemon
-exec thunar --daemon &
+thunar --daemon &
 
 ## Plank
-exec plank &
+plank &
 
 ## Autostart programs in ~/.config/autostart
 #dir="$HOME/.config/autostart/*.desktop"
