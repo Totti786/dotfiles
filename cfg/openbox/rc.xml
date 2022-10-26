@@ -660,12 +660,6 @@
         <command>ytfzf -fD</command>
       </action>
     </keybind>
-    <!-- OBS -->
-    <keybind key="W-o">
-      <action name="Execute">
-        <command>obs</command>
-      </action>
-    </keybind>
     <!-- Evince -->
     <keybind key="W-g">
       <action name="Execute">
@@ -684,16 +678,10 @@
         <command>copyq show</command>
       </action>
     </keybind>
-    <!-- Blueman -->
+    <!-- Bluetooth Rofi -->
     <keybind key="W-b">
       <action name="Execute">
         <command>rofi-bluetooth</command>
-      </action>
-    </keybind>
-    <!-- Ani-Cli Terminal -->
-    <keybind key="W-S-a">
-      <action name="Execute">
-        <command>alacritty -e aniwrapper -c</command>
       </action>
     </keybind>
     <!-- Youtube-cli -->
@@ -708,7 +696,7 @@
         <command>~/.local/bin/dmenu.sh</command>
       </action>
     </keybind>
-    <!-- trayToggle -->
+    <!-- Polbar Restart -->
     <keybind key="W-S-m">
       <action name="Execute">
         <command>~/.config/polybar/launch.sh</command>
@@ -720,7 +708,7 @@
         <command>~/.local/bin/bluetoothC</command>
       </action>
     </keybind>
-    <!-- wpgtk sxiv pick-->
+    <!-- Change Wallpaper-->
     <keybind key="W-S-w">
       <action name="Execute">
         <command>~/.local/bin/wpgtk pick</command>
@@ -730,12 +718,6 @@
     <keybind key="W-S-c">
       <action name="Execute">
         <command>rofi -modi "calc" -show</command>
-      </action>
-    </keybind>
-    <!-- Rofi Emoji Menu-->
-    <keybind key="W-S-e">
-      <action name="Execute">
-        <command>rofi -modi "emoji" -show</command>
       </action>
     </keybind>
     <!-- Spotify -->
