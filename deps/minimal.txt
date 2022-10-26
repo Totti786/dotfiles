@@ -48,6 +48,7 @@ playerctl
 polybar
 pulseaudio-equalizer
 python
+python-pip
 qt5ct
 qt5-styleplugins
 ranger
