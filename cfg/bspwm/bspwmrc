@@ -53,18 +53,27 @@ bspc config focus_follows_pointer true
 bspc rule -r *:*
 
 ## special rules
-declare -a floating=(alacritty-float obs Onboard Yad '*:*:Picture in picture' \
-Viewnior feh Nm-connection-editor stalonetray copyq KotatogramDesktop '*:*:Library' \
-xfce4-settings-manager AudioRelay Sxiv Trackma-gtk)
+declare -a floating=(alacritty-float Lxappearance obs
+	Onboard Yad '*:*:Picture-in-Picture' Viewnior
+	feh Nm-connection-editor stalonetray AudioRelay
+	copyq KotatogramDesktop '*:*:Library' Trackma-gtk
+	Xfce4-appearance-settings Xfce4-mouse-settings
+	Xfce4-settings-manager Sxiv Trackma-gtk)
 
 for i in ${floating[@]}; do
    bspc rule -a $i state=floating follow=on focus=on; done
-   
-bspc rule -a Zathura state=tiled
-bspc rule -a conky state=floating border=off
-bspc rule -a Plank layer=above manage=on border=off
+
+# Force tile windows
+declare -a tiled=(Zathura)
+for i in "${tiled[@]}"; do
+	bspc rule -a "$i" manage=on state=tiled
+done
+
+bspc rule -a Plank manage=off locked=on border=off state=floating focus=off layer=above 
 
 ## Autostart Programs ----------------------------------------#
+
+## XDG Autostart 
 xdg-autostart &
 
 ## Keybinds
