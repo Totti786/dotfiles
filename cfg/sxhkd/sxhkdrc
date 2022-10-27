@@ -182,7 +182,7 @@ super + alt + Down
 	bspc node -z top 0 +20 & bspc node -z bottom 0 -20
 
 ## Rotate windows
-ctrl + super + {r,KP_Divide}        
+ctrl + super + {r,KP_Divide}
   bspc node @/ -R {90,90}
 
 ## Move floating windows
@@ -194,7 +194,7 @@ super + d
 	~/.config/bspwm/winmask		
 	
 # Restart Polybar
-super + shift + m	
-	 sh ~/.config/polybar/launch.sh
+super + shift + m
+	sh ~/.config/polybar/launch.sh
 
 ##---------- EOF ----------##
