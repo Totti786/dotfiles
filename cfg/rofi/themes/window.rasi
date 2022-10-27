@@ -1,0 +1,104 @@
+/**
+ *
+ * Author : Tarek 
+ * Github : @Totti786
+ * 
+ * Rofi Theme File
+ * Rofi Version: 1.7.3
+ **/
+ 
+configuration {
+	click-to-exit: 		true;
+	ml-row-down: 		"Alt+Tab";
+	hover-select: 		true;
+	me-select-entry:	"";
+	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
+}
+
+@import "colors.rasi"
+@import "fonts.rasi"
+
+window {
+    transparency:                   "real";
+    background-color:               @background;
+    text-color:                     @foreground;
+    border:                  		0px;
+    border-color:                  	@selected;
+    border-radius:                  10px;
+    width:                          500px;
+
+}
+
+listview {
+    background-color:               @background;
+    columns:                        1;
+    lines:							7;
+    spacing:                        4px;
+    cycle:                          true;
+    dynamic:                        true;
+    layout:                         vertical;
+}
+
+mainbox {
+    background-color:               @background;
+    children:                       [ listview ];
+    spacing:                       	10px;
+    padding:                        10px;
+}
+
+element {
+    background-color:               @background;
+    text-color:                     @foreground;
+    orientation:                    horizontal;
+    border-radius:                  10px;
+    padding:                        5px;
+}
+
+element-icon {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    size:                           0px;
+    border:                         0px;
+}
+
+element-text {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    expand:                         true;
+    horizontal-align:               0;
+    vertical-align:                 0.5;
+    margin:                         2px 0px 2px 2px;
+}
+
+element selected {
+    background-color:               @selected;
+    text-color:                     @background;
+    border:                  		0px;
+    border-radius:                  10px;
+    border-color:                  	@selected;
+}
+
+element.active,
+element.selected.urgent {
+  background-color: @on;
+  text-color: @background;
+  border-color: @on;
+  border-radius: 10px;
+}
+
+element.selected.urgent {
+  border-color: @selected;
+}
+
+element.urgent,
+element.selected.active {
+  background-color: @off;
+  text-color: @background;
+  border-color: @off;
+}
+
+element.selected.active {
+  border-color: @selected;
+}
