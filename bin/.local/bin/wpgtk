@@ -16,7 +16,8 @@ systray="$HOME/.config/stalonetrayrc"
 cava="$HOME/.config/cava/config"
 copyq="$HOME/.config/copyq/copyq.conf"
 jgmenu="$HOME/.config/jgmenu/jgmenurc"
-conky="$HOME/.config/conky/conky-Openbox.conf"
+conky1="$HOME/.config/conky/conky-Openbox.conf"
+conky2="$HOME/.config/conky/conky-bspwm.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
 
 ## Change colors
@@ -147,11 +148,11 @@ change_colors() {
 	sed -i -e "s/sel_fg=#.*/sel_fg${FG}/g" $copyq
 	
 	# conky
-	sed -i -e "s/own_window_colour = '#.*',/own_window_colour = '${BG}',/g" $conky
-	sed -i -e "s/color0 = '#.*',/color0 = '${bright_red}',/g" $conky
-	sed -i -e "s/color1 = '#.*',/color1 = '${FG}',/g" $conky
-	sed -i -e "s/color2 = '#.*',/color2 = '${bright_blue}',/g" $conky
-	sed -i -e "s/color3 = '#.*',/color3 = '${bright_yellow}',/g" $conky
+	sed -i -e "s/own_window_colour = '#.*',/own_window_colour = '${BG}',/g" $conky1 $conky2
+	sed -i -e "s/color0 = '#.*',/color0 = '${bright_red}',/g" $conky1 $conky2
+	sed -i -e "s/color1 = '#.*',/color1 = '${FG}',/g" $conky1 $conky2
+	sed -i -e "s/color2 = '#.*',/color2 = '${bright_blue}',/g" $conky1 $conky2
+	sed -i -e "s/color3 = '#.*',/color3 = '${bright_yellow}',/g" $conky1 $conky2
 	
 	# resize and move wallpaper for use by other programs
 	convert -resize 1920x1080! $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
