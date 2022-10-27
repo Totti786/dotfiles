@@ -7,7 +7,7 @@ window.handle.width: 0
 
 menu.border.width: 8
 menu.items.active.bg: Solid Flat
-menu.items.active.bg.color: #316678
+menu.items.active.bg.color: #284d5a
 menu.items.active.text.color: #fbf3e2
 menu.items.bg: Flat Solid
 menu.items.bg.color: #0B1310
@@ -25,33 +25,33 @@ menu.title.text.justify: Left
 osd.bg: Flat
 osd.bg.color: #0B1310
 osd.bg.colorTo: #0B1310
-osd.bg.border.color: #316678
+osd.bg.border.color: #284d5a
 osd.border.color: #0B1310
 osd.border.width: 3
 osd.label.bg: parentrelative
 osd.label.text.color: #fbf3e2
 
 window.active.border.color: #0B1310
-window.inactive.border.color: #224652
+window.inactive.border.color: #1c353d
 window.active.button.disabled.bg: Solid Flat
-window.active.button.disabled.bg.color: #316678
-window.active.button.disabled.bg.border.color: #316678
-window.active.button.disabled.image.color: #316678
+window.active.button.disabled.bg.color: #284d5a
+window.active.button.disabled.bg.border.color: #284d5a
+window.active.button.disabled.image.color: #284d5a
 window.active.button.hover.bg: Solid Flat
-window.active.button.hover.bg.color: #316678
-window.active.button.hover.bg.border.color: #316678
-window.active.button.hover.image.color: #224652
+window.active.button.hover.bg.color: #284d5a
+window.active.button.hover.bg.border.color: #284d5a
+window.active.button.hover.image.color: #1c353d
 window.active.button.pressed.bg: Solid Flat
-window.active.button.pressed.bg.color: #316678
-window.active.button.pressed.bg.border.color: #316678
-window.active.button.pressed.image.color: #224652
+window.active.button.pressed.bg.color: #284d5a
+window.active.button.pressed.bg.border.color: #284d5a
+window.active.button.pressed.image.color: #1c353d
 Window.active.button.toggled.bg: Solid Flat
-window.active.button.toggled.bg.color: #316678
-window.active.button.toggled.bg.border.color: #316678
+window.active.button.toggled.bg.color: #284d5a
+window.active.button.toggled.bg.border.color: #284d5a
 window.active.button.toggled.image.color: #fbf3e2
 window.active.button.unpressed.bg: Solid Flat
-window.active.button.unpressed.bg.color: #316678
-window.active.button.unpressed.bg.border.color: #316678
+window.active.button.unpressed.bg.color: #284d5a
+window.active.button.unpressed.bg.border.color: #284d5a
 window.active.button.unpressed.image.color: #fbf3e2
 window.active.client.color: #0B1310
 window.active.grip.bg: Solid Flat
@@ -62,32 +62,32 @@ window.active.label.bg: Parentrelative
 window.active.label.text.color: #fbf3e2
 window.active.label.text.font: shadow=n
 window.active.title.bg: Solid Flat
-window.active.title.bg.color: #316678
+window.active.title.bg.color: #284d5a
 
 
 window.inactive.button.disabled.bg: Solid Flat
-window.inactive.button.disabled.bg.color: #224652
-window.inactive.button.disabled.bg.border.color: #224652
-window.inactive.button.disabled.image.color: #224652
+window.inactive.button.disabled.bg.color: #1c353d
+window.inactive.button.disabled.bg.border.color: #1c353d
+window.inactive.button.disabled.image.color: #1c353d
 window.inactive.button.hover.bg: Solid Flat
-window.inactive.button.hover.bg.color: #224652
-window.inactive.button.hover.bg.border.color: #224652
+window.inactive.button.hover.bg.color: #1c353d
+window.inactive.button.hover.bg.border.color: #1c353d
 window.inactive.button.hover.image.color: #2E2920
 window.inactive.button.pressed.bg: Solid Flat
-window.inactive.button.pressed.bg.color: #224652
-window.inactive.button.pressed.image.color: #224652
-window.inactive.button.toggled.image.color: #224652
+window.inactive.button.pressed.bg.color: #1c353d
+window.inactive.button.pressed.image.color: #1c353d
+window.inactive.button.toggled.image.color: #1c353d
 window.inactive.button.unpressed.bg: Solid Flat
-window.inactive.button.unpressed.bg.color: #224652
-window.inactive.button.unpressed.bg.border.color: #224652
-window.inactive.button.unpressed.image.color: #224652
+window.inactive.button.unpressed.bg.color: #1c353d
+window.inactive.button.unpressed.bg.border.color: #1c353d
+window.inactive.button.unpressed.image.color: #1c353d
 window.inactive.client.color: #0B1310
 window.inactive.grip.bg: Solid Flat
-window.inactive.grip.bg.color: #224652
+window.inactive.grip.bg.color: #1c353d
 window.inactive.handle.bg: Solid Flat
-window.inactive.handle.bg.color: #224652
+window.inactive.handle.bg.color: #1c353d
 window.inactive.label.bg: Parentrelative
-window.inactive.label.text.color: #224652
+window.inactive.label.text.color: #1c353d
 window.inactive.label.text.font: shadow=n
 window.inactive.title.bg: Solid Flat
-window.inactive.title.bg.color: #224652
+window.inactive.title.bg.color: #1c353d
