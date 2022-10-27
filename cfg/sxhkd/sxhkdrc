@@ -29,6 +29,10 @@ super + t
 ~button3
   xqp 0 $(xdo id -N Bspwm -n root) && jgmenu_run 
 
+~button2
+	xqp 0 $(xdo id -N Bspwm -n root) && \
+	rofi -monitor -3 -theme ~/.config/rofi/themes/window.rasi -modi "window" -show
+
 # Rofi App Launcher
 alt + F1
 	sh ~/.config/rofi/bin/launcher
@@ -176,16 +180,14 @@ super + alt + Up
 	bspc node -z top 0 -20 & bspc node -z bottom 0 +20
 super + alt + Down
 	bspc node -z top 0 +20 & bspc node -z bottom 0 -20
-	
+
+## Rotate windows
+ctrl + super + {r,KP_Divide}        
+  bspc node @/ -R {90,90}
 
 ## Move floating windows
 alt + shift + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}jj
-## 
-super + u : {h,j,k,l}
-    STEP=20; SELECTION={1,2,3,4}; \
-    bspc node -z $(echo "left -$STEP 0,bottom 0 $STEP,top 0 -$STEP,right $STEP 0" | cut -d',' -f$SELECTION) || \
-    bspc node -z $(echo "right -$STEP 0,top 0 $STEP,bottom 0 -$STEP,left $STEP 0" | cut -d',' -f$SELECTION)
 
 # Hide/Unhide Window
 super + d
