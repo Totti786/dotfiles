@@ -49,8 +49,6 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | -------------------------------------------------------------------------------------------------------- | ------------------- |
 | [`Roboto`](https://github.com/googlefonts/roboto)                                                        | Primary Font        |
 | [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)                              | Primary UI Font     |
-| [`Font Awesome`](https://github.com/FortAwesome/Font-Awesome)                                            | Primary Icon Font   |
-| [`Phoshphor Icons`](https://github.com/phosphor-icons/phosphor-icons/blob/master/src/fonts/Phosphor.ttf) | Secondary Icon Font |
 
 ## :gear: Configuration
 
