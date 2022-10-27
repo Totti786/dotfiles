@@ -78,7 +78,3 @@ imagemagick
 ## :sparkles: Credits
 
 - Excellent neovim config by [NvChad](https://github.com/NvChad/NvChad)
-- [pagankeymaster](https://github.com/pagankeymaster) for helping with various
-  bspwm scripts
-- Beautiful wallpaper artwork created by [BisBiswas](https://www.deviantart.com/bisbiswas/art/Scattered-Lights-898482741)
-- Some configs have been derived from [axyl-os](https://github.com/axyl-os)
