@@ -56,9 +56,10 @@ bspc rule -r *:*
 declare -a floating=(alacritty-float Lxappearance obs
 	Onboard Yad '*:*:Picture-in-Picture' Viewnior
 	feh Nm-connection-editor stalonetray AudioRelay
-	copyq KotatogramDesktop '*:*:Library' Trackma-gtk
+	copyq '*:*:Library' Trackma-gtk Pavucontrol
 	Xfce4-appearance-settings Xfce4-mouse-settings
-	Xfce4-settings-manager Sxiv Trackma-gtk)
+	Xfce4-settings-manager Sxiv Trackma-gtk gnome-calculator
+	Blueman-manager org.gnome.Weather )
 
 for i in ${floating[@]}; do
    bspc rule -a $i state=floating follow=on focus=on; done
