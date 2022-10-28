@@ -9,7 +9,6 @@
  
 configuration {
 	click-to-exit: 		true;
-	ml-row-down: 		"Alt+Tab";
 	hover-select: 		true;
 	me-select-entry:	"";
 	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
