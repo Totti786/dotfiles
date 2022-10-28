@@ -4,11 +4,12 @@
  * Github : @Totti786
  * 
  * Rofi Theme File
- * Rofi Version: 1.7.3
+ * Rofi Version: 1.7.5
  **/
  
 configuration {
 	click-to-exit: 		true;
+	fixed-num-lines: false;
 	hover-select: 		true;
 	me-select-entry:	"";
 	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
