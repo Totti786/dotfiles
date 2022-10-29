@@ -31,19 +31,15 @@ super + t
 
 ~button2
 	xqp 0 $(xdo id -N Bspwm -n root) && \
-	rofi -monitor -3 -theme ~/.config/rofi/themes/window.rasi -modi "window" -show
+	windowswitch "-monitor -3"
 
 # Rofi App Launcher
 alt + F1
 	sh ~/.config/rofi/bin/launcher
 
-# Rofi Network Menu
-super + n
-	 ~/.config/rofi/bin/network_menu
-
 # Rofi Menus/Applets
-super + {m,x,r,s,i,c,e}
-	sh ~/.config/rofi/bin/{media,powermenu,asroot,screenshot,network}
+super + {m,x,r,s,i,n}
+	sh ~/.config/rofi/bin/{media,powermenu,asroot,screenshot,network,~/.config/rofi/bin/network_menu}
 
 ##---------- Applications ----------##
 
@@ -65,7 +61,7 @@ super + p
 
 # Dmenu
 super + shift + d
-	~/.local/bin/dmenu.sh
+	dmenu.sh
 # Lockscreen
 ctrl + alt + l
    lockscreen
@@ -150,6 +146,9 @@ super + shift + space
 # Set the node flags
 super + ctrl + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
+
+alt + F8
+	bspc node -g sticky
 
 # Send the window to another edge of the screen
 super + {_,shift + }{Left,Down,Up,Right}
