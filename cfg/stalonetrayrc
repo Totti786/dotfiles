@@ -1,6 +1,6 @@
 # vim:filetype=config:tw=80:et
 
-background "#0B1310"
+background "#0a0608"
 vertical true 
 geometry 1x1-4+27
 grow_gravity NE 
