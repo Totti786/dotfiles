@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 
 ## This script should work with any Arch based system that uses systemd
-## The logout option works with Openbox, i3 and BSPWM
+## The logout option only works with Openbox, i3 and BSPWM
 
 DIR="$HOME/.config"
-
 rofi_command="rofi -theme $DIR/rofi/themes/powermenu.rasi"
-
-current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
-
-uptime=$(uptime -p | sed -e 's/up //g')
+#uptime=$(uptime -p | sed -e 's/up //g')
 
 # Options
 shutdown=""
@@ -42,10 +38,11 @@ case $chosen in
     $suspend)
 		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ $ans == $confirm ]]; then
-			systemctl suspend
+			systemctl suspend && lockscreen
 		fi
         ;;
     $logout)
+		current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
 		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ $ans == $confirm ]]; then
 			if [[ $current_desktop == "Openbox" ]]; then

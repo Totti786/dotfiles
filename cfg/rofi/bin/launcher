@@ -5,10 +5,5 @@ DIR="$HOME/.config"
 rofi \
 	-show drun \
 	-modi drun,filebrowser,window,calc \
-	-no-lazy-grab \
-	-scroll-method 0 \
-	-drun-match-fields all \
 	-drun-display-format "{name}" \
-	-no-drun-show-actions \
-	-terminal alacritty \
 	-theme $HOME/.config/rofi/themes/launcher.rasi

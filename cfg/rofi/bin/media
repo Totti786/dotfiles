@@ -57,7 +57,7 @@ options="$toggle\n$button_previous\n$button_next\n$button_stop\n$button_shift"
 
 # Get the current playing song
 current=$(playerctl  metadata --format "{{ title }} - {{ artist }}")
-#current=$(~/.config/polybar/scripts/scroll_media_status.sh)
+#current=$(~/.config/polybar/scripts/playerctl-scroll.sh)
 
 if [[ -z "$current" ]]; then
     current="None"

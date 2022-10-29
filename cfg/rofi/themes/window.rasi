@@ -9,7 +9,7 @@
  
 configuration {
 	click-to-exit: 		true;
-	fixed-num-lines: false;
+	fixed-num-lines:	false;
 	hover-select: 		true;
 	me-select-entry:	"";
 	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
@@ -26,7 +26,6 @@ window {
     border-color:                  	@selected;
     border-radius:                  10px;
     width:                          500px;
-
 }
 
 listview {
@@ -59,7 +58,7 @@ element-icon {
     text-color:       				inherit;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
-    size:                           0px;
+    size:                           30px;
     border:                         0px;
 }
 
@@ -82,23 +81,9 @@ element selected {
 
 element.active,
 element.selected.urgent {
-  background-color: @on;
-  text-color: @background;
-  border-color: @on;
-  border-radius: 10px;
+    background-color:               @on;
+    text-color:                     @background;
+    border-color:                   @on;
+    border-radius:                  10px;
 }
 
-element.selected.urgent {
-  border-color: @selected;
-}
-
-element.urgent,
-element.selected.active {
-  background-color: @off;
-  text-color: @background;
-  border-color: @off;
-}
-
-element.selected.active {
-  border-color: @selected;
-}
