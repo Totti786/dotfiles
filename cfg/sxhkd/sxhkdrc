@@ -27,7 +27,7 @@ super + t
 
 # Right click menu
 ~button3
-  xqp 0 $(xdo id -N Bspwm -n root) && jgmenu_run 
+	xqp 0 $(xdo id -N Bspwm -n root) && jgmenu_run 
 
 ~button2
 	xqp 0 $(xdo id -N Bspwm -n root) && \
@@ -52,8 +52,8 @@ super + shift + {s,w,r}
 	{spotify, sh ~/.local/bin/wpgtk pick,rhythmbox}
 
 # Terminal Apps
-ctrl + alt + {v,n,r,h}
-	alacritty -e {vim,nvim,ranger,htop}
+ctrl + alt + {v,n,r,h,b}
+	alacritty -e {vim,nvim,ranger,htop, sh ~/.fehbg}
 
 # Color Picker
 super + p
