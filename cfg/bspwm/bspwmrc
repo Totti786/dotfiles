@@ -71,7 +71,7 @@ for i in "${tiled[@]}"; do
 	bspc rule -a "$i" manage=on state=tiled
 done
 
-bspc rule -a Plank manage=off locked=on border=off state=floating focus=off layer=above 
+bspc rule -a Plank manage=off locked=on border=off state=floating focus=off
 
 ## Autostart Programs ----------------------------------------#
 
@@ -127,8 +127,10 @@ thunar --daemon &
 plank &
 
 ## Conky
-sh ~/.local/bin/conky.sh
+sh ~/.local/bin/conky.sh &
 
+sleep 2
+xdo raise -N Plank
 ## Autostart programs in ~/.config/autostart
 #dir="$HOME/.config/autostart/*.desktop"
 
