@@ -12,7 +12,8 @@ file="${time}.png"
 
 # notify and view screenshot
 notify_view () {
-	dunstify -u low --replace=700 "Copied to clipboard."
+	dunstify -u low --replace=699 "Copied to clipboard."
+		viewnior ${dir}/"$file"
 	if [[ -e "$dir/$file" ]]; then
 		dunstify -u low --replace=699 "Screenshot Saved."
 	else
