@@ -7,4 +7,4 @@ options="\
        -kb-row-down "Super+Tab,Super+l,Super+ISO_Left_Tab" \
        -kb-row-up "Super+Shift+Tab,Super+h,Super+n""
 
-rofi $1 -show window -theme $path $options &
+rofi $1 -theme $path $options -modi "window" -show &

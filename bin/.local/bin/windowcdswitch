@@ -7,4 +7,4 @@ options="\
        -kb-row-down "Alt+Tab,Alt+l,Alt+ISO_Left_Tab" \
        -kb-row-up "Alt+Shift+Tab,Alt+h,Alt+n""
 
-rofi -show windowcd -theme $path $options &
+rofi -theme $path $options -modi "windowcd" -show &
