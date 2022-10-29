@@ -242,10 +242,15 @@ main(){
 	esac
 }
 
-if command -v $Dialog &> /dev/null; then 
-	main
-else 
-	sudo pacman -S $Dialog &&
-	main
-fi
+if [[ "$1" == "--update" ]]; then
+	git pull
+	update && exit
+else
+	if command -v $Dialog &> /dev/null; then 
+		main
+	else 
+		sudo pacman -S $Dialog &&
+		main
+	fi
 
+fi
