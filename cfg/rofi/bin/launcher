@@ -3,6 +3,7 @@
 DIR="$HOME/.config"
 
 rofi \
+	-no-lazy-grab \
 	-show drun \
 	-modi drun,filebrowser,window,calc \
 	-drun-display-format "{name}" \

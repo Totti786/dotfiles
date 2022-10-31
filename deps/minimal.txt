@@ -30,6 +30,7 @@ kdeconnect
 light
 linux-wifi-hotspot
 lxappearance-obconf
+maim
 mpv
 mpv-mpris
 mugshot
@@ -75,6 +76,7 @@ viewnior
 wmctrl
 xarchiver
 xcape
+xclip
 xdg-autostart
 xdg-user-dirs
 xdg-user-dirs-gtk
