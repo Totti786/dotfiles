@@ -36,10 +36,10 @@ bspc config window_gap 10
 bspc config split_ratio 0.50
 
 . "$HOME/.cache/wal/colors.sh"
-bspc config focused_border_color "$color1" 
-bspc config normal_border_color "$color0"
-bspc config active_border_color "$color5"
-bspc config presel_feedback_color "$color4"
+bspc config focused_border_color "$color8" 
+bspc config normal_border_color "$color1"
+bspc config active_border_color "$color12"
+bspc config presel_feedback_color "$color9"
 
 bspc config borderless_monocle true
 bspc config gapless_monocle true
@@ -99,12 +99,6 @@ xfsettingsd &
 ## Dunst
 dunst &
 
-## Enable power management
-#xfce4-power-manager --daemon &
-
-## Color Profile 
-#xiccd &
-
 ## Restore Wallpaper
 wal -Re &
 sh ~/.scripts/wpgtk run &
@@ -129,7 +123,7 @@ plank &
 ## Conky
 sh ~/.local/bin/conky.sh &
 
-sleep 2
+sleep 3 &&
 xdo raise -N Plank
 ## Autostart programs in ~/.config/autostart
 #dir="$HOME/.config/autostart/*.desktop"
