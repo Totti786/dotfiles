@@ -22,14 +22,7 @@ fix_modules() {
 	else 
 		sed -i -e 's/bna/sep backlight/g' "$DIR"/config.ini
 	fi
-	
-	# check if device has a battery and enable battery module
-	if [[ -z "$BATTERY" ]]; then
-		sed -i -e 's/battery\b/bat/g' "$DIR"/config.ini
-	else
-		sed -i -e 's/bat\b/battery/g' "$DIR"/config.ini
-	fi
-	
+			
 	# check if bspwm is the curren wm and changes the workspaces module 
 	if [[ $current_desktop == "bspwm" ]]; then
 		sed -i -e 's/modules-center = workspaces/modules-center = bspwm/g' "$DIR"/config.ini 
