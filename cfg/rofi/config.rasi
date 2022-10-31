@@ -3,7 +3,7 @@ configuration {
 	icon-theme:       		    "Papirus-Dark";
 	terminal: 		            "alacritty";
 	cycle:               		false;
-	hide-scrollbar:   		    true;
+	hide-scrollbar:   		    false;
 	disable-history: 		    false;
 	show-icons:                 true;
 	display-drun:               "";

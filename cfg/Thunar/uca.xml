@@ -56,7 +56,7 @@
 	<icon>view-preview</icon>
 	<name>Set as wallpaper</name>
 	<unique-id>1622798756568291-1</unique-id>
-	<command>~/.scripts/wpgtk setWall %f</command>
+	<command>~/.local/bin/wpgtk setWall %f</command>
 	<description>Set wallpaper with nitrogen in openbox</description>
 	<patterns>*</patterns>
 	<image-files/>
