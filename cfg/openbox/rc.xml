@@ -62,7 +62,7 @@
     </font>
   </theme>
   <desktops>
-    <number>8</number>
+    <number>6</number>
     <firstdesk>0</firstdesk>
     <names>
       <name>1</name>
@@ -1028,13 +1028,13 @@
     </context>
     <context name="Root">
       <mousebind action="Press" button="Middle">
-        <action name="ShowMenu">
-          <menu>client-list-combined-menu</menu>
+        <action name="Execute">
+          <command>windowswitch "-monitor -3"</command>
         </action>
       </mousebind>
       <mousebind action="Press" button="A-Right">
         <action name="ShowMenu">
-          <menu>client-list-combined-menu</menu>
+          <menu>windowswitch "-monitor -3"</menu>
         </action>
       </mousebind>
       <mousebind action="Press" button="Right">
