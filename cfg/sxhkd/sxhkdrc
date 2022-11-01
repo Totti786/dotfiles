@@ -44,24 +44,17 @@ super + {m,x,r,s,i,n}
 ##---------- Applications ----------##
 
 # Launch Apps
-super + {e,f,w,o,g,b,y,a,z,v}
-	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,discord,copyq show}
+super + {e,f,w,o,g,b,y,a,z,v,p}
+	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,discord,copyq show,color-gpick}
 
 # Launch CopyQ
-super + shift + {s,w,r}
-	{spotify, sh ~/.local/bin/wpgtk pick,rhythmbox}
+super + shift + {s,w,r,d}
+	{spotify,wpgtk pick,rhythmbox,dmenu.sh}
 
 # Terminal Apps
 ctrl + alt + {v,n,r,h,b}
 	alacritty -e {vim,nvim,ranger,htop, sh ~/.fehbg}
 
-# Color Picker
-super + p
-	color-gpick
-
-# Dmenu
-super + shift + d
-	dmenu.sh
 # Lockscreen
 ctrl + alt + l
    lockscreen
