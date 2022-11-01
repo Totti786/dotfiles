@@ -1,8 +1,5 @@
 #!/bin/bash
 
-## Environtment
-export PATH="${PATH}:$HOME/.local/bin"
-
 ## Autostart Programs
 #xdg-autostart &
 
