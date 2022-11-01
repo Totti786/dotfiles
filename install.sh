@@ -38,7 +38,7 @@ moveConfigs(){
 	# extracts the icons and moves them to the correct directory
 	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons 
 	# extracts the fonts and moves them to the correct directory
-	if [[ ! -d "$HOME/.local/share/fonts" ]]; then mkdir ~/.local/share/fonts ;fi
+	if [[ ! -d "$HOME/.local/share/fonts" ]]; then mkdir ~/.local/share/fonts ; fi
 	tar -xzf $DIR/deps/fonts.tar.gz -C ~/.local/share/fonts 
 	}
 	
@@ -69,14 +69,14 @@ change_dock() {
 	_EOF_
 }
 
-fixOpenbox(){
-	if [ -f "$HOME/.config/wpg/templates/ob_colorbamboo.base" ]; then
-		sed  -i -e 's/osd.bg: .*/osd.bg: Flat/g' ~/.config/wpg/templates/ob_colorbamboo.base
-		sed  -i -e 's/osd.border.color: .*/osd.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
-		sed  -i -e 's/menu.border.width: .*/menu.border.width: 8/g' ~/.config/wpg/templates/ob_colorbamboo.base
-		sed  -i -e 's/window.active.border.color: .*/window.active.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
-	fi
-	}
+#fixOpenbox(){
+	#if [ -f "$HOME/.config/wpg/templates/ob_colorbamboo.base" ]; then
+		#sed  -i -e 's/osd.bg: .*/osd.bg: Flat/g' ~/.config/wpg/templates/ob_colorbamboo.base
+		#sed  -i -e 's/osd.border.color: .*/osd.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
+		#sed  -i -e 's/menu.border.width: .*/menu.border.width: 8/g' ~/.config/wpg/templates/ob_colorbamboo.base
+		#sed  -i -e 's/window.active.border.color: .*/window.active.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
+	#fi
+	#}
 
 changeTheme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
@@ -86,7 +86,6 @@ changeTheme(){
 	if ! [[ "$(grep -i "qt5ct" /etc/environment | head -n1)" == "QT_QPA_PLATFORMTHEME=\"qt5ct\"" ]]; then
 		echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
 	fi
-	fixOpenbox
 	papirus-folders -R
 	}
 
@@ -99,8 +98,6 @@ wpgtk(){
 		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg
 		exit
 	fi
-	fixOpenbox
-	exit
 	}
 
 minimal(){
@@ -170,19 +167,24 @@ additionalPrograms(){
 }
 
 update(){
+	## update dependencies and install new ones
 	installDependencies
 	progressBar "Updating... "
-	if [[ -f "$HOME/.config/polybar/scripts/info" ]]; then 
-		cp $HOME/.config/polybar/scripts/info /tmp/info
-	fi
+	## backup weather info file
+	if [[ -f "$HOME/.config/polybar/scripts/info" ]]; then
+	   cp ~/.config/polybar/scripts/info ~/.cache/info; fi
+	## move udpated scripts and configs
 	sudo cp -r $DIR/bin/bin/ /usr/local/ 
 	cp -r $DIR/bin/.scripts/ ~/ 
 	cp -r $DIR/cfg/* ~/.config 
 	cp -r $DIR/bin/.local/ ~/
-	cp /tmp/info ~/.config/polybar/scripts/info
+	## restore weather info file
+	cp ~/.cache/info ~/.config/polybar/scripts/info
+	## remove already existing json file for background color scheme
 	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
+	## change wallpaper and update color scheme 
 	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
-	fixOpenbox
+	## change folder colors 
 	papirus-folders -R
 	exit
 	}
