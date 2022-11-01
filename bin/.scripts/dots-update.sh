@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 dots="$HOME/dotfiles"
-rofi_command="rofi -theme $dots/cfg/rofi/themes/screenshot.rasi"
+rofi_command="rofi -theme $dots/cfg/rofi/themes/window.rasi"
 
 # Variable passed to rofi
 options="Update\nExit"
