@@ -1,0 +1,13 @@
+#!/bin/bash
+
+file="$HOME/.config/polybar/modules.ini"
+off=/tmp/eww.lock
+if [[ ! -e $off ]]; then
+	polybar-msg action "#eww.hook.1"
+	eww open --toggle system-menu
+	touch "$off"
+else
+	polybar-msg action "#eww.hook.0"
+	eww open --toggle system-menu
+	rm "$off"
+fi
