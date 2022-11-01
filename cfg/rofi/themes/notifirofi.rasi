@@ -14,6 +14,7 @@ configuration {
     show-icons:                     true;
     drun-display-format:            "{name}";
     disable-history:                false;
+   	fixed-num-lines:				false;
 	hide-scrollbar: 				true;
 	sidebar-mode: 					false;
 }
@@ -27,7 +28,6 @@ window {
     line-margin:                    1;
     line-padding:                   1;
 	width:						    30%;
-    height:							70%;
 }
 
 prompt {
@@ -50,7 +50,7 @@ listview {
     background-color:               @background;
     padding:                        5px;
     columns:                        1;
-    lines:                          8;
+    lines:                          6;
     spacing:                        0%;
     cycle:                          true;
     dynamic:                        true;
