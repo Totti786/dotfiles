@@ -123,8 +123,13 @@ plank &
 ## Conky
 sh ~/.local/bin/conky.sh &
 
-sleep 3 &&
-xdo raise -N Plank
+
+## Fix Plank
+bspc subscribe node_add | while read -r _
+do
+  xdo raise -N Plank
+done &
+
 ## Autostart programs in ~/.config/autostart
 #dir="$HOME/.config/autostart/*.desktop"
 
