@@ -31,10 +31,10 @@ installDependencies(){
 	}
 
 moveConfigs(){
-	sudo cp -r $DIR/bin/bin/ /usr/local/ && echo "moved bin to /usr/local"
+	sudo cp -r $DIR/bin/usr/ / && echo "moved bin to /usr/local"
 	cp -r $DIR/bin/.scripts/ ~/ && echo "moved scripts home" 
 	cp -r $DIR/cfg/* ~/.config/ && echo "moved config files"
-	cp -r $DIR/bin/.local/ ~/ && echo "moved icons"
+	cp -r $DIR/bin/.local/ ~/ && echo "moved bin"
 	# extracts the icons and moves them to the correct directory
 	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons 
 	# extracts the fonts and moves them to the correct directory
