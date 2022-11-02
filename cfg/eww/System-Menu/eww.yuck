@@ -40,7 +40,7 @@
       (button :tooltip "Open Settings" :class "menu-settings" :onclick "System-Menu/scripts/launch settings" "󰒓")
       (button :tooltip "Open Color Picker" :class "color-picker" :onclick "System-Menu/scripts/launch picker" "󰈊")
       (button :tooltip "Exit" :class "menu-exit" :onclick "System-Menu/scripts/launch exit" "󰍃")
-      (button :tooltip "Shutdown this PC." :class "menu-power" :onclick "shutdown now" "󰐥")))
+      (button :tooltip "Shutdown this PC." :class "menu-power" :onclick "System-Menu/scripts/launch power" "󰐥")))
     (box :orientation "h" :class "first-row-system" :hexpand "false" :vexpand "false"
       (box :orientation "h" :class "main-wifi-box ${network-class == "󰤨" ? "main-wifi-box-on" : "main-wifi-box-off"}" :space-evenly "false"
         (button :class "main-wifi-button ${network-class == "󰤨" ? "main-wifi-button-on" : "main-wifi-button-off"}" :onclick "System-Menu/scripts/network --toggle" "${network-icon}")
@@ -57,7 +57,7 @@
           (label :halign "start" :tooltip bluetooth-battery :class "bluetooth-status-button ${bluetooth-class == "󰂯" ? "bluetooth-state-button-on" : "bluetooth-state-button-off"}" :limit-width "8" :text "${bluetooth-status}"))
         (box :class "bluetooth-buttons-box" :orientation "h" :space-evenly "false"
           (label :class "seperator" :text "")
-          (button :class "arrow" :onclick "blueberry" "")))
+          (button :class "arrow" :onclick "System-Menu/scripts/launch blue" "")))
       (box :orientation "h" :class "main-airplane-box ${airplane-icon == "󰀝" ? "main-airplane-box-on" : "main-airplane-box-off"}" :space-evenly "false"
         (button :class "main-airplane-button ${airplane-icon == "󰀝" ? "main-airplane-button-on" : "main-airplane-button-off"}" :onclick "System-Menu/scripts/airplane --toggle" "${airplane-icon}")
         (box :class "airplane-labels-box" :orientation "v" :space-evenly "false" :spacing 5
