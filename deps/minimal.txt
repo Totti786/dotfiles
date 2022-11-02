@@ -4,7 +4,6 @@ appimagelauncher
 axel
 blueman
 bluez-git
-breeze
 brightnessctl
 bspwm
 conky
