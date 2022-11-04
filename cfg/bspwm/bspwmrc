@@ -123,17 +123,8 @@ plank &
 ## Conky
 sh ~/.local/bin/conky.sh &
 
-
 ## Fix Plank
 bspc subscribe node_add | while read -r _
 do
   xdo raise -N Plank
 done &
-
-## Autostart programs in ~/.config/autostart
-#dir="$HOME/.config/autostart/*.desktop"
-
-#for file in $dir; do 
-	#$(grep '^Exec' $file | tail -1 | sed 's/^Exec=//' | sed 's/%.//' \
-	#| sed 's/^"//g' | sed 's/" *$//g') &
-#done
