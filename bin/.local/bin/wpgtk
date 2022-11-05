@@ -205,15 +205,15 @@ change_colors() {
 lockPerms(){
 	## give the user read and write permissions to the grub themes directory
 	if [[ -d "/usr/share/grub/themes/Arch" ]]; then
-	sudo chgrp -R $(whoami) /usr/share/grub/themes/
-	sudo chmod -R ug+rwX  /usr/share/grub/themes/
+		sudo chgrp -R $(whoami) /usr/share/grub/themes/
+		sudo chmod -R ug+rwX  /usr/share/grub/themes/
 	else 
 		echo "Can't find a compatible grub theme"
 	fi
 	## give the user read and write permissions to the sddm directory
 	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
-	sudo chgrp -R $(whoami) /usr/share/sddm/
-	sudo chmod -R ug+rwX  /usr/share/sddm/
+		sudo chgrp -R $(whoami) /usr/share/sddm/
+		sudo chmod -R ug+rwX  /usr/share/sddm/
 	else 
 		echo "Can't find a compatible sddm theme"
 	fi
