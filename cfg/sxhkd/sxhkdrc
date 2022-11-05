@@ -48,8 +48,8 @@ super + {e,f,w,o,g,b,y,a,z,v,p}
 	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,discord,copyq show,color-gpick}
 
 # Launch CopyQ
-super + shift + {s,w,r,d}
-	{spotify,wpgtk pick,rhythmbox,dmenu.sh}
+super + shift + {s,w,r,d,g}
+	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura}
 
 # Terminal Apps
 ctrl + alt + {v,n,r,h,b}
