@@ -17,7 +17,6 @@ configuration {
 
 @import "colors.rasi"
 @import "fonts.rasi"
-@import "~/.cache/zcache/background.rasi"
 
 window {
     transparency:                   "real";
