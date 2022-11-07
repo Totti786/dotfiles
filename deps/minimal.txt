@@ -24,6 +24,7 @@ gpick
 gradience
 grep
 htop
+i3lock-color
 imagemagick
 jgmenu
 kdeconnect
