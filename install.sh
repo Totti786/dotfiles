@@ -36,6 +36,7 @@ moveConfigs(){
 	cp -r $DIR/cfg/* ~/.config/ && echo "moved config files"
 	cp -r $DIR/bin/.local/ ~/ && echo "moved bin"
 	# extracts the icons and moves them to the correct directory
+	if [[ ! -d "$HOME/.local/share/icons" ]]; then mkdir ~/.local/share/icons ; fi
 	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons 
 	# extracts the fonts and moves them to the correct directory
 	if [[ ! -d "$HOME/.local/share/fonts" ]]; then mkdir ~/.local/share/fonts ; fi
