@@ -10,6 +10,7 @@ conky
 copyq
 dmenu
 dunst
+evince
 fd
 feh
 firefox
