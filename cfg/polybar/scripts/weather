@@ -15,6 +15,11 @@ if [[ ! -d "$cache_dir" ]]; then
 	mkdir -p ${cache_dir}
 fi
 
+## Get City
+if [[ -z $CITY ]]; then 
+	CITY=$(wget --timeout=2 http://ipinfo.io/city -qO -)
+fi
+
 ## Get data
 get_weather_data() {
 	weather=`curl -sf "https://api.openweathermap.org/data/2.5/weather?q="$CITY","$COUNTRY"&appid="$KEY"&units="$UNIT""`
@@ -85,21 +90,11 @@ get_weather_data() {
 		echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}
 
 	else
-		if [[ -z $CITY ]]; then 
-			geo=$(wget --timeout=2 http://ipinfo.io/city -qO -)
-			wttr=$(curl wttr.in/$geo?format="%l:+%t+%C\n")
-			if [[ -n $wttr ]]; then
-				echo $wttr > ${cache_weather_stat}
-			else 
-				echo "Weather Unavailable" > ${cache_weather_stat}
-			fi
-		else
-			wttr=$(curl wttr.in/$CITY?format="%t+%C\n")
-			if [[ -n $wttr ]]; then
-				echo $wttr > ${cache_weather_stat}
-			else 
-				echo "Weather Unavailable" > ${cache_weather_stat}
-			fi
+		wttr=$(curl wttr.in/$CITY?format="%t+%C\n")
+		if [[ -n $wttr ]]; then
+			echo $wttr > ${cache_weather_stat}
+		else 
+			echo "Weather Unavailable" > ${cache_weather_stat}
 		fi
 		echo " " > ${cache_weather_icon}
 		echo " " > ${cache_weather_degree}
