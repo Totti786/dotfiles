@@ -124,15 +124,12 @@ grub(){
 	}
 
 wallpapers(){
-	if [[ -d "$HOME/Pictures/Wallpapers" ]]; then
-		git clone https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers1 &&
-		mv -u ~/Pictures/Wallpapers1/* ~/Pictures/Wallpapers &&
-		rm -rf ~/Pictures/Wallpapers1	
+	if [[ -d "$HOME/Wallpapers/Wallpapers.git" ]]; then
+		cd ~/Pictures/Wallpapers/Wallpapers.git
+		git pull
 	else 
-		mkdir ~/Pictures/Wallpapers &&
-		git clone https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers1 &&
-		mv -u ~/Pictures/Wallpapers1/* ~/Pictures/Wallpapers &&
-		rm -rf ~/Pictures/Wallpapers1	
+		git clone https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers/Wallpapers.git
+
 	fi
 }
 
