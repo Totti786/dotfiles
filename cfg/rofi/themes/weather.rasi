@@ -3,6 +3,7 @@
 
 configuration {
 	click-to-exit: 					true;
+	monitor: 						-3;
 	hover-select: true;
 	me-select-entry: "";
 	me-accept-entry: [ MousePrimary, MouseSecondary, MouseDPrimary ];
@@ -22,8 +23,8 @@ window {
     height:                         320px;
     location:                       northwest;
     anchor:                         west;
-    x-offset:                       155;
-    y-offset:                       194;
+    x-offset:                       -10;
+    y-offset:                       180;
 }
 
 prompt {

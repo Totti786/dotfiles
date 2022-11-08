@@ -65,7 +65,7 @@ element-icon {
     text-color:       				inherit;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
-    size:                           30px;
+    size:                           40px;
     border:                         0px;
     border-radius:                  10px;
 }

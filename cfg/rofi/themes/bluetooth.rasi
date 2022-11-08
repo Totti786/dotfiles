@@ -7,7 +7,8 @@ configuration {
     drun-display-format:            "{icon} {name}";
     disable-history:                false;
 	click-to-exit: 					true;
-    hover-select: true;
+	monitor: 						-3;
+    hover-select:					true;
 	me-select-entry: "";
 	me-accept-entry: [ MousePrimary, MouseSecondary, MouseDPrimary ];
 }
@@ -26,8 +27,8 @@ window {
     height:                         330px;
     location:                       northwest;
     anchor:                         west;
-    x-offset:                       10;
-    y-offset:                       199;
+    x-offset:                       0;
+    y-offset:                       190;
 }
 
 prompt {
