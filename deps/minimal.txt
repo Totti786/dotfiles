@@ -74,6 +74,7 @@ ttf-dejavu
 ttf-liberation
 tumbler
 viewnior
+wget
 wmctrl
 xarchiver
 xcape
