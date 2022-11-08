@@ -77,10 +77,6 @@ shift + Print
 ctrl + Print
 	takeshot --win
 
-# Take screenshot of area
-ctrl + alt + Print
-	takeshot --area
-
 # Brighness control
 XF86MonBrightness{Up,Down}
 	brightness{ --inc, --dec}
@@ -156,7 +152,7 @@ super + Tab
 	windowswitch
 
 # Switch workspace
-ctrl + alt + {Left,Right}
+ctrl + super + {Left,Right}
 	bspc desktop -f {prev.local,next.local}
 
 # Send focused window to another workspace and switch to the workspace
