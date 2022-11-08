@@ -37,7 +37,7 @@ mpv-mpris
 mugshot
 ncdu
 networkmanager-openvpn
-nm-connection-editor
+network-manager-applet
 noto-fonts
 noto-fonts-emoji
 nvtop
