@@ -124,7 +124,7 @@ grub(){
 	}
 
 wallpapers(){
-	if [[ -d "$HOME/Wallpapers/Wallpapers.git" ]]; then
+	if [[ -d "$HOME/Pictures/Wallpapers/Wallpapers.git" ]]; then
 		cd ~/Pictures/Wallpapers/Wallpapers.git
 		git pull
 	else 
