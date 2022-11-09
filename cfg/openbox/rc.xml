@@ -717,7 +717,7 @@
     <!-- Random Wallpaper-->
     <keybind key="C-A-w">
       <action name="Execute">
-        <command>~/.local/bin/RandomWall</command>
+        <command>~/.local/bin/wpgtk random</command>
       </action>
     </keybind>
     <!-- Rofi Calculator -->
