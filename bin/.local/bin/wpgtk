@@ -269,6 +269,7 @@ main(){
 	check razer-cli -a &
 	copyWal &
 	kill dunst
+	openbox --reconfigure &
 	check spicetify -q update &
 	sh ~/.scripts/phoneWal.sh &
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor1" 
