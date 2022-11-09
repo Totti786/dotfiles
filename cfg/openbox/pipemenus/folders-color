@@ -26,8 +26,11 @@ main(){
 	for color in "${valid_colors[@]}"; do 
 		if [[ "$1" == "$color" ]]; then
 			papirus-folders -C "$( echo "$1" | tr '[:upper:]' '[:lower:]')"
+			xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark1" &&
+			xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark"
 		fi
 	done
+
 }
 
 main "$1"
