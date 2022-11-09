@@ -33,7 +33,7 @@ openboard
 polychromatic
 pulseeffects-legacy
 python-pip
-qbittorrent-enhanced-qt5
+qbittorrent-enhanced-git
 scrcpy
 soundux
 spicetify-cli
@@ -51,4 +51,3 @@ visual-studio-code-bin
 wget
 wine
 winetricks
-
