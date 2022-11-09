@@ -57,13 +57,15 @@ set_values() {
 # Launch the bar
 launch_bar() {
 	# Terminate already running bar instances
-	killall -9 polybar
+	killall -q -9 polybar
 
 	# Launch the bar
-	polybar -q top -c "$DIR"/config.ini &
-	polybar -q bottom -c "$DIR"/config.ini &
+	polybar -q -r top -c "$DIR"/config.ini &
+	polybar -q -r bottom -c "$DIR"/config.ini &
 }
 
 set_values
 fix_modules
 launch_bar
+sleep 1 &&
+exit
