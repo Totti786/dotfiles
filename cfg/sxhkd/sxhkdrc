@@ -59,6 +59,10 @@ ctrl + alt + {v,n,r,h,b}
 ctrl + alt + l
    lockscreen
 
+# Random Wallpaper
+ctrl + alt + w
+   RandomWall
+
 ##---------- System Keys ----------##
 
 # Take a screenshot
