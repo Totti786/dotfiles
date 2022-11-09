@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-dir=~/Pictures/Wallpapers/Wallpapers.git
-image=$(ls $dir | shuf -n 1)
-wpgtk setWall $dir/$image

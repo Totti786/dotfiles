@@ -245,6 +245,12 @@ setWall(){
 	rm "$1""_wal_sample.png"
 	fi
 	}
+	
+random(){
+	dir=~/Pictures/Wallpapers/Wallpapers.git
+	image=$(ls $dir | shuf -n 1)
+	setWall $dir/$image
+	}
 
 # this function uses implements a sxiv to create a wallpaper selector for wpg 
 # to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
