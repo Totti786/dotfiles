@@ -41,7 +41,7 @@ change_colors() {
 		cyan = $bright_cyan
 		white = $white
 		EOF
-				
+	sed -i -e 's/wpg = .*/wpg = 1/g' ~/.config/polybar/config.ini			
 	# rofi
 	cat > $rofi <<- EOF
 	/* colors */
@@ -177,29 +177,6 @@ change_colors() {
 	convert -resize 1920x1080! $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
 }
 
-## Change the wallpaper for both sddm and grub 
-# this function only works with the themes included in the install script 
-# I'm gonna be commenting this function out because it only works with systems 
-# that don't have a seperate home partition
-#lockWal(){
-	### remove the background file for sddm and replace it with a hard link of the wallpaper 
-	#if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
-		#sudo rm /usr/share/sddm/themes/Arch/components/artwork/background.jpg && \
-		#sudo ln -s ~/.config/wpg/wallpapers/wallpaper.jpg \
-		#/usr/share/sddm/themes/Arch/components/artwork/background.jpg
-	#else 
-		#echo "Can't find a compatible sddm theme"
-	#fi
-	### remove the background file for grub and replace it with a symbolic  link of the wallpaper 
-	#if [[ -d "/usr/share/grub/themes/Arch" ]]; then
-		#sudo rm /usr/share/grub/themes/Arch/background.jpg && \
-		#sudo ln -s ~/.config/wpg/wallpapers/wallpaper.jpg \
-		#/usr/share/grub/themes/Arch/background.jpg
-	#else 
-		#echo "Can't find a compatible grub theme"
-	#fi
-	#}
-
 # this functions should only be used if you have a system with a seperate home partition 
 # (this is bad)
 lockPerms(){
@@ -239,9 +216,9 @@ copyWal(){
 
 ## Kill already running process
 kill(){
-	if [[ `pidof $1` ]] &> /dev/null; then
-		killall -9 $1
-		$1 
+	if [[ $(pidof $1) ]]; then
+		killall -q $1
+		$1
 	fi
 	}
 	
@@ -249,8 +226,6 @@ kill(){
 check(){
 	if command -v $1 &> /dev/null; then 
 		$1 $2 $3 &
-	else 
-		echo "$1 is not installed"
 	fi
 	}
 	
@@ -266,7 +241,7 @@ setWall(){
 	if [ -z "$1" ]; then
 	echo "No image was selected"
 	else 
-	wpg -A "$1" && wpg -s "$1"
+	wpg -A "$1" && wpg -s "$1" 
 	rm "$1""_wal_sample.png"
 	fi
 	}
@@ -286,13 +261,13 @@ pick(){
 main(){
 	change_colors
 	check razer-cli -a &
-	kill dunst &
 	copyWal &
-	sh ~/.config/polybar/launch.sh
-	check spicetify update &
+	kill dunst
+	check spicetify -q update &
 	sh ~/.scripts/phoneWal.sh &
-	#check wal-telegram --wal 
-	}
+	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor1" 
+	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
+}
 
 ## Check if wpg is installed and get colors
 run(){
