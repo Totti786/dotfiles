@@ -104,7 +104,7 @@
 			<separator/>
 			<item label="Change Wallpaper">
 				<action name="Execute">
-					<command>sh ~/.scripts/wpgtk pick</command>
+					<command>sh ~/.local/bin/wpgtk pick</command>
 				</action>
 			</item>
 			<item label="Appearance Settings">
