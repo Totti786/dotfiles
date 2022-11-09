@@ -26,19 +26,14 @@ lock() {
         --wrong-color=ee6a70 \
         --wrong-size=10 \
         --wrong-font="JetBrainsMono Nerd Font" \
-        --greeter-text="" \
-        --greeter-color=#FFFFFF \
-        --greeter-size=60 \
-        --greeter-font="JetBrainsMono Nerd Font" \
-        --greeter-pos="w/2:h/2+285" \
         --ring-color=00000000 \
         --ringver-color=96D6B0 \
         --ringwrong-color=ee6a70 \
-        --ring-width=10 \
+        --radius 90 \
+        --ring-width=5 \
         --insidever-color=079A8C02 \
         --insidewrong-color=079A8C02 \
         --inside-color=079A8C02 \
-        --ind-pos="w/2:h-130" \
         --noinput-text="" \
         --line-uses-inside --keyhl-color=7ba5dd --bshl-color=ee6a70 --separator-color=7ba5dd \
         --pointer=default
