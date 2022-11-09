@@ -1,8 +1,6 @@
 #!/bin/bash
 
-##TODO 
-# add a colormix to the discord --background-1:
-
+. "$HOME/.cache/wal/colors.sh"
 # Color files
 alacritty="$HOME/.config/alacritty/colors.yml"
 polybar="$HOME/.config/polybar/colors.ini"
@@ -91,7 +89,7 @@ change_colors() {
 	if [[ -f $discord ]]; then 
 	sed -i -e "s/--accent-color: #.*/--accent-color: ${FG};/g" 										 $discord
 	sed -i -e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" 						 $discord
-	sed -i -e "s/--background-1: #.*/--background-1: ${BG};/g" 										 $discord
+	sed -i -e "s/--background-1: #.*/--background-1: ${bg_alt};/g" 										 $discord
 	sed -i -e "s/--background-2: #.*/--background-2: ${BG};/g" 										 $discord
 	sed -i -e "s/--border-color: #.*/--border-color: $bright_black;/g" 								 $discord
 	sed -i -e "s/--background-modifier-hover: #.*/--background-modifier-hover: ${bright_magenta};/g" $discord
@@ -276,15 +274,38 @@ main(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 }
 
+## Create a lighter shade of the color using bash
+create_colors() {
+  colors=(0)
+  for i in "${colors[@]}"; do
+    color="color${i}"
+    c_rgb_12d="$(( 0x"${!color:1:2}" ))"
+    c_rgb_34d="$(( 0x"${!color:3:2}" ))"
+    c_rgb_56d="$(( 0x"${!color:5:2}" ))"
+    c_rgb_12d_60l="$(( c_rgb_12d + "$((c_rgb_12d * 3 / 5))" ))"
+    c_rgb_34d_60l="$(( c_rgb_34d + "$((c_rgb_34d * 3 / 5))" ))"
+    c_rgb_56d_60l="$(( c_rgb_56d + "$((c_rgb_56d * 3 / 5))" ))"
+    [[ "${c_rgb_12d_60l}" -ge 255 ]] && c_rgb_12d_60l=255
+    [[ "${c_rgb_34d_60l}" -ge 255 ]] && c_rgb_34d_60l=255
+    [[ "${c_rgb_56d_60l}" -ge 255 ]] && c_rgb_56d_60l=255
+    printf -v c_hex_12d_60l '%x' "$c_rgb_12d_60l"
+    printf -v c_hex_34d_60l '%x' "$c_rgb_34d_60l"
+    printf -v c_hex_56d_60l '%x' "$c_rgb_56d_60l"
+    [[ "${#c_hex_12d_60l}" -eq 1 ]] && c_hex_12d_60l="0${c_hex_12d_60l}"
+    [[ "${#c_hex_34d_60l}" -eq 1 ]] && c_hex_34d_60l="0${c_hex_34d_60l}"
+    [[ "${#c_hex_56d_60l}" -eq 1 ]] && c_hex_56d_60l="0${c_hex_56d_60l}"
+    c_hex_60l="#${c_hex_12d_60l}${c_hex_34d_60l}${c_hex_56d_60l}"
+    declare -g color"${i}"_lighter_60="$c_hex_60l"
+  done
+}
+
 ## Check if wpg is installed and get colors
 run(){
 	if [[ -f "/usr/bin/wpg" ]]; then
 		## check if the files exists and import colors from wpg
 		if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
-			. "$HOME/.cache/wal/colors.sh"
 			# Normal colors
 			BG=`printf "%s\n" "$background"`
-			ST=`printf "%s\n" "$background"`
 			FG=`printf "%s\n" "$foreground"`
 			FGA=`printf "%s\n" "$foreground"`
 			black=`printf "%s\n" "$color0"`
@@ -304,6 +325,10 @@ run(){
 			bright_magenta=`printf "%s\n" "$color13"`
 			bright_cyan=`printf "%s\n" "$color14"`
 			bright_white=`printf "%s\n" "$color15"`
+			# Additional colors
+			create_colors
+			bg_alt=`printf "%s\n" "$color0_lighter_60"`
+				
 			## merging the Xresources files with the main one
 			xrdb -merge ~/.cache/wal/colors.Xresources			
 		fi 
