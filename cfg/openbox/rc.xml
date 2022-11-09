@@ -714,6 +714,12 @@
         <command>~/.local/bin/wpgtk pick</command>
       </action>
     </keybind>
+    <!-- Random Wallpaper-->
+    <keybind key="C-A-w">
+      <action name="Execute">
+        <command>~/.local/bin/RandomWall</command>
+      </action>
+    </keybind>
     <!-- Rofi Calculator -->
     <keybind key="W-S-c">
       <action name="Execute">
