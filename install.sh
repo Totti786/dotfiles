@@ -172,7 +172,7 @@ update(){
 	   cp ~/.config/polybar/scripts/info ~/.cache/info; fi
 	### move udpated scripts and configs
 	rm -rf ~/.local/share/icons/*
-	moveConfigs &
+	moveConfigs &&
 	#sudo cp -r $DIR/bin/usr/ /
 	#cp -r $DIR/bin/.scripts/ ~/ 
 	#cp -r $DIR/cfg/* ~/.config 
