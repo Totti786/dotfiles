@@ -170,14 +170,12 @@ update(){
 	## backup weather info file
 	if [[ -f "$HOME/.config/polybar/scripts/info" ]]; then
 	   cp ~/.config/polybar/scripts/info ~/.cache/info; fi
-	### move udpated scripts and configs
-	rm -rf ~/.local/share/icons/*
-	moveConfigs &&
-	#sudo cp -r $DIR/bin/usr/ /
-	#cp -r $DIR/bin/.scripts/ ~/ 
-	#cp -r $DIR/cfg/* ~/.config 
-	#cp -r $DIR/bin/.local/ ~/
-	## restore weather info file
+	## move udpated scripts and configs
+	sudo cp -r $DIR/bin/usr/ /
+	cp -r $DIR/bin/.scripts/ ~/ 
+	cp -r $DIR/cfg/* ~/.config 
+	cp -r $DIR/bin/.local/ ~/
+	# restore weather info file
 	cp ~/.cache/info ~/.config/polybar/scripts/info
 	## remove already existing json file for background color scheme
 	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
