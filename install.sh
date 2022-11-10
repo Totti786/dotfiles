@@ -181,6 +181,7 @@ update(){
 	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
 	## change wallpaper and update color scheme 
 	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
+	sleep 2 &&
 	exit
 	}
 
@@ -221,7 +222,7 @@ main(){
 			main
 			;;
 		3)
-			git pull
+			git pull 
 			update
 			main		
 			;;
