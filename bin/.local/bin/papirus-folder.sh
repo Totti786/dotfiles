@@ -25,6 +25,11 @@ darker() {
 	printf '%02x%02x%02x\n' "$r" "$g" "$b"
 }
 
+reload(){
+xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark1" &&
+xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"
+}
+
 
 while [[ $# -gt 0 ]]
 do
@@ -93,3 +98,4 @@ for size in 22x22 24x24 32x32 48x48 64x64; do
 		ln -sf "$icon_name" "$symlink_path"
 	done
 done
+reload
