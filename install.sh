@@ -171,7 +171,7 @@ update(){
 	if [[ -f "$HOME/.config/polybar/scripts/info" ]]; then
 	   cp ~/.config/polybar/scripts/info ~/.cache/info; fi
 	### move udpated scripts and configs
-	moveConfigs
+	moveConfigs &
 	#sudo cp -r $DIR/bin/usr/ /
 	#cp -r $DIR/bin/.scripts/ ~/ 
 	#cp -r $DIR/cfg/* ~/.config 
