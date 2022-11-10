@@ -235,12 +235,6 @@ wpgConfig(){
 	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" ~/.config/wpg/wpg.conf
 	}	
 
-iconsFolders(){
-	papirus-folder.sh -o Papirus --color ${bright_red:1}
-	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus1" && 
-	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"
-	}
-
 setWall(){
 	if [ -z "$1" ]; then
 	echo "No image was selected"
@@ -272,11 +266,10 @@ main(){
 	check razer-cli -a &
 	copyWal &
 	kill dunst
+	papirus-folder.sh --color ${bright_red:1} &
 	openbox --reconfigure &
 	check spicetify -q update &
 	sh ~/.scripts/phoneWal.sh &
-	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor1" 
-	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 }
 
 ## Create a lighter shade of the color using bash
@@ -335,7 +328,6 @@ run(){
 			bg_alt=`printf "%s\n" "$color0_lighter_60"`
 			## merging the Xresources files with the main one
 			xrdb -merge ~/.cache/wal/colors.Xresources		
-			iconsFolders &	
 		fi 
 		
 	else
