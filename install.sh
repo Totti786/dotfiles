@@ -32,15 +32,15 @@ installDependencies(){
 
 moveConfigs(){
 	sudo cp -r $DIR/bin/usr/ / && echo "moved bin to /usr/local"
-	cp -r $DIR/bin/.scripts/ ~/ && echo "moved scripts home" 
+	cp -r $DIR/bin/.scripts/ ~/ && echo "moved scripts home"
 	cp -r $DIR/cfg/* ~/.config/ && echo "moved config files"
 	cp -r $DIR/bin/.local/ ~/ && echo "moved bin"
 	# extracts the icons and moves them to the correct directory
 	if [[ ! -d "$HOME/.local/share/icons" ]]; then mkdir ~/.local/share/icons ; fi
-	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons 
+	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons
 	# extracts the fonts and moves them to the correct directory
 	if [[ ! -d "$HOME/.local/share/fonts" ]]; then mkdir ~/.local/share/fonts ; fi
-	tar -xzf $DIR/deps/fonts.tar.gz -C ~/.local/share/fonts 
+	tar -xzf $DIR/deps/fonts.tar.gz -C ~/.local/share/fonts
 	}
 	
 # This function allows you to change the plank configuration (courtesy of Archcraft by @adi1090x)
@@ -81,13 +81,12 @@ change_dock() {
 
 changeTheme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
-	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark"	
+	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
 	change_dock && cat "$HOME"/.cache/plank.conf | dconf load /net/launchpad/plank/docks/
 	cp -r $DIR/bin/.icons ~/
 	if ! [[ "$(grep -i "qt5ct" /etc/environment | head -n1)" == "QT_QPA_PLATFORMTHEME=\"qt5ct\"" ]]; then
 		echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
 	fi
-	papirus-folders -R
 	}
 
 wpgtk(){
@@ -183,7 +182,6 @@ update(){
 	## change wallpaper and update color scheme 
 	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
 	## change folder colors 
-	papirus-folders -R
 	exit
 	}
 

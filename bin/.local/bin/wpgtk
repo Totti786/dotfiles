@@ -235,6 +235,12 @@ wpgConfig(){
 	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" ~/.config/wpg/wpg.conf
 	}	
 
+iconsFolders(){
+	papirus-folder.sh -o Papirus --color ${bright_red:1}
+	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus1" && 
+	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"
+	}
+
 setWall(){
 	if [ -z "$1" ]; then
 	echo "No image was selected"
@@ -245,9 +251,8 @@ setWall(){
 	}
 	
 random(){
-	dir=~/Pictures/Wallpapers/Wallpapers.git
-	image=$(ls $dir | shuf -n 1)
-	setWall $dir/$image
+	image=$(ls $Wallpapers//Wallpapers.git | sort -R | head -n 1)
+	setWall $Wallpapers/Wallpapers.git/$image
 	}
 
 # this function uses implements a sxiv to create a wallpaper selector for wpg 
@@ -328,9 +333,9 @@ run(){
 			# Additional colors
 			create_colors
 			bg_alt=`printf "%s\n" "$color0_lighter_60"`
-				
 			## merging the Xresources files with the main one
-			xrdb -merge ~/.cache/wal/colors.Xresources			
+			xrdb -merge ~/.cache/wal/colors.Xresources		
+			iconsFolders &	
 		fi 
 		
 	else
