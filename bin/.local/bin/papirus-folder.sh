@@ -1,23 +1,4 @@
 #!/usr/bin/env bash
-set -ueo pipefail
-root="$(readlink -f "$(dirname "$0")")"
-
-
-print_usage() {
-	local -i exit_code="$1"
-
-	echo "
-usage:
-	$0 [-o OUTPUT_THEME_NAME] [-c COLOR] [-d DEST_DIR] PRESET_NAME_OR_PATH
-
-examples:
-	$0 -o droid_test_3 -c 5e468c
-	$0 monovedek
-	$0 -o my-theme-name ./colors/lcars"
-
-	exit "${exit_code:-1}"
-}
-
 
 darker_channel() {
 	local value="0x$1"
@@ -74,36 +55,13 @@ do
 	shift
 done
 
-if [ -z "${THEME:-}" ]; then
-	[ -n "${OUTPUT_THEME_NAME:-}" ] || print_usage 1
-	[ -n "${ICONS_COLOR:-}" ] || print_usage 1
+dir="$HOME/.local/share/icons/"
 
-	THEME="$OUTPUT_THEME_NAME"
-else
-	# shellcheck disable=SC1090
-	if [ -f "$THEME" ]; then
-		source "$THEME"
-		THEME=$(basename "$THEME")
-	elif [ -f "$root/colors/$THEME" ]; then
-		source "$root/colors/$THEME"
-	else
-		echo "'$THEME' preset not found."
-		exit 1
-	fi
-fi
-
-
-tmp_dir="$(mktemp -d)"
-function post_clean_up {
-	rm -r "$tmp_dir" || true
-}
-trap post_clean_up EXIT SIGHUP SIGINT SIGTERM
+trap EXIT SIGHUP SIGINT SIGTERM
 
 
 : "${ICONS_COLOR:=$SEL_BG}"
 : "${OUTPUT_THEME_NAME:=oomox-$THEME}"
-
-output_dir="${output_dir:-$HOME/.local/share/icons/$OUTPUT_THEME_NAME}"
 
 light_folder_fallback="$ICONS_COLOR"
 medium_base_fallback="$(darker "$ICONS_COLOR" 20)"
@@ -115,17 +73,11 @@ dark_stroke_fallback="$(darker "$ICONS_COLOR" 56)"
 : "${ICONS_SYMBOLIC_ACTION:=${MENU_FG:-}}"
 : "${ICONS_SYMBOLIC_PANEL:=${HDR_FG:-}}"
 
-
-#echo ":: Copying theme template..."
-cp -R "$HOME/.local/share/icons/Papirus" "$tmp_dir/"
-#echo "== Template was copied to $tmp_dir"
-
-
 #echo ":: Replacing accent colors..."
 for size in 22x22 24x24 32x32 48x48 64x64; do
 	for icon_path in \
-		"$tmp_dir/Papirus/$size/places/folder-custom"{-*,}.svg \
-		"$tmp_dir/Papirus/$size/places/user-custom"{-*,}.svg
+		"$dir/Papirus/$size/places/folder-custom"{-*,}.svg \
+		"$dir/Papirus/$size/places/user-custom"{-*,}.svg
 	do
 		[ -f "$icon_path" ] || continue  # it's a file
 		[ -L "$icon_path" ] && continue  # it's not a symlink
@@ -141,35 +93,3 @@ for size in 22x22 24x24 32x32 48x48 64x64; do
 		ln -sf "$icon_name" "$symlink_path"
 	done
 done
-
-if [ -n "${ICONS_SYMBOLIC_ACTION:-}" ]; then
-	#echo ":: Replacing symbolic actions colors..."
-	find "$tmp_dir"/Papirus/{16x16,22x22,24x24}/actions \
-		"$tmp_dir"/Papirus/16x16/{devices,places} \
-		"$tmp_dir"/Papirus/symbolic \
-		-type f -name '*.svg' \
-		-exec sed -i'' -e "s/444444/$ICONS_SYMBOLIC_ACTION/g" '{}' \;
-fi
-
-if [ -n "${ICONS_SYMBOLIC_PANEL:-}" ]; then
-	#echo ":: Replacing symbolic panel colors..."
-	find "$tmp_dir"/Papirus/{16x16,22x22,24x24}/panel \
-		"$tmp_dir"/Papirus/{22x22,24x24}/animations \
-		-type f -name '*.svg' \
-		-exec sed -i'' -e "s/dfdfdf/$ICONS_SYMBOLIC_PANEL/g" '{}' \;
-fi
-
-
-#echo ":: Exporting theme..."
-sed -i \
-	-e "s/Name=Papirus/Name=$OUTPUT_THEME_NAME/g" \
-	"$tmp_dir/Papirus/index.theme"
-
-if [ -d "$output_dir" ] ; then
-	rm -r "$output_dir"
-fi
-
-mkdir -p "$output_dir"
-mv "$tmp_dir"/Papirus/* "$output_dir/"
-
-#echo "== Theme was generated in $output_dir"
