@@ -2,12 +2,12 @@
 
 ## Weather data
 # you need to get a free API key from https://home.openweathermap.org for the script to be functional 
-KEY="1f6e449790b8cf73a3cab8d5715483f8"  # put your Opeanweather API key here
+KEY="7e6ed49a1a7b802ad1299faa3a5f008d"  # put your Opeanweather API key here
 
 # you also need to sign up on https://www.weatherbit.io/account/create  
 # in order to use all the features of this script you need to sign up for an API key
-WBKEY=""  # put your WeatherBit API key here 
+WBKEY="754802f8df8d48f999ae6a283c2a3801"  # put your WeatherBit API key here 
 
 UNIT="metric"	# Available options : 'metric' or 'imperial'
-COUNTRY="" # put your country name here 
-CITY="" # put your city name here
+COUNTRY="Syria" # put your country name here 
+CITY="Idlib" # put your city name here
