@@ -266,7 +266,7 @@ main(){
 	check razer-cli -a &
 	copyWal &
 	kill dunst
-	papirus-folder.sh --color ${bright_red:1} &
+	papirus-folder.sh --color ${red:1} &
 	openbox --reconfigure &
 	check spicetify -q update &
 	sh ~/.scripts/phoneWal.sh &
