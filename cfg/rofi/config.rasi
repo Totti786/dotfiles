@@ -1,6 +1,6 @@
 configuration {
 	show-icons:        			true;
-	icon-theme:       		    "Papirus-Dark";
+	icon-theme:       		    "Papirus";
 	terminal: 		            "alacritty";
 	cycle:               		false;
 	hide-scrollbar:   		    false;
