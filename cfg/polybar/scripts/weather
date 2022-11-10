@@ -23,23 +23,21 @@ fi
 ## Get data
 get_weather_data() {
 	weather=`curl -sf "https://api.openweathermap.org/data/2.5/weather?q="$CITY","$COUNTRY"&appid="$KEY"&units="$UNIT""`
-	altweather=`curl -X GET --header 'Accept: application/json' "https://api.weatherbit.io/v2.0/current?city="$CITY"&country="$COUNTRY"&key="$WBKEY""`
+	#altweather=`curl -X GET --header 'Accept: application/json' "https://api.weatherbit.io/v2.0/current?city="$CITY"&country="$COUNTRY"&key="$WBKEY""`
 	echo ${weather}
 
 	if [ ! -z "$weather" ]; then
 		weather_temp=`echo "$weather" | jq ".main.temp" | cut -d "." -f 1`
 		weather_icon_code=`echo "$weather" | jq -r ".weather[].icon" | head -1`
 		weather_description=`echo "$weather" | jq -r ".weather[].description" | head -1 | sed -e "s/\b\(.\)/\u\1/g"`
-		city=`echo "$weather" | jq -r ".name"` 
-		humidity=`echo "$weather" | jq -r ".main.humidity"` 
-		windspeed=`echo "$weather" | jq -r ".wind.speed"` 
-		uv=`echo "$altweather" | jq -r ".data[].uv" | cut -c 1-4`
-		aqi=`echo "$altweather" | jq -r ".data[].aqi"`
-		dewpt=`echo "$altweather" | jq -r ".data[].dewpt"`
-		precipitation=`echo "$altweather" | jq -r ".data[].precip"`
-		#sunrise=`date -d @"$(echo "$weather" | jq -r ".sys.sunrise")" | cut -d ' ' -f4-6 | cut --complement -c 6-8 | cut -c 2-8`
-		#sunset=`date -d @"$(echo "$weather" | jq -r ".sys.sunset")" | cut -d ' ' -f4-6 | cut --complement -c 6-8 | cut -c 2-8` 
-		
+		#city=`echo "$weather" | jq -r ".name"` 
+		#humidity=`echo "$weather" | jq -r ".main.humidity"` 
+		#windspeed=`echo "$weather" | jq -r ".wind.speed"` 
+		#uv=`echo "$altweather" | jq -r ".data[].uv" | cut -c 1-4`
+		#aqi=`echo "$altweather" | jq -r ".data[].aqi"`
+		#dewpt=`echo "$altweather" | jq -r ".data[].dewpt"`
+		#precipitation=`echo "$altweather" | jq -r ".data[].precip"`
+
 		#Big long if statement of doom
 		if [ "$weather_icon_code" == "50d"  ]; then
 			weather_icon=" "
@@ -87,7 +85,7 @@ get_weather_data() {
 		echo "$weather_icon" >  ${cache_weather_icon}
 		echo "$weather_description" > ${cache_weather_stat}
 		echo "$weather_temp""° " > ${cache_weather_degree}
-		echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}
+		#echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}
 
 	else
 		wttr=$(curl wttr.in/$CITY?format="%t+%C\n")
