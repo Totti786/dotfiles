@@ -230,7 +230,7 @@ check(){
 # change the wpg config file so this script can run whenever wpg is invoked 
 wpgConfig(){
 	sed -i -e 's/execute_cmd = false/execute_cmd = true/g' ~/.config/wpg/wpg.conf
-	sed -i -e 's/reload = true/reload = false/g' ~/.config/wpg/wpg.conf
+	sed -i -e 's/reload = .*/reload = true/g' ~/.config/wpg/wpg.conf
 	sed -i -e 's/auto_adjust = false/auto_adjust = true/g' ~/.config/wpg/wpg.conf
 	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" ~/.config/wpg/wpg.conf
 	}	
@@ -245,7 +245,7 @@ setWall(){
 	}
 	
 random(){
-	image=$(ls $Wallpapers//Wallpapers.git | sort -R | head -n 1)
+	image=$(ls $Wallpapers/Wallpapers.git | sort -R | tail -n 1)
 	setWall $Wallpapers/Wallpapers.git/$image
 	}
 
