@@ -45,6 +45,7 @@ obconf
 openbox
 openssh
 openvpn
+pamixer
 pavucontrol
 plank
 playerctl
