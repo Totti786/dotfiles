@@ -85,11 +85,11 @@ inputbar {
     children:                    [ "textbox-prompt-colon", "entry" ];
 }
 textbox-prompt-colon {
-    enabled:                     false;
+    enabled:                     true;
     expand:                      false;
     str:                         "";
     background-color:            inherit;
-    text-color:                  inherit;
+    text-color:                  @foreground;
 }
 entry {
     enabled:                     true;

@@ -113,8 +113,8 @@ mode-switcher{
 }
 button {
     width:                       40px;
-    padding:                     12px;
-    border-radius:               20%;
+    padding:                     15px;
+    border-radius:               10px;
     background-color:            @background-alt;
     text-color:                  inherit;
     vertical-align:              0.0;
