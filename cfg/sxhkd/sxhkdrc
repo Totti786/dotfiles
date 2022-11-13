@@ -98,6 +98,13 @@ XF86Audio{Next,Prev,Play,Pause,Stop}
 
 ##---------- Bspwm ----------##
 
+# focus to the given desktop
+super + {1-9,0}
+    eval "$(xdotool getmouselocation --shell)" &&\
+    xdotool mousemove 960 1185 click 1 &&\
+    bspc desktop -f '^{1-9,10}' &&\
+    xdotool mousemove --screen $SCREEN $X $Y
+    
 # Close App
 super + {q,c}
 	bspc node -c
@@ -115,7 +122,7 @@ ctrl + shift + {q,r}
 	bspc {quit,wm -r}
 	
 # Split horizontal, vertical or cancel
-super + shift + {h,v,c}
+super + shift + {h,v,q}
 	bspc node -p {east,south,cancel}
 
 # Preselect the ratio
