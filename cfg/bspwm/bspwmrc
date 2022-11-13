@@ -114,9 +114,6 @@ picom &
 ## CopyQ
 copyq --start-server &
 
-## Thunar Daemon
-thunar --daemon &
-
 ## Plank
 plank &
 
