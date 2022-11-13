@@ -22,22 +22,26 @@ fi
 
 ## Get data
 get_weather_data() {
-	weather=`curl -sf "https://api.openweathermap.org/data/2.5/weather?q="$CITY","$COUNTRY"&appid="$KEY"&units="$UNIT""`
-	#altweather=`curl -X GET --header 'Accept: application/json' "https://api.weatherbit.io/v2.0/current?city="$CITY"&country="$COUNTRY"&key="$WBKEY""`
-	echo ${weather}
+		weather=`curl -sf "https://api.openweathermap.org/data/2.5/weather?q="$CITY","$COUNTRY"&appid="$KEY"&units="$UNIT""`
+		echo ${weather}
 
+	
 	if [ ! -z "$weather" ]; then
 		weather_temp=`echo "$weather" | jq ".main.temp" | cut -d "." -f 1`
 		weather_icon_code=`echo "$weather" | jq -r ".weather[].icon" | head -1`
 		weather_description=`echo "$weather" | jq -r ".weather[].description" | head -1 | sed -e "s/\b\(.\)/\u\1/g"`
-		#city=`echo "$weather" | jq -r ".name"` 
-		#humidity=`echo "$weather" | jq -r ".main.humidity"` 
-		#windspeed=`echo "$weather" | jq -r ".wind.speed"` 
-		#uv=`echo "$altweather" | jq -r ".data[].uv" | cut -c 1-4`
-		#aqi=`echo "$altweather" | jq -r ".data[].aqi"`
-		#dewpt=`echo "$altweather" | jq -r ".data[].dewpt"`
-		#precipitation=`echo "$altweather" | jq -r ".data[].precip"`
-
+		if [[ $(expr $(date +%M) % 30) == 0 ]]; then
+		  altweather=`curl -X GET --header 'Accept: application/json' "https://api.weatherbit.io/v2.0/current?city="$CITY"&country="$COUNTRY"&key="$WBKEY""`
+			city=`echo "$weather" | jq -r ".name"` 
+			humidity=`echo "$weather" | jq -r ".main.humidity"` 
+			windspeed=`echo "$weather" | jq -r ".wind.speed"` 
+			uv=`echo "$altweather" | jq -r ".data[].uv" | cut -c 1-4`
+			aqi=`echo "$altweather" | jq -r ".data[].aqi"`
+			dewpt=`echo "$altweather" | jq -r ".data[].dewpt"`
+			precipitation=`echo "$altweather" | jq -r ".data[].precip"`
+			echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}
+		fi
+		
 		#Big long if statement of doom
 		if [ "$weather_icon_code" == "50d"  ]; then
 			weather_icon=" "
@@ -60,17 +64,17 @@ get_weather_data() {
 		elif [ "$weather_icon_code" == "04n"  ]; then
 			weather_icon=" "
 		elif [ "$weather_icon_code" == "09d"  ]; then
-			weather_icon=" "
+			weather_icon=" "
 		elif [ "$weather_icon_code" == "09n"  ]; then
-			weather_icon=" "
+			weather_icon=" "
 		elif [ "$weather_icon_code" == "10d"  ]; then
 			weather_icon=" "
 		elif [ "$weather_icon_code" == "10n"  ]; then
 			weather_icon=" "
 		elif [ "$weather_icon_code" == "11d"  ]; then
-			weather_icon=""
+			weather_icon="ﭼ " 
 		elif [ "$weather_icon_code" == "11n"  ]; then
-			weather_icon=""
+			weather_icon="ﭼ " 
 		elif [ "$weather_icon_code" == "13d"  ]; then
 			weather_icon=" "
 		elif [ "$weather_icon_code" == "13n"  ]; then
@@ -85,7 +89,6 @@ get_weather_data() {
 		echo "$weather_icon" >  ${cache_weather_icon}
 		echo "$weather_description" > ${cache_weather_stat}
 		echo "$weather_temp""° " > ${cache_weather_degree}
-		#echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}
 
 	else
 		wttr=$(curl wttr.in/$CITY?format="%t+%C\n")
@@ -110,8 +113,6 @@ elif [[ "$1" == "--hex" ]]; then
 	tail -F ${cache_weather_hex}
 elif [[ "$1" == "--stat" ]]; then
 	cat ${cache_weather_stat}
-elif [[ "$1" == "--rofi" ]]; then
-	rofi_menu
 elif [[ "$1" == "--full" ]]; then
 	get_weather_data &> /dev/null
 	cat ${cache_weather_icon} ${cache_weather_degree} ${cache_weather_stat} | tr -d '\n'
