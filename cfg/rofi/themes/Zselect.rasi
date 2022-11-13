@@ -57,7 +57,7 @@ element {
     text-color:                     @foreground;
     orientation:                    horizontal;
     border-radius:                  10px;
-    padding:                        5px;
+    padding:                        15px;
 }
 
 element-icon {
@@ -65,7 +65,7 @@ element-icon {
     text-color:       				inherit;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
-    size:                           40px;
+    size:                           0px;
     border:                         0px;
     border-radius:                  10px;
 }
