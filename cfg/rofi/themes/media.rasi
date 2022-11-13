@@ -42,7 +42,7 @@ window {
     margin:                      0px;
     padding:                     0px;
     border:                      0px solid;
-    border-radius:               50px;
+    border-radius:               15px;
     border-color:                @selected;
     cursor:                      "default";
     background-color:            @background;
@@ -64,10 +64,10 @@ inputbar {
     spacing:                     25px;
     padding:                     100px 50px;
     border:                      0px;
-    border-radius:               40px;
+    border-radius:               15px;
     border-color:                @selected;
     background-color:            transparent;
-    background-image:            url("~/.config/wpg/wallpapers/wallpaper.jpg", width);
+    background-image:            url("~/.cache/eww/music/cover.png", width);
     text-color:                  @foreground;
     children:                    [ "textbox-prompt-colon", "dummy", "prompt"];
 }
@@ -80,14 +80,14 @@ textbox-prompt-colon {
     expand:                      false;
     str:                         "";
     padding:                     10px 13px;
-    border-radius:               100%;
+    border-radius:               15px;
     background-color:            @urgent;
     text-color:                  @background;
 }
 prompt {
     enabled:                     true;
     padding:                     10px;
-    border-radius:               100%;
+    border-radius:               15px;
     background-color:            @on;
     text-color:                  @background;
 }
@@ -98,7 +98,7 @@ message {
     margin:                      0px;
     padding:                     10px;
     border:                      0px solid;
-    border-radius:               100%;
+    border-radius:               15px;
     border-color:                @selected;
     background-color:            @background-alt;
     text-color:                  @foreground;
@@ -129,7 +129,7 @@ element {
     enabled:                     true;
     padding:                     30px 10px;
     border:                      0px solid;
-    border-radius:               100%;
+    border-radius:               15px;
     border-color:                @selected;
     background-color:            transparent;
     text-color:                  @foreground;
