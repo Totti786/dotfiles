@@ -4,7 +4,7 @@
 ##### Useful settings #####
 
 # Directory to search for icons
-directory="$HOME/.local/share/icons/Papirus-Dark/48x48/"
+directory="$HOME/.local/share/icons/Papirus/48x48/"
 #In case there is no icon path provided, use appname to guess icons
 use_appname=true
 
