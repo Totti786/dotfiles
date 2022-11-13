@@ -29,9 +29,6 @@ sh ~/.config/polybar/launch.sh &
 ## CopyQ (Clipboard Daemon)
 copyq --start-server &
 
-## Thunar Daemon
-thunar --daemon &
-
 ## Plank (Dock)
 plank &
 
