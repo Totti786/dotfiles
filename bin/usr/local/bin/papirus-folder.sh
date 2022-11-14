@@ -13,7 +13,6 @@ darker_channel() {
 	echo "$result"
 }
 
-
 darker() {
 	local hexinput="$1"
 	local light_delta=${2-10}
@@ -34,39 +33,15 @@ xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"
 while [[ $# -gt 0 ]]
 do
 	case "$1" in
-		-h|--help)
-			print_usage 0
-			;;
-		-o|--output)
-			OUTPUT_THEME_NAME="$2"
-			shift
-			;;
-		-d|--destdir)
-			output_dir="$2"
-			shift
-			;;
 		-c|--color)
-			ICONS_COLOR="${2#\#}"  # remove leading hash symbol
+			ICONS_COLOR=${2#\#}  # remove leading hash symbol
 			shift
-			;;
-		-*)
-			echo "unknown option $1"
-			print_usage 2
-			;;
-		*)
-			THEME="$1"
 			;;
 	esac
 	shift
 done
 
 dir="$HOME/.local/share/icons/"
-
-trap EXIT SIGHUP SIGINT SIGTERM
-
-
-: "${ICONS_COLOR:=$SEL_BG}"
-: "${OUTPUT_THEME_NAME:=oomox-$THEME}"
 
 light_folder_fallback="$ICONS_COLOR"
 medium_base_fallback="$(darker "$ICONS_COLOR" 20)"
