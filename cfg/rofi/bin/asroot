@@ -22,7 +22,7 @@ options="$terminal\n$files\n$editor\n$clifm\n$vim"
 chosen="$(echo -e "$options" | $rofi_command -p "Run as root" -dmenu -selected-row 0)"
 case $chosen in
     $terminal)
-        "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float --config-file /root/.config/alacritty/alacritty.yml'
+        "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float'
         ;;
     $files)
         "$DIR"/apps_as_root.sh 'dbus-run-session thunar'
@@ -31,13 +31,10 @@ case $chosen in
         "$DIR"/apps_as_root.sh geany
         ;;
     $clifm)
-        "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float --config-file /root/.config/alacritty/alacritty.yml -e ranger'
-        ;;
-    $lpad)
-        "$DIR"/apps_as_root.sh leafpad
+        "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float -e ranger'
         ;;
     $vim)
-        "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float --config-file /root/.config/alacritty/alacritty.yml -e vim'
+        "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float -e vim'
         ;;
 esac
 
