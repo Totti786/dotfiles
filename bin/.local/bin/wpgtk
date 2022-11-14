@@ -215,7 +215,7 @@ copyWal(){
 kill(){
 	if [[ $(pidof $1) ]]; then
 		killall -q $1
-		$1
+		$1 $2 $3
 	fi
 	}
 	
@@ -271,7 +271,7 @@ main(){
 	sh ~/.scripts/phoneWal.sh &
 }
 
-## Create a lighter shade of the color using bash
+## Create a lighter shade of the color using bash (courtesy of @guillaumeboehm)
 create_colors() {
   colors=(0)
   for i in "${colors[@]}"; do
