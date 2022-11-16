@@ -10,14 +10,6 @@
 /*****----- Configuration -----*****/
 configuration {
     show-icons:                 true;
-    display-drun:               "";
-    display-run:                "";
-    display-filebrowser:        "";
-    display-window:             "";
-    display-calc:     	   		"";
-    display-emoji:     	   		"";
-    display-clipboard:     		"";
-    display-combi: 				"";
 	drun-display-format:        "{name}";
 	window-format:              "{w} · {c} · {t}";
 	kb-cancel: 					"Escape,Alt+F1";
@@ -57,7 +49,7 @@ mainbox {
 imagebox {
     padding:                     20px;
     background-color:            transparent;
-    background-image:            url("~/.config/wpg/wallpapers/wallpaper.jpg", height);
+    background-image:            url("~/.config/wpg/templates/wallpaper.jpg", height);
     orientation:                 vertical;
     children:                    [ "inputbar", "dummy", "mode-switcher" ];
 }
