@@ -29,6 +29,9 @@ super + t
 ~button3
 	xqp 0 $(xdo id -N Bspwm -n root) && jgmenu_run 
 
+alt + space
+	jgmenu_run
+
 ~button2
 	xqp 0 $(xdo id -N Bspwm -n root) && \
 	windowswitch "-monitor -3"
@@ -47,7 +50,6 @@ super + {m,x,r,s,i,n}
 super + {e,f,w,o,g,b,y,a,z,v,p}
 	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,discord,copyq show,color-gpick}
 
-# Launch CopyQ
 super + shift + {s,w,r,d,g}
 	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura}
 
