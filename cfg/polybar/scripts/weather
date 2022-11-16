@@ -60,17 +60,17 @@ get_weather_data() {
 		elif [ "$weather_icon_code" == "03n"  ]; then
 			weather_icon=" "
 		elif [ "$weather_icon_code" == "04d"  ]; then
-			weather_icon=" "
+			weather_icon=" "
 		elif [ "$weather_icon_code" == "04n"  ]; then
-			weather_icon=" "
+			weather_icon=" "
 		elif [ "$weather_icon_code" == "09d"  ]; then
 			weather_icon=" "
 		elif [ "$weather_icon_code" == "09n"  ]; then
 			weather_icon=" "
 		elif [ "$weather_icon_code" == "10d"  ]; then
-			weather_icon=" "
+			weather_icon=" "
 		elif [ "$weather_icon_code" == "10n"  ]; then
-			weather_icon=" "
+			weather_icon=" "
 		elif [ "$weather_icon_code" == "11d"  ]; then
 			weather_icon="ﭼ " 
 		elif [ "$weather_icon_code" == "11n"  ]; then
