@@ -59,18 +59,18 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 
 :warning: **The following instructions have only been written for arch-based distros**
 Install an [AUR helper](https://wiki.archlinux.org/title/AUR_helpers) of your choice
-
+You are also required to have the Chaotic-AUR repo added on your system
 - Using the [yay](https://github.com/Jguer/yay#installation) helper
 
 ```bash
 yay -S --needed \
-sxhkd bspwm alacritty zsh neovim polybar stalonetray \
-plank dunst rofi jgmenu xprintidle i3lock-color zathura \
-broot fzf mpv neofetch ranger ueberzug xdo perl cava \
-xbanish xss-lock pavucontrol nitrogen flameshot exa bat copyq \
-maim ant-dracula-kvantum-theme-git ant-dracula-theme-git \
-papirus-icon-theme kvantum pacman-contrib xorg-xbacklight \
-imagemagick
+sxhkd bspwm alacritty zsh polybar stalonetray openbox obconf conky \
+plank dunst rofi jgmenu grep i3lock-color zathura conky brightnessctl \
+xcape mpv ranger xdo perl cava gpick geany thunar thunar-archive-plugin \
+pavucontrol flameshot copyq fd feh playerctl  bluez-git coppyq dmenu \
+maim xclip light qt5ct qt5-styleplugins redshift tumbler viewnior xorg-xkill\
+xorg-xbacklight sxiv wmctrlxcape xdg-autostart xfce4-settings xfce4-power-manager\
+imagemagick xorg-xrd zathura zathura-cb zathura-pdf-mupdf
 ```
 
 ## :sparkles: Credits
