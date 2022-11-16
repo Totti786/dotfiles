@@ -16,8 +16,8 @@ rm -R $BackupDir/bin/.scripts && cp -r $HOME/.scripts $BackupDir/bin
 cp -r $wallpaper $BackupDir/deps/background.jpg
 
 
-cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
+cp -r ~/.config/wpg/templates/wallpaper.jpg \
 	$BackupDir/deps/sddm/Arch/components/artwork/background.jpg
 
-cp -r ~/.config/wpg/wallpapers/wallpaper.jpg \
+cp -r ~/.config/wpg/templates/wallpaper.jpg \
 	$BackupDir/deps/grub/Arch/background.jpg

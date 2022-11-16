@@ -6,7 +6,7 @@ if command -v kdeconnect-cli &> /dev/null; then
 	deviceID="$(kdeconnect-cli -a --id-only)"
 	if [[ ! -z $deviceID ]]; then 
 	kdeconnect-cli -d $deviceID --share \
-	$HOME/.config/wpg/wallpapers/wallpaper.jpg && kdeconnect-cli -d $deviceID --ping
+	$HOME/.config/wpg/templates/wallpaper.jpg && kdeconnect-cli -d $deviceID --ping
 	fi
 	exit
 else 

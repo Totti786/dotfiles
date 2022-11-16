@@ -1,10 +1,8 @@
 #!/bin/bash
 
-image="$HOME/.config/wpg/wallpapers/wallpaper.jpg"
+image="$HOME/.config/wpg/templates/wallpaper.jpg"
 
 lock() {
-
-
     i3lock -n -c 00000000 -t -e --pass-media-keys --pass-power-keys --pass-volume-keys --indicator --force-clock \
         --radius 52 --modif-size=9 --modif-pos="w/2:h/2-15" \
         --image "$image" \
@@ -29,7 +27,7 @@ lock() {
         --ring-color=00000000 \
         --ringver-color=96D6B0 \
         --ringwrong-color=ee6a70 \
-        --radius 90 \
+        --radius 180 \
         --ring-width=5 \
         --insidever-color=079A8C02 \
         --insidewrong-color=079A8C02 \
@@ -38,8 +36,6 @@ lock() {
         --line-uses-inside --keyhl-color=7ba5dd --bshl-color=ee6a70 --separator-color=7ba5dd \
         --pointer=default
 }
-
-
 run() {
     lock
 }

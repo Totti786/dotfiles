@@ -171,7 +171,8 @@ change_colors() {
 		\$cyan: $bright_cyan;
 	EOF
 	# resize and move wallpaper for use by other programs
-	convert -resize 1920x1080! $wallpaper ~/.config/wpg/wallpapers/wallpaper.jpg
+	convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
+	ln -sf $wallpaper ~/.config/wpg/wallpapers &> /dev/null
 }
 
 # this functions should only be used if you have a system with a seperate home partition 
@@ -197,14 +198,14 @@ lockPerms(){
 copyWal(){
 	# copy background to grub theme
 	if [[ -d "/usr/share/grub/themes/Arch" ]]; then
-		cp ~/.config/wpg/wallpapers/wallpaper.jpg \
+		cp ~/.config/wpg/templates/wallpaper.jpg \
 		/usr/share/grub/themes/Arch/background.jpg
 	else 
 		echo "Can't find a compatible grub theme"
 	fi
 	# copy background to sddm theme
 	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
-		cp ~/.config/wpg/wallpapers/wallpaper.jpg \
+		cp ~/.config/wpg/templates/wallpaper.jpg \
 		/usr/share/sddm/themes/Arch/components/artwork/background.jpg
 	else 
 		echo "Can't find a compatible sddm theme"
@@ -340,7 +341,6 @@ run(){
 			## merging the Xresources files with the main one
 			xrdb -merge ~/.cache/wal/colors.Xresources		
 		fi 
-		
 	else
 		echo "[!] 'wpgtk' is not installed."
 		echo "Installing from the AUR..." 
