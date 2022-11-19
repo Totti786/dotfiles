@@ -172,7 +172,7 @@ change_colors() {
 	EOF
 	# resize and move wallpaper for use by other programs
 	convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
-	ln -sf $wallpaper ~/.config/wpg/wallpapers &> /dev/null
+	ln -s $wallpaper ~/.config/wpg/wallpapers &> /dev/null
 }
 
 # this functions should only be used if you have a system with a seperate home partition 
@@ -266,7 +266,7 @@ main(){
 	check razer-cli -a &
 	copyWal &
 	kill dunst
-	papirus-folder.sh --color ${bright_red:1} &
+	papirus-folder.sh --color ${red:1} &
 	openbox --reconfigure &
 	check spicetify -q update &
 	sh ~/.scripts/phoneWal.sh &

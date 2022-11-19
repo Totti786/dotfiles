@@ -7,4 +7,4 @@ rofi \
 	-show drun \
 	-modi drun,filebrowser,calc \
 	-drun-display-format "{name}" \
-	-theme $HOME/.config/rofi/themes/launcher.rasi
+	-theme $HOME/.config/rofi/themes/launcher5.rasi

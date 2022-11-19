@@ -11,6 +11,7 @@ configuration {
 	click-to-exit: 		true;
 	fixed-num-lines:	false;
 	hover-select: 		true;
+	window-format: 		" {w} · {c} · {t}";
 	me-select-entry:	"";
 	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
 }
@@ -31,7 +32,6 @@ window {
 listview {
     background-color:               @background;
     columns:                        1;
-    lines:							7;
     spacing:                        4px;
     cycle:                          true;
     dynamic:                        true;
