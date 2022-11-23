@@ -69,8 +69,8 @@ plank dunst rofi jgmenu grep i3lock-color zathura conky brightnessctl \
 xcape mpv ranger xdo perl cava gpick geany thunar thunar-archive-plugin \
 pavucontrol flameshot copyq fd feh playerctl  bluez-git coppyq dmenu \
 maim xclip light qt5ct qt5-styleplugins redshift tumbler viewnior xorg-xkill\
-xorg-xbacklight sxiv wmctrlxcape xdg-autostart xfce4-settings xfce4-power-manager\
-imagemagick xorg-xrd zathura zathura-cb zathura-pdf-mupdf
+xorg-xbacklight sxiv wmctrl xcape xdg-autostart xfce4-settings xfce4-power-manager\
+imagemagick xorg-xrdb zathura zathura-cb zathura-pdf-mupdf
 ```
 
 ## :sparkles: Credits
