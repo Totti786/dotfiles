@@ -171,7 +171,8 @@ change_colors() {
 		\$cyan: $bright_cyan;
 	EOF
 	# resize and move wallpaper for use by other programs
-	convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
+	#convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
+	cp $wallpaper ~/.config/wpg/templates/wallpaper.jpg
 	ln -s $wallpaper ~/.config/wpg/wallpapers &> /dev/null
 }
 
@@ -197,12 +198,12 @@ lockPerms(){
 # this funcction only works after using the lockPermissions function
 copyWal(){
 	# copy background to grub theme
-	if [[ -d "/usr/share/grub/themes/Arch" ]]; then
-		cp ~/.config/wpg/templates/wallpaper.jpg \
-		/usr/share/grub/themes/Arch/background.jpg
-	else 
-		echo "Can't find a compatible grub theme"
-	fi
+	#if [[ -d "/usr/share/grub/themes/Arch" ]]; then
+		#cp ~/.config/wpg/templates/wallpaper.jpg \
+		#/usr/share/grub/themes/Arch/background.jpg
+	#else 
+		#echo "Can't find a compatible grub theme"
+	#fi
 	# copy background to sddm theme
 	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
 		cp ~/.config/wpg/templates/wallpaper.jpg \
