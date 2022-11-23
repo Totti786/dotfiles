@@ -75,4 +75,3 @@ imagemagick xorg-xrdb zathura zathura-cb zathura-pdf-mupdf
 
 ## :sparkles: Credits
 
-- Excellent neovim config by [NvChad](https://github.com/NvChad/NvChad)
