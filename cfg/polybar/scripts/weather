@@ -39,7 +39,7 @@ get_weather_data() {
 			aqi=`echo "$altweather" | jq -r ".data[].aqi"`
 			dewpt=`echo "$altweather" | jq -r ".data[].dewpt"`
 			precipitation=`echo "$altweather" | jq -r ".data[].precip"`
-			echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $precipitation% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}
+			echo -e "City: $city \nDew Point: $dewpt°C \nHumidity: $humidity% \nUV Index: $uv \nAir Quality: $aqi \nPrecipitation: $(printf "%.2f" $precipitation)% \nWindspeed: $windspeed m/s \n" > ${cache_weather_rofi}
 		fi
 		
 		#Big long if statement of doom
