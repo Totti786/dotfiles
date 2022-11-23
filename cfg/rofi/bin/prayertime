@@ -3,12 +3,22 @@
 ## get city and country from a differnt file
 source ~/.config/polybar/scripts/info
 
-DIR="$HOME/.config" 
+DIR="$HOME/.config"
 DAY="$(expr $(date "+%d") - 1)"
 MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"
-prayer_rofi="$HOME/.cache/prayer_rofi_$DAY:$MONTH"
-prayer_cache="$HOME/.cache/prayertimes_$MONTH:$YEAR"
+prayer_rofi="$HOME/.cache/prayer_rofi_"$CITY"_$DAY:$MONTH"
+prayer_cache="$HOME/.cache/prayertimes_"$CITY"_$MONTH:$YEAR"
+echo $CITY
+## Get City
+if [[ -z $CITY ]]; then 
+	CITY=$(wget --timeout=2 http://ipinfo.io/city -qO -)
+fi
+
+## Get Country
+if [[ -z $COUNTRY ]]; then 
+	COUNTRY=$(wget --timeout=2 http://ipinfo.io/country -qO -)
+fi
 
 # pure jank
 convert(){
