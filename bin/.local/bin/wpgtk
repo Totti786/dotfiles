@@ -39,7 +39,7 @@ change_colors() {
 		cyan = $bright_cyan
 		white = $white
 		EOF
-	sed -i -e 's/wpg = .*/wpg = 1/g' ~/.config/polybar/config.ini			
+
 	# rofi
 	cat > $rofi <<- EOF
 	/* colors */
@@ -170,6 +170,7 @@ change_colors() {
 		\$blue: $bright_blue;
 		\$cyan: $bright_cyan;
 	EOF
+	
 	# resize and move wallpaper for use by other programs
 	#convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
 	cp $wallpaper ~/.config/wpg/templates/wallpaper.jpg
@@ -268,7 +269,7 @@ main(){
 	copyWal &
 	kill dunst
 	papirus-folder.sh --color ${red:1} &
-	openbox --reconfigure &
+	sh ~/.config/polybar/launch.sh &> /dev/null
 	check spicetify -q update &
 	sh ~/.scripts/phoneWal.sh &
 }
