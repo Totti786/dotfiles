@@ -4,7 +4,6 @@
 ## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-SFILE="$DIR/system.ini"
 CARD="$(light -L | grep 'backlight' | head -n1 | cut -d'/' -f3)"
 INTERFACE="$(ip link | awk '/state UP/ {print $2}' | tr -d :)"
 BATTERY=$(upower -i `upower -e | grep 'BAT'` | grep 'native-path' | cut -d':' -f2 | tr -d '[:blank:]')
@@ -41,16 +40,16 @@ fix_modules() {
 ## Write values to `system` file
 set_values() {
 	if [[ "$ADAPTER" ]]; then
-		sed -i -e "s/adapter = .*/adapter = $ADAPTER/g" 						${SFILE}
+		sed -i -e "s/adapter = .*/adapter = $ADAPTER/g" 						$DIR/system.ini
 	fi
 	if [[ "$BATTERY" ]]; then
-		sed -i -e "s/battery = .*/battery = $BATTERY/g" 						${SFILE}
+		sed -i -e "s/battery = .*/battery = $BATTERY/g" 						$DIR/system.ini
 	fi
 	if [[ "$CARD" ]]; then
-		sed -i -e "s/graphics_card = .*/graphics_card = $CARD/g" 				${SFILE}
+		sed -i -e "s/graphics_card = .*/graphics_card = $CARD/g" 				$DIR/system.ini
 	fi
 	if [[ "$INTERFACE" ]]; then
-		sed -i -e "s/network_interface = .*/network_interface = $INTERFACE/g" 	${SFILE}
+		sed -i -e "s/network_interface = .*/network_interface = $INTERFACE/g" 	$DIR/system.ini
 	fi	
 }
 
@@ -60,12 +59,10 @@ launch_bar() {
 	killall -q -9 polybar
 
 	# Launch the bar
-	polybar -q -r top -c "$DIR"/config.ini &
-	polybar -q -r bottom -c "$DIR"/config.ini &
+	polybar -q top -c "$DIR"/config.ini &
+	polybar -q bottom -c "$DIR"/config.ini &
 }
 
 set_values
 fix_modules
 launch_bar
-sleep 1 &&
-exit
