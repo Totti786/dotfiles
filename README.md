@@ -33,7 +33,8 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | Compositor             | [`FT-labs's/picom`](https://github.com/FT-labs/picom)   |
 | Terminal               | [`alacritty`](https://github.com/alacritty/alacritty)   |
 | Shell                  | [`zsh`](https://www.zsh.org/)                           |
-| Editor                 | [`neovim`](https://github.com/neovim/neovim)            |
+| Terminal Editor        | [`neovim`](https://github.com/neovim/neovim)            |
+| GUI Editor      		 | [`geany`](https://github.com/geany/geany)               |
 | Panel                  | [`polybar`](https://github.com/polybar/polybar)         |
 | System Tray            | [`stalonetray`](https://github.com/kolbusa/stalonetray) |
 | Dock                   | [`plank`](https://github.com/ricotz/plank)              |
@@ -47,6 +48,7 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 
 | Font List                                                                                                | Use                 |
 | -------------------------------------------------------------------------------------------------------- | ------------------- |
+| [`Noto Sans`](https://fonts.google.com/noto)                                                       	   | GTK and QT Font        |
 | [`Roboto`](https://github.com/googlefonts/roboto)                                                        | Primary Font        |
 | [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)                              | Primary UI Font     |
 
@@ -64,13 +66,16 @@ You are also required to have the Chaotic-AUR repo added on your system
 
 ```bash
 yay -S --needed \
-sxhkd bspwm alacritty zsh polybar stalonetray openbox obconf conky \
-plank dunst rofi jgmenu grep i3lock-color zathura conky brightnessctl \
-xcape mpv ranger xdo perl cava gpick geany thunar thunar-archive-plugin \
-pavucontrol flameshot copyq fd feh playerctl  bluez-git coppyq dmenu \
-maim xclip light qt5ct qt5-styleplugins redshift tumbler viewnior xorg-xkill\
-xorg-xbacklight sxiv wmctrl xcape xdg-autostart xfce4-settings xfce4-power-manager\
-imagemagick xorg-xrdb zathura zathura-cb zathura-pdf-mupdf
+alacritty bluez-git brightnessctl bspwm conky copyq dmenu \
+dunst fd feh flameshot geany gpick grep htop i3lock-color \
+imagemagick jgmenu light maim mpv mpv-mpris ncdu \
+networkmanager-openvpn network-manager-applet noto-fonts \
+noto-fonts-emoji obconf openbox pamixer pavucontrol perl plank \
+playerctl polybar qt5ct qt5-styleplugins ranger redshift rofi \
+stalonetray sxhkd sxiv thunar tumbler viewnior wget wmctrl \
+xarchiver xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk \
+xdo xdotool xfce4-power-manager xfce4-settings xorg-xkill xorg-xrdb \
+xorg-xsetroot zathura zathura-cb zathura-pdf-mupdf zsh 
 ```
 
 ## :sparkles: Credits
