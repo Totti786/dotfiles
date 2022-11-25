@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
 DIR="$HOME/.config"
+if [ -n "$(rofi -h | grep 'calc')" ]; then 
+	mode="drun,filebrowser,calc"
+else 
+	mode="drun,filebrowser"
+fi
 
 rofi \
 	-no-lazy-grab \
 	-show drun \
-	-modi drun,filebrowser,calc \
+	-modi $mode \
 	-drun-display-format "{name}" \
 	-theme $HOME/.config/rofi/themes/launcher5.rasi
