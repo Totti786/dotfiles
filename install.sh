@@ -70,15 +70,6 @@ change_dock() {
 	_EOF_
 }
 
-#fixOpenbox(){
-	#if [ -f "$HOME/.config/wpg/templates/ob_colorbamboo.base" ]; then
-		#sed  -i -e 's/osd.bg: .*/osd.bg: Flat/g' ~/.config/wpg/templates/ob_colorbamboo.base
-		#sed  -i -e 's/osd.border.color: .*/osd.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
-		#sed  -i -e 's/menu.border.width: .*/menu.border.width: 8/g' ~/.config/wpg/templates/ob_colorbamboo.base
-		#sed  -i -e 's/window.active.border.color: .*/window.active.border.color: {color0}/g' ~/.config/wpg/templates/ob_colorbamboo.base
-	#fi
-	#}
-
 changeTheme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
@@ -101,6 +92,14 @@ wpgtk(){
 	fi
 	}
 
+base(){
+	checkChaotic &&
+	sudo pacman -Sy $(cat $DIR/deps/minimal.txt $DIR/deps/additional.txt) --needed
+	sudo pacman -U $DIR/deps/packages/* --needed
+	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
+	moveConfigs
+	changeTheme
+	}
 minimal(){
 	checkChaotic &&
 	installDependencies &&
@@ -188,7 +187,8 @@ update(){
 
 install(){
 	installOptions=$($Dialog --radiolist  "Choose one of the following options:"  15 60 4\
-		minimal "Minimal Install" off\
+		base "Install with optional useful utilities" off\
+		minimal "Install only the essential dependencies" off\
 		zsh "Zsh Configuration" off\
 		sddm "SDDM Theme" off\
 		grub "Grub Theme" off\
