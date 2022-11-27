@@ -35,6 +35,7 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | Shell                  | [`zsh`](https://www.zsh.org/)                           |
 | Terminal Editor        | [`neovim`](https://github.com/neovim/neovim)            |
 | GUI Editor      		 | [`geany`](https://github.com/geany/geany)               |
+| File Manager    		 | [`thunar`](https://github.com/xfce-mirror/thunar)       |
 | Panel                  | [`polybar`](https://github.com/polybar/polybar)         |
 | System Tray            | [`stalonetray`](https://github.com/kolbusa/stalonetray) |
 | Dock                   | [`plank`](https://github.com/ricotz/plank)              |
