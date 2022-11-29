@@ -247,8 +247,9 @@ setWall(){
 	}
 	
 random(){
-	image=$(ls $Wallpapers/Wallpapers.git | sort -R | tail -n 1)
-	setWall $Wallpapers/Wallpapers.git/$image
+	cd $Wallpapers/Wallpapers.git/ &&
+	image=$(find -type f -not -path "./.git/*" | shuf -n 1)
+	setWall $Wallpapers/Wallpapers.git/${image:2}
 	}
 
 # this function uses implements a sxiv to create a wallpaper selector for wpg 
