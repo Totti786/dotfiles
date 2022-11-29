@@ -1,0 +1,5 @@
+#!/bin/bash
+
+tile=$(bsp-layout layouts | rofi -dmenu -monitor -3 -yoffset 25 -width 50% -theme ~/.config/rofi/themes/layouts.rasi)
+bsp-layout set $tile
+
