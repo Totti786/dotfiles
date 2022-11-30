@@ -22,17 +22,17 @@ player(){
 	Current="$(playerctl metadata --format "$Format")"
 	PlayerName="$(playerctl -l | head -n1 | cut -f1 -d ".")"
 	case $PlayerName in
-	  spotify) echo $Current 
+	  spotify) echo $Current 
 	  ;;
-	  firefox) echo $Current 
+	  firefox) echo $Current 
 	  ;;
-	  kdeconnect) echo $Current 
+	  kdeconnect) echo $Current 
 	  ;;  
-	  vlc) echo $Current 
+	  vlc) echo $Current 嗢
 	  ;;  
-	  mpv) echo $Current 
+	  mpv) echo $Current 
 	  ;;  
-	  rhythmbox) echo $Current 
+	  rhythmbox) echo $Current 蓼
 	  ;;
 	  *) echo $Current
 	esac
