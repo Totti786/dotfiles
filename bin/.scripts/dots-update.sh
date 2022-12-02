@@ -6,17 +6,10 @@ rofi_command="rofi -theme ~/.config/rofi/themes/window.rasi"
 # Variable passed to rofi
 options="Update System\nUpdate Configs\nExit"
 
-
-sysUpdate(){
-	up=$()
-	alacritty --class 'alacritty-float,alacritty-float' -e bash -c 'sudo pacman -Syyu && rm ~/.cache/pacman-updates && echo "Update Successful" && sleep 3'
-	}
-
-
 chosen="$(echo -e "$options" | $rofi_command -p 'Update Menu' -dmenu -selected-row 0)"
 case $chosen in
     Update\ System)
-		sysUpdate
+		alacritty --class 'alacritty-float,alacritty-float' -e bash -c 'sudo pacman -Syyu && dunstify --appname=pacman "Update Successful" && rm ~/.cache/pacman-updates'
         ;;
     Update\ Configs)
 		cd $dots
