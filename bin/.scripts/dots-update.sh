@@ -8,13 +8,8 @@ options="Update System\nUpdate Configs\nExit"
 
 
 sysUpdate(){
-	alacritty --class 'alacritty-float,alacritty-float' -e sudo pacman -Syyu
-	if [[ "$1" -ne 0 ]]; then
-		echo "Update Failed" &&
-		wait 5
-	else
-		rm ~/.cache/pacman-updates
-	fi
+	up=$()
+	alacritty --class 'alacritty-float,alacritty-float' -e bash -c 'sudo pacman -Syyu && rm ~/.cache/pacman-updates && echo "Update Successful" && sleep 3'
 	}
 
 
