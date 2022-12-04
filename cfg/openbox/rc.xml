@@ -1035,12 +1035,12 @@
     <context name="Root">
       <mousebind action="Press" button="Middle">
         <action name="Execute">
-          <command>~/.local/bin/windowswitch "-monitor -3"</command>
+          <command>~/.local/bin/windowswitch window "-monitor -3"</command>
         </action>
       </mousebind>
       <mousebind action="Press" button="A-Right">
         <action name="ShowMenu">
-          <menu>~/.local/bin/windowswitch "-monitor -3"</menu>
+          <menu>~/.local/bin/windowswitch windowcd</menu>
         </action>
       </mousebind>
       <mousebind action="Press" button="Right">
