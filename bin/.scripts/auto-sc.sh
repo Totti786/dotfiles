@@ -2,24 +2,21 @@
 
 DIR="$HOME/Pictures/Screenshots/Temp"
 
-screenshotScript(){
-	# Get PID of the screenshot script
-  getPid=$(pgrep -f sc.sh)
-	if [ $? -eq 0 ]; then
-	   echo Already Running:$getPid
-	 else
-	   nohup ~/.scripts/sc.sh &> /dev/null &
-	   disown
-	fi
+takeshot(){
+	cd $DIR
+	while true; do scrot -q 70 & sleep 45; done
 }
+
 main(){
 if [ -d "$DIR" ]; then
    # Take action if $DIR exists. #
-   screenshotScript
+   	takeshot &
+	echo "Running Script"
   else 
    # Create Directory and then take action
    mkdir $DIR &&
-   screenshotScript
+   	takeshot &
+	echo "Running Script"
 fi
 }
 
