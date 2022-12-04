@@ -52,7 +52,6 @@ xclip
 xdg-autostart
 xdg-user-dirs
 xdg-user-dirs-gtk
-xdo
 xdotool
 xfce4-power-manager
 xfce4-settings
