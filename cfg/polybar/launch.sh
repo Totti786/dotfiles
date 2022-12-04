@@ -57,7 +57,7 @@ set_values() {
 launch_bar() {
 	# Terminate already running bar instances
 	killall -q -9 polybar
-
+	killall -q -9 updates.sh zscroll playerctl-scroll.sh
 	# Launch the bar
 	polybar -q top -c "$DIR"/config.ini &
 	polybar -q bottom -c "$DIR"/config.ini &
