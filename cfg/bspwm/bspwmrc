@@ -25,7 +25,7 @@ workspaces() {
 	name=1
 	for monitor in `bspc query -M`; do
 		bspc monitor ${monitor} -n "$name" -d '一' '二' '三' '四' '五' '六' '七' '八'
-		#bspc monitor ${monitor} -n "$name" -d '' '' '' '' '' '' '' '' '九' '十'
+		#bspc monitor ${monitor} -n "$name" -d '' '' '' '' '' '' '' '九' '十'
 		let name++
 	done
 }
@@ -108,8 +108,8 @@ sh ~/.config/polybar/launch.sh &
 bspc config -m focused top_padding 23 
 bspc config -m focused bottom_padding 23 
 
-## Picom	
-picom &
+## Picom 
+picom -b &
 
 ## CopyQ
 copyq --start-server &
