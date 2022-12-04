@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-options="\n"
+options="Yes\nNo"
 
 echo -e $options | rofi -dmenu\
      -i\
