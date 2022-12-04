@@ -17,7 +17,7 @@ super + shift + Return
 
 # Drop Down Terminal
 alt + Return
-	tdrop -a -y 24  alacritty
+	tdrop -a -w 70% -h 50% -y 33 -x 15% alacritty
 	
 # Terminal (fullscreen)
 super + t
@@ -34,7 +34,7 @@ alt + space
 
 ~button2
 	xqp 0 $(xdo id -N Bspwm -n root) && \
-	windowswitch "-monitor -3"
+	windowswitch window "-monitor -3"
 
 # Rofi App Launcher
 alt + F1
@@ -158,11 +158,11 @@ super + {_,shift + }{Left,Down,Up,Right}
 
 # Switch window
 alt + Tab
-	windowcdswitch
+	windowswitch windowcd
 
 # Switch window (across worksapces)
 super + Tab
-	windowswitch
+	windowswitch window
 
 # Switch workspace
 ctrl + super + {Left,Right}
