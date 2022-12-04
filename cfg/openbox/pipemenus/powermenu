@@ -15,9 +15,9 @@ if  [[ $1 = "--logout" ]]; then
 elif  [[ $1 = "--lock" ]]; then
 	lockscreen
 elif  [[ $1 = "--suspend" ]]; then
-	systemctl suspend
+	systemctl suspend && lockscreen
 elif  [[ $1 = "--reboot" ]]; then
-	systemctl reboot
+	systemctl reboot 
 elif  [[ $1 = "--shutdown" ]]; then
 	systemctl poweroff
 fi
