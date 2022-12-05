@@ -13,4 +13,4 @@ rofi \
 	-show drun \
 	-modi $mode \
 	-drun-display-format "{name}" \
-	-theme $DIR/launcher5.rasi
+	-theme $DIR/launcher.rasi
