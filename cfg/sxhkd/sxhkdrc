@@ -47,8 +47,12 @@ super + {m,x,r,s,i,n}
 ##---------- Applications ----------##
 
 # Launch Apps
-super + {e,f,w,o,g,b,y,a,z,v,p}
-	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,discord,copyq show,color-gpick}
+super + {e,f,w,o,g,b,y,a,v,p}
+	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq show,color-gpick}
+
+# Launch Discord
+super + z
+	discord --no-sandbox --ignore-gpu-blocklist --disable-features=UseOzonePlatform --enable-features=VaapiVideoDecoder --use-gl=desktop --enable-gpu-rasterization --enable-zero-copy
 
 super + shift + {s,w,r,d,g}
 	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura}
