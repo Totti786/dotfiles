@@ -273,6 +273,7 @@ main(){
 	papirus-folder.sh --color ${red:1} &
 	sh ~/.config/polybar/launch.sh &> /dev/null
 	check spicetify -q update &
+	sh ~/.config/bspwm/bsp-border
 	sh ~/.scripts/phoneWal.sh &
 }
 
