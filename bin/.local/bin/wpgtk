@@ -16,10 +16,8 @@ cava="$HOME/.config/cava/config"
 copyq="$HOME/.config/copyq/copyq.conf"
 jgmenu="$HOME/.config/jgmenu/jgmenurc"
 eww="$HOME/.config/eww/src/scss/colors.scss"
-conky1="$HOME/.config/conky/conky-Openbox-1080.conf"
-conky11="$HOME/.config/conky/conky-Openbox-768.conf"
-conky2="$HOME/.config/conky/conky-bspwm-1080.conf"
-conky22="$HOME/.config/conky/conky-bspwm-768.conf"
+conky1="$HOME/.config/conky/conky-Openbox.conf"
+conky2="$HOME/.config/conky/conky-bspwm.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
 
 ## Change colors
@@ -141,11 +139,11 @@ change_colors() {
 	# Spotify can be themed using the xrdb backend i.e. ${xrdb:color0:#222}
 	
 	# conky
-	sed -i -e "s/own_window_colour = '#.*',/own_window_colour = '${BG}',/g" $conky1 $conky2 $conky11 $conky22
-	sed -i -e "s/color0 = '#.*',/color0 = '${bright_red}',/g" 				$conky1 $conky2 $conky11 $conky22
-	sed -i -e "s/color1 = '#.*',/color1 = '${FG}',/g" 						$conky1 $conky2 $conky11 $conky22
-	sed -i -e "s/color2 = '#.*',/color2 = '${bright_blue}',/g"				$conky1 $conky2 $conky11 $conky22
-	sed -i -e "s/color3 = '#.*',/color3 = '${bright_yellow}',/g"			$conky1 $conky2 $conky11 $conky22
+	sed -i -e "s/own_window_colour = '#.*',/own_window_colour = '${BG}',/g" $conky1 $conky2
+	sed -i -e "s/color0 = '#.*',/color0 = '${bright_red}',/g" 				$conky1 $conky2
+	sed -i -e "s/color1 = '#.*',/color1 = '${FG}',/g" 						$conky1 $conky2
+	sed -i -e "s/color2 = '#.*',/color2 = '${bright_blue}',/g"				$conky1 $conky2
+	sed -i -e "s/color3 = '#.*',/color3 = '${bright_yellow}',/g"			$conky1 $conky2
 	
 	
 	# cava 
