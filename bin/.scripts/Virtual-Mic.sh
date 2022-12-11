@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-if ! [ -f /tmp/vmic-lock ]; then create ; else echo "Virtaul Mic already working"; fi
-
-create(){
+createMic(){
 	touch /tmp/vmic-lock
 	
 	# Create a virtual sink that can be set as a monitor in OBS
@@ -13,3 +11,6 @@ create(){
 	pw-link VirtualSpeaker:monitor_FL VirtualMic:input_FL
 	pw-link VirtualSpeaker:monitor_FR VirtualMic:input_FR
 }
+
+if ! [ -f /tmp/vmic-lock ]; then createMic ; else echo "Virtaul Mic already working"; fi
+
