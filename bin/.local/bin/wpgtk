@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source "$HOME/.cache/wal/colors.sh"
-
 # Color files
 alacritty="$HOME/.config/alacritty/colors.yml"
 polybar="$HOME/.config/polybar/colors.ini"
@@ -111,7 +109,7 @@ change_colors() {
 	sed -i -e "s/background \"#.*\"/background \"$BG\"/g" $systray
 	
 	# jgmenu 
-	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${BG} 70/g" 			$jgmenu
+	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${BG} 60/g" 			$jgmenu
 	sed -i -e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" 	 		$jgmenu
 	sed -i -e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 60/g" $jgmenu
 	sed -i -e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g"  $jgmenu
@@ -313,6 +311,7 @@ create_colors() {
 
 ## Check if wpg is installed and get colors
 run(){
+	source "$HOME/.cache/wal/colors.sh"
 	if [[ -f "/usr/bin/wpg" ]]; then
 		## check if the files exists and import colors from wpg
 		if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
