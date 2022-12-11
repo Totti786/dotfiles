@@ -6,10 +6,13 @@
 if  [[ $1 = "--logout" ]]; then
 	current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
 	if [[ $current_desktop == "Openbox" ]]; then
+		systemctl --user exit
 		openbox --exit
 	elif [[ $current_desktop == "i3" ]]; then
+		systemctl --user exit
 		i3 exit
 	elif [[ $current_desktop == "bspwm" ]]; then
+		systemctl --user exit
 		bspc quit
 	fi
 elif  [[ $1 = "--lock" ]]; then
