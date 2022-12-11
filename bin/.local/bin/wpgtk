@@ -180,12 +180,12 @@ change_colors() {
 # (this is bad)
 lockPerms(){
 	## give the user read and write permissions to the grub themes directory
-	if [[ -d "/usr/share/grub/themes/Arch" ]]; then
-		sudo chgrp -R $(whoami) /usr/share/grub/themes/
-		sudo chmod -R ug+rwX  /usr/share/grub/themes/
-	else 
-		echo "Can't find a compatible grub theme"
-	fi
+	#if [[ -d "/usr/share/grub/themes/Arch" ]]; then
+		#sudo chgrp -R $(whoami) /usr/share/grub/themes/
+		#sudo chmod -R ug+rwX  /usr/share/grub/themes/
+	#else 
+		#echo "Can't find a compatible grub theme"
+	#fi
 	## give the user read and write permissions to the sddm directory
 	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
 		sudo chgrp -R $(whoami) /usr/share/sddm/
@@ -266,8 +266,8 @@ pick(){
 main(){
 	change_colors
 	check razer-cli -a &
-	copyWal &
 	kill dunst
+	copywal &
 	papirus-folder.sh --color ${red:1} &
 	sh ~/.config/polybar/launch.sh &> /dev/null
 	check spicetify -q update &
