@@ -82,7 +82,7 @@ changeTheme(){
 
 wpgtk(){
 	sh $DIR/bin/.local/bin/wpgtk run &&
-	if $Dialog --yesno "Do you want your sddm and grub background to sync with your wallpaper? 
+	if $Dialog --yesno "Do you want your Login Screen background to sync with your wallpaper? 
 			(This only works with the included SDDM theme)" 20 60 ;then
 		sh $DIR/bin/.local/bin/wpgtk lockPerms &&
 		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
