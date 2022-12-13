@@ -265,7 +265,7 @@ main(){
 	change_colors
 	check razer-cli -a &
 	kill dunst
-	copywal &
+	copyWal &
 	papirus-folder.sh --color ${red:1} &
 	sh ~/.config/polybar/launch.sh &> /dev/null
 	check spicetify -q update &
