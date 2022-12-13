@@ -61,4 +61,13 @@
 	<patterns>*</patterns>
 	<image-files/>
 </action>
+<action>
+	<icon>image-straighten</icon>
+	<name>Convert to Jpg</name>
+	<unique-id>1669732092996674-1</unique-id>
+	<command>convert %f -quality 80  &quot;$(basename %f .png).jpg&quot;</command>
+	<description>Convert to Jpg</description>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
 </actions>
