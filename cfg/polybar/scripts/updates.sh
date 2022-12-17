@@ -1,7 +1,7 @@
 #!/bin/bash
 
 while true; do
-	if [[ $(date +%M) == "00" ]]; then
+	if [[ $(date +%M) == "01" ]]; then
 		$(checkupdates  > ~/.cache/pacman-updates)
 	fi 
 	
@@ -9,11 +9,9 @@ while true; do
 	
 	if [[ $updateCount == "0" ]]; then 
 		echo " None"
-		sleep 120
+		sleep 45
 	else 
 		echo " $updateCount"
-		sleep 60
+		sleep 45
 	fi
 done
-
-
