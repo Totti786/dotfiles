@@ -1,8 +1,8 @@
 #!/bin/sh
 
-source ~/.config/polybar/scripts/env.sh 
+source ~/.local/bin/env.sh 
 
-envFile=~/.config/polybar/scripts/env.sh
+envFile=~/.local/bin/env.sh 
 changeValue=200
 
 changeMode() {
@@ -28,6 +28,13 @@ case $1 in
     else
       changeMode "$REDSHIFT" on
       redshift -O "$REDSHIFT_TEMP"
+    fi
+    ;;
+  state)
+	if [ "$REDSHIFT" = on ]; then
+		echo "on"
+	else 
+		echo "off"
     fi
     ;;
   increase)
