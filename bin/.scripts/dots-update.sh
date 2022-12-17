@@ -9,7 +9,7 @@ options="Update System\nUpdate Configs\nExit"
 chosen="$(echo -e "$options" | $rofi_command -p 'Update Menu' -dmenu -selected-row 0)"
 case $chosen in
     Update\ System)
-		alacritty --class 'alacritty-float,alacritty-float' -e bash -c 'sudo pacman -Syu && dunstify --appname=pacman "Update Successful" && rm ~/.cache/pacman-updates'
+		alacritty --class 'alacritty-float,alacritty-float' --hold -e bash -c 'sudo pacman -Syu && dunstify --appname=pacman "Update Successful" && rm ~/.cache/pacman-updates'
         ;;
     Update\ Configs)
 		cd $dots
