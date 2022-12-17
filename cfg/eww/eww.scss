@@ -1,16 +1,6 @@
-/** Colors *******************************************/
-$bg: #0A2133;
-$bg-alt: #0A2133;
-$fg: #f9ffff;
-$fg-alt: #f9ffff;
-$red: #5ca6ba;
-$green: #12d4e1;
-$yellow: #cdaf87;
-$orange: #5ca6ba;
-$blue: #189fba;
-$purple: #75c8d6;
-$cyan: #3effff;
-$gray: #113c5d;
-$gray-alt: #113c5d;
+* {
+  all: unset;
+}
 
-@import "./System-Menu/eww.scss";
+@import "_colors.scss";
+@import "actions/actions.scss";

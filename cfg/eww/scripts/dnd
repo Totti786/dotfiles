@@ -7,7 +7,8 @@ toggle() {
         dunstctl set-paused true
     else
         dunstctl set-paused false
-        notify-send --urgency=normal "Do Not Disturb" "Do not Disturb has been turned off!"
+        icon="~/.local/share/icons/Papirus/24x24/panel/dino-status-dnd.svg"
+		dunstify -u low --replace=97 "Do Not Disturb" -i $icon "Notifications are Unpaused" -u Normal
     fi
 }
 
@@ -27,10 +28,10 @@ status() {
     fi
 }
 
-if [[ $1 == "--toggle" ]]; then
+if [[ $1 == "toggle" ]]; then
     toggle
-elif [[ $1 == "--icon" ]]; then
+elif [[ $1 == "icon" ]]; then
     icon
-elif [[ $1 == "--status" ]]; then
+elif [[ $1 == "status" ]]; then
     status
 fi
