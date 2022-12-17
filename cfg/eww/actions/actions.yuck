@@ -188,14 +188,6 @@
        :spacing 10
     (user)
     (sysbuttons)
-        (music :album {pctl_sub["xesam:album"]}
-           :title {pctl_sub["xesam:title"]}
-           :image_accent {pctl_sub["image_accent"]}
-           :button_accent {pctl_sub["button_accent"]}
-           :button_text {pctl_sub["button_text"]}
-           :cover {pctl_sub["mpris:artUrl"]}
-           :artist {pctl_sub["xesam:artist"]}
-           :player "${pctl_sub.player}")
     (controls)
   )
 )
