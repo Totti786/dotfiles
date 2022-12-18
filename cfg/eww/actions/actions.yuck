@@ -1,5 +1,5 @@
-(defwidget user []
-  (box :class "userinfobox"
+(defwidget header []
+  (box :class "datebox"
        :orientation "h"
        :space-evenly true
     (box :class "info"
@@ -8,15 +8,35 @@
          :halign "start"
          :valign "center"
          :spacing 10
-      (label :text "${username}" :class "username")
+      (label :text "${date}" :class "datebox")
     )
     (box :class "useractions"
          :space-evenly false
          :orientation "h"
          :halign "end"
          :valign "center"
-      (button :class "logout" :onclick "bspc quit"
-        ""
+      (button :class "date" :onclick "~/.config/eww/scripts/apps power-settings"
+        ""
+      )
+    )
+  )
+)
+
+(defwidget footer []
+  (box :class "datebox"
+       :orientation "h"
+       :space-evenly true
+    (box :class "useractions"
+         :space-evenly false
+         :orientation "h"
+         :halign "end"
+         :valign "start"
+         :spacing 5
+      (button :class "date" :onclick "~/.config/eww/scripts/apps settings"
+        "漣"
+      )
+      (button :class "date" :onclick "~/.config/eww/scripts/apps power"
+        "⏻"
       )
     )
   )
@@ -97,7 +117,7 @@
                  :orientation "v"
               (label :halign "center" :text "${label}" :class "label")
               (label :halign "start" :text "${active ? 'On' : 'Off'}" :class "label__status")
-           )
+            )
         (box :class "chevronbox"
              :halign "end"
              :hexpand true
@@ -147,7 +167,11 @@
                :halign "end"
                :onclick "~/.config/eww/scripts/music/control.sh next & ~/.config/eww/scripts/music/songart.sh get"
                :class "nextbutton"
-               "怜"))))
+               "怜"
+       )
+  )
+ )
+)
 
 (defwidget controls []
   (box :class "controlsbox"
@@ -181,14 +205,28 @@
     )
   )
 )
+(defwidget tips []
+  (box 	:orientation "v" 
+		:space-evenly "false" 
+		:hexpand "false" 
+		:vexpand "false"
+    (label
+		:class "tips-body" 
+		:halign "center" 
+		:text "${tips}"
+	)
+  )
+)
+
 (defwidget actions []
   (box :class "actions"
        :orientation "v"
        :space-evenly false
        :spacing 10
-    (user)
+    (header)
     (sysbuttons)
     (controls)
+    (footer)
   )
 )
 

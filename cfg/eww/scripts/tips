@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+import random
+
+quote_msg = ['You can set a raddom wallpaper by pressing Ctrl+Alt+W',
+            'The last workspace floats every window!',
+            'Use ctrl+L to lock your desktop.'
+            ]
+
+quote = random.choice(quote_msg)
+print(quote)

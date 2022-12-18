@@ -51,4 +51,4 @@
 
 (deflisten pctl_sub "~/.config/eww/scripts/playerctl.py")
 
-(deflisten xdo "~/.config/eww/scripts/xdo")
+(defpoll tips :interval "100s" "~/.config/eww/scripts/tips")

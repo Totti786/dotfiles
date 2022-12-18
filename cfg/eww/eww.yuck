@@ -1,6 +1,7 @@
 (include "actions/actions.yuck")
 (include "actions/variables.yuck")
 
+
 (defwidget closer []
     (eventbox :onclick "eww close-all"))
   

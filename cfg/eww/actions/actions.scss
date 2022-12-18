@@ -47,22 +47,22 @@
   }
 }
 
-.userinfobox {
+.datebox {
   .info {
-    .username {
+    .datebox {
       margin-left: 8px;
-      font-weight: 500;
+      font-size: 15px;
     }
   }
   .useractions {
-    .logout {
+    .date {
       background-color: $bg;
       font-family: 'JetBrainsMono Nerd Font';
       font-size: 18px;
-      padding: 2px 11px 2px 8px;
-      border-radius: 10px;
+      padding: 4px 10px 4px 10px;
+      border-radius: 18px;
       transition: all ease .2s;
-      &:hover { background-color: $bg; }
+      &:hover { background-color: $green; }
       &:active { background-color: $bg; }
     }
   }
@@ -157,4 +157,13 @@
 
 .musicbox__bottom {
  font-size: 23px;
+}
+
+.tips {
+  background-color: $bg;
+}
+
+.tips-body {
+  margin: 10px 0px 0px 20px;
+  font-size: 14px;
 }
