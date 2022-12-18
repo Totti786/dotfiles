@@ -90,27 +90,6 @@
         )
       )
     )
-    (box :class "thirdrow"
-         :orientation "h"
-         :space-evenly true
-      (box :halign "start"
-           :orientation "h"
-           :space-evenly true
-        (sysblock :icon "${redshift_state == 'on' ? '' : ''}"
-                  :onclick "~/.local/bin/redshift.sh toggle"
-                  :active "${redshift_state == 'on' ? true : false}"
-                  :label "Night Light")
-      )
-      (box :halign "end"
-           :orientation "h"
-           :space-evenly true
-        (sysblock :icon "${dnd_status == 'On' ? '󰍶' : '󱑙'}"
-                  :label "Don't Disturb"
-                  :onclick "~/.config/eww/scripts/dnd toggle"
-                  :active "${dnd_status == 'On' ? true : false}"
-        )
-      )
-    )
   )
 )
 
