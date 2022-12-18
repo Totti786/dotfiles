@@ -31,16 +31,6 @@
 (defpoll lithour :interval "30m" "date +%H")
 (defpoll litmin :interval "30s" "date +%M")
 
-; (defpoll music_button_accent :interval "1s" "~/.config/eww/scripts/music/songart.sh button_accent")
-; (defpoll music_button_text :interval "1s" "~/.config/eww/scripts/music/songart.sh button_text")
-; (defpoll music_background :interval "1500ms" "~/.config/eww/scripts/music/songart.sh accent_solid")
-; (defpoll music_url :interval "2s" "~/.config/eww/scripts/music/songart.sh echo")
-; (defpoll music_pic :interval "500ms" "~/.config/eww/scripts/music/songart.sh get")
-
-(defpoll music_title :interval "1s" "~/.config/eww/scripts/music/songdata.sh title")
-(defpoll music_artist :interval "1s" "~/.config/eww/scripts/music/songdata.sh artist")
-(defpoll music_status :interval "1s" "~/.config/eww/scripts/music/songdata.sh status")
-
 (defpoll pfp :interval "1s" "~/.config/eww/scripts/pfp.sh")
 (defpoll username :interval "1s" "~/.config/eww/scripts/user.sh")
 
@@ -49,6 +39,50 @@
 (defpoll dnd_status :interval "1s" "~/.config/eww/scripts/dnd status")
 (defpoll mic_status :interval "1s" "~/.config/eww/scripts/mic status")
 
-(deflisten pctl_sub "~/.config/eww/scripts/playerctl.py")
+(defpoll battery-icon :interval "2s" "~/.config/eww/scripts/battery -i")
+(defpoll battery-label :interval "2s" "~/.config/eww/scripts/battery -l")
+
+
+; Music
+(defvar music-panel false)
+
+(defvar top-panel-music false)
+    
+(defvar players
+    "spotify,%any,firefox,chromium,brave,mpd"
+)
+
+
+(defpoll music-cover
+	:interval "1s"
+	"scripts/music cover"
+)
+(defpoll song-status
+    :interval "1s"
+    "scripts/music status"
+)
+(defpoll song-artist
+    :interval "1s"
+    "scripts/music artist"
+)
+(defpoll song-title
+    :interval "1s"
+    "scripts/music title"
+)
+(defpoll song-position
+    :interval "250ms"
+    "scripts/music position"
+)
+(defpoll play-pause
+    :interval "250ms"
+	"scripts/music status-icon"
+)
+(defpoll title-artist
+	:interval "250ms"
+	"scripts/music title-artist"
+)
+(deflisten music-scroll
+    "scripts/scroll scroll-toggle"
+)
 
 (defpoll tips :interval "100s" "~/.config/eww/scripts/tips")

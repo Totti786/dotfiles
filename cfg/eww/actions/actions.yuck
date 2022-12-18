@@ -15,9 +15,8 @@
          :orientation "h"
          :halign "end"
          :valign "center"
-      (button :class "date" :onclick "~/.config/eww/scripts/apps power-settings"
-        ""
-      )
+         (label :class "date" :text "${battery-icon}")
+
     )
   )
 )
@@ -70,7 +69,28 @@
                   :label "Bluetooth")
       )
     )
-    (box :class "lastrow"
+    (box :class "secondrow"
+         :orientation "h"
+         :space-evenly true
+      (box :halign "start"
+           :orientation "h"
+           :space-evenly true
+        (sysblock :icon "${redshift_state == 'on' ? '' : ''}"
+                  :onclick "~/.local/bin/redshift.sh toggle"
+                  :active "${redshift_state == 'on' ? true : false}"
+                  :label "Night Light")
+      )
+      (box :halign "end"
+           :orientation "h"
+           :space-evenly true
+        (sysblock :icon "${dnd_status == 'On' ? '󰍶' : '󱑙'}"
+                  :label "Don't Disturb"
+                  :onclick "~/.config/eww/scripts/dnd toggle"
+                  :active "${dnd_status == 'On' ? true : false}"
+        )
+      )
+    )
+    (box :class "thirdrow"
          :orientation "h"
          :space-evenly true
       (box :halign "start"
@@ -129,48 +149,6 @@
       )
     )
   )
-)
-(defwidget music [title artist cover player]
-  (box :class "musicbox"
-       :orientation "v"
-       :style "background: radial-gradient(circle, rgba(0, 0, 0, 0.4) 30%, ${pctl_sub['image_accent']}), url(\"${pctl_sub['mpris:artUrl']}\"); background-size: cover; background-position: center;"
-  (box :class "musicbox__top"
-       :halign "start"
-       :valign "start"
-       :style "color: ${pctl_sub['button_accent']};"
-       "${player == 'spotify' ? '' : '爵' }")
-  (box :class "musicbox__center"
-       :orientation "h"
-       :space-evenly false
-       (box :class "musicbox__center--metadata"
-            :orientation "v"
-            :halign "start"
-            :valign "center"
-            :hexpand true
-            (label :limit-width 25 :halign "start" :text title :class "title")
-            (label :limit-width 25 :halign "start" :text artist :class "artist"))
-       (button :class "pausebutton ${music_status == 'Playing' ? 'playing' : 'paused'}"
-               :halign "end"
-               :style "background-color: ${pctl_sub['button_accent']}; color: ${pctl_sub['button_text']};"
-               :onclick "~/.config/eww/scripts/music/control.sh play-pause"
-               "${music_status == 'Playing' ? '' : ''}")
-       )
-  (box :class "musicbox__bottom"
-               :style "color: ${pctl_sub['button_accent']};"
-       (button :valign "end"
-               :halign "start"
-               :onclick "~/.config/eww/scripts/music/control.sh prev & ~/.config/eww/scripts/music/songart.sh get"
-               :class "previousbutton"
-               "玲"
-       )
-       (button :valign "end"
-               :halign "end"
-               :onclick "~/.config/eww/scripts/music/control.sh next & ~/.config/eww/scripts/music/songart.sh get"
-               :class "nextbutton"
-               "怜"
-       )
-  )
- )
 )
 
 (defwidget controls []
