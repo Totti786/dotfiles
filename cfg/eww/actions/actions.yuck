@@ -18,6 +18,9 @@
       (button :class "logout" :onclick "bspc quit"
         ""
       )
+      (button :class "logout" :onclick "xfce4-settings-manager"
+        "漣"
+      )
     )
   )
 )
@@ -25,7 +28,7 @@
 (defwidget sysbuttons []
   (box :class "sysbuttonsbox"
        :orientation "v"
-       :space-evenly false
+       :space-evenly true
        :spacing 8
     (box :class "firstrow"
          :orientation "h"
@@ -65,7 +68,7 @@
            :orientation "h"
            :space-evenly true
         (sysblock :icon "${dnd_status == 'On' ? '󰍶' : '󱑙'}"
-                  :label "DnD"
+                  :label "Don't Disturb"
                   :onclick "~/.config/eww/scripts/dnd toggle"
                   :active "${dnd_status == 'On' ? true : false}"
         )

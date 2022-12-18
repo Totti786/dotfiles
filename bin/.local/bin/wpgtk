@@ -13,7 +13,7 @@ systray="$HOME/.config/stalonetrayrc"
 cava="$HOME/.config/cava/config"
 copyq="$HOME/.config/copyq/copyq.conf"
 jgmenu="$HOME/.config/jgmenu/jgmenurc"
-eww="$HOME/.config/eww/src/scss/colors.scss"
+eww="$HOME/.config/eww/color.scss"
 conky1="$HOME/.config/conky/conky-Openbox.conf"
 conky2="$HOME/.config/conky/conky-bspwm.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
@@ -153,20 +153,23 @@ change_colors() {
 	sed -i -e "s/gradient_color_6 = '.*'/gradient_color_6 = '${bright_cyan}'/g"	  	$cava
 	
 	# eww
-	cat > $eww <<- EOF
-		\$black: ${BG};
-		\$black-darker: ${bg_dark};
-		\$black-lighter: ${bg_light};
-		\$white: ${FG};
+
+
+	
+	#cat > $eww <<- EOF
+		#\$black: ${BG};
+		#\$black-darker: ${bg_dark};
+		#\$black-lighter: ${bg_light};
+		#\$white: ${FG};
 		
-		\$pink: #ffdede;
-		\$red: $bright_red;
-		\$green: $bright_green;
-		\$yellow: $bright_yellow;
-		\$purple: $bright_magenta;
-		\$blue: $bright_blue;
-		\$cyan: $bright_cyan;
-	EOF
+		#\$pink: #ffdede;
+		#\$red: $bright_red;
+		#\$green: $bright_green;
+		#\$yellow: $bright_yellow;
+		#\$purple: $bright_magenta;
+		#\$blue: $bright_blue;
+		#\$cyan: $bright_cyan;
+	#EOF
 	
 	# resize and move wallpaper for use by other programs
 	#convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
