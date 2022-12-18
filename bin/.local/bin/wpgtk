@@ -13,7 +13,7 @@ systray="$HOME/.config/stalonetrayrc"
 cava="$HOME/.config/cava/config"
 copyq="$HOME/.config/copyq/copyq.conf"
 jgmenu="$HOME/.config/jgmenu/jgmenurc"
-eww="$HOME/.config/eww/color.scss"
+eww="$HOME/.config/eww/colors.scss"
 conky1="$HOME/.config/conky/conky-Openbox.conf"
 conky2="$HOME/.config/conky/conky-bspwm.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
@@ -153,8 +153,18 @@ change_colors() {
 	sed -i -e "s/gradient_color_6 = '.*'/gradient_color_6 = '${bright_cyan}'/g"	  	$cava
 	
 	# eww
-
-
+	sed -i -e "s/\$background: #.*/\$background: ${BG};/g"	   $eww
+	sed -i -e "s/\$bg-alt: #.*/\$bg-alt: ${bg_light};/g" 	   $eww
+	sed -i -e "s/\$fg: #.*/\$fg: ${FG};/g" 					   $eww
+	sed -i -e "s/\$fg-alt: #.*/\$fg-alt: $bright_white;/g" 	   $eww
+	sed -i -e "s/\$red: #.*/\$red: $bright_red;/g" 			   $eww
+	sed -i -e "s/\$green: #.*/\$green: $bright_green;/g"	   $eww
+	sed -i -e "s/\$yellow: #.*/\$yellow: $bright_yellow;/g"    $eww
+	sed -i -e "s/\$blue: #.*/\$blue: $bright_blue;/g" 		   $eww
+	sed -i -e "s/\$purple: #.*/\$purple: $bright_magenta;/g"   $eww
+	sed -i -e "s/\$cyan: #.*/\$cyan: $bright_cyan;/g" 		   $eww
+	sed -i -e "s/\$gray: #.*/\$gray: $bright_black;/g" 		   $eww
+	sed -i -e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" $eww
 	
 	#cat > $eww <<- EOF
 		#\$black: ${BG};
