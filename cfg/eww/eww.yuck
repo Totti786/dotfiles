@@ -1,5 +1,5 @@
 (include "actions/actions.yuck")
-(include "/variables.yuck")
+(include "./variables.yuck")
 
 
 (defwidget closer []
