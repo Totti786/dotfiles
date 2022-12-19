@@ -6,7 +6,7 @@
 ## Openbox Pipemenu to Record Screen with slop and ffmpeg
 
 time=`date +%Y-%m-%d-%H-%M-%S`
-screen=`xrandr | head -n1 | cut -d',' -f2 | tr -d '[:blank:],current'`
+screen=`xdpyinfo | awk '/dimensions/{print $2}'`
 dir="`xdg-user-dir VIDEOS`/Screenrecorder"
 file="Capture_${time}.mp4"
 MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
@@ -73,6 +73,18 @@ elif [[ "$1" == "--screen-na" ]]; then
 	rec_screen noaudio
 elif [[ "$1" == "--area-na" ]]; then
 	rec_area noaudio
+elif [[ "$1" == "--toggle" ]]; then
+	if [[ `pidof ffmpeg` ]]; then
+		pkill ffmpeg
+	else
+		ffmpeg -video_size ${screen} -framerate 25 -f x11grab -i :0.0+0,0 ${dir}/${file}
+	fi
+elif [[ "$1" == "--status" ]]; then
+	if [[ `pidof ffmpeg` ]]; then
+		echo on
+	else 
+		echo off
+	fi
 else
     menuStart
 		if [[ `pidof ffmpeg` ]]; then
