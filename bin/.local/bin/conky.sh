@@ -1,6 +1,6 @@
 #!/bin/bash
 
-res="$(xrandr -q | grep "current" | cut -d "," -f2 | cut -d " " -f5)"
+res="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
 wm="$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g')"
 conkyConfig=$HOME/.config/conky/conky-"$wm".conf
 
