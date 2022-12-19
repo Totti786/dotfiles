@@ -90,6 +90,27 @@
         )
       )
     )
+    (box :class "thirdrow"
+         :orientation "h"
+         :space-evenly true
+      (box :halign "start"
+           :orientation "h"
+           :space-evenly true
+        (sysblock :icon "${record_status == 'on' ? '' : ''}"
+                  :onclick "~/.config/openbox/pipemenus/record --toggle"
+                  :active "${record_status == 'on' ? true : false}"
+                  :label "Screen Record")
+      )
+      (box :halign "end"
+           :orientation "h"
+           :space-evenly true
+        (sysblock :icon "${vpn_status == 'On' ? '旅' : 'ﯳ'}"
+                  :label "VPN"
+                  :onclick "~/.config/eww/scripts/vpn.sh toggle"
+                  :active "${vpn_status == 'On' ? true : false}"
+        )
+      )
+    )
   )
 )
 

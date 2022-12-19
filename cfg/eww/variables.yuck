@@ -35,9 +35,10 @@
 (defpoll username :interval "1s" "~/.config/eww/scripts/user.sh")
 
 (defpoll bluetooth_state :interval "1s" "~/.config/eww/scripts/bluetooth state")
-(defpoll redshift_state :interval "1s" "~/.local/bin/redshift.sh state")
+(defpoll redshift_state :interval "0.5s" "~/.local/bin/redshift.sh state")
 (defpoll dnd_status :interval "1s" "~/.config/eww/scripts/dnd status")
-(defpoll mic_status :interval "1s" "~/.config/eww/scripts/mic status")
+(defpoll record_status :interval "0.5s" "~/.config/openbox/pipemenus/record --status")
+(defpoll vpn_status :interval "1s" "~/.config/eww/scripts/vpn.sh status")
 
 (defpoll battery-icon :interval "2s" "~/.config/eww/scripts/battery -i")
 (defpoll battery-label :interval "2s" "~/.config/eww/scripts/battery -l")
