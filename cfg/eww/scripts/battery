@@ -10,9 +10,11 @@
 
 # Dependencies: `acpi`
 
+
+
 bat=$(acpi -b)
 state=$(echo ${bat} | awk '{print $3}')
-
+rem="$(acpi | cut -d ' ' -f5 |cut -d ':' -f1-2)"
 if [[ "$state" = "Not" ]]; then
     level=$(echo ${bat} | awk '{print $5}')
     level=${level::-1}
@@ -34,61 +36,55 @@ icon() {
     if [[ "$bat" == *"until"* ]]; then
         
         if [[ "$level" -ge "95" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "90" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "80" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "60" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "40" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "30" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "20" ]]; then
-            echo "  "
+            echo "" "${level}%"
         else
-            echo "  "
+            echo "" "${level}%"
         fi
     else
         if [[ "$level" -ge "95" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "90" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "80" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "70" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "60" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "50" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "40" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "30" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "20" ]]; then
-            echo "  "
+            echo "" "${level}%"
             elif [[ "$level" -ge "10" ]]; then
-            echo "  "
+            echo "" "${level}%"
         else
-            echo "  "
+            echo "" "${level}%" "($rem)"
         fi
-    fi
-}
-
-class() {
-    if [[ "$bat" == *"until"* ]]; then
-        echo ""
-    else
-        echo " "
     fi
 }
 
 if [[ $1 = "-l" ]]; then
     echo "${level}%"
-elif [[ $1 == "-c" ]]; then
-    class
 elif [[ $1 = "-i" ]]; then
-    icon 
+	if [[ -z "$(acpi -V | grep -i Battery)" ]]; then 
+		echo "" "AC"
+	else
+		icon 
+	fi
 fi
