@@ -39,7 +39,9 @@ declare -a floating=(alacritty-float Lxappearance obs
 	Xfce4-appearance-settings Xfce4-mouse-settings
 	Xfce4-settings-manager Sxiv Trackma-gtk gnome-calculator
 	org.gnome.Weather Xfce4-display-settings Steam Wpg
-	TelegramDesktop KotatogramDesktop Anki)
+	TelegramDesktop KotatogramDesktop Anki
+	Xfce4-power-manager-settings)
+	
 
 for i in ${floating[@]}; do
    bspc rule -a $i state=floating follow=on focus=on; done
