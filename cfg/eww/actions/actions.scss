@@ -2,7 +2,7 @@
   background-color: $bg;
   color: $fg;
   font-family: JetBrainsMono Nerd Font;
-  padding: 10px 10px 0px 10px;
+  padding: 10px 10px 8px 10px;
 }
 
 .controlsbox {
@@ -26,7 +26,7 @@
     margin-left: 20px;
   }
   trough {
-    background-color: $bg;
+    background-color: $fg;
     min-height: 6px;
     border-radius: 100px;
 
@@ -77,15 +77,15 @@
       border-radius: 25px;
       transition: all ease .2s;
       color: $fg;
-      &:hover { background-color: $bgCal; }
+      &:hover { background-color: $blue; }
       &:active { 
-        background-color: $contrastbg; 
+        background-color: $yellow; 
         color: $fg;
       }
       &.active {
         color: $bgSecondary;
         background-color: $accent;
-        &:hover { background-color: $bg; }
+        &:hover { background-color: $cyan; }
         &:active {
         background-color: $bg;
         }
@@ -115,127 +115,3 @@
   }
 }
 
-
-.musicbox {
-  color: #fff;
-  border-radius: 26px;
-  padding: 11px 16px;
-  transition: background 250ms;
-  .musicbox__top {
-    font-size: 23px; 
-    font-family: 'JetBrainsMono Nerd Font';
-  }
-}
-
-.musicbox__center--metadata {
-  .title{
-    font-weight: 500;
-    transition: text 250ms;
-  }
-  .artist{
-    font-weight: 400;
-    font-size: 15px;
-    transition: text 250ms;
-  }
-}
-
-.pausebutton {
-  transition: background 250ms;
-  padding: 14px 16px;
-}
-
-.playing {
-  transition: all ease .2s;
-  border-radius: 15px;
-}
-
-.paused {
-  border-radius: 26px;  
-  transition: all ease .2s;
-  padding: 14px 14px 14px 18px;
-}
-
-
-.musicbox__bottom {
- font-size: 23px;
-}
-
-.tips {
-  background-color: $bg;
-}
-
-.tips-body {
-  margin: 10px 0px 0px 20px;
-  font-size: 14px;
-}
-
-
-music-box {
-	margin-top: 1em;
-
-	.song-cover {
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
-		border-radius: 20px;
-		transition: 1s;
-	}
-
-	.song {
-		border-radius: 20px;
-		background: linear-gradient(
-			to right,
-			rgba(16, 20, 21, 0.8),
-			rgba(16, 20, 21, 0.1)
-		);
-  
-		padding-top: 10px;
-		padding-left: 1em;
-  
-		.now-playing {
-			margin-bottom: 6px;
-			color: $purple;
-		}
-		.song-title {
-			font-size: 16px;
-			font-weight: bolder;
-			color: $blue;
-		}
-		.song-artist,
-		.song-position {
-			font-weight: bold;
-			color: $purple;
-		}
-
-		.song-controls {
-			button {
-				font-size: 2.5em;
-				font-weight: bold;
-				margin: 0 0.4em 0.2em;
-				padding: 5px;
-				transition: 0.5s;
-				text-shadow: 5px 5px 5px rgba(0, 0, 0, 1);
-		
-				&:hover {
-					color: $blue;
-					background-color: $gray;
-					border-radius: 10px;
-					box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-				}
-			}
-			
-			.music-play {
-				color: $purple;
-				text-shadow: 5px 5px 5px rgba(0, 0, 0, 1);
-			}
-	  
-			.music-controls {
-				color: $blue;
-	  
-				&:hover {
-					color: $purple;
-				}
-			}
-		}
-	}
-}
