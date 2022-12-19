@@ -10,11 +10,10 @@
 
 # Dependencies: `acpi`
 
-
-
 bat=$(acpi -b)
 state=$(echo ${bat} | awk '{print $3}')
 rem="$(acpi | cut -d ' ' -f5 |cut -d ':' -f1-2)"
+
 if [[ "$state" = "Not" ]]; then
     level=$(echo ${bat} | awk '{print $5}')
     level=${level::-1}
@@ -36,43 +35,43 @@ icon() {
     if [[ "$bat" == *"until"* ]]; then
         
         if [[ "$level" -ge "95" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "90" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "80" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "60" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "40" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "30" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "20" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
         else
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
         fi
     else
         if [[ "$level" -ge "95" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "90" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "80" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "70" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "60" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "50" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "40" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "30" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "20" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "10" ]]; then
-            echo "" "${level}%"
+            echo "" "${level}%" "($rem)"
         else
             echo "" "${level}%" "($rem)"
         fi
