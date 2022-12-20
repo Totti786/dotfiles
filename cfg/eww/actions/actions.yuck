@@ -215,7 +215,7 @@
 						:class "song-title" 
 						:halign "start"			
 						:text {song-title}
-						:limit-width 23
+						:limit-width 35
 					)
 					(label 
 						:class "song-artist" 
