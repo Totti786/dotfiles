@@ -4,7 +4,7 @@
 
 cache_dir="$HOME/.cache/eww"
 cache="$cache_dir/control-center.eww"
-active_players=$(playerctl -l | head -n 1)
+active_players="$(playerctl -l | head -n 1)"
 
 run () {
 	if [ ! -f $cache ]; then
