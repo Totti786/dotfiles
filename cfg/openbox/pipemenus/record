@@ -40,9 +40,9 @@ rec_screen() {
 	countdown '3'
 	sleep 1
 	if [[ "$1" == "noaudio" ]]; then
-		ffmpeg -video_size ${screen} -framerate 25 -f x11grab -i :0.0+0,0 ${dir}/${file}
+		ffmpeg -video_size ${screen} -framerate 25 -f x11grab -i :0.0+0,0 -vf format=yuv420p ${dir}/${file}
 	else
-		ffmpeg -video_size ${screen} -framerate 25 -f x11grab -i :0.0+0,0 -f pulse -ac 2 -i default ${dir}/${file}
+		ffmpeg -video_size ${screen} -framerate 25 -f x11grab -i :0.0+0,0 -vf format=yuv420p -f pulse -ac 2 -i default ${dir}/${file}
 	fi
 	notify_user
 }
@@ -77,7 +77,7 @@ elif [[ "$1" == "--toggle" ]]; then
 	if [[ `pidof ffmpeg` ]]; then
 		pkill ffmpeg
 	else
-		ffmpeg -video_size ${screen} -framerate 25 -f x11grab -i :0.0+0,0 ${dir}/${file}
+		ffmpeg -video_size ${screen} -framerate 25 -f x11grab -i :0.0+0,0 -vf format=yuv420p ${dir}/${file}
 	fi
 elif [[ "$1" == "--status" ]]; then
 	if [[ `pidof ffmpeg` ]]; then
