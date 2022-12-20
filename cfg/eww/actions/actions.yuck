@@ -67,7 +67,8 @@
         (sysblock :icon "${bluetooth_state == 'on' ? '' : ''}"
                   :onclick "~/.config/eww/scripts/bluetooth toggle"
                   :active "${bluetooth_state == 'on' ? true : false}"
-                  :label "Bluetooth")
+                  :label "Bluetooth"
+        )
       )
     )
     (box :class "secondrow"
@@ -79,13 +80,14 @@
         (sysblock :icon "${redshift_state == 'on' ? '' : ''}"
                   :onclick "~/.local/bin/redshift.sh toggle"
                   :active "${redshift_state == 'on' ? true : false}"
-                  :label "Night Light")
+                  :label "Night Light"
+        )
       )
       (box :halign "end"
            :orientation "h"
            :space-evenly true
         (sysblock :icon "${dnd_status == 'On' ? '󰍶' : '󱑙'}"
-                  :label "Don't Disturb"
+                  :label "Do Not Disturb"
                   :onclick "~/.config/eww/scripts/dnd toggle"
                   :active "${dnd_status == 'On' ? true : false}"
         )
@@ -100,7 +102,8 @@
         (sysblock :icon "${record_status == 'on' ? '' : ''}"
                   :onclick "~/.config/openbox/pipemenus/record --toggle"
                   :active "${record_status == 'on' ? true : false}"
-                  :label "Screen Record")
+                  :label "Screen Recorder"
+        )
       )
       (box :halign "end"
            :orientation "h"
@@ -139,14 +142,14 @@
               (label :halign "center" :text "${label}" :class "label")
               (label :halign "start" :text "${active ? 'On' : 'Off'}" :class "label__status")
             )
-        (box :class "chevronbox"
-             :halign "end"
-             :hexpand true
-             :valign "center"
-             :space-evenly false
-             :orientation "h"
-             (button :class "date" :onclick "~/.config/eww/scripts/apps settings" "")
-        )
+	        (box :class "chevronbox"
+	             :halign "end"
+	             :hexpand true
+	             :valign "center"
+	             :space-evenly false
+	             :orientation "h"
+	             (button :class "date" "")
+	        )
       )
     )
   )
@@ -215,7 +218,7 @@
 						:class "song-title" 
 						:halign "start"			
 						:text {song-title}
-						:limit-width 35
+						:limit-width 30
 					)
 					(label 
 						:class "song-artist" 
@@ -281,7 +284,7 @@
                       :y "33px"
                       :anchor "top right"
             )
-  :type "normal"
+  :windowtype "dock"
   :wm-ignore true
   (actions)
 )

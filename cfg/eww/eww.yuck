@@ -1,10 +1,3 @@
 (include "actions/actions.yuck")
 (include "./variables.yuck")
 (include "./notifications/notification-panel.yuck")
-
-
-(defwidget closer []
-    (eventbox :onclick "eww close-all")
-)
-  
-
