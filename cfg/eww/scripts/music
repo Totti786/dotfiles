@@ -51,6 +51,8 @@ cover_notification () {
     
     if [[ $players_pass == "mpd" ]]; then
       albumart="$(playerctl -p mpd metadata mpris:artUrl)"
+    elif [[ $players_pass == "rhythmbox" ]]; then
+      albumart="$(playerctl -p rhythmbox metadata mpris:artUrl)"
     else
       albumart="$(playerctl -p $players_pass metadata mpris:artUrl | sed -e 's/open.spotify.com/i.scdn.co/g')"
     fi
