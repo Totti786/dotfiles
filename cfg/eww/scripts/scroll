@@ -6,7 +6,7 @@ script_dir=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
 exit=$?
 
 scroll () {
-    zscroll -l 20 \
+    zscroll -l 30 \
             --delay 1 \
             --scroll-padding " | " \
             --match-command "$script_dir/scroll scroll-music" \

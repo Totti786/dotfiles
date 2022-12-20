@@ -1,58 +1,94 @@
-(defpoll calendar_day :interval "10h" "date '+%d'")
-(defpoll calendar_month :interval "10h" "./scripts/getCalendarMonth")
-(defpoll calendar_year :interval "10h" "date '+%Y'")
+;; Variables
+(defpoll network_icon
+	:interval "3s" "./scripts/network.sh icon"
+)
+(defpoll network_class
+	:interval "3s" "./scripts/network.sh class"
+)
+(defpoll network_name
+	:interval "3s" "./scripts/network.sh name"
+)
 
-(defpoll network_icon :interval "3s" "./scripts/network.sh icon")
-(defpoll network_class :interval "3s" "./scripts/network.sh class")
-(defpoll network_name :interval "3s" "./scripts/network.sh name")
+(defpoll volume_icon
+:interval "0.1s" "scripts/volume.sh icon"
+)
+(defpoll volume_value
+	:interval "0.1s" "~/.config/eww/scripts/volume.sh vol"
+)
 
-(defpoll volume_class :interval "0.1s" "scripts/getVolume class")
-(defpoll volume :interval "0.1s" "scripts/getVolume percentage")
-(defpoll vol :interval "0.1s" "scripts/getVolume vol")
-(defpoll volume_icon :interval "0.1s" "scripts/getVolume icon")
+(defpoll battery-icon
+	:interval "1s" "~/.config/eww/scripts/battery -i"
+)
+(defpoll battery-label
+	:interval "2s" "~/.config/eww/scripts/battery -l"
+)
 
-(defpoll battery_icon :interval "1s" "scripts/getBattery icon")
-(defpoll battery :interval "1s" "scripts/getBattery percent")
+(defpoll br_icon 
+	:interval "0.1s" "scripts/getBrightness icon"
+)
+(defpoll br 
+	:interval "0.1s" "scripts/getBrightness br"
+)
 
-(defpoll br_icon :interval "0.1s" "scripts/getBrightness icon")
-(defpoll br :interval "0.1s" "scripts/getBrightness br")
+(defpoll network_status
+	:interval "1s" "~/.config/eww/scripts/network.sh status"
+)
+(defpoll network_radio
+	:interval "1s" "~/.config/eww/scripts/network.sh radio-status"
+)
+(defpoll network_ssid
+	:interval "1s" "~/.config/eww/scripts/network.sh ssid"
+)
 
+(defpoll date 
+	:interval "1s" "date '+%d %b, %I:%M %p'"
+)
+(defpoll time
+	:interval "1s" "date '+%I:%M %p'"
+)
+(defpoll completeday 
+	:interval "1h" "date '+%A, %d %B'"
+)
 
-(defpoll network_status :interval "1s" "~/.config/eww/scripts/network.sh status")
-(defpoll network_radio :interval "1s" "~/.config/eww/scripts/network.sh radio-status")
-(defpoll network_ssid :interval "1s" "~/.config/eww/scripts/network.sh ssid")
+(defpoll bluetooth_state 
+	:interval "1s" "~/.config/eww/scripts/bluetooth state"
+)
+(defpoll redshift_state 
+	:interval "0.5s" "~/.local/bin/redshift.sh state"
+)
+(defpoll dnd_status 
+	:interval "1s" "~/.config/eww/scripts/dnd status"
+)
+(defpoll record_status 
+	:interval "0.5s" "~/.config/openbox/pipemenus/record --status"
+)
+(defpoll vpn_status 
+	:interval "1s" "~/.config/eww/scripts/vpn.sh status"
+)
 
-(defpoll date :interval "1s" "date '+%d %b, %I:%M %p'")
-(defpoll completeday :interval "1h" "date '+%A, %d %B'")
+;; Notifications
+(deflisten notifications-cards 
+    "scripts/logger subscribe"
+)
+(defpoll lows
+    :interval "5s"
+    "scripts/logger lows"
+)
+(defpoll normals
+    :interval "5s"
+    "scripts/logger normals"
+)
+(defpoll criticals
+    :interval "5s"
+    "scripts/logger criticals"
+)
 
-(defpoll volume_value :interval "0.1s" "~/.config/eww/scripts/volume.sh vol")
-(defpoll is_muted :interval "0.1s" "~/.config/eww/scripts/volume.sh muted")
-
-(defpoll lithour :interval "30m" "date +%H")
-(defpoll litmin :interval "30s" "date +%M")
-
-(defpoll pfp :interval "1s" "~/.config/eww/scripts/pfp.sh")
-(defpoll username :interval "1s" "~/.config/eww/scripts/user.sh")
-
-(defpoll bluetooth_state :interval "1s" "~/.config/eww/scripts/bluetooth state")
-(defpoll redshift_state :interval "0.5s" "~/.local/bin/redshift.sh state")
-(defpoll dnd_status :interval "1s" "~/.config/eww/scripts/dnd status")
-(defpoll record_status :interval "0.5s" "~/.config/openbox/pipemenus/record --status")
-(defpoll vpn_status :interval "1s" "~/.config/eww/scripts/vpn.sh status")
-
-(defpoll battery-icon :interval "2s" "~/.config/eww/scripts/battery -i")
-(defpoll battery-label :interval "2s" "~/.config/eww/scripts/battery -l")
-
-
-; Music
+;; Music
 (defvar music-panel false)
-
-(defvar top-panel-music false)
-    
+  
 (defvar players
     "spotify,%any,firefox,chromium,brave,mpd"
 )
-
 
 (defpoll music-cover
 	:interval "1s"
@@ -75,7 +111,7 @@
     "scripts/music position"
 )
 (defpoll play-pause
-    :interval "250ms"
+    :interval "100ms"
 	"scripts/music status-icon"
 )
 (defpoll title-artist
@@ -85,5 +121,3 @@
 (deflisten music-scroll
     "scripts/scroll scroll-toggle"
 )
-
-(defpoll tips :interval "100s" "~/.config/eww/scripts/tips")

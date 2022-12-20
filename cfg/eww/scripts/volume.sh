@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# @requires: amixer
-# @requires: pacmd
+# @requires: pamixer
 
 percentage () {
   local val=$(echo $1 | tr '%' ' ' | awk '{print $1}')
@@ -20,16 +19,12 @@ percentage () {
   fi
 }
 
-is_muted () {
-  pacmd list-sinks | awk '/muted/ { print $2 }'
-}
-
-get_percentage () {
-  local muted=$(is_muted)
-  if [[ $muted == 'yes' ]]; then
+get_percentage() {
+  local muted=$(pamixer --get-mute)
+  if [[ $muted == 'true' ]]; then
     echo "muted"
   else
-    amixer get Master |grep % |awk '{print $5}'|sed -e 's/\[//' -e 's/\]//' | head -n 1
+    pamixer --get-volume-human
   fi
 }
 
@@ -42,40 +37,19 @@ get_icon () {
   fi
 }
 
-get_class () {
-  local vol=$(get_percentage)
-  if [[ $vol == "muted" ]]; then
-    echo "red"
-  else
-    echo $(percentage "$vol" "red" "magenta" "yellow" "blue")
-  fi
-}
-
 get_vol () {
   local percent=$(get_percentage)
   echo $percent | tr -d '%'
 }
 
-if [[ $1 == "icon" ]]; then
-  get_icon
-fi
-
-if [[ $1 == "class" ]]; then
-  get_class
-fi
-
-if [[ $1 == "percentage" ]]; then
-  get_percentage
-fi
-
-if [[ $1 == "vol" ]]; then
-  get_vol
-fi
-
-if [[ $1 == "set" ]]; then
-  val=$(echo $2 | tr '.' ' ' | awk '{print $1}')
-  if test $val -gt 100; then
-    val=100
-  fi
-  amixer sset 'Master' $val%
-fi
+case $1 in
+    icon)
+        get_icon
+        ;;
+    vol)
+        get_vol 
+        ;;
+	set)
+		pamixer --set-volume $2
+        ;;
+esac

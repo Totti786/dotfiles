@@ -33,14 +33,14 @@ get_icon () {
   echo $(percentage "$br" "" "" "" "")
 }
 
-if [[ $1 == "br" ]]; then
-  get_brightness
-fi
-
-if [[ $1 == "percent" ]]; then
-  get_percent
-fi
-
-if [[ $1 == "icon" ]]; then
-  get_icon
-fi
+case $1 in
+    icon)
+        get_icon
+        ;;
+    percent)
+        get_percent
+        ;;
+	br)
+		get_brightness
+        ;;
+esac

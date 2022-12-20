@@ -1,0 +1,55 @@
+.music-box {
+	margin-top: 0px;
+	.song-cover {
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		border-radius: 20px;
+		transition: 0s;
+	}
+	.song {
+		border-radius: 20px;
+  		padding-top: 5px;
+		padding-left: 1em;
+		.now-playing {
+			font-weight: bold;
+			font-size: 14px;
+			margin-bottom: 6px;
+			color: $purple;
+		}
+		.song-title {
+			font-size: 16px;
+			font-weight: bolder;
+			color: $yellow;
+		}
+		.song-artist,
+		.song-position {
+			font-weight: bold;
+			color: $purple;
+		}
+		.song-controls {
+			button {
+				font-size: 25px;
+				font-weight: bold;
+				margin: 0 0.4em 0.2em;
+				padding: 16px;
+				transition: 0.5s;
+				&:hover {
+					color: $blue;
+					border-radius: 10px;
+					box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+				}
+			}
+			.music-play {
+				color: $purple;
+				text-shadow: 5px 5px 5px rgba(0, 0, 0, 1);
+			}
+			.music-controls {
+				color: $blue;
+				&:hover {
+					color: $purple;
+				}
+			}
+		}
+	}
+}

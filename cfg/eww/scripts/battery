@@ -13,7 +13,6 @@
 bat=$(acpi -b)
 state=$(echo ${bat} | awk '{print $3}')
 rem="$(acpi | cut -d ' ' -f5 |cut -d ':' -f1-2)"
-
 if [[ "$state" = "Not" ]]; then
     level=$(echo ${bat} | awk '{print $5}')
     level=${level::-1}

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+[ ! -d $cache_dir ] && mkdir $cache_dir
+
+cache_dir="$HOME/.cache/eww"
+cache="$cache_dir/control-center.eww"
+active_players=$(playerctl -l | head -n 1)
+
+run () {
+	if [ ! -f $cache ]; then
+		touch $cache
+		if  [[ -n $active_players ]]; then 
+		  eww update music-panel=true
+		else
+			eww update music-panel=false
+		fi
+		eww open actions
+	else
+		eww close-all
+		rm $cache
+	fi
+}
+
+if [[ ! `pidof eww` ]]; then
+	eww daemon
+	sleep 0.5 &&
+	run
+else
+	run
+fi
