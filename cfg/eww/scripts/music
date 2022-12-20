@@ -45,7 +45,7 @@ cover_notification () {
     cover_dir="$cache/notification-cover"
     [ ! -d $cover_dir ] && mkdir $cover_dir
     cover="$cover_dir/$RANDOM-cover.png"
-    fallback="$HOME/.config/sweetconfigs-xorg/eww/assets/fallback.png"
+    fallback="$HOME/.config/eww/assets/fallback.png"
 
     players_pass=$1
     
@@ -99,7 +99,7 @@ case $1 in
         cover
     ;;
     cover-notification)
-        cover_notification $2
+       cover_notification $2
     ;;
     position)
         position || echo "--:-- / --:-- "

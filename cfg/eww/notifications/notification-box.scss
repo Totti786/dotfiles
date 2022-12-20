@@ -1,40 +1,35 @@
 .notification-panel-window {
+	background-color: $bg;
     .notification-panel-spacer {
 		transition: all 0.8s cubic-bezier(0.455, 0.03, 0.515, 1);
 	}
-
-    .notification-box-label {
-        font-size: 16px;
-        margin: 1px;
+	.notification-box-label {
+        font-size: 30px;
+        margin: .5em 1em;
         color: $blue;
-    }
-    
+    }  
     .notification-box-clear {
-        background-color: $accent;
-        margin: 1px;
-        color: $bg;
-        border-radius: 10px;
+        background-color: $red;
+        margin: 0em 1em;
+        color: $fg;
+        border-radius: 15px;
         padding: 10px;
-        font-size: 12px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
-        transition: 0.5s;
-
+        font-size: 16px;
+        transition: 0.2s;
         &:hover {
             border-radius: 20px;
-            background-color: $bgCal;
-            color: $blue;
+            background-color: $cyan;
+            color: $fg;
         }
     }
-    
     .notifications-empty-label {
-        color: $accent;
+        color: $red;
         padding-top: 10px;
-        font-size: 14px;
+        font-size: 18px;
         padding-left: 80px;
         padding-right: 80px;
     }
-    
     .notification-scroll-box {
         margin: 0px 5px 0px 5px;
     }
-}   
+}

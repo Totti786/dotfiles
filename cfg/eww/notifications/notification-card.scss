@@ -14,27 +14,26 @@
 }
 
 .notification-app-name {
-    font-size: 14px;
+    font-size: 16px;
     color: $purple;
 }
 
 .notification-timestamp {
-    font-size: 10px;
-    color: $blue;
+    font-size: 12px;
+    color: $green;
 }
 
 .notification-close {
     color: $accent;
-    font-size: 14px;
+    font-size: 18px;
     transition: 0.5s;
-
     &:hover {
         color: $blue;
     }
 }
 
 .notification-summary {
-    font-size: 12px;
+    font-size: 15px;
     padding-bottom: 10px;
     color: $purple;
 }
@@ -42,6 +41,7 @@
 .notification-body {
     font-size: 14px;
     color: $purple;
+    
 }
 
 .notification-image {
@@ -67,25 +67,24 @@
 .notification-screenshot-open,
 .notification-screenshot-delete {
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 15px;
     margin-left: 2px;
     margin-right: 2px;
-    transition: 0.5s;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    transition: 0.2s;
 }
 
 .notification-screenshot-open:hover,
 .notification-screenshot-delete:hover {
     border-radius: 20px;
-    background-color: $bg;
-    color: $blue;
+    background-color: $yellow;
+    color: $fg;
 }
 
 .notification-screenshot-open {
     background-color: $blue;
-    color: $bg;
+    color: $fg;
 }
 .notification-screenshot-delete {
     background-color: $accent;
-    color: $bg;
+    color: $fg;
 }

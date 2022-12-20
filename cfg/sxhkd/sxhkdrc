@@ -71,13 +71,13 @@ ctrl + alt + w
 Print
 	takeshot --now
 	
-# Take screenshot in 5 second
+# Take screenshot using flameshot
 alt + Print	
 	flameshot gui
 
-# Take screenshot in 10 second
+# Take screenshot of an area
 shift + Print	
-	flameshot full -c
+	takeshot --area
 
 # Take screenshot of active window
 ctrl + Print
