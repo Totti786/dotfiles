@@ -41,8 +41,6 @@
 
     frame_width = 0
 
-    frame_color = ""
-
     separator_color = frame
 
     sort = yes
@@ -74,6 +72,10 @@
     show_indicators = no
 
     icon_position = left
+    
+    icon_path = ~/.local/share/icons/Papirus/128x128/status/:/usr/share/icons/Papirus/128x128/devices/
+	
+	icon_theme = "Papirus"
 
     max_icon_size = 100
     
@@ -87,26 +89,27 @@
     
     browser = /usr/bin/firefox -new-tab
     
-
-[log_notifs]
-    script = ~/.local/bin/dunst-logger
+[logger]
+  summary = "*"
+  script = ~/.config/eww/scripts/logger
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#0a0c0e"
-    foreground = "#d3ffff"
+    background = "#0c0a09"
+    foreground = "#ffffda"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#0a0c0e"
-    foreground = "#d3ffff"
+    background = "#0c0a09"
+    foreground = "#ffffda"
     highlight  = "#b6beca"
     timeout = 10
 
 [urgency_critical]
-    background = "#0a0c0e"
-    foreground = "#d3ffff"
+    background = "#0c0a09"
+    foreground = "#ffffda"
     highlight  = "#b6beca"
     timeout = 15
+    
