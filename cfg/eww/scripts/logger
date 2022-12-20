@@ -34,6 +34,9 @@ create_cache () {
     if [[ $DUNST_APP_NAME == "Spotify" ]]; then
         ICON_PATH=$(~/.config/eww/scripts/music cover-notification spotify)
     fi
+    if [[ $DUNST_APP_NAME == "Rhythmbox" ]]; then
+        ICON_PATH=$(~/.config/eww/scripts/music cover-notification rhythmbox)
+    fi
     if [[ $DUNST_APP_NAME == "Music Player Daemon" ]]; then
         if [[ $DUNST_BODY =~ "by" ]]; then
             ICON_PATH=$(~/.config/eww/scripts/music cover-notification mpd)
@@ -41,6 +44,12 @@ create_cache () {
             ICON_PATH=~/.local/share/icons/Papirus/128x128/apps/mpd.svg
         fi
     fi
+
+    # get icons from kde connect tmp directory
+    if [[ $DUNST_APP_NAME == "KDE Connect" ]]; then
+        ICON_PATH="/tmp/kdeconnect_$(whoami)/$(ls -t /tmp/kdeconnect_$(whoami) | head -n1)"
+    fi
+    
 
     if [[ $DUNST_APP_NAME == "Screenshot" ]]; then
         echo '(notification-card-screenshot :class "notification-card $notification-card-screenshot" :U "LOW" :SL "'$DUNST_ID'" :summary "'$summary'" :image "'$ICON_PATH'" :application "'$DUNST_APP_NAME'" :timestamp "'$TIMESTAMP'")' \
