@@ -10,10 +10,10 @@
 )
 
 (defpoll volume_icon
-:interval "0.1s" "scripts/volume.sh icon"
+:interval "0.5s" "scripts/volume.sh icon"
 )
 (defpoll volume_value
-	:interval "0.1s" "~/.config/eww/scripts/volume.sh vol"
+	:interval "0.5s" "~/.config/eww/scripts/volume.sh vol"
 )
 
 (defpoll battery-icon
@@ -24,10 +24,10 @@
 )
 
 (defpoll br_icon 
-	:interval "0.1s" "scripts/getBrightness icon"
+	:interval "0.5s" "scripts/getBrightness icon"
 )
 (defpoll br 
-	:interval "0.1s" "scripts/getBrightness br"
+	:interval "0.5s" "scripts/getBrightness br"
 )
 
 (defpoll network_status
@@ -41,10 +41,10 @@
 )
 
 (defpoll date 
-	:interval "1s" "date '+%d %b, %I:%M %p'"
+	:interval "5s" "date '+%d %b, %I:%M %p'"
 )
 (defpoll time
-	:interval "1s" "date '+%I:%M %p'"
+	:interval "5s" "date '+%I:%M %p'"
 )
 (defpoll completeday 
 	:interval "1h" "date '+%A, %d %B'"
@@ -54,16 +54,16 @@
 	:interval "1s" "~/.config/eww/scripts/bluetooth state"
 )
 (defpoll redshift_state 
-	:interval "0.5s" "~/.local/bin/redshift.sh state"
+	:interval "1s" "~/.local/bin/redshift.sh state"
 )
 (defpoll dnd_status 
 	:interval "1s" "~/.config/eww/scripts/dnd status"
 )
 (defpoll record_status 
-	:interval "0.5s" "~/.config/openbox/pipemenus/record --status"
+	:interval "1s" "~/.config/openbox/pipemenus/record --status"
 )
 (defpoll vpn_status 
-	:interval "1s" "~/.config/eww/scripts/vpn.sh status"
+	:interval "2s" "~/.config/eww/scripts/vpn.sh status"
 )
 
 ;; Notifications
@@ -107,15 +107,15 @@
     "scripts/music title"
 )
 (defpoll song-position
-    :interval "250ms"
+    :interval "1s"
     "scripts/music position"
 )
 (defpoll play-pause
-    :interval "100ms"
+    :interval "1s"
 	"scripts/music status-icon"
 )
 (defpoll title-artist
-	:interval "250ms"
+	:interval "1s"
 	"scripts/music title-artist"
 )
 (deflisten music-scroll

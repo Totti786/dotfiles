@@ -37,7 +37,6 @@
       (button :class "date" :onclick "~/.config/eww/scripts/apps power"
         "⏻"
       )
-
     )
   )
 )
@@ -188,6 +187,27 @@
   )
 )
 
+(defvar note false)
+(defwidget note [] 
+	
+	(revealer 
+		:reveal note
+		:transition "slidedown"
+		(box :class "controlsbox"
+	       :orientation "v"
+	       :space-evenly false
+	    (box :orientation "h"
+	         :space-evenly "false"
+	         :class "slider active"
+			(progress 
+				 :class "progress"
+	             :value song-position
+			)
+	    )
+        )
+    )
+)
+
 (defwidget music []
 	(revealer 
 		:reveal music-panel
@@ -274,6 +294,7 @@
     (header)
     (sysbuttons)
     (controls)
+    (note)
     (music)
     (footer)
   )

@@ -37,6 +37,11 @@
   }
 }
 
+.progress {
+	color: $yellow;
+	min-width: 3px;
+}
+
 .active {
   trough {
     slider {
