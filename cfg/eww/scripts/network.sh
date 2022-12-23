@@ -27,7 +27,7 @@ cut () {
   sufix=""
 
   if test $(echo $toshow | wc -c) -ge $maxlen ; then
-    sufix=" ..."
+    sufix=""
   fi
 
   echo "${toshow:0:$maxlen}$sufix"

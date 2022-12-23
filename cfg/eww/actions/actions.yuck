@@ -54,10 +54,10 @@
            :orientation "h"
            :space-evenly true
         (sysblock 
-        :icon "${network_icon}"
-        :onclick "~/.config/eww/scripts/apps wifi"
-        :active "${network_status == 'Connected' ? true : false}"
-        :label "${network_ssid}"
+	        :icon "${network_icon}"
+	        :onclick "~/.config/eww/scripts/apps wifi"
+	        :active "${network_status == 'Connected' ? true : false}"
+	        :label "${network_ssid}"
         )
       )
       (box :halign "end"
@@ -86,7 +86,7 @@
            :orientation "h"
            :space-evenly true
         (sysblock :icon "${dnd_status == 'On' ? '󰍶' : '󱑙'}"
-                  :label "Do Not Disturb"
+                  :label "Don't Disturb"
                   :onclick "~/.config/eww/scripts/dnd toggle"
                   :active "${dnd_status == 'On' ? true : false}"
         )
@@ -101,7 +101,7 @@
         (sysblock :icon "${record_status == 'on' ? '' : ''}"
                   :onclick "~/.config/openbox/pipemenus/record --toggle"
                   :active "${record_status == 'on' ? true : false}"
-                  :label "Screen Recorder"
+                  :label "Recorder"
         )
       )
       (box :halign "end"
@@ -123,10 +123,10 @@
        :space-evenly true
        :spacing 1
     (button :class "block ${active ? 'active' : ''}" :onclick "${onclick}"
-      (box :orientation "h"
-            :spacing 1
-           :valign "start"
-           :space-evenly false
+		(box :orientation "h"
+			 :spacing 1
+			 :valign "start"
+			 :space-evenly false
             (box :class "iconbox"
                  :halign "start"
                  :valign "center"
@@ -149,7 +149,7 @@
 	             :orientation "h"
 	             (button :class "date" "")
 	        )
-      )
+		)
     )
   )
 )
@@ -232,7 +232,7 @@
 						:class "now-playing" 
 						:halign "start" 
 						:text {song-status}
-						:limit-width 50
+						:limit-width 40
 					)
 					(label 
 						:class "song-title" 

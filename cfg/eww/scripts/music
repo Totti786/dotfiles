@@ -64,7 +64,7 @@ cover_notification () {
 
 cover () {
     cover="$cache/cover.png"
-    fallback="$HOME/.config/eww/assets/fallback.png"
+    fallback="$HOME/.config/wpg/templates/wallpaper.jpg"
 
     [ $(playerctl -p $players metadata mpris:artUrl) ] && curl -s "$albumart" --output $cover || cp $fallback $cover 
     echo $cover

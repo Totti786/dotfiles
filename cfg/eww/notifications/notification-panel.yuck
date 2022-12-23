@@ -60,7 +60,7 @@
                     )
 
                     (label 
-                        :limit-width 30
+                        :limit-width 35
                         :wrap true
                         :halign "start"
                         :valign "center"

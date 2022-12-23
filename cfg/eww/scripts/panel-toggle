@@ -10,7 +10,6 @@ listen(){
 	while true ; do 
 		if [[ ! -z "$(playerctl -l | head -n 1)" ]] &> /dev/null; then
 			eww update music-panel=true
-			touch $lock
 		else 
 			eww update music-panel=false
 		fi
@@ -30,15 +29,15 @@ if [[ ! `pidof eww` ]]; then
 else
 	if [ ! -f $cache ]; then
 		touch $cache
+		polybar-msg action "#control.hook.0"
 		run
 	else
 		[[ ! -z $active_players ]] && eww update music-panel=false
 		eww close-all
+		polybar-msg action "#control.hook.1"
 		rm $cache
 	fi
 fi
 
 
 killall -9 panel-toggle
-
-

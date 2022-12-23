@@ -16,7 +16,7 @@ create_cache () {
         ;;
     esac
 
-    TIMESTAMP=$(date +%H:%M)
+    TIMESTAMP=$(date '+%d %b, %I:%M %p')
 
     [ "$DUNST_SUMMARY" = "" ] && summary="Summary unavailable." || summary="$DUNST_SUMMARY"
     [ "$DUNST_BODY" = "" ] && body="Body unavailable." || body="$(printf "$DUNST_BODY" | perl -MHTML::Entities -pe 'decode_entities($_);')"
