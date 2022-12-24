@@ -100,7 +100,7 @@ change_colors() {
 	sed -i -e "s/sel_fg=#.*/sel_fg${FG}/g" 			$copyq
 	
 	# dunst
-	sed -i -e "s/background = \"#.*\"/background = \"${BG}\"/g" 	  $dunst
+	sed -i -e "s/background = \"#.*\"/background = \"${BG}80\"/g" 	  $dunst
 	sed -i -e "s/foreground = \"#.*\"/foreground = \"${FG}\"/g"  	  $dunst
 	sed -i -e "s/highlight = \"#.*\"/highlight = \"${FG}\"/g" 		  $dunst
 	sed -i -e "s/frame_color = \"#.*\"/frame_color = \"${yellow}\"/g" $dunst
