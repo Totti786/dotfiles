@@ -53,10 +53,20 @@
 }
 
 .datebox {
+  .date-cover {
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		border-radius: 100%;
+		transition: 0s;
+	}
   .info {
-    .datebox {
+    .date {
       margin-left: 8px;
-      font-size: 15px;
+      font-size: 20px;
+      border-radius: 100%;
+      padding: 10px;
+
     }
   }
   .useractions {

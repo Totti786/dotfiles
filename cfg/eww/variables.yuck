@@ -1,66 +1,50 @@
-;; Variables
-(defpoll network_icon
-	:interval "3s" "./scripts/network.sh icon"
-)
-(defpoll network_class
-	:interval "3s" "./scripts/network.sh class"
-)
-(defpoll network_name
-	:interval "3s" "./scripts/network.sh name"
-)
-
+;; Variabless
 (defpoll volume_icon
-:interval "0.1s" "scripts/volume.sh icon"
+:interval "1s" "scripts/volume.sh icon"
 )
 (defpoll volume_value
-	:interval "0.1s" "~/.config/eww/scripts/volume.sh vol"
-)
-
-(defpoll battery-icon
-	:interval "1s" "~/.config/eww/scripts/battery -i"
-)
-(defpoll battery-label
-	:interval "2s" "~/.config/eww/scripts/battery -l"
+	:interval "0.5s" "~/.config/eww/scripts/volume.sh vol"
 )
 
 (defpoll br_icon 
-	:interval "0.1s" "scripts/getBrightness icon"
+	:interval "1s" "scripts/getBrightness icon"
 )
 (defpoll br 
-	:interval "0.1s" "scripts/getBrightness br"
+	:interval "0.5s" "scripts/getBrightness br"
 )
 
-(defpoll network_status
-	:interval "1s" "~/.config/eww/scripts/network.sh status"
+(defpoll battery-icon
+	:interval "2s" "~/.config/eww/scripts/battery -i"
 )
-(defpoll network_radio
-	:interval "1s" "~/.config/eww/scripts/network.sh radio-status"
+
+;; Network
+(defpoll network_status
+	:interval "2s" "~/.config/eww/scripts/network.sh status"
+)
+(defpoll network_icon
+	:interval "3s" "./scripts/network.sh icon"
 )
 (defpoll network_ssid
-	:interval "1s" "~/.config/eww/scripts/network.sh ssid"
+	:interval "2s" "~/.config/eww/scripts/network.sh ssid"
 )
 
+;; Time
 (defpoll date 
 	:interval "5s" "date '+%d %b, %I:%M %p'"
 )
-(defpoll time
-	:interval "5s" "date '+%I:%M %p'"
-)
-(defpoll completeday 
-	:interval "1h" "date '+%A, %d %B'"
-)
 
+;; Toggles
 (defpoll bluetooth_state 
-	:interval "1s" "~/.config/eww/scripts/bluetooth state"
+	:interval "2s" "~/.config/eww/scripts/bluetooth state"
 )
-(defpoll redshift_state 
-	:interval "1s" "~/.local/bin/redshift.sh state"
-)
+;(defpoll redshift_state 
+;	:interval "2s" "~/.local/bin/redshift.sh state"
+;)
 (defpoll dnd_status 
-	:interval "1s" "~/.config/eww/scripts/dnd status"
+	:interval "2s" "~/.config/eww/scripts/dnd status"
 )
 (defpoll record_status 
-	:interval "1s" "~/.config/openbox/pipemenus/record --status"
+	:interval "2s" "~/.config/openbox/pipemenus/record --status"
 )
 (defpoll vpn_status 
 	:interval "2s" "~/.config/eww/scripts/vpn.sh status"
@@ -69,18 +53,6 @@
 ;; Notifications
 (deflisten notifications-cards 
     "scripts/logger subscribe"
-)
-(defpoll lows
-    :interval "5s"
-    "scripts/logger lows"
-)
-(defpoll normals
-    :interval "5s"
-    "scripts/logger normals"
-)
-(defpoll criticals
-    :interval "5s"
-    "scripts/logger criticals"
 )
 
 ;; Music
@@ -91,19 +63,19 @@
 )
 
 (defpoll music-cover
-	:interval "1s"
+	:interval "2s"
 	"scripts/music cover"
 )
 (defpoll song-status
-    :interval "1s"
+    :interval "2s"
     "scripts/music status"
 )
 (defpoll song-artist
-    :interval "1s"
+    :interval "2s"
     "scripts/music artist"
 )
 (defpoll song-title
-    :interval "1s"
+    :interval "2s"
     "scripts/music title"
 )
 (defpoll song-position
@@ -111,11 +83,11 @@
     "scripts/music position"
 )
 (defpoll play-pause
-    :interval "1s"
+    :interval "0.5s"
 	"scripts/music status-icon"
 )
 (defpoll title-artist
-	:interval "1s"
+	:interval "2s"
 	"scripts/music title-artist"
 )
 (deflisten music-scroll
