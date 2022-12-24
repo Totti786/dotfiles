@@ -276,14 +276,14 @@ pick(){
 	
 main(){
 	change_colors
-	check razer-cli -a &
 	kill dunst
 	copyWal &
 	papirus-folder.sh --color ${red:1} &
 	sh ~/.config/polybar/launch.sh &> /dev/null
+	sh ~/.config/bspwm/bsp-border &
 	check spicetify -q update &
-	sh ~/.config/bspwm/bsp-border
-	sh ~/.scripts/phoneWal.sh &
+	check razer-cli -a &
+	#sh ~/.scripts/phoneWal.sh &
 }
 
 ## Create a lighter shade of the color using bash (courtesy of @guillaumeboehm)
