@@ -13,7 +13,7 @@ listen(){
 		else 
 			eww update music-panel=false
 		fi
-		sleep 1
+		sleep 2
 	done 
 }
 
