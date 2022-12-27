@@ -99,17 +99,17 @@
     background = "#14112d80"
     foreground = "#fcecff"
     highlight  = "#b6beca"
-    timeout = 5
+    timeout = 10
 
 [urgency_normal]
     background = "#14112d80"
     foreground = "#fcecff"
     highlight  = "#b6beca"
-    timeout = 10
+    timeout = 20
 
 [urgency_critical]
     background = "#14112d80"
     foreground = "#fcecff"
     highlight  = "#b6beca"
-    timeout = 15
+    timeout = 30
     
