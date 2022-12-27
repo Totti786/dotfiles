@@ -156,30 +156,15 @@ change_colors() {
 	sed -i -e "s/\$background: #.*/\$background: ${BG};/g"	   $eww
 	sed -i -e "s/\$bg-alt: #.*/\$bg-alt: ${bg_light};/g" 	   $eww
 	sed -i -e "s/\$fg: #.*/\$fg: ${FG};/g" 					   $eww
-	sed -i -e "s/\$fg-alt: #.*/\$fg-alt: $bright_white;/g" 	   $eww
-	sed -i -e "s/\$red: #.*/\$red: $bright_red;/g" 			   $eww
-	sed -i -e "s/\$green: #.*/\$green: $bright_green;/g"	   $eww
-	sed -i -e "s/\$yellow: #.*/\$yellow: $bright_yellow;/g"    $eww
-	sed -i -e "s/\$blue: #.*/\$blue: $bright_blue;/g" 		   $eww
-	sed -i -e "s/\$purple: #.*/\$purple: $bright_magenta;/g"   $eww
-	sed -i -e "s/\$cyan: #.*/\$cyan: $bright_cyan;/g" 		   $eww
+	sed -i -e "s/\$fg-alt: #.*/\$fg-alt: $white;/g" 	   $eww
+	sed -i -e "s/\$red: #.*/\$red: $red;/g" 			   $eww
+	sed -i -e "s/\$green: #.*/\$green: $green;/g"	   $eww
+	sed -i -e "s/\$yellow: #.*/\$yellow: $yellow;/g"    $eww
+	sed -i -e "s/\$blue: #.*/\$blue: $blue;/g" 		   $eww
+	sed -i -e "s/\$purple: #.*/\$purple: $magenta;/g"   $eww
+	sed -i -e "s/\$cyan: #.*/\$cyan: $cyan;/g" 		   $eww
 	sed -i -e "s/\$gray: #.*/\$gray: $bright_black;/g" 		   $eww
 	sed -i -e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" $eww
-	
-	#cat > $eww <<- EOF
-		#\$black: ${BG};
-		#\$black-darker: ${bg_dark};
-		#\$black-lighter: ${bg_light};
-		#\$white: ${FG};
-		
-		#\$pink: #ffdede;
-		#\$red: $bright_red;
-		#\$green: $bright_green;
-		#\$yellow: $bright_yellow;
-		#\$purple: $bright_magenta;
-		#\$blue: $bright_blue;
-		#\$cyan: $bright_cyan;
-	#EOF
 	
 	# resize and move wallpaper for use by other programs
 	#convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
