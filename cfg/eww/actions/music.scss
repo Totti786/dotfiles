@@ -6,6 +6,7 @@
 		background-position: center;
 		border-radius: 20px;
 		transition: 0s;
+
 	}
 	.song {
 		border-radius: 20px;
@@ -15,12 +16,12 @@
 			font-weight: bold;
 			font-size: 14px;
 			margin-bottom: 6px;
-			color: $purple;
+			color: $cyan;
 		}
 		.song-title {
-			font-size: 16px;
+			font-size: 18px;
 			font-weight: bolder;
-			color: $yellow;
+			color: $fg;
 		}
 		.song-artist,
 		.song-position {
@@ -33,14 +34,47 @@
 				font-weight: bold;
 				margin: 0 0.3em 0.2em;
 				padding: 18px;
-				transition: 0.5s;
+				transition: 0.2s;
 				&:hover {
 					color: $blue;
 					border-radius: 10px;
 				}
 			}
 			.music-play {
-				color: $purple;
+				color: $fg;
+			}
+			.music-controls {
+				color: $fg;
+				&:hover {
+					color: $purple;
+				}
+			}
+		}
+	}
+}
+
+
+
+
+.music-small{
+	.song-cover {
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		border-radius: 20px;
+		transition: 0s;
+	}
+	.song {
+		.song-controls {
+			button {
+				font-size: 25px;
+				margin: 100 0.3em 0.2em;
+				padding: 18px;
+				transition: 0.5s;
+				&:hover {
+					color: $blue;
+					border-radius: 10px;
+				}
 			}
 			.music-controls {
 				color: $blue;
@@ -49,5 +83,6 @@
 				}
 			}
 		}
+		
 	}
 }

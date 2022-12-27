@@ -1,21 +1,22 @@
 // Colors
 
-$background: #011117;
-$bg-alt: #011b24;
-$fg: #fbfffa;
-$fg-alt: #fbfffa;
-$red: #84b8b5;
-$green: #82c297;
-$yellow: #d9fff2;
-$blue: #5c8f9c;
-$purple: #84c1c6;
-$cyan: #aaedcf;
-$gray: #013549;
-$gray-alt: #013549;
+$background: #14112d;
+$bg-alt: #201b48;
+$fg: #fcecff;
+$fg-alt: #cfc2e0;
+$red: #6459A6;
+$green: #9D70D2;
+$yellow: #A09CD8;
+$blue: #4F4DA3;
+$purple: #B466C2;
+$cyan: #6AAAD8;
+$gray: #231e51;
+$gray-alt: #231e51;
 
 $accent: $red;
 $bg: rgba($background, $alpha: 0.3);;
-$bgCal: rgba($color: #0a0c0e, $alpha: 0.6);
+$fg-alt: rgba($fg, $alpha: 0.4);;
+$bgCal: rgba($color: #0a0c0e, $alpha: 0.5);
 
 $contrastbg: #101316;
 $bgSecondary: #101316;

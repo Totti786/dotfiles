@@ -30,7 +30,13 @@
 
 ;; Time
 (defpoll date 
-	:interval "5s" "date '+%d %b, %I:%M %p'"
+	:interval "5s" "date '+%B %d'"
+)
+(defpoll day 
+	:interval "5s" "date '+%A'"
+)
+(defpoll time 
+	:interval "5s" "date '+%I:%M'"
 )
 
 ;; Toggles

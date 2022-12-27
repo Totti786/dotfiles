@@ -2,14 +2,18 @@
   (box :class "datebox"
        :orientation "h"
        :space-evenly true
-	(box :class "info"
+	(box :class "date-cover"
          :space-evenly false
          :orientation "h"
          :halign "center"
          :valign "center"
          :spacing 10
-;        :style "background-image: url('${music-cover}')"
-		 (label :text "${date}" :class "date")
+         :style "background-image: url('actions/wallpaper.jpg')"
+		 (overlay 
+		 (label :text "${time}" :class "time")
+		 (label :text "${day} \\n${date} " :class "day" :valign "end" :halign "start")
+		 ;(label :text "${date} \\n Heloo" :class "date" :valign "end" :halign "start")
+		 )
     )
 
   )
@@ -24,7 +28,7 @@
 		 :orientation "h"
 		 :halign "start"
 		 :valign "center"
-		 (label :class "date" :text "${battery-icon}")
+		 (label :class "button" :text "${battery-icon}")
     )   
     (box :class "useractions"
          :space-evenly false
@@ -32,13 +36,13 @@
          :halign "end"
          :valign "start"
          :spacing 5
-      (button :class "date" :onclick "~/.local/bin/redshift.sh toggle"
+      (button :class "button" :onclick "~/.local/bin/redshift.sh toggle"
 		"ﯧ"
       )
-	  (button :class "date" :onclick "~/.config/eww/scripts/apps settings"
+	  (button :class "button" :onclick "~/.config/eww/scripts/apps settings"
         "漣"
       )
-      (button :class "date" :onclick "~/.config/eww/scripts/apps power"
+      (button :class "button" :onclick "~/.config/eww/scripts/apps power"
         "⏻"
       )
 
@@ -85,7 +89,7 @@
       (box :halign "start"
            :orientation "h"
            :space-evenly true
-        (sysblock :icon "${record_status == 'on' ? '' : ''}"
+        (sysblock :icon "${record_status == 'on' ? '' : '逸'}"
                   :onclick "~/.config/openbox/pipemenus/record --toggle"
                   :active "${record_status == 'on' ? true : false}"
                   :label "Recorder"
@@ -204,16 +208,8 @@
 		:reveal note
 		:transition "slidedown"
 		(box :class "controlsbox"
-	       :orientation "v"
-	       :space-evenly false
-	    (box :orientation "h"
-	         :space-evenly "false"
-	         :class "slider active"
-			(progress 
-				 :class "progress"
-	             :value song-position
-			)
-	    )
+			 :orientation "v"
+	         :space-evenly false
         )
     )
 )
@@ -221,19 +217,56 @@
 (defvar small-music false)
 (defwidget small-music []
 	(revealer 
-		:reveal music-panel
+		:reveal small-music 
 		:transition "slideup"
-	(box
+		(box
 			:orientation "h"
 			:space-evenly true
-			:halign "center"
-			:class "music-box"
+			:halign "end"
+			:class "music-small"
 			(box
 				:class "song-cover"
 				:orientation "v"
 				:style "background-image: url('${music-cover}')"
+			
+				(box 
+					:class "song" 
+					:orientation "v" 
+					:space-evenly "false" 
+					:hexpand "false" 
+					:vexpand "false"
+					(eventbox
+						(box 
+							:class "song-controls"
+							:orientation "h"
+							:halign "center"
+							(button
+								:class "music-controls"
+								:onclick "playerctl -p ${players} loop track" 
+								:onrightclick "playerctl -p ${players} loop playlist"
+								:onmiddleclick "playerctl -p ${players} loop none" "ﯩ"
+							)
+							(button
+								:class "music-controls"
+								:onclick "playerctl -p ${players} previous" "玲"
+							)
+							(button
+								:class "music-play"
+								:onclick "playerctl -p ${players} play-pause" play-pause
+							)
+							(button
+								:class "music-controls"
+								:onclick "playerctl -p ${players} next" "怜"
+							)
+							(button
+								:class "music-controls"
+								:onclick "playerctl -p ${players} shuffle toggle" "列"
+							)
+						)
+					)
+				)
 			)
-	)
+		)
 	)
 )
 
@@ -336,7 +369,7 @@
                       :y "33px"
                       :anchor "top right"
             )
-  :windowtype "dock"
+  :windowtype "dialog"
   :wm-ignore true
   (actions)
 )
