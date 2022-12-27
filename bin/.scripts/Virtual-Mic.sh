@@ -8,9 +8,11 @@ createMic(){
 	
 	# Link it with a virtual source that is visible in pulseaudio apps like Zoom
 	pactl load-module module-null-sink media.class=Audio/Source/Virtual sink_name=VirtualMic channel_map=front-left,front-right
+}
+link(){
 	pw-link VirtualSpeaker:monitor_FL VirtualMic:input_FL
 	pw-link VirtualSpeaker:monitor_FR VirtualMic:input_FR
-}
+	}
 
-if ! [ -f /tmp/vmic-lock ]; then createMic ; else echo "Virtaul Mic already working"; fi
+if ! [ -f /tmp/vmic-lock ]; then createMic && link ; else echo "Virtaul Mic already working"; fi
 
