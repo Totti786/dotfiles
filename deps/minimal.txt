@@ -21,6 +21,7 @@ light
 maim
 mpv
 mpv-mpris
+mugshot
 ncdu
 networkmanager-openvpn
 network-manager-applet
