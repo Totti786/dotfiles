@@ -1,3 +1,12 @@
+/** Main Window ******************************/
+.actions {
+  background-color: $bg;
+  color: $fg;
+  border-radius: 16px;  
+  font-family: JetBrainsMono Nerd Font;
+  padding: 10px 10px 10px 10px;
+}
+
 /** Header & Footer *****************************/
 .datebox {
   .date-cover {
@@ -16,6 +25,7 @@
 	}
     .day {
       color: $fg;
+      margin-left: 5px;
       font-size: 25px;
 	}
     .date {
@@ -30,7 +40,7 @@
       font-family: 'JetBrainsMono Nerd Font';
       font-size: 16px;
       padding: 4px 10px 4px 10px;
-      border-radius: 18px;
+      border-radius: 20px;
       transition: all ease .2s;
       &:hover { background-color: $green; }
       &:active { background-color: $bg; }
@@ -43,8 +53,8 @@
   .block-container {
     .block {
       background-color: $bg; 
-      padding: 18px 0px 18px 6px;
-      min-width: 175px;
+      padding: 18px 0px 18px 4px;
+      min-width: 180px;
       border-radius: 25px;
       transition: all ease .1s;
       color: $fg;
@@ -86,17 +96,9 @@
   }
 }
 
-/** Main Window ******************************/
-.actions {
-  background-color: $bg;
-  color: $fg;
-  font-family: JetBrainsMono Nerd Font;
-  padding: 10px 10px 8px 10px;
-}
-
 /** Sliders ******************************/
 .controlsbox {
-  border-radius: 24px;
+  border-radius: 22px;
   background-color: $bg;
   padding: 20px 14px 20px 18px;
 }

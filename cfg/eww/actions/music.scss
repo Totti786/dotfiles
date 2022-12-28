@@ -1,5 +1,4 @@
 .music-box {
-	margin-top: 0px;
 	.song-cover {
 		background-size: cover;
 		background-repeat: no-repeat;
@@ -20,6 +19,7 @@
 		}
 		.song-title {
 			font-size: 18px;
+			margin-right: 10px;
 			font-weight: bolder;
 			color: $fg;
 		}

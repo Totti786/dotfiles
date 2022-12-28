@@ -12,7 +12,6 @@
 		 (overlay 
 		 (label :text "${time}" :class "time")
 		 (label :text "${day} \\n${date} " :class "day" :valign "end" :halign "start")
-		 ;(label :text "${date} \\n Heloo" :class "date" :valign "end" :halign "start")
 		 )
     )
 
