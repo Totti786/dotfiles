@@ -1,5 +1,4 @@
 scrot
-pulseaudio-equalizer
 fzf
 gradience
 linux-wifi-hotspot
@@ -18,7 +17,6 @@ kdeconnect
 yad
 evince
 nvtop
-mugshot
 ttf-dejavu
 ttf-liberation
 openssh
