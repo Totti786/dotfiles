@@ -1,6 +1,9 @@
 scrot
 fzf
 gradience
+drawing
+video-trimmer
+cheese
 linux-wifi-hotspot
 lxappearance-obconf
 termdown
@@ -29,3 +32,4 @@ thunar-media-tags-plugin
 rofi-calc
 timeshift
 xorg-xbacklight
+qbittorrent-enhanced-git
