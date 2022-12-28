@@ -17,7 +17,6 @@ gnome-disk-utility
 kdeconnect
 yad
 evince
-firefox
 nvtop
 mugshot
 ttf-dejavu

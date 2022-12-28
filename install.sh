@@ -68,7 +68,7 @@ change_dock() {
 		zoom-enabled=true
 		zoom-percent=120
 	_EOF_
-}
+	}
 
 changeTheme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
@@ -96,10 +96,12 @@ base(){
 	checkChaotic &&
 	sudo pacman -Sy $(cat $DIR/deps/minimal.txt $DIR/deps/additional.txt) --needed
 	sudo pacman -U $DIR/deps/packages/* --needed
+	sudo pacman -U $DIR/deps/packages/additional/* --needed
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
 	changeTheme
 	}
+	
 minimal(){
 	checkChaotic &&
 	installDependencies &&
@@ -130,7 +132,7 @@ wallpapers(){
 		git clone https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers/Wallpapers.git
 
 	fi
-}
+	}
 
 #---- TUI functions  ---------------------
 
@@ -161,7 +163,7 @@ additionalPrograms(){
 	else
 		sudo pacman -Sy - < $DIR/deps/extra.txt --needed
 	fi
-}
+	}
 
 update(){
 	## update dependencies and install new ones
@@ -239,7 +241,7 @@ main(){
 			exit
 			;;
 	esac
-}
+	}
 
 if [[ "$1" == "--update" ]]; then
 	git pull

@@ -8,6 +8,7 @@ dmenu
 dunst
 fd
 feh
+firefox
 flameshot
 geany
 gpick
