@@ -157,12 +157,12 @@ change_colors() {
 	sed -i -e "s/\$bg-alt: #.*/\$bg-alt: ${bg_light};/g" 	   $eww
 	sed -i -e "s/\$fg: #.*/\$fg: ${FG};/g" 					   $eww
 	sed -i -e "s/\$fg-alt: #.*/\$fg-alt: $white;/g" 	   $eww
-	sed -i -e "s/\$red: #.*/\$red: $red;/g" 			   $eww
-	sed -i -e "s/\$green: #.*/\$green: $green;/g"	   $eww
-	sed -i -e "s/\$yellow: #.*/\$yellow: $yellow;/g"    $eww
-	sed -i -e "s/\$blue: #.*/\$blue: $blue;/g" 		   $eww
-	sed -i -e "s/\$purple: #.*/\$purple: $magenta;/g"   $eww
-	sed -i -e "s/\$cyan: #.*/\$cyan: $cyan;/g" 		   $eww
+	sed -i -e "s/\$red: #.*/\$red: $bright_red;/g" 			   $eww
+	sed -i -e "s/\$green: #.*/\$green: $bright_green;/g"	   $eww
+	sed -i -e "s/\$yellow: #.*/\$yellow: $bright_yellow;/g"    $eww
+	sed -i -e "s/\$blue: #.*/\$blue: $bright_blue;/g" 		   $eww
+	sed -i -e "s/\$purple: #.*/\$purple: $bright_magenta;/g"   $eww
+	sed -i -e "s/\$cyan: #.*/\$cyan: $bright_cyan;/g" 		   $eww
 	sed -i -e "s/\$gray: #.*/\$gray: $bright_black;/g" 		   $eww
 	sed -i -e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" $eww
 	
@@ -261,13 +261,13 @@ pick(){
 	
 main(){
 	change_colors
-	kill dunst
+	#kill dunst &
 	copyWal &
 	papirus-folder.sh --color ${red:1} &
 	sh ~/.config/polybar/launch.sh &> /dev/null
 	sh ~/.config/bspwm/bsp-border &
 	check spicetify -q update &
-	check razer-cli -a &
+	check razer-cli -a & exit
 	#sh ~/.scripts/phoneWal.sh &
 }
 
