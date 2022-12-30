@@ -36,10 +36,10 @@ moveConfigs(){
 	cp -r $DIR/cfg/* ~/.config/ && echo "moved config files"
 	cp -r $DIR/bin/.local/ ~/ && echo "moved bin"
 	# extracts the icons and moves them to the correct directory
-	if [[ ! -d "$HOME/.local/share/icons" ]]; then mkdir ~/.local/share/icons ; fi
+	[ ! -d "$HOME/.local/share/icons" ] && mkdir ~/.local/share/icons
 	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons
 	# extracts the fonts and moves them to the correct directory
-	if [[ ! -d "$HOME/.local/share/fonts" ]]; then mkdir ~/.local/share/fonts ; fi
+	[ ! -d "$HOME/.local/share/fonts" ] && mkdir ~/.local/share/fonts
 	tar -xzf $DIR/deps/fonts.tar.gz -C ~/.local/share/fonts
 	}
 	
@@ -170,8 +170,8 @@ update(){
 	installDependencies
 	progressBar "Updating... "
 	## backup weather info file
-	if [[ -f "$HOME/.config/polybar/scripts/info" ]]; then
-	   cp ~/.config/polybar/scripts/info ~/.cache/info; fi
+	[ -f "$HOME/.config/polybar/scripts/info" ] && 
+	cp ~/.config/polybar/scripts/info ~/info
 	## move udpated scripts and configs
 	sudo cp -ru $DIR/bin/usr/ /
 	cp -ru $DIR/bin/.scripts/ ~/ 
