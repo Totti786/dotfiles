@@ -110,10 +110,10 @@
       (box :halign "start"
            :orientation "h"
            :space-evenly true
-        (sysblock :icon "${record_status == 'on' ? '' : ''}"
-                  :onclick "~/.config/eww/scripts/timer --toggle"
-                  :active "${record_status == 'on' ? true : false}"
-                  :label "Timer"
+        (sysblock :icon "${timer == 'Stopwatch' ? '' : ''}"
+                  :onclick "~/.config/eww/scripts/timer.sh toggle"
+                  :active "${timer == 'Stopwatch' ? false : true}"
+                  :label timer
         )
       )
       (box :halign "end"

@@ -38,6 +38,9 @@
 (defpoll time 
 	:interval "5s" "date '+%I:%M'"
 )
+(defpoll timer 
+	:interval "1s" "~/.config/eww/scripts/timer.sh status"
+)
 
 ;; Toggles
 (defpoll bluetooth_state 
