@@ -29,9 +29,7 @@ if command -v sddm &> /dev/null; then
 			sudo sed -i -e "s/Current=.*/Current=$theme/g" /etc/sddm.conf.d/theme.conf
 		else
 			echo "theme conf file not found, creating and moving files" 
-			if ! [ -d  "/etc/sddm.conf.d/" ]; then 
-				sudo mkdir /etc/sddm.conf.d/
-			fi 
+			[ ! -d "$HOME/.local/share/icons" ] && sudo mkdir /etc/sddm.conf.d/
 			sudo cp $DIR/theme.conf /etc/sddm.conf.d/ &&
 			sudo sed -i -e "s/Current=.*/Current=$theme/g" /etc/sddm.conf.d/theme.conf
 			sudo cp -r $DIR/.face /usr/share/sddm/faces/
@@ -41,7 +39,7 @@ if command -v sddm &> /dev/null; then
 		installSDDM
 	fi
 else
-	yay -Sy sddm plasma-framework && 
+	sudo pacman -Sy sddm plasma-framework && 
 	sudo systemctl enable sddm.service && 
 	installSDDM
 fi	
