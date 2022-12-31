@@ -43,7 +43,7 @@
       border-radius: 20px;
       transition: all ease .2s;
       &:hover { background-color: $green; }
-      &:active { background-color: $bg; }
+      &:active { background-color: $accent; }
     }
   }
 }
@@ -98,9 +98,18 @@
 
 /** Sliders ******************************/
 .controlsbox {
-  border-radius: 22px;
-  background-color: $bg;
-  padding: 20px 14px 20px 18px;
+	border-radius: 20px;
+	background-color: $bg;
+	padding: 20px;
+	.button {
+		background-color: $bg;
+		font-size: 16px;
+		padding: 10px;
+		border-radius: 20px;
+		transition: all ease .2s;
+		&:hover { background-color: $green; }
+		&:active { background-color: $bg; }
+	}
 }
 .slider {
   .label{
@@ -138,11 +147,69 @@
 }
 
 
+.musicbox {
+  color: #fff;
+  border-radius: 26px;
+  padding: 11px 16px;
+  transition: background 250ms;
+  .musicbox__top {
+    font-size: 23px; 
+    font-family: 'JetBrainsMono Nerd Font';
+  }
+}
+
+.musicbox__center--metadata {
+  .title{
+    font-weight: 500;
+    transition: text 250ms;
+  }
+  .artist{
+    font-weight: 400;
+    font-size: 15px;
+    transition: text 250ms;
+  }
+}
+
+.pausebutton {
+  transition: background 250ms;
+  padding: 14px 16px;
+}
+
+.playing {
+  transition: all ease .2s;
+  border-radius: 15px;
+}
+
+.paused {
+  border-radius: 26px;  
+  transition: all ease .2s;
+  padding: 14px 14px 14px 18px;
+}
+
+
+.musicbox__bottom {
+ font-size: 23px;
+}
+
 /** Misc ******************************/
 
 .progress {
 	color: $yellow;
 	min-width: 3px;
 }
+.timer {
+	border-radius: 20px;
+	padding: 20px;
+	.button {
+		background-color: $bg;
+		font-size: 16px;
+		padding: 5px;
+		border-radius: 20px;
+		transition: all ease .2s;
+		&:hover { background-color: $green; }
+		&:active { background-color: $bg; }
+	}
+}
+
 
 /*************************************************/

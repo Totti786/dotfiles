@@ -21,6 +21,14 @@ toggle(){
 	fi
 }
 
+#toggle(){
+	#if [ "$(eww get note)" == "false" ]; then 
+		#eww update note=true
+	#else
+		#eww update note=false
+	#fi
+	#}
+
 status(){
 	if [ ! -f $timer ]; then
 		echo "Stopwatch"

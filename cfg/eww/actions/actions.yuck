@@ -130,6 +130,25 @@
   )
 )
 
+(defvar note false)
+(defwidget note [] 
+	(revealer 
+		:reveal note
+		:transition "slidedown"
+		(box 
+			:class "timer"
+			:orientation "h"
+	        :space-evenly true
+			(button :class "button" :onclick ""
+				"⏻"
+			)
+			(button :class "button" :onclick ""
+				"⏻"
+			)
+        )
+    )
+)
+
 (defwidget sysblock [icon onclick active label]
   (box :class "block-container"
        :orientation "h"
@@ -198,19 +217,6 @@
              :max 101)
     )
   )
-)
-
-(defvar note false)
-(defwidget note [] 
-	
-	(revealer 
-		:reveal note
-		:transition "slidedown"
-		(box :class "controlsbox"
-			 :orientation "v"
-	         :space-evenly false
-        )
-    )
 )
 
 (defvar small-music false)
