@@ -21,7 +21,7 @@ run () {
 	eww open actions
 	polybar-msg action "#control.hook.0"
 	touch $cache
-	sleep 0.1 && listen
+	sleep 0.1 && listen &
 }
 
 if [[ ! `pidof eww` ]]; then
@@ -37,7 +37,6 @@ else
 		polybar-msg action "#control.hook.1"
 		eww update timer_reveal=false
 		rm $cache
+		killall -9 controls.sh
 	fi
 fi
-
-killall -9 panel-toggle
