@@ -3,7 +3,8 @@
 timer="$HOME/.cache/eww/timer"
 
 count() {
-    start="$(( $(date +%s) + 60))"
+	yad="`zenity --scale --text="Choose the number of minutes: " --value=5 --min-value=0 --max-value=120`"
+    start="$(( $(date +%s) + $((60 * $yad))))"
     while [ "$start" -ge $(date +%s) ] && [ -f $timer ] ; do
         time="$(( $start - `date +%s` ))"
 		echo "$(date -u -d "@$time" +%H:%M:%S)" > $timer
