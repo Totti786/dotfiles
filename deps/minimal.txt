@@ -21,6 +21,7 @@ imagemagick
 jgmenu
 light
 maim
+man
 mpv
 mpv-mpris
 mugshot
