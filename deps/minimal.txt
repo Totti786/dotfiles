@@ -67,4 +67,5 @@ xorg-xsetroot
 zathura
 zathura-cb
 zathura-pdf-mupdf
+zenity
 zsh
