@@ -20,6 +20,7 @@ listen(){
 run () {
 	eww open actions
 	polybar-msg action "#control.hook.0"
+	touch $cache
 	sleep 0.1 && listen
 }
 
@@ -29,7 +30,6 @@ if [[ ! `pidof eww` ]]; then
 	run
 else
 	if [ ! -f $cache ]; then
-		touch $cache
 		run
 	else
 		[[ ! -z $active_players ]] && eww update music-panel=false
