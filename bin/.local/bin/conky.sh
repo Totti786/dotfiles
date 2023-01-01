@@ -24,6 +24,7 @@ changefont(){
 if [ -z "$(pgrep conky)" ]; then 
 	changefont
 	conky -c $conkyConfig &> /dev/null
+	xdo lower -N Conky
 else
 	pkill conky
 fi
