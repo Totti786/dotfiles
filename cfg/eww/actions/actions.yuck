@@ -130,7 +130,7 @@
   )
 )
 
-(defvar timer_reveal true)
+(defvar timer_reveal false)
 (defwidget timer [] 
 	(revealer 
 		:reveal timer_reveal
