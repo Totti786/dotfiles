@@ -1,5 +1,6 @@
 acpi
 alacritty
+bc
 bluez-git
 brightnessctl
 bspwm
