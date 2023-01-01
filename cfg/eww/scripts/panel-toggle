@@ -35,6 +35,7 @@ else
 		[[ ! -z $active_players ]] && eww update music-panel=false
 		eww close-all
 		polybar-msg action "#control.hook.1"
+		eww update timer_reveal=false
 		rm $cache
 	fi
 fi

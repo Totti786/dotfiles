@@ -110,9 +110,9 @@
       (box :halign "start"
            :orientation "h"
            :space-evenly true
-        (sysblock :icon "${timer == 'Stopwatch' ? '' : ''}"
+        (sysblock :icon "${timer == 'Timer' ? '' : ''}"
                   :onclick "~/.config/eww/scripts/timer.sh toggle"
-                  :active "${timer == 'Stopwatch' ? false : true}"
+                  :active "${timer == 'Timer' ? false : true}"
                   :label timer
         )
       )
@@ -130,20 +130,25 @@
   )
 )
 
-(defvar note false)
-(defwidget note [] 
+(defvar timer_reveal true)
+(defwidget timer [] 
 	(revealer 
-		:reveal note
+		:reveal timer_reveal
 		:transition "slidedown"
-		(box 
-			:class "timer"
+		(box :class "timer_container"
 			:orientation "h"
 	        :space-evenly true
-			(button :class "button" :onclick ""
-				"⏻"
-			)
-			(button :class "button" :onclick ""
-				"⏻"
+			(box
+				:class "timer"
+				(button :class "button" :onclick "~/.config/eww/scripts/timer.sh stopwatch"
+					"祥"
+				)
+	        )
+	        (box 
+				:class "timer"	
+				(button :class "button" :onclick "~/.config/eww/scripts/timer.sh countdown"
+					""
+				)
 			)
         )
     )
@@ -361,7 +366,7 @@
        :spacing 10
     (header)
     (sysbuttons)
-    (note)
+    (timer)
     (music)
     (small-music)
     (controls)

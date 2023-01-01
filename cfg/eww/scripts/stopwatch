@@ -1,9 +1,0 @@
-#!/bin/bash
-
-timer="$HOME/.cache/eww/timer"
-now=$(date +%s)sec
-
-while [ -f $timer ]; do
-	echo $(TZ=UTC date --date now-$now +%H:%M:%S) > $timer
-	sleep 1
-done

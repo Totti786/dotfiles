@@ -197,19 +197,21 @@
 	color: $yellow;
 	min-width: 3px;
 }
+
+.timer_container{
 .timer {
-	border-radius: 20px;
-	padding: 20px;
+	border-radius: 10px;
+	padding: 5px;
 	.button {
 		background-color: $bg;
-		font-size: 16px;
+		font-size: 25px;
 		padding: 5px;
-		border-radius: 20px;
+		border-radius: 15px;
 		transition: all ease .2s;
 		&:hover { background-color: $green; }
 		&:active { background-color: $bg; }
 	}
 }
-
+}
 
 /*************************************************/

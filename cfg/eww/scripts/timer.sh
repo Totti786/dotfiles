@@ -1,37 +1,53 @@
 #!/bin/bash
 
-countdown() {
-    start="$(( $(date +%s) + $(yad --borders=10 --width='300' --title='Timer Minutes' --button=Cancel:1 --button=Okay:0  --scale --value=5 --min-value=0 --max-value=360)))"
-    while [ "$start" -ge $(date +%s) ]; do
-        ## Is this more than 24h away?
-        days="$(($(($(( $start - $(date +%s) )) * 1 )) / 86400))"
+timer="$HOME/.cache/eww/timer"
+
+count() {
+    start="$(( $(date +%s) + 60))"
+    while [ "$start" -ge $(date +%s) ] && [ -f $timer ] ; do
         time="$(( $start - `date +%s` ))"
-        printf '%s day(s) and %s\r' "$days" "$(date -u -d "@$time" +%H:%M:%S)"
+		echo "$(date -u -d "@$time" +%H:%M:%S)" > $timer
         sleep 0.1
-    done
+    done && rm $timer && mpv ~/.config/eww/scripts/assets/ring.mp3
 }
 
-timer="$HOME/.cache/eww/timer"
-toggle(){
+stop(){
+	now=$(date +%s)sec
+	while [ -f $timer ]; do
+		echo $(TZ=UTC date --date now-$now +%H:%M:%S) > $timer
+		sleep 1
+	done
+}
+
+stop_watch(){
 	if [ ! -f $timer ]; then
 		touch $timer
-		sh ~/.config/eww/scripts/stopwatch &
+		stop &
 	else
 		rm $timer
 	fi
 }
 
-#toggle(){
-	#if [ "$(eww get note)" == "false" ]; then 
-		#eww update note=true
-	#else
-		#eww update note=false
-	#fi
-	#}
+count_down(){
+	if [ ! -f $timer ]; then
+		touch $timer
+		count &
+	else
+		rm $timer
+	fi
+}
+
+toggle(){
+	if [ "$(eww get timer_reveal)" == "false" ]; then 
+		eww update timer_reveal=true
+	else
+		eww update timer_reveal=false
+	fi
+	}
 
 status(){
 	if [ ! -f $timer ]; then
-		echo "Stopwatch"
+		echo "Timer"
 	else
 		cat ~/.cache/eww/timer
 	fi
@@ -45,7 +61,10 @@ case $1 in
     status)
         status
         ;;
-    count)
-        countdown
+    countdown)
+        count_down
+        ;;
+    stopwatch)
+        stop_watch
         ;;
 esac
