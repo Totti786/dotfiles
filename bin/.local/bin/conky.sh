@@ -9,7 +9,7 @@ changefont(){
 		sed -i -e "s/gap_y = .*,/gap_y = 140,/g" $conkyConfig
 		sed -i -e "s/minimum_width = .*,/minimum_width = 330,/g" $conkyConfig
 		sed -i -e "s/font  = 'JetBrains Mono:Bold:size=.*',/font  = 'JetBrains Mono:Bold:size=10',/g" $conkyConfig
-		sed -i -e "s/font1 = 'JetBrains Mono:Bold:size=.*',/font1 = 'JetBrains Mono:Bold:size=13',/g" $conkyConfig
+		sed -i -e "s/font1 = 'JetBrains Mono:Bold:size=.*',/font1 = 'JetBrains Mono:Bold:size=15',/g" $conkyConfig
 		sed -i -e "s/font2 = 'JetBrains Mono:bold:size=.*',/font2 = 'JetBrains Mono:bold:size=25',/g" $conkyConfig
 	elif [[ "$res" == "768" ]]; then 
 		sed -i -e "s/gap_y = .*,/gap_y = 50,/g" $conkyConfig
