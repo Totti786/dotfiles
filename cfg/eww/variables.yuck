@@ -46,9 +46,9 @@
 (defpoll bluetooth_state 
 	:interval "2s" "~/.config/eww/scripts/bluetooth state"
 )
-;(defpoll redshift_state 
-;	:interval "2s" "~/.local/bin/redshift.sh state"
-;)
+(defpoll redshift_state 
+	:interval "2s" "~/.local/bin/redshift.sh state"
+)
 (defpoll dnd_status 
 	:interval "2s" "~/.config/eww/scripts/dnd status"
 )

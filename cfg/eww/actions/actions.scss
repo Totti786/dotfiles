@@ -34,7 +34,7 @@
 	}
   }
 }
-  .useractions {
+.useractions {
     .button {
       background-color: $bg;
       font-family: 'JetBrainsMono Nerd Font';
@@ -43,8 +43,9 @@
       border-radius: 20px;
       transition: all ease .2s;
       &:hover { background-color: $green; }
-      &:active { background-color: $accent; }
+      
     }
+    .active{ background-color: $accent; }
   }
 }
 
