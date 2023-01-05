@@ -8,13 +8,12 @@
          :halign "center"
          :valign "center"
          :spacing 10
-         :style "background-image: url('actions/wallpaper.jpg')"
+         :style "background-image: url('actions/date-cover.jpg')"
 		 (overlay 
 		 (label :text "${time}" :class "time")
 		 (label :text "${day} \\n${date} " :class "day" :valign "end" :halign "start")
 		 )
     )
-
   )
 )
 
@@ -35,6 +34,9 @@
          :halign "end"
          :valign "start"
          :spacing 5
+      (button :class "button" :onclick "~/.config/eww/scripts/tools.sh datecover"
+		 ""
+      )
       (button :class "button ${redshift_state == 'on' ? 'active' : ''}"
 			  :onclick "~/.local/bin/redshift.sh toggle"
 				"ﯧ" 
@@ -375,7 +377,7 @@
     (sysbuttons)
     (timer)
     (music)
-    (small-music)
+    ;(small-music)
     (controls)
     (footer)
   )

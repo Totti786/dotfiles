@@ -3,7 +3,7 @@
 :interval "1s" "scripts/volume.sh icon"
 )
 (defpoll volume_value
-	:interval "0.5s" "~/.config/eww/scripts/volume.sh vol"
+	:interval "0.5s" "scripts/volume.sh vol"
 )
 
 (defpoll br_icon 
@@ -14,24 +14,25 @@
 )
 
 (defpoll battery-icon
-	:interval "2s" "~/.config/eww/scripts/battery -i"
+	:interval "2s" "scripts/battery -i"
 )
 
 ;; Network
 (defpoll network_status
-	:interval "2s" "~/.config/eww/scripts/network.sh status"
+	:interval "2s" "scripts/network.sh status"
 )
 (defpoll network_icon
-	:interval "3s" "./scripts/network.sh icon"
+	:interval "3s" "scripts/network.sh icon"
 )
 (defpoll network_ssid
-	:interval "2s" "~/.config/eww/scripts/network.sh ssid"
+	:interval "2s" "scripts/network.sh ssid"
 )
 
 ;; Time
 (defpoll date 
 	:interval "5s" "date '+%B %d'"
 )
+
 (defpoll day 
 	:interval "5s" "date '+%A'"
 )
@@ -39,24 +40,24 @@
 	:interval "5s" "date '+%I:%M'"
 )
 (defpoll timer 
-	:interval "1s" "~/.config/eww/scripts/timer.sh status"
+	:interval "1s" "./scripts/timer.sh status"
 )
 
 ;; Toggles
 (defpoll bluetooth_state 
-	:interval "2s" "~/.config/eww/scripts/bluetooth state"
+	:interval "2s" "./scripts/bluetooth state"
 )
 (defpoll redshift_state 
 	:interval "2s" "~/.local/bin/redshift.sh state"
 )
 (defpoll dnd_status 
-	:interval "2s" "~/.config/eww/scripts/dnd status"
+	:interval "2s" "./scripts/dnd status"
 )
 (defpoll record_status 
 	:interval "2s" "~/.config/openbox/pipemenus/record --status"
 )
 (defpoll vpn_status 
-	:interval "2s" "~/.config/eww/scripts/vpn.sh status"
+	:interval "2s" "./scripts/vpn.sh status"
 )
 
 ;; Notifications

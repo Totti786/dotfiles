@@ -31,7 +31,7 @@
     .date {
       color: $accent;
       font-size: 25px;
-	}
+    }
   }
 }
 .useractions {
@@ -145,51 +145,6 @@
       margin: -8px;
     }
   }
-}
-
-
-.musicbox {
-  color: #fff;
-  border-radius: 26px;
-  padding: 11px 16px;
-  transition: background 250ms;
-  .musicbox__top {
-    font-size: 23px; 
-    font-family: 'JetBrainsMono Nerd Font';
-  }
-}
-
-.musicbox__center--metadata {
-  .title{
-    font-weight: 500;
-    transition: text 250ms;
-  }
-  .artist{
-    font-weight: 400;
-    font-size: 15px;
-    transition: text 250ms;
-  }
-}
-
-.pausebutton {
-  transition: background 250ms;
-  padding: 14px 16px;
-}
-
-.playing {
-  transition: all ease .2s;
-  border-radius: 15px;
-}
-
-.paused {
-  border-radius: 26px;  
-  transition: all ease .2s;
-  padding: 14px 14px 14px 18px;
-}
-
-
-.musicbox__bottom {
- font-size: 23px;
 }
 
 /** Misc ******************************/

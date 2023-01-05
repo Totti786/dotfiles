@@ -5,6 +5,7 @@ cache="$cache_dir/control-center.eww"
 active_players="$(playerctl -l | head -n 1)"
 
 [ ! -d $cache_dir ] && mkdir $cache_dir
+#sh ~/.config/eww/scripts/tools.sh datecover
 
 listen(){
 	while true ; do 
@@ -25,7 +26,7 @@ run () {
 }
 
 if [[ ! `pidof eww` ]]; then
-	eww -c $config daemon
+	eww daemon &
 	sleep 0.5 &&
 	run
 else
