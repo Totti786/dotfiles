@@ -1,17 +1,17 @@
 // Colors
 
-$background: #0b0d10;
-$bg-alt: #111419;
-$fg: #ffffde;
-$fg-alt: #d7dfad;
-$red: #5b9b5b;
-$green: #427953;
-$yellow: #7dc266;
-$blue: #8acb68;
-$purple: #c1f26b;
-$cyan: #b69475;
-$gray: #1f252e;
-$gray-alt: #1f252e;
+$background: #0A0F16;
+$bg-alt: #101823;
+$fg: #e1f8ff;
+$fg-alt: #aabbc4;
+$red: #d18554;
+$green: #846b84;
+$yellow: #ffc86c;
+$blue: #2d6783;
+$purple: #a3b886;
+$cyan: #629dbd;
+$gray: #192639;
+$gray-alt: #192639;
 
 $accent: $red;
 $bg: rgba($background, $alpha: 0.3);;
@@ -19,4 +19,4 @@ $fg-alt: rgba($fg, $alpha: 0.5);;
 $bgCal: rgba($color: #0a0c0e, $alpha: 0.5);
 
 $contrastbg: #101316;
-$bgSecondary: #101316;
+$bgSecondary: #1f252e;

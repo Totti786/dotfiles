@@ -8,6 +8,7 @@
          :halign "center"
          :valign "center"
          :spacing 10
+         :update 1
          :style "background-image: url('actions/date-cover.jpg')"
 		 (overlay 
 		 (label :text "${time}" :class "time")
@@ -320,7 +321,7 @@
 						:class "song-title" 
 						:halign "start"			
 						:text {song-title}
-						:limit-width 30
+						:limit-width 25
 					)
 					(label 
 						:class "song-artist" 
@@ -388,6 +389,7 @@
                       :y "33px"
                       :anchor "top right"
             )
+  :monitor 0
   :windowtype "dialog"
   :wm-ignore true
   (actions)
