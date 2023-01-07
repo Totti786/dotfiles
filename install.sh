@@ -244,7 +244,7 @@ main(){
 if [[ "$1" == "--update" ]]; then
 	git pull
 	update
-elif [[ "$1" == "--wallpapers"]]; then
+elif [[ "$1" == "--wallpapers" ]]; then
 	wallpapers
 else
 	if command -v $Dialog &> /dev/null; then 
