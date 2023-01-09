@@ -1,0 +1,12 @@
+[color]
+;; main colors
+background = {color0}00
+foreground = {color15}
+primary = {color15}
+red = {color9}
+green = {color10}
+yellow = {color11}
+blue = {color12}
+magenta = {color13}
+cyan = {color14}
+white = {color15}
