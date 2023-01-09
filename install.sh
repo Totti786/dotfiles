@@ -95,11 +95,11 @@ wpgtk(){
 
 wpgtk_set(){
 	## check if files exists and if not create a symbolic link
-	! [ -f "$HOME/.config/wpg/templates/polybar-colors" ] && 
+	if [[ -f "$HOME/.config/wpg/templates/polybar-colors" ]]; then
 		ln -s ~/.config/polybar/colors.ini ~/.config/wpg/templates/polybar-colors
+	fi
 	## remove already existing json file for background color scheme
-	[ -f "~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json" ] &&
-		rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
+	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
 	## change wallpaper and update color scheme 
 	sh $DIR/bin/.local/bin/wpgtk wall $DIR/deps/background.jpg 
 	}
