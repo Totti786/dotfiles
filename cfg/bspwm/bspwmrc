@@ -51,7 +51,7 @@ declare -a tiled=(Zathura)
 for i in "${tiled[@]}"; do
 	bspc rule -a "$i" manage=on state=tiled
 done
-
+bspc rule -a '*:*:Picture-in-Picture' sticky=on
 bspc rule -a Plank manage=off locked=on border=off state=floating focus=off
 
 ## Autostart
