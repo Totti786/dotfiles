@@ -2,25 +2,20 @@
     (eventbox 
         :onrightclick R
         :class "notification-card-eventbox"
-
         (box 
             :space-evenly false 
             :orientation "v"
-
             (box 
                 :space-evenly true
                 :orientation "h" 
                 :class "notification-card-header"
-
                 (label 
                     :class "notification-app-name" 
                     :text application
                     :halign "start"
                 )
-
                 (eventbox
                     :cursor "pointer"
-
                     (button 
                         :onclick "scripts/logger remove ${SL}"
                         :class "notification-close" 
@@ -30,18 +25,15 @@
                     )
                 )
             )
-
             (box 
                 :orientation "h"
                 :space-evenly false
-
                 (box 
                     :halign "start"
                     :valign "center"
                     :class "notification-image" 
                     :style "background-image: url(\"${image}\");"
                 )
-
                 (box 
                     :orientation "v"
                     :space-evenly false
@@ -58,7 +50,6 @@
                         :class "notification-summary"
                         :hexpand true
                     )
-
                     (label 
                         :limit-width 45
                         :wrap true
@@ -68,7 +59,6 @@
                         :tooltip body
                         :class "notification-body"
                     )
-
                     (label 
                         :class "notification-timestamp" 
                         :text timestamp
@@ -85,31 +75,25 @@
     (eventbox 
         :onrightclick R
         :class "notification-card-eventbox"
-
         (box 
             :space-evenly false 
             :orientation "v"
-
             (box 
                 :space-evenly true
                 :orientation "h" 
                 :class "notification-card-header"
-
                 (label 
                     :class "notification-app-name" 
                     :text "${application}" 
                     :halign "start"
                 )
-
                 (label 
                     :class "notification-timestamp" 
                     :text "${timestamp}" 
                     :halign "center"
                 )
-
                 (eventbox
                     :cursor "pointer"
-
                     (button 
                         :onclick "scripts/logger remove ${SL}"
                         :class "notification-close" 
@@ -119,21 +103,17 @@
                     )
                 )
             )
-
             (box 
                 :orientation "v"
                 :space-evenly false
-
                 (box
                     :valign "center"
                     :halign "center"
                     :class "notification-image-screenshot" 
                     :style "background-image: url(\"${image}\");"
                 )
-
                 (eventbox
                     :cursor "pointer"
-
                     (box 
                         :orientation "h"
                         :space-evenly false
@@ -145,7 +125,6 @@
                             :class "notification-screenshot-open" 
                             "Open"
                         )
-
                         (button 
                             :onclick "scripts/logger remove ${SL} && rm -rf ${image}" 
                             :class "notification-screenshot-delete" 
@@ -164,22 +143,18 @@
         :orientation "h"
         :space-evenly false
         :class "notification-panel-window"
-
         (box
             :orientation "v"
             :space-evenly false
-
             (box
                 :orientation "h"
                 :space-evenly true
-
                 (label 
                     :text "Notifications"
                     :class "notification-box-label"
                     :valign "center"
                     :halign "start"
                 )
-
                 (eventbox
                     :cursor "pointer"
                  
@@ -205,24 +180,21 @@
         :orientation "h"
         :space-evenly false
         :class "info-panel-window"
-
-		 (notification-panel)
-        )
+		(notification-panel)
+    )
 )
 
 (defwindow notification-panel
 	:geometry 
-
-        (geometry 
-            :x "-10px"
-            :y "33px"
+		(geometry 
+			:x "-10px"
+			:y "33px"
 			:width "0%" 
 			:height "0%"
 			:anchor "top right"
-        )
+		)
+    :monitor 0
 	:windowtype "dock"
 	:wm-ignore true
-
 	(info-panel)
 )
-

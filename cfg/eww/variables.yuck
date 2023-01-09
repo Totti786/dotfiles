@@ -7,10 +7,10 @@
 )
 
 (defpoll br_icon 
-	:interval "1s" "scripts/getBrightness icon"
+	:interval "1s" "scripts/brightness.sh icon"
 )
 (defpoll br 
-	:interval "0.5s" "scripts/getBrightness br"
+	:interval "0.5s" "scripts/brightness.sh br"
 )
 
 (defpoll battery-icon

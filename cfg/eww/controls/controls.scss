@@ -19,14 +19,14 @@
 	
     .time {
       color: $fg-alt;
-      font-family: 'JetBrainsMono Nerd Font';
       font-size: 105px;
       padding: 5px 23px 5px 23px;
 	}
     .day {
       color: $fg;
       margin-left: 5px;
-      font-size: 25px;
+      font-family: 'JetBrainsMono Nerd Font';
+      font-size: 30px;
 	}
     .date {
       color: $accent;

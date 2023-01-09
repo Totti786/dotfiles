@@ -21,7 +21,7 @@ percentage () {
 
 get_brightness () {
   (( br = $(brightnessctl get) * 100 / $(brightnessctl max) ))
-  echo $br
+  printf "%.1f" $br
 }
 
 get_percent () {
