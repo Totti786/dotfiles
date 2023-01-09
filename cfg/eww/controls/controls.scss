@@ -112,6 +112,7 @@
 		&:active { background-color: $bg; }
 	}
 }
+
 .slider {
   .label{
     font-family: 'JetBrainsMono Nerd Font';
@@ -119,24 +120,17 @@
     font-size: 18px;
     padding-right: 20px;
   }
-  .scale-label{
-    min-width: 40px;
-    color: $fg;
-    font-size: 13px;
-    font-weight: 500;
-    margin-left: 20px;
-  }
   trough {
     background-color: $fg;
     min-height: 6px;
     border-radius: 100px;
-
-    highlight {
+  }
+  highlight {
       background-color: $accent;
       border-radius: 100px;
-    }
   }
 }
+
 .active {
   trough {
     slider {
@@ -148,11 +142,6 @@
 }
 
 /** Misc ******************************/
-
-.progress {
-	color: $yellow;
-	min-width: 3px;
-}
 
 .timer_container{
 .timer {

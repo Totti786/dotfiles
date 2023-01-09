@@ -1,18 +1,6 @@
-(defwidget bar []
-  (centerbox :orientation "h"
-    (workspaces)
-    (music)
-    (sidestuff)))
-
-(defwidget sidestuff []
-  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
-    (metric :label "🔊"
-            :value volume_value
-            :onchange "amixer -D pulse sset Master {}%")
-    (metric :label ""
-            :value {EWW_RAM.used_mem_perc}
-            :onchange "")
-    time))
+(defwidget barbottom []
+	(controlsbar)
+)
 
 (defwidget workspaces []
   (box :class "workspaces"
@@ -31,6 +19,40 @@
     (button :onclick "wmctrl -s 8" 9))
 )
 
+(defwidget controlsbar []
+	(box
+		:orientation "h"
+		:space-evenly true
+		:spacing 16
+		(box
+			:orientation "h"
+			:space-evenly "false"
+			:class "sliderbar activebar"
+			(box :class "label"	volume_icon)
+			(scale
+				:value volume_value
+				:hexpand true
+				:onchange "~/.config/eww/scripts/volume.sh set {}"
+				:min 0
+				:max 101
+			)
+		)
+		(box
+			:orientation "h"
+			:space-evenly "false"
+			:class "sliderbar activebar"
+			(box :class "label"	br_icon)
+			(scale
+				:hexpand true
+				:value br
+				:onchange "brightnessctl set {}%"
+				:min 0
+				:max 100
+			)
+		)
+	)
+)
+
 
 (defwindow bar1
            :monitor 0
@@ -43,7 +65,7 @@
            :reserve (struts :distance "23px" :side "top")
            :windowtype "dock"
            :wm-ignore false
-  (bar)
+"fdf"
 )
 (defwindow bar2
            :monitor 0
@@ -56,5 +78,5 @@
            :reserve (struts :distance "23px" :side "bottom")
            :windowtype "dock"
            :wm-ignore false
-  "we shall see"
+  (barbottom)
 )

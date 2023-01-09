@@ -19,7 +19,7 @@ listen(){
 }
 
 run () {
-	eww open actions
+	eww open controls
 	polybar-msg action "#control.hook.0"
 	touch $cache
 	sleep 0.1 && listen &

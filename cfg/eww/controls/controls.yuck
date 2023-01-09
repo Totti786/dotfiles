@@ -362,7 +362,7 @@
 	)
 )
 
-(defwidget actions []
+(defwidget control-panel []
 	(box
 		:class "actions"
 		:orientation "v"
@@ -377,7 +377,7 @@
 	)
 )
 
-(defwindow actions
+(defwindow controls
 	:geometry
 		(geometry
 			:x "-10px"
@@ -387,5 +387,5 @@
 	:monitor 0
 	:windowtype "dialog"
 	:wm-ignore true
-	(actions)
+	(control-panel)
 )
