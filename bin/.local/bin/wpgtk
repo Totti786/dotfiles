@@ -22,20 +22,20 @@ Wallpapers="$HOME/Pictures/Wallpapers"
 change_colors() {
 	run &&
 	# polybar	
-	cat > $polybar <<- EOF
-		[color]
-		;; main colors
-		background = ${BG}00
-		foreground = $FG
-		primary = $FG
-		red = $bright_red
-		green = $bright_green
-		yellow = $bright_yellow
-		blue = $bright_blue
-		magenta = $bright_magenta
-		cyan = $bright_cyan
-		white = $white
-		EOF
+	#cat > $polybar <<- EOF
+		#[color]
+		#;; main colors
+		#background = ${BG}00
+		#foreground = $FG
+		#primary = $FG
+		#red = $bright_red
+		#green = $bright_green
+		#yellow = $bright_yellow
+		#blue = $bright_blue
+		#magenta = $bright_magenta
+		#cyan = $bright_cyan
+		#white = $white
+		#EOF
 
 	# rofi
 	cat > $rofi <<- EOF
@@ -210,10 +210,11 @@ copyWal(){
 	}
 
 ## Kill already running process
-kill(){
+restart(){
 	if [[ $(pidof $1) ]]; then
-		killall -q $1
+		killall -q $1 &&
 		$1 $2 $3
+		echo "$1 restarted"
 	fi
 	}
 	
@@ -232,7 +233,7 @@ wpgConfig(){
 	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" ~/.config/wpg/wpg.conf
 	}	
 
-setWall(){
+wall(){
 	if [ -z "$1" ]; then
 	echo "No image was selected"
 	else 
@@ -244,7 +245,7 @@ setWall(){
 random(){
 	cd $Wallpapers/Wallpapers.git/ &&
 	image=$(find -type f -not -path "./.git/*" | shuf -n 1)
-	setWall $Wallpapers/Wallpapers.git/${image:2}
+	wall $Wallpapers/Wallpapers.git/${image:2}
 	}
 
 # this function uses implements a sxiv to create a wallpaper selector for wpg 
@@ -261,10 +262,10 @@ pick(){
 	
 main(){
 	change_colors
-	#kill dunst &
-	copyWal &
+	restart dunst &
+	copyWal
 	papirus-folder.sh --color ${red:1} &
-	sh ~/.config/polybar/launch.sh &> /dev/null
+	#sh ~/.config/polybar/launch.sh &> /dev/null
 	sh ~/.config/bspwm/bsp-border &
 	check spicetify -q update &
 	check razer-cli -a & exit
