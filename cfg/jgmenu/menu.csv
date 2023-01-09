@@ -50,6 +50,7 @@ Back,^back()
 Lock,~/.config/openbox/pipemenus/powermenu --lock
 Logout,~/.config/openbox/pipemenus/powermenu --logout
 Suspend,~/.config/openbox/pipemenus/powermenu --suspend
+Hibernate,~/.config/openbox/pipemenus/powermenu --hibernate
 Reboot,~/.config/openbox/pipemenus/powermenu --reboot
 Shutdown,~/.config/openbox/pipemenus/powermenu --shutdown
 
