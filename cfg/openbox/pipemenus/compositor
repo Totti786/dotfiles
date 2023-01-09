@@ -106,7 +106,7 @@ elif [[ $1 = '--use-xrender' ]]; then
 ##-- corners ---------------------
 
 elif [[ $1 = '--corner-radius' ]]; then
-	cradius=$(yad --borders=10 --width='300' --title='Corner Radius' --button=Cancel:1 --button=Okay:0  --scale --value=6 --min-value=0 --max-value=40)
+	cradius=$(zenity --text='Corner Radius' --scale --value=6 --min-value=0 --max-value=40)
 	if [[ "$cradius" ]]; then
 		sed -i -e "s/backend = .*/backend = \"glx\";/g" $dir/picom.conf
 		sed -i -e "s/corner-radius = .*/corner-radius = $cradius;/g" $dir/picom.conf
@@ -118,7 +118,7 @@ elif [[ $1 = '--disable-corners' ]]; then
 ##-- borders ---------------------
 
 elif [[ $1 = '--border-size' ]]; then
-	cborder=$(yad --borders=10 --width='300' --title='Border Size' --button=Cancel:1 --button=Okay:0  --scale --value=4 --min-value=0 --max-value=100)
+	cborder=$(zenity --text='Border Size' --scale --value=4 --min-value=0 --max-value=100)
 	if [[ "$cborder" ]]; then
 		sed -i -e "s/round-borders = .*/round-borders = $cborder;/g" $dir/picom.conf
     fi
@@ -189,7 +189,7 @@ elif [[ $1 = '--disable-blur' ]]; then
 	sed -i -e "s/strength = .*/strength = 0;/g" $dir/picom.conf
 
 elif [[ $1 = '--update-blur' ]]; then
-	bstrength=$(yad --borders=10 --width='300' --title='Blur Strength' --button=Cancel:1 --button=Okay:0  --scale --value=7 --min-value=1 --max-value=20)
+	bstrength=$(zenity --text='Blur Strength' --scale --value=7 --min-value=1 --max-value=20)
 	if [[ "$bstrength" ]]; then
 		sed -i -e "s/strength = .*/strength = $bstrength;/g" $dir/picom.conf
 	fi
