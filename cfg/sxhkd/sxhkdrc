@@ -54,9 +54,13 @@ super + shift + {s,w,r,d,g}
 	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura}
 
 # Terminal Apps
-ctrl + alt + {v,n,r,h,b}
-	alacritty -e {vim,nvim,ranger,htop, sh ~/.fehbg}
+ctrl + alt + {v,n,r,h}
+	alacritty -e {vim,nvim,ranger,htop}
 
+# Reset Wallpaper
+ctrl + alt + b
+	sh ~/.fehbg
+	
 # Lockscreen
 ctrl + alt + l
    lockscreen
@@ -170,6 +174,9 @@ ctrl + super + {Left,Right}
 # Send focused window to another workspace and switch to the workspace
 super + {_,shift + }{1-8}
 	bspc {desktop -f,node -d} '^{1-8}' --follow
+
+ctrl + shift + {Left,Right}
+	bspc node --to-desktop {prev,next} --follow
 
 ## Resizing windows
 super + alt + Left
