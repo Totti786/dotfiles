@@ -1,6 +1,7 @@
 #! /bin/bash
 
 DIR="$HOME/Pictures/Screenshots/Temp"
+LOCKFILE="/tmp/sc.lock"
 
 takeshot(){
 	cd $DIR
@@ -21,5 +22,11 @@ fi
 }
 
 if command -v scrot &> /dev/null; then 
-	main
+	if [ ! -e "$LOCKFILE" ]; then
+		# Create the lock file
+		touch "$LOCKFILE"
+		main
+	else
+		echo "Script is already running"
+	fi
 fi
