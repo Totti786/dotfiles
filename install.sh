@@ -71,13 +71,14 @@ change_dock() {
 	}
 
 changeTheme(){
+	if ! [[ "$(grep -i "qt5ct" /etc/environment | head -n1)" == "QT_QPA_PLATFORMTHEME=\"qt5ct\"" ]]; then
+		echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
+	fi
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
 	change_dock && cat "$HOME"/.cache/plank.conf | dconf load /net/launchpad/plank/docks/
 	cp -r $DIR/bin/.icons ~/
-	if ! [[ "$(grep -i "qt5ct" /etc/environment | head -n1)" == "QT_QPA_PLATFORMTHEME=\"qt5ct\"" ]]; then
-		echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
-	fi
+
 	}
 
 wpgtk(){
@@ -90,6 +91,17 @@ wpgtk(){
 		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg
 		exit
 	fi
+	}
+
+wpgtk_set(){
+	## check if files exists and if not create a symbolic link
+	! [ -f "$HOME/.config/wpg/templates/polybar-colors" ] && 
+		ln -s ~/.config/polybar/colors.ini ~/.config/wpg/templates/polybar-colors
+	## remove already existing json file for background color scheme
+	[ -f "~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json" ] &&
+		rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
+	## change wallpaper and update color scheme 
+	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
 	}
 
 base(){
@@ -170,8 +182,8 @@ update(){
 	installDependencies
 	progressBar "Updating... "
 	## backup weather info file
-	[ -f "$HOME/.config/polybar/scripts/info" ] && 
-	cp ~/.config/polybar/scripts/info ~/info
+	[ -f "$HOME/.config/polybar/scripts/info" ] &&
+		cp ~/.config/polybar/scripts/info ~/.cache/info
 	## move udpated scripts and configs
 	sudo cp -ru $DIR/bin/usr/ /
 	cp -ru $DIR/bin/.scripts/ ~/ 
@@ -179,10 +191,7 @@ update(){
 	cp -ru $DIR/bin/.local/ ~/
 	# restore weather info file
 	cp ~/.cache/info ~/.config/polybar/scripts/info
-	## remove already existing json file for background color scheme
-	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
-	## change wallpaper and update color scheme 
-	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
+	wpgtk_set
 	}
 
 install(){
