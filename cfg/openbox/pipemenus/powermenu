@@ -19,6 +19,8 @@ elif  [[ $1 = "--lock" ]]; then
 	lockscreen
 elif  [[ $1 = "--suspend" ]]; then
 	systemctl suspend && lockscreen
+elif  [[ $1 = "--hibernate" ]]; then
+	systemctl hibernate && lockscreen
 elif  [[ $1 = "--reboot" ]]; then
 	systemctl reboot 
 elif  [[ $1 = "--shutdown" ]]; then
