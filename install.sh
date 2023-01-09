@@ -86,9 +86,9 @@ wpgtk(){
 	if $Dialog --yesno "Do you want your Login Screen background to sync with your wallpaper? 
 			(This only works with the included SDDM theme)" 20 60 ;then
 		sh $DIR/bin/.local/bin/wpgtk lockPerms &&
-		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
+		sh $DIR/bin/.local/bin/wpgtk wall $DIR/deps/background.jpg 
 	else
-		sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg
+		sh $DIR/bin/.local/bin/wpgtk wall $DIR/deps/background.jpg
 		exit
 	fi
 	}
@@ -101,7 +101,7 @@ wpgtk_set(){
 	[ -f "~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json" ] &&
 		rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
 	## change wallpaper and update color scheme 
-	sh $DIR/bin/.local/bin/wpgtk setWall $DIR/deps/background.jpg 
+	sh $DIR/bin/.local/bin/wpgtk wall $DIR/deps/background.jpg 
 	}
 
 base(){
