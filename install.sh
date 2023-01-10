@@ -179,9 +179,9 @@ update(){
 		cp ~/.config/polybar/scripts/info ~/.cache/info
 	## move udpated scripts and configs
 	sudo cp -ru $DIR/bin/usr/ /
-	cp -ru $DIR/bin/.scripts/ ~/ 
-	cp -ru $DIR/cfg/* ~/.config 
-	cp -ru $DIR/bin/.local/ ~/
+	cp -r $DIR/bin/.scripts/ ~/ 
+	cp -r $DIR/cfg/* ~/.config 
+	cp -r $DIR/bin/.local/ ~/
 	# restore weather info file
 	cp ~/.cache/info ~/.config/polybar/scripts/info
 	## remove already existing json file for background color scheme
