@@ -13,15 +13,15 @@ case $chosen in
         ;;
     Update\ Configs)
    		cd $dots
-		alacritty --class 'alacritty-float,alacritty-float' -e sh $HOME/dotfiles/install.sh --update &&
+		alacritty --class 'alacritty-float,alacritty-float' -e sh $dots/install.sh --update &&
 		## remove already existing json file for background color scheme
 		rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
 		## change wallpaper and update color scheme 
-		sh $DIR/bin/.local/bin/wpgtk wall $DIR/deps/background.jpg 
+		sh $dots/bin/.local/bin/wpgtk wall $dots/deps/background.jpg 
         ;;
     Update\ Wallpapers)
 		cd $dots
-		alacritty --class 'alacritty-float,alacritty-float' -e sh $HOME/dotfiles/install.sh --wallpapers
+		alacritty --class 'alacritty-float,alacritty-float' -e sh $dots/install.sh --wallpapers
         ;;
     Exit)
 		exit
