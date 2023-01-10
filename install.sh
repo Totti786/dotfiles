@@ -178,7 +178,7 @@ update(){
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
 		cp ~/.config/polybar/scripts/info ~/.cache/info
 	## move udpated scripts and configs
-	sudo cp -ru $DIR/bin/usr/ /
+	sudo cp -r $DIR/bin/usr/ /
 	cp -r $DIR/bin/.scripts/ ~/ 
 	cp -r $DIR/cfg/* ~/.config 
 	cp -r $DIR/bin/.local/ ~/
