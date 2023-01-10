@@ -171,9 +171,10 @@ update(){
 	installDependencies
 	progressBar "Updating... "
 	## check if files exists and if not create a symbolic link
-	if [[ -f "$HOME/.config/wpg/templates/polybar-colors" ]]; then
+	[ ! -f "$HOME/.config/wpg/templates/polybar-colors" ] &&
 		ln -sf ~/.config/polybar/colors.ini ~/.config/wpg/templates/polybar-colors
-	fi &
+	[ ! -f "$HOME/.config/wpg/templates/gtk4.0" ] &&
+		ln -sf ~/.config/gtk-4.0/gtk.css ~/.config/wpg/templates/gtk4.0
 	## backup weather info file
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
 		cp ~/.config/polybar/scripts/info ~/.cache/info
