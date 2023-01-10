@@ -93,17 +93,6 @@ wpgtk(){
 	fi
 	}
 
-wpgtk_set(){
-	## check if files exists and if not create a symbolic link
-	if [[ -f "$HOME/.config/wpg/templates/polybar-colors" ]]; then
-		ln -s ~/.config/polybar/colors.ini ~/.config/wpg/templates/polybar-colors
-	fi
-	## remove already existing json file for background color scheme
-	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
-	## change wallpaper and update color scheme 
-	sh $DIR/bin/.local/bin/wpgtk wall $DIR/deps/background.jpg 
-	}
-
 base(){
 	checkChaotic &&
 	sudo pacman -Sy $(cat $DIR/deps/minimal.txt $DIR/deps/additional.txt) --needed
@@ -181,6 +170,10 @@ update(){
 	## update dependencies and install new ones
 	installDependencies
 	progressBar "Updating... "
+	## check if files exists and if not create a symbolic link
+	if [[ -f "$HOME/.config/wpg/templates/polybar-colors" ]]; then
+		ln -sf ~/.config/polybar/colors.ini ~/.config/wpg/templates/polybar-colors
+	fi &
 	## backup weather info file
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
 		cp ~/.config/polybar/scripts/info ~/.cache/info
@@ -191,7 +184,10 @@ update(){
 	cp -ru $DIR/bin/.local/ ~/
 	# restore weather info file
 	cp ~/.cache/info ~/.config/polybar/scripts/info
-	wpgtk_set
+	## remove already existing json file for background color scheme
+	rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
+	## change wallpaper and update color scheme 
+	sh $DIR/bin/.local/bin/wpgtk wall $DIR/deps/background.jpg 
 	}
 
 install(){
