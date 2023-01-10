@@ -21,22 +21,6 @@ Wallpapers="$HOME/Pictures/Wallpapers"
 ## Change colors
 change_colors() {
 	run &&
-	# polybar	
-	#cat > $polybar <<- EOF
-		#[color]
-		#;; main colors
-		#background = ${BG}00
-		#foreground = $FG
-		#primary = $FG
-		#red = $bright_red
-		#green = $bright_green
-		#yellow = $bright_yellow
-		#blue = $bright_blue
-		#magenta = $bright_magenta
-		#cyan = $bright_cyan
-		#white = $white
-		#EOF
-
 	# rofi
 	cat > $rofi <<- EOF
 	/* colors */
@@ -252,12 +236,7 @@ random(){
 # to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
 pick(){
 	wal=$(sxiv -torb $Wallpapers)
-	if [ -z "$wal" ]; then
-	echo "No image was selected"
-	else 
-	wpg -A "$wal" && wpg -s "$wal"
-	rm "$wal""_wal_sample.png"
-	fi
+	wall $wal
 	}	
 	
 main(){
