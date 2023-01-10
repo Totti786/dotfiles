@@ -169,7 +169,7 @@ additionalPrograms(){
 update(){
 	## update dependencies and install new ones
 	installDependencies
-	progressBar "Updating... "
+	#progressBar "Updating... "
 	## check if files exists and if not create a symbolic link
 	if [[ -f "$HOME/.config/wpg/templates/polybar-colors" ]]; then
 		ln -sf ~/.config/polybar/colors.ini ~/.config/wpg/templates/polybar-colors
