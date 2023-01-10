@@ -12,8 +12,7 @@ case $chosen in
 		alacritty --class 'alacritty-float,alacritty-float' --hold -e bash -c 'sudo pacman -Syu && dunstify --appname=pacman "Update Successful" && cat > ~/.cache/pacman-updates'
         ;;
     Update\ Configs)
-		cd $dots
-		alacritty --class 'alacritty-float,alacritty-float' -e sh $HOME/dotfiles/install.sh --update
+		sh $HOME/dotfiles/install.sh --update
         ;;
     Update\ Wallpapers)
 		cd $dots
