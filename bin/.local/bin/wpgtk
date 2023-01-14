@@ -140,7 +140,7 @@ change_colors() {
 	sed -i -e "s/\$background: #.*/\$background: ${BG};/g"	   $eww
 	sed -i -e "s/\$bg-alt: #.*/\$bg-alt: ${bg_light};/g" 	   $eww
 	sed -i -e "s/\$fg: #.*/\$fg: ${FG};/g" 					   $eww
-	sed -i -e "s/\$fg-alt: #.*/\$fg-alt: $white;/g" 	   $eww
+	sed -i -e "s/\$fg-alt: #.*/\$fg-alt: $white;/g"			   $eww
 	sed -i -e "s/\$red: #.*/\$red: $bright_red;/g" 			   $eww
 	sed -i -e "s/\$green: #.*/\$green: $bright_green;/g"	   $eww
 	sed -i -e "s/\$yellow: #.*/\$yellow: $bright_yellow;/g"    $eww
