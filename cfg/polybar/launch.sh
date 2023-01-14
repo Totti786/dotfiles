@@ -9,6 +9,7 @@ INTERFACE="$(ip link | awk '/state UP/ {print $2}' | tr -d :)"
 BATTERY=$(upower -i `upower -e | grep 'BAT'` | grep 'native-path' | cut -d':' -f2 | tr -d '[:blank:]')
 ADAPTER=$(upower -i `upower -e | grep 'AC'` | grep 'native-path' | cut -d':' -f2 | tr -d '[:blank:]')
 current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
+padding="23"
 
 # Fix backlight and network modules
 fix_modules() {
@@ -28,6 +29,8 @@ fix_modules() {
 		sed -i -e 's/override-redirect = .*/override-redirect = true/g' 	"$DIR"/config.ini 	
 		sed -i -e 's/titlex\b/title/g' 										"$DIR"/config.ini
 		sed -i -e 's/wm-restack = .*/wm-restack = bspwm/g' 					"$DIR"/config.ini
+		bspc config -m focused top_padding $padding
+		bspc config -m focused bottom_padding $padding
 	else 
 		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' 	"$DIR"/config.ini
 		sed -i -e 's/override-redirect = .*/override-redirect = false/g'    "$DIR"/config.ini
