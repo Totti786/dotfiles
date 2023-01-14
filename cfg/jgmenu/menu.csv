@@ -23,7 +23,7 @@ Change Font,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//change-fonts
 ^sep()
 Update Dotfiles, sh ~/.scripts/dots-update.sh
 ^sep()
-Change Wallpaper,sh ~/.scripts/wpgtk pick
+Change Wallpaper,sh ~/.local/bin/wpgtk pick
 Appearance Settings,xfce4-appearance-settings
 ^sep()
 Display Settings,xfce4-display-settings
