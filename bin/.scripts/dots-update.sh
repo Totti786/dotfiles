@@ -21,7 +21,7 @@ case $chosen in
         ;;
     Update\ Wallpapers)
 		cd $dots
-		alacritty --class 'alacritty-float,alacritty-float' -e sh $dots/install.sh --wallpapers
+		alacritty --class 'alacritty-float,alacritty-float' -e sh $HOME/dotfiles/install.sh --wallpapers
         ;;
     Exit)
 		exit
