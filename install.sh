@@ -19,7 +19,7 @@ checkChaotic(){
 checkYay(){
 	if ! pacman -Q yay &> /dev/null; then 
 		echo "Installing the AUR helper yay..."
-		sudo pacman -U $DIR/deps/yay.tar.zst
+		sudo pacman -Syu yay
 	else 
 		 echo "The AUR helper yay is already installed"
 	fi
