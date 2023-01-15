@@ -2,13 +2,13 @@
 
 You are expected to have a basic understanding of the unix system. If you are new to linux, please visit [here](https://linuxjourney.com/lesson/the-shell) or look for similar resources online. Do **NOT** proceed
 
-- [Information](#pencil-information)
-- [Specifications](#mag-specifications)
-- [Fonts](#ab-fonts)
-- [Configuration](#gear-configuration)
-- [Dependencies](#pushpin-dependencies)
+- [Information](#information)
+- [Specifications](#specifications)
+- [Fonts](#fonts)
+- [Configuration](#configuration)
+- [Dependencies](#dependencies)
   - [Packages](#packages)
-- [Credits](#sparkles-credits)
+- [Credits](#credits)
 
 ## Information
 
