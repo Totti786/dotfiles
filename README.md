@@ -39,6 +39,7 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | Panel                  | [`polybar`](https://github.com/polybar/polybar)         |
 | System Tray            | [`stalonetray`](https://github.com/kolbusa/stalonetray) |
 | Dock                   | [`plank`](https://github.com/ricotz/plank)              |
+| Widgets                | [`eww`](https://github.com/elkowar/eww)              |
 | Notification Manager   | [`dunst`](https://github.com/dunst-project/dunst)       |
 | Application Launcher   | [`rofi`](https://github.com/davatorium/rofi)            |
 | Application Menu       | [`jgmenu`](https://github.com/johanmalm/jgmenu)         |
