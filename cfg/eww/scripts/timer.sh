@@ -8,7 +8,7 @@ count() {
     while [ "$start" -ge $(date +%s) ] && [ -f $timer ] ; do
         time="$(( $start - `date +%s` ))"
 		echo "$(date -u -d "@$time" +%H:%M:%S)" > $timer
-        sleep 0.1
+        sleep 0.4
     done && rm $timer && dunstify --appname=Timer 'DONE' && mpv ~/.config/eww/scripts/assets/ring.mp3
 }
 
@@ -16,11 +16,11 @@ stop(){
 	now=$(date +%s)sec
 	while [ -f $timer ]; do
 		echo $(TZ=UTC date --date now-$now +%H:%M:%S) > $timer
-		sleep 1
+		sleep 0.4
 	done
 }
 
-stop_watch(){
+stopwatch(){
 	if [ ! -f $timer ]; then
 		touch $timer
 		stop &
@@ -29,7 +29,7 @@ stop_watch(){
 	fi
 }
 
-count_down(){
+countdown(){
 	if [ ! -f $timer ]; then
 		touch $timer
 		count &
@@ -55,17 +55,4 @@ status(){
 }
 
 
-case $1 in
-    toggle)
-        toggle
-        ;;
-    status)
-        status
-        ;;
-    countdown)
-        count_down
-        ;;
-    stopwatch)
-        stop_watch
-        ;;
-esac
+"$@"

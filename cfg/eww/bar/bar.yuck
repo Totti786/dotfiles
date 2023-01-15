@@ -1,33 +1,79 @@
-(defwidget barbottom []
-	(controlsbar)
+(defwidget bottom-left []
+    (box 
+		:orientation "h" 
+		:space-evenly false
+		:valign "center"
+		:halign "start"
+        (eventbox
+            :onhover "${EWW_CMD} update top-panel-music=true"
+            :onhoverlost "${EWW_CMD} update top-panel-music=false"
+            :cursor "pointer"
+            (box 
+                :class "music-bar" 
+                :orientation "h" 
+                :space-evenly false
+                (box 
+                    ;:class "song-cover-bar" 
+                    ;:style "background-image: url('${music-cover}');"
+                )
+                (button 
+                    :class "song-bar" 
+                    {title-artist}
+                    ;; Replace 'music-scroll' with 'title-artist' if your facing performance drop (Replacing with title-artist will not wrap the text)
+                )
+                (revealer
+                    :transition "slideright"
+                    :reveal top-panel-music
+                    :duration "250ms"
+                    (box 
+                        :valign "center"
+                        :orientation "h" 
+                        (button
+                            :class "music-previous-bar"
+                            :onclick "playerctl -p ${players} previous" "玲"
+                        )             
+                        (button
+                            :class "music-play-bar"
+                            :onclick "playerctl -p ${players} play-pause" play-pause
+                        )
+                        (button
+                            :class "music-next-bar"
+                            :onclick "playerctl -p ${players} next" "怜"
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
-(defwidget workspaces []
-  (box :class "workspaces"
-       :orientation "h"
-       :space-evenly true
-       :halign "start"
-       :spacing 10
-    (button :onclick "wmctrl -s 0" 1)
-    (button :onclick "wmctrl -s 1" 2)
-    (button :onclick "wmctrl -s 2" 3)
-    (button :onclick "wmctrl -s 3" 4)
-    (button :onclick "wmctrl -s 4" 5)
-    (button :onclick "wmctrl -s 5" 6)
-    (button :onclick "wmctrl -s 6" 7)
-    (button :onclick "wmctrl -s 7" 8)
-    (button :onclick "wmctrl -s 8" 9))
+(defwidget bottom-center []
+    (eventbox
+        ;:cursor "pointer"
+        :vexpand true 
+        :halign "center"
+		:onhover "eww update work_space_hover=true &"
+		:onhoverlost "eww update work_space_hover=false &"
+		:onscroll "[ {} = down ] && bspc desktop -f next; \
+					[ {} = up ] && bspc desktop -f prev" 
+        (literal
+            :content workspaces
+        )
+    )
 )
 
-(defwidget controlsbar []
+(defwidget bottom-right []
 	(box
+		:class "controlbars"
 		:orientation "h"
-		:space-evenly true
-		:spacing 16
+		:space-evenly false
+		:spacing 10
+		:valign "center"
+		:halign "end"
 		(box
 			:orientation "h"
 			:space-evenly "false"
-			:class "sliderbar activebar"
+			:class "slider active"
 			(box :class "label"	volume_icon)
 			(scale
 				:value volume_value
@@ -40,7 +86,7 @@
 		(box
 			:orientation "h"
 			:space-evenly "false"
-			:class "sliderbar activebar"
+			:class "slider active"
 			(box :class "label"	br_icon)
 			(scale
 				:hexpand true
@@ -54,29 +100,162 @@
 )
 
 
+(defwidget top-right []
+    (box
+        :orientation "h"
+        :space-evenly false
+        :halign "end"
+
+        (eventbox
+            :onclick "$HOME/.config/sweetconfigs-xorg/bin/widgets/control-panel &"
+            :onhover "${EWW_CMD} update control-panel-hover=true"
+            :onhoverlost "${EWW_CMD} update control-panel-hover=false"
+            :cursor "pointer"
+
+            (box
+	    	    :class "actions"
+                :style {control-panel-hover ? "background-color: #22262a; padding: .6em;" : "background-color: #1b1f23"}
+	    	    :orientation "h"
+	    	    :space-evenly false
+                :valign "center"
+
+                (box
+                    :orientation "h"  
+                    :space-evenly false
+                    :spacing 2
+
+                    (eventbox
+                        :onscroll "brightnessctl set {}"
+            
+                        (label 
+                            :class "brightness-icon" 
+                            :tooltip "Brightness: ${br}%"	
+                            :text {br_icon}
+                        )
+                    )
+                )
+                
+                (box
+                    :orientation "h" 	  
+                    :space-evenly "false" 
+                    :spacing 2
+
+                    (eventbox
+                        :onscroll "~/.config/eww/scripts/volume.sh set {}"
+                    
+                        (button
+                            :onclick "pamixer -t"   
+                            :class "volume-icon" 
+		    	    		:tooltip "Volume: ${volume_value}%"
+                            {volume_icon}
+                        )
+                    )
+                )
+                
+                (box
+                    :orientation "h" 	  
+                    :space-evenly false
+                    :spacing 2
+                    
+                    (button
+                        :onclick "$HOME/.config/sweetconfigs-xorg/bin/menu/network &"
+                        :tooltip "${network_ssid}"
+                        :class "network-icon" 
+                        {network_icon}
+                    )
+                )
+            )
+        )
+
+        (box 
+	    	:orientation "h"
+	    	:class "time"
+	    	:space-evenly "false"
+	    	:halign "end"
+            :valign "center"
+
+	    	(label
+	    		:class "time-icon"
+	    		:text ""
+	    	)
+
+            (eventbox
+                :cursor "pointer"
+
+	    	    (button
+	    		    :class "time-text"
+	    		    :tooltip "${date}"
+	    		    :onclick "$HOME/.config/sweetconfigs-xorg/bin/widgets/info-panel &"
+  	    		    {time}
+	    	    )
+            )
+	    )
+
+        (box 
+	    	:orientation "h"
+	    	:space-evenly "false"
+	    	:halign "end"
+            :valign "center"
+
+            (eventbox
+                :cursor "pointer"
+
+                (button
+	    	        :class "tray"
+                    :onclick "$HOME/.config/sweetconfigs-xorg/bin/bar/tray eww &"
+                    {"tray" == "On" ? "" : ""}
+                )
+            )
+        )
+    )
+)
+
+
+(defwidget top-panel []
+    (box
+        :orientation "h"
+        :class "top-panel-window"
+    )
+)
+
+(defwidget bottom-panel []
+    (box
+        :orientation "h"
+        :class "bottom-panel-window"
+        :space-evenly true
+        (bottom-left)
+        (bottom-center)
+        (bottom-right)
+
+    )
+)
+
+
 (defwindow bar1
-           :monitor 0
-           :geometry (geometry :x "0%"
+            :monitor 0
+            :geometry (geometry :x "0%"
                                :y "0px"
                                :width "100%"
                                :height "25px"
                                :anchor "top center")
-           :stacking "bg"
-           :reserve (struts :distance "23px" :side "top")
-           :windowtype "dock"
-           :wm-ignore false
-"fdf"
+			:stacking "bg"
+			:reserve (struts :distance "23px" :side "top")
+			:windowtype "dock"
+			:wm-ignore false
+			(top-panel)
 )
+
 (defwindow bar2
            :monitor 0
            :geometry (geometry :x "0%"
                                :y "0px"
                                :width "100%"
-                               :height "25px"
+                               :height "24px"
                                :anchor "bottom center")
            :stacking "bg"
            :reserve (struts :distance "23px" :side "bottom")
            :windowtype "dock"
            :wm-ignore false
-  (barbottom)
+  (bottom-panel)
 )
+

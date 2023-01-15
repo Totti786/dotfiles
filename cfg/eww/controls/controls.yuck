@@ -12,8 +12,16 @@
 	        :spacing 10
 	        :style "background-image: url('controls/date-cover.jpg')"
 			(overlay
-			(label :text "${time}" :class "time")
-			(label :text "${day} \\n${date} " :class "day" :valign "end" :halign "start")
+				(label 
+					:text "${time}" 
+					:class "time"
+				)
+				(label 
+					:text "${day} \\n${date} "
+					:class "day"
+					:valign "end"
+					:halign "start"
+				)
 			)
 	    )
 	)
@@ -30,8 +38,11 @@
 			:orientation "h"
 			:halign "start"
 			:valign "center"
-			(label :class "button" :text "${battery-icon}")
-	    )   
+			(label 
+				:class "button" 
+				:text "${battery-icon}"
+			)
+	    )
 	    (box
 			:class "useractions"
 	        :space-evenly false
@@ -41,7 +52,8 @@
 	        :spacing 5
 			(button
 				:class "button"
-				:onclick "~/.config/eww/scripts/tools.sh datecover"
+				:onclick "~/.config/eww/scripts/tools.sh"
+				:onrightclick "eww reload"
 				""
 			)
 			(button
@@ -195,12 +207,11 @@
 )
 
 (defwidget sysblock [icon onclick onrightclick active label]
-	(box
+	(eventbox
 		:class "block-container"
-		:orientation "h"
-		:space-evenly true
-		:spacing 1
 		(button
+			:halign "center"
+			:valign "center"
 			:class "block ${active ? 'active' : ''}" 
 			:onclick "${onclick}" 
 			:onrightclick "${onrightclick}"
@@ -235,15 +246,6 @@
 					:text "${active ? 'On' : 'Off'}" 
 					:class "label__status"
 				)
-			)
-			(box
-				:class "chevronbox"
-				:halign "end"
-				:hexpand true
-				:valign "center"
-				:space-evenly false
-				:orientation "h"
-				(button :class "date" "")
 			)
 			)
 		)
@@ -362,6 +364,79 @@
 	)
 )
 
+(defwidget music-new []
+	(revealer
+		:reveal music-panel
+		:transition "slideup"
+	(box
+				:class "song-cover"
+				:orientation "v"
+				:style "background-image: url('${music-cover}')"
+		(box
+			:orientation "v"
+			:space-evenly true
+			:halign "center"
+			:class "music-box"
+			:hexpand "false" 
+			:vexpand "false"
+			(box
+				(label
+						:class "now-playing" 
+						:halign "start" 
+						:text {song-status}
+						:limit-width 40
+				)
+			)
+			(box
+				:space-evenly "true" 
+				:spacing 200
+			:class "music-box"
+				(label
+						:class "song-title" 
+						:halign "start"			
+						:text {song-title}
+						:limit-width 25
+				)
+				(button
+								:class "music-play"
+								:onclick "playerctl -p ${players} play-pause" play-pause
+				)
+			)
+			(box
+					(eventbox
+						(box
+							:class "song-controls"
+							:orientation "h"
+							:halign "center"
+							(button
+								:class "music-controls"
+								:onclick "playerctl -p ${players} previous" "玲"
+							)
+												(label
+						:class "song-position" 
+						:halign "start"			
+						:text song-position
+					)
+							(button
+								:class "music-controls"
+								:onclick "playerctl -p ${players} next" "怜"
+							)
+							(button
+								:class "music-controls"
+								:onclick "playerctl -p ${players} shuffle toggle" "列"
+							)
+							(button
+								:class "music-controls"
+								:onclick "playerctl -p ${players} loop track" 
+								:onrightclick "playerctl -p ${players} loop playlist"
+								:onmiddleclick "playerctl -p ${players} loop none" "ﯩ"
+							)
+						)
+					)
+			)
+		)
+	))
+)
 (defwidget control-panel []
 	(box
 		:class "actions"

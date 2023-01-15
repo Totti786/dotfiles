@@ -103,3 +103,16 @@
 (deflisten music-scroll
     "scripts/scroll scroll-toggle"
 )
+
+
+;; Top Panel
+(deflisten workspaces
+	"scripts/workspaces"
+)
+
+;(defpoll network_speed
+;	:interval "1s" "scripts/network-speed.sh"
+;)
+
+(defvar top-panel-music false)
+(defvar control-panel-hover false)

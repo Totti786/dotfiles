@@ -1,100 +1,133 @@
 /** Main Window ******************************/
 .actions {
-  background-color: $bg;
-  color: $fg;
-  border-radius: 16px;  
-  font-family: JetBrainsMono Nerd Font;
-  padding: 10px 10px 10px 10px;
+	background-color: $bg;
+	color: $fg;
+	border-radius: 16px;  
+	font-family: JetBrainsMono Nerd Font;
+	padding: 10px 10px 10px 10px;
 }
 
 /** Header & Footer *****************************/
 .datebox {
-  .date-cover {
+	.date-cover {
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: center;
 		border-radius: 16px;
 		transition: 0s;
 		padding: 7px;
-	
-    .time {
-      color: $fg-alt;
-      font-size: 105px;
-      padding: 5px 23px 5px 23px;
+		.time {
+			color: $fg-alt;
+			font-size: 105px;
+			padding: 5px 23px 5px 23px;
+		}
+		.day {
+			color: $fg;
+			margin-left: 5px;
+			font-family: 'JetBrainsMono Nerd Font';
+			font-size: 30px;
+		}
+		.date {
+		color: $accent;
+		font-size: 25px;
+		}
 	}
-    .day {
-      color: $fg;
-      margin-left: 5px;
-      font-family: 'JetBrainsMono Nerd Font';
-      font-size: 30px;
-	}
-    .date {
-      color: $accent;
-      font-size: 25px;
-    }
-  }
 }
 .useractions {
-    .button {
-      background-color: $bg;
-      font-family: 'JetBrainsMono Nerd Font';
-      font-size: 16px;
-      padding: 4px 10px 4px 10px;
-      border-radius: 20px;
-      transition: all ease .2s;
-      &:hover { background-color: $green; }
-      
-    }
-    .active{ background-color: $accent; }
-  }
+	.button {
+		background-color: $bg;
+		font-family: 'JetBrainsMono Nerd Font';
+		font-size: 16px;
+		padding: 4px 10px 4px 10px;
+		border-radius: 20px;
+		transition: all ease .2s;
+		&:hover { 
+			background-color: $green; 
+		}
+	}
+	.active{ 
+		background-color: $accent; 
+	}
+	}
 }
 
 /** Main Toggles *******************************/
 .sysbuttonsbox {
-  .block-container {
-    .block {
-      background-color: $bg; 
-      padding: 18px 0px 18px 4px;
-      min-width: 180px;
-      border-radius: 25px;
-      transition: all ease .1s;
-      color: $fg;
-      &:hover { background-color: $blue; }
-      &:active { 
-        background-color: $yellow; 
-        color: $fg;
-      }
-      &.active {
-        color: $bgSecondary;
-        background-color: $accent;
-        &:hover { background-color: $cyan; }
-        &:active {
-        background-color: $bg;
-        }
-      }
-      .iconbox .icon {
-        font-size: 20px;
-        font-family: 'JetBrainsMono Nerd Font';
-        padding: 0px 12px 0px 12px;
-      }
-      .chevronbox {
-        margin-right: 14px;
-        font-family: 'JetBrainsMono Nerd Font';
-        font-size: 18px;
-      }
-    }
-    .labelbox {
-      margin-right: 10px;
-    }
-    .label {
-      font-family: "Product Sans";
-      font-weight: 500;
-      font-size: 14px;
-    }
-    .label__status {
-      font-size: 14px;
-    }
-  }
+	.block-container {
+		background-color: $bg; 
+		border-radius: 25px;
+		transition: all ease .1s;
+		color: $fg;
+		&:hover { 
+			background-color: $blue; 
+		}
+		&:active { 
+			background-color: $yellow; 
+			color: $fg;
+		}
+		.block {
+			background-color: $bg; 
+			padding: 18px 0px 18px 4px;
+			min-width: 180px;
+			border-radius: 25px ;
+			&.active {
+				color: $bgSecondary;
+				background-color: $accent;
+				&:hover {
+					background-color: $cyan;
+				}
+				&:active {
+					background-color: $bg;
+				}
+			}
+			.iconbox .icon {
+				font-size: 20px;
+				font-family: 'JetBrainsMono Nerd Font';
+				padding: 0px 12px 0px 12px;
+			}
+			.chevronbox {
+				margin-right: 14px;
+				font-family: 'JetBrainsMono Nerd Font';
+				font-size: 18px;
+			}
+		}
+		.chevron {
+			background-color: $bg; 
+			padding: 25px 5px 24px 5px;
+			border-radius: 0px 25px 25px 0px;
+			transition: all ease .1s;
+			font-size: 20px;
+			color: $fg;
+			&:hover {
+				background-color: $blue;
+			}
+			&:active { 
+				background-color: $yellow; 
+				color: $fg;
+			}
+			&.active {
+				color: $bgSecondary;
+				background-color: $accent;
+				&:hover {
+					background-color: $cyan;
+				}
+				&:active {
+					background-color: $bg;
+				}
+			}
+		}
+		.labelbox {
+			margin-right: 10px;
+		}
+		.label {
+			font-family: "Product Sans";
+			font-weight: 500;
+			font-size: 14px;
+		}
+		.label__status {
+			font-size: 14px;
+		}
+	}
 }
 
 /** Sliders ******************************/
@@ -108,55 +141,63 @@
 		padding: 10px;
 		border-radius: 20px;
 		transition: all ease .2s;
-		&:hover { background-color: $green; }
-		&:active { background-color: $bg; }
+		&:hover {
+			background-color: $green;
+		}
+		&:active {
+			background-color: $bg;
+		}
 	}
 }
 
 .slider {
-  .label{
-    font-family: 'JetBrainsMono Nerd Font';
-    color: $fg;
-    font-size: 18px;
-    padding-right: 20px;
-  }
-  trough {
-    background-color: $fg;
-    min-height: 6px;
-    border-radius: 100px;
-  }
-  highlight {
-      background-color: $accent;
-      border-radius: 100px;
-  }
+	.label{
+		font-family: 'JetBrainsMono Nerd Font';
+		color: $fg;
+		font-size: 18px;
+		padding-right: 20px;
+	}
+	trough {
+		background-color: $fg;
+		min-height: 6px;
+		border-radius: 100px;
+	}
+	highlight {
+		background-color: $accent;
+		border-radius: 100px;
+	}
 }
 
 .active {
-  trough {
-    slider {
-      background: $accent;
-      border-radius: 100%;
-      margin: -8px;
-    }
-  }
+	trough {
+		slider {
+			background: $accent;
+			border-radius: 100%;
+			margin: -8px;
+		}
+	}
 }
 
 /** Misc ******************************/
 
 .timer_container{
-.timer {
-	border-radius: 10px;
-	padding: 5px;
-	.button {
-		background-color: $bg;
-		font-size: 25px;
+	.timer {
+		border-radius: 10px;
 		padding: 5px;
-		border-radius: 15px;
-		transition: all ease .2s;
-		&:hover { background-color: $green; }
-		&:active { background-color: $bg; }
-	}
-}
+		.button {
+			background-color: $bg;
+			font-size: 25px;
+			padding: 5px;
+			border-radius: 15px;
+			transition: all ease .2s;
+			&:hover {
+				background-color: $green;
+			}
+			&:active {
+				background-color: $bg;
+			}
+		}
+	}	
 }
 
 /*************************************************/

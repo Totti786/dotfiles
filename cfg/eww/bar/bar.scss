@@ -1,29 +1,132 @@
-/** Sliders ******************************/
-.sliderbar {
-  .label{
+.bottom-panel-window {
+    font-weight: bold;
     font-family: 'JetBrainsMono Nerd Font';
-    color: $fg;
-    font-size: 18px;
-    padding-right: 10px;
-  }
- 
-  trough {
-    background-color: $fg;
-    min-height: 6px;
-    border-radius: 100px;
-
-    highlight {
-      background-color: $accent;
-      border-radius: 100px;
+    .music-bar {
+		margin: 0px 10px 0px 10px;
+        .song-cover-bar {
+            background-size: cover;
+            background-position: center;
+            min-height: 10px;
+            min-width: 10px;
+            border-radius: 100%;
+        }
+        .song-bar {
+            color: $fg;
+            font-family: 'JetBrainsMono Nerd Font';
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 1em;
+            transition: 0.5s;
+        }
+        .music-play-bar {
+            color: $purple;
+            font-size: 1.5em;
+            transition: 0.5s;
+            &:hover {
+                color: $blue;
+            }
+        }
+        .music-previous-bar,
+        .music-next-bar {
+            color: $blue;
+            font-size: 1.5em;
+            margin: 0 0.5em;
+            transition: 0.5s;
+        }
+        .music-previous-bar:hover,
+        .music-next-bar:hover,
+        .song-bar:hover {
+            color: $purple;
+        }
     }
-  }
+    .workspaces {    
+        font-size: 12px;
+        font-weight: bold;
+        padding: 0;
+        button {
+            margin: 0px 12px 0px 12px;
+            padding-left: 0px;
+            transition: 0.2s;
+                
+            &.active-occupied,
+            &.active-empty {
+                color: $purple;
+                &:hover {
+                    color: $blue;
+                }
+            }
+            &.inactive-occupied {
+                color: $blue;
+                &:hover {
+                    color: $purple;
+                }
+            }
+            &.inactive-empty {
+                color: $gray;
+                &:hover {
+                    color: $blue;
+                }
+            }
+        }
+    }  
+    .controlbars {
+		padding: 0px 10px 0px 0px;
+		.slider {
+			.label{
+				color: $fg;
+				font-size: 12px;
+				padding-right: 10px;
+			}
+			trough {
+				background-color: $fg;
+				min-height: 3px;
+				min-width: 130px;
+				border-radius: 100px;
+			}
+			highlight {
+				background-color: $accent;
+				border-radius: 100px;
+			}
+			}
+		.active {
+			trough {
+				slider {
+					background: $accent;
+					border-radius: 100%;
+					margin: -4px;
+				}
+			}
+		}
+	}
 }
-.activebar {
-  trough {
-    slider {
-      background: $accent;
-      border-radius: 100%;
-      margin: -8px;
+.top-panel-window {
+    .time {
+        color: $blue;
+        .time-text {
+            font-size: 1.1em;
+            margin: 0em 1em 0em 0em;
+            transition: 0.5s;
+        }
+        .time-icon {
+            font-size: 1.3em;
+            margin: 0em 0.5em 0em 0em;
+        }
+        .time-text:hover {
+            color: $purple;
+        }
     }
-  }
+    .sysmenu {
+        margin: 0em 1.5em 0em 0.5em;
+      
+        button {
+            border-radius: 6px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: $red;
+            transition: 0.5s;
+            &:hover {
+                color: $blue;
+            }
+        }
+    }
 }

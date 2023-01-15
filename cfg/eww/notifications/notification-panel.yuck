@@ -137,51 +137,56 @@
     )
 )
 
-
+(defvar notifications true)
 (defwidget notification-panel []
-    (box 
-        :orientation "h"
-        :space-evenly false
-        :class "notification-panel-window"
-        (box
-            :orientation "v"
-            :space-evenly false
-            (box
-                :orientation "h"
-                :space-evenly true
-                (label 
-                    :text "Notifications"
-                    :class "notification-box-label"
-                    :valign "center"
-                    :halign "start"
-                )
-                (eventbox
-                    :cursor "pointer"
-                 
-                    (button 
-                        :class "notification-box-clear"
-                        :onclick "scripts/logger clear"
-                        :valign "center"
-                        :halign "end" 
-                        "Clear All" 
-                    )
-                )
-            )
-            (literal
-                :content notifications-cards
-            )
-        )
+    (revealer
+		:reveal notifications
+		:transition "slideright"
+	    (box 
+	        :orientation "h"
+	        :space-evenly false
+	        :class "notification-panel-window"
+	        (box
+	            :orientation "v"
+	            :space-evenly false
+	            (box
+	                :orientation "h"
+	                :space-evenly true
+	                (label 
+	                    :text "Notifications"
+	                    :class "notification-box-label"
+	                    :valign "center"
+	                    :halign "start"
+	                )
+	                (eventbox
+	                    :cursor "pointer"
+	                 
+	                    (button 
+	                        :class "notification-box-clear"
+	                        :onclick "scripts/logger clear"
+	                        :valign "center"
+	                        :halign "end" 
+	                        "Clear All" 
+	                    )
+	                )
+	            )
+	            (literal
+	                :content notifications-cards
+	            )
+	        )
+	    )
     )
 )
 
 
-(defwidget info-panel []
+(defwidget panel []
     (box 
         :orientation "h"
         :space-evenly false
         :class "info-panel-window"
 		(notification-panel)
-    )
+		;(control-panel)
+    )  
 )
 
 (defwindow notification-panel
@@ -196,5 +201,5 @@
     :monitor 0
 	:windowtype "dock"
 	:wm-ignore true
-	(info-panel)
+	(panel)
 )
