@@ -22,13 +22,13 @@ jgmenu
 light
 maim
 man
+moreutils
 mpv
 mpv-mpris
 mugshot
-moreutils
 ncdu
-networkmanager-openvpn
 network-manager-applet
+networkmanager-openvpn
 noto-fonts
 noto-fonts-emoji
 obconf
