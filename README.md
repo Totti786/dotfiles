@@ -81,4 +81,5 @@ zathura-pdf-mupdf zenity zsh
 ```
 
 ## Credits
-
+- [beyond9thousand](https://github.com/beyond9thousand) for his Readme and the system tray
+- [adi1090x](https://github.com/adi1090x) for his awesome rofi themes and some other scripts from Archcraft
