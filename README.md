@@ -10,7 +10,7 @@ You are expected to have a basic understanding of the unix system. If you are ne
   - [Packages](#packages)
 - [Credits](#sparkles-credits)
 
-## :pencil: Information
+## Information
 
 My configuration is personalized to utilize keyboard shortcuts as well as mouse actions to keep my workflow meaningful and flexible under varying conditions.
 
@@ -24,7 +24,7 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 
 </details>
 
-## :mag: Specifications
+## Specifications
 
 | Feature                | Package                                                 |
 | --------------------   | ------------------------------------------------------- |
@@ -45,18 +45,17 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 
 
 
-## :ab: Fonts
+## Fonts
 
 | Font List                                                                                                | Use                 |
 | -------------------------------------------------------------------------------------------------------- | ------------------- |
 | [`Noto Sans`](https://fonts.google.com/noto)                                                       	   | GTK and QT Font        |
-| [`Roboto`](https://github.com/googlefonts/roboto)                                                        | Primary Font        |
-| [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)                              | Primary UI Font     |
+| [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)                              | Primary Font     |
 
-## :gear: Configuration
+## Configuration
 
 
-## :pushpin: Dependencies
+## Dependencies
 
 #### Packages
 
@@ -66,18 +65,19 @@ You are also required to have the Chaotic-AUR repo added on your system
 - Using the [yay](https://github.com/Jguer/yay#installation) helper
 
 ```bash
-yay -S --needed \
-alacritty bluez-git brightnessctl bspwm conky copyq dmenu \
-dunst fd feh flameshot geany gpick grep htop i3lock-color \
-imagemagick jgmenu light maim mpv mpv-mpris ncdu \
-networkmanager-openvpn network-manager-applet noto-fonts \
-noto-fonts-emoji obconf openbox pamixer pavucontrol perl plank \
-playerctl polybar qt5ct qt5-styleplugins ranger redshift rofi \
-stalonetray sxhkd sxiv thunar tumbler viewnior wget wmctrl \
-xarchiver xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk \
-xdo xdotool xfce4-power-manager xfce4-settings xorg-xkill xorg-xrdb \
-xorg-xsetroot zathura zathura-cb zathura-pdf-mupdf zsh 
+sudo pacman -Syu --needed \
+acpi alacritty bc bluez-git brightnessctl bspwm conky \
+copyq dmenu dunst fd feh firefox flameshot geany gpick \
+grep htop i3lock-color imagemagick jgmenu light maim man \
+moreutils mpv mpv-mpris mugshot ncdu network-manager-applet \
+networkmanager-openvpn noto-fonts noto-fonts-emoji obconf openbox \
+pavucontrol perl plank playerctl polybar qt5ct qt5-styleplugins \
+ranger redshift rofi stalonetray sxhkd sxiv thunar tumbler viewnior \
+wget wmctrl xarchiver xcape xclip xdg-autostart xdg-user-dirs \
+xdg-user-dirs-gtk xdotool xfce4-power-manager xfce4-settings \
+xorg-xkill xorg-xrdb xorg-xsetroot zathura zathura-cb \
+zathura-pdf-mupdf zenity zsh
 ```
 
-## :sparkles: Credits
+## Credits
 
