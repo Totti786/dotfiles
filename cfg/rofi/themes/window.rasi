@@ -39,7 +39,7 @@ listview {
 }
 
 mainbox {
-    background-color:               @background;
+    background-color:               transparent;
     children:                       [ listview ];
     spacing:                       	10px;
     padding:                        10px;
