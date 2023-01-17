@@ -62,7 +62,7 @@
                 }
             }
             &.inactive-empty {
-                color: $gray;
+                color: $fg;
                 &:hover {
                     color: $blue;
                 }
@@ -75,7 +75,7 @@
 			.label{
 				color: $fg;
 				font-size: 12px;
-				padding-right: 10px;
+				padding-right: 5px;
 			}
 			trough {
 				background-color: $fg;
@@ -91,7 +91,7 @@
 		.active {
 			trough {
 				slider {
-					background: $accent;
+					background: $fg;
 					border-radius: 100%;
 					margin: -4px;
 				}
