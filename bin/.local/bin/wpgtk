@@ -250,6 +250,7 @@ main(){
 	papirus-folder.sh --color ${red:1} &
 	#sh ~/.config/polybar/launch.sh &> /dev/null
 	sh ~/.config/bspwm/bsp-border &
+	sh conky.sh restart
 	check spicetify -q update &
 	check razer-cli -a & exit
 	#sh ~/.scripts/phoneWal.sh &
