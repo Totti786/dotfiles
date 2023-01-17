@@ -197,8 +197,11 @@ copyWal(){
 restart(){
 	if [[ $(pidof $1) ]]; then
 		killall -q $1 &&
-		$1 $2 $3
+		$1 $2 $3 &
 		echo "$1 restarted"
+	else 
+		$1 $2 $3 &
+		echo "$1 is running"
 	fi
 	}
 	
@@ -241,7 +244,8 @@ pick(){
 	
 main(){
 	change_colors
-	restart dunst &
+	restart dunst
+	restart copyq --start-server
 	copyWal
 	papirus-folder.sh --color ${red:1} &
 	#sh ~/.config/polybar/launch.sh &> /dev/null
