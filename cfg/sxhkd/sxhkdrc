@@ -76,11 +76,11 @@ Print
 	takeshot --now
 	
 # Take screenshot using flameshot
-alt + Print	
+alt + Print
 	flameshot gui
 
 # Take screenshot of an area
-shift + Print	
+shift + Print
 	takeshot --area
 
 # Take screenshot of active window
