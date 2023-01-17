@@ -20,11 +20,25 @@ changefont(){
 	fi
 	}
 
+toggle(){
+	if [ -z "$(pgrep conky)" ]; then 
+		changefont
+		conky -c $conkyConfig &> /dev/null
+		xdo lower -N Conky
+	else
+		pkill conky
+	fi
+	}
 
-if [ -z "$(pgrep conky)" ]; then 
+restart(){
+	pkill conky &&
 	changefont
 	conky -c $conkyConfig &> /dev/null
 	xdo lower -N Conky
+	}
+		
+if [[ $1 == "restart" ]]; then 
+	restart
 else
-	pkill conky
+	toggle
 fi
