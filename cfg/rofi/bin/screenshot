@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 DIR="$HOME/.config"
-rofi_command="rofi -theme $DIR/rofi/themes/screenshot.rasi"
+rofi_command="rofi -theme $DIR/rofi/themes/power-screen.rasi"
 
 time=`date +%Y-%m-%d-%H-%M-%S`
-geometry=`xrandr | head -n1 | cut -d',' -f2 | tr -d '[:blank:],current'`
+geometry=`xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2`
 dir="`xdg-user-dir PICTURES`/Screenshots"
 file="Screenshot_${time}_${geometry}.png"
 

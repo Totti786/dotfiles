@@ -4,7 +4,7 @@
 ## The logout option only works with Openbox, i3 and BSPWM
 
 DIR="$HOME/.config"
-rofi_command="rofi -theme $DIR/rofi/themes/powermenu.rasi"
+rofi_command="rofi -theme $DIR/rofi/themes/power-screen.rasi"
 #uptime=$(uptime -p | sed -e 's/up //g')
 
 # Options

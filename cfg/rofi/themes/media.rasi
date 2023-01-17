@@ -12,23 +12,8 @@ configuration {
     show-icons:                 false;
 }
 
-/*****----- Global Properties -----*****/
-* {
-    font:                        "JetBrains Mono Nerd Font 10";
-    background:                  #131D1F;
-    background-alt:              #183A43;
-    foreground:                  #FFFFFF;
-    selected:                    #649094;
-    active:                      #E9CC9D;
-    urgent:                      #FEA861;
-
-}
-
 @import "colors.rasi"
 @import "fonts.rasi"
-/*
-USE_ICON=YES
-*/
 
 /*****----- Main Window -----*****/
 window {
@@ -146,7 +131,7 @@ element-text {
 
 element normal.normal,
 element alternate.normal {
-    background-color:            var(background-alt);
+    background-color:            @background;
     text-color:                  var(foreground);
 }
 element normal.urgent,

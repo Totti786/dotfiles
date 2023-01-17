@@ -23,7 +23,7 @@ window {
     border:                  		0px;
     border-color:                  	@selected;
     border-radius:                  12px;
-    width:                          250px;
+    width:                          200px;
     height:                         330px;
     location:                       northwest;
     anchor:                         west;
@@ -35,7 +35,7 @@ prompt {
     enabled: 						true;
 	margin: 						0px 0px 0px 8px;
     padding:    					6px 0px 6px 0px;
-	background-color: 				@background;
+	background-color: 				transparent;
 	text-color: 					@foreground;
     border:                  		0px 0px 0px 0px;
     border-color:                  	@selected;
@@ -47,14 +47,14 @@ textbox-prompt-colon {
 	str: 							"";
     border-radius:                  10px;
     background-color:               @highlight;
-    text-color:                     @background;
+    text-color:                     @background-alt;
     padding:    					6px 10px 6px 10px;
 }
 
 inputbar {
 	children: 						[textbox-prompt-colon, prompt];
     spacing:                        0;
-    background-color:               @background;
+    background-color:               transparent;
     text-color:                     @foreground;
     border:                  		0px;
     border-radius:                  0px;
@@ -73,7 +73,7 @@ case-indicator {
 
 
 listview {
-    background-color:               @background;
+    background-color:               transparent;
     columns:                        1;
     lines:							8;
     spacing:                        4px;
@@ -83,14 +83,14 @@ listview {
 }
 
 mainbox {
-    background-color:               @background;
+    background-color:               transparent;
     children:                       [ inputbar, listview ];
     spacing:                       	10px;
     padding:                        20px;
 }
 
 element {
-    background-color:               @background;
+    background-color:               transparent;
     text-color:                     @foreground;
     orientation:                    horizontal;
     border-radius:                  0px;
@@ -117,7 +117,7 @@ element-text {
 
 element selected {
     background-color:               @selected;
-    text-color:                     @background;
+    text-color:                     @background-alt;
     border:                  		0px;
     border-radius:                  10px;
     border-color:                  	@selected;

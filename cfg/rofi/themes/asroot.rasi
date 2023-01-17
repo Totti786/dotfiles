@@ -33,7 +33,7 @@ prompt {
     enabled: 						true;
 	margin: 						0px 0px 0px 8px;
     padding:    					6px 0px 6px 0px;
-	background-color: 				@background;
+	background-color: 				transparent;
 	text-color: 					@foreground;
     border:                  		0px 0px 0px 0px;
     border-color:                  	@selected;
@@ -45,14 +45,14 @@ textbox-prompt-colon {
 	str: 							"";
     border-radius:                  10px;
     background-color:               @highlight;
-    text-color:                     @background;
+    text-color:                     @background-alt;
     padding:    					6px 10px 6px 10px;
 }
 
 entry {
-    background-color:               @background;
-    text-color:                     @background;
-    placeholder-color:              @background;
+    background-color:               transparent;
+    text-color:                     @background-alt;
+    placeholder-color:              transparent;
     placeholder:                    "";
     expand:                         true;
     horizontal-align:               0;
@@ -63,7 +63,7 @@ entry {
 inputbar {
 	children: 						[ textbox-prompt-colon, prompt ];
     spacing:                        0;
-    background-color:               @background;
+    background-color:               transparent;
     text-color:                     @foreground;
     border:                  		0px;
     border-radius:                  0px;
@@ -75,14 +75,14 @@ inputbar {
 }
 
 case-indicator {
-    background-color:               @background;
+    background-color:               transparent;
     text-color:                     @foreground;
     spacing:                        0;
 }
 
 
 listview {
-    background-color:               @background;
+    background-color:               transparent;
     columns:                        1;
     lines:							5;
     spacing:                        4px;
@@ -92,14 +92,14 @@ listview {
 }
 
 mainbox {
-    background-color:               @background;
+    background-color:               transparent;
     children:                       [ inputbar, listview ];
     spacing:                       	10px;
     padding:                        20px;
 }
 
 element {
-    background-color:               @background;
+    background-color:               transparent;
     text-color:                     @foreground;
     orientation:                    horizontal;
     border-radius:                  0px;
@@ -126,7 +126,7 @@ element-text {
 
 element selected {
     background-color:               @selected;
-    text-color:                     @background;
+    text-color:                     @background-alt;
     border:                  		0px;
     border-radius:                  10px;
     border-color:                  	@selected;
@@ -135,7 +135,7 @@ element selected {
 element.active,
 element.selected.urgent {
   background-color: @on;
-  text-color: @background;
+  text-color: @background-alt;
   border-color: @on;
 }
 
@@ -146,7 +146,7 @@ element.selected.urgent {
 element.urgent,
 element.selected.active {
   background-color: @off;
-  text-color: @background;
+  text-color: @background-alt;
   border-color: @off;
 }
 

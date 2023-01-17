@@ -11,15 +11,16 @@
 configuration {
     show-icons:                 false;
     hover-select: true;
-    hover-select: true;
-	me-select-entry: "";
-	me-accept-entry: [ MousePrimary, MouseSecondary, MouseDPrimary ];
+
 }
 
 /*****----- Global Properties -----*****/
 @import                          "colors.rasi"
 @import                          "fonts.rasi"
 
+/*
+USE_BUTTONS=YES
+*/
 
 /*****----- Main Window -----*****/
 window {
@@ -55,6 +56,8 @@ mainbox {
     children:                    [ "listview" ];
 }
 
+
+
 /*****----- Listview -----*****/
 listview {
     enabled:                     true;
@@ -87,7 +90,7 @@ element {
     border:                      0px solid;
     border-radius:               100%;
     border-color:                @selected;
-    background-color:            @background-alt;
+    background-color:            @background;
     text-color:                  @foreground;
 }
 element-text {
@@ -99,5 +102,5 @@ element-text {
 }
 element selected.normal {
     background-color:            var(selected);
-    text-color:                  var(background);
+    text-color:                  @background-alt;
 }

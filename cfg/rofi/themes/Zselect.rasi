@@ -29,7 +29,7 @@ window {
 }
 
 listview {
-    background-color:               @background;
+    background-color:               transparent;
     columns:                        1;
     lines:							5;
     spacing:                        4px;
@@ -39,7 +39,7 @@ listview {
 }
 
 mainbox {
-    background-color:               @background;
+    background-color:               transparent;
     children:                       [ listview ];
     spacing:                       	10px;
     padding:                        10px;
@@ -53,7 +53,7 @@ imagebox {
 }
 
 element {
-    background-color:               @background;
+    background-color:               transparent;
     text-color:                     @foreground;
     orientation:                    horizontal;
     border-radius:                  10px;
@@ -81,7 +81,7 @@ element-text {
 
 element selected {
     background-color:               @selected;
-    text-color:                     @background;
+    text-color:                     @background-alt;
     border:                  		0px;
     border-radius:                  10px;
     border-color:                  	@selected;
@@ -90,7 +90,7 @@ element selected {
 element.active,
 element.selected.urgent {
     background-color:               @on;
-    text-color:                     @background;
+    text-color:                     @background-alt;
     border-color:                   @on;
     border-radius:                  10px;
 
