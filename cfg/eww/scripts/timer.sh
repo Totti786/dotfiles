@@ -9,7 +9,7 @@ count() {
         time="$(( $start - `date +%s` ))"
 		echo "$(date -u -d "@$time" +%H:%M:%S)" > $timer
         sleep 0.4
-    done && rm $timer && dunstify --appname=Timer 'DONE' && mpv ~/.config/eww/scripts/assets/ring.mp3
+    done && rm $timer && dunstify --appname=Timer 'DONE!' && paplay ~/.config/eww/scripts/assets/ring.mp3
 }
 
 stop(){

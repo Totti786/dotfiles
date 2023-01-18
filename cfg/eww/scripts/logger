@@ -67,7 +67,7 @@ create_cache () {
 }
 
 make_literal () {
-    caches="$(tr '\n' ' ' < "$cache")"
+    caches="$(cat "$cache" | head -n50 | tr '\n' ' ')"
 
     if [[ "$caches" == "" ]]; then
         echo '(box :class "notifications-empty-box" :height 550 :orientation "v" :space-evenly "false" (image :class "notifications-empty-banner" :valign "end" :vexpand true :path "assets/notifications/notifications-off.svg" :image-width 300 :image-height 200) (label :vexpand true :valign "start" :wrap true :class "notifications-empty-label" :text "No Notifications"))'
