@@ -75,6 +75,7 @@ change_colors() {
 	sed -i -e "s/string_green=#.*/string_green=${bright_green}/g" 		$geany
 	sed -i -e "s/margin_bg_grey=#.*/margin_bg_grey=${black}/g"			$geany
 	sed -i -e "s/error_red=#.*/error_red=${bright_magenta}/g" 			$geany
+	sed -i -e "s/selection_blue=#.*/selection_blue=${white}/g"			$geany
 	
 	# copyq 
 	sed -i -e "s/bg=#.*/bg=${BG}/g" 				$copyq
