@@ -186,6 +186,6 @@ textbox {
 error-message {
     padding:                     15px;
     border-radius:               20px;
-    background-color:            @background;
+    background-color:            transparent;
     text-color:                  @foreground;
 }
