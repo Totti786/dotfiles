@@ -51,7 +51,9 @@ icon() {
             echo "" "${level}%" "($rem)"
         fi
     else
-        if [[ "$level" -ge "95" ]]; then
+        if [[ "$level" == "100" ]]; then
+            echo "" "${level}%"
+            elif [[ "$level" -ge "95" ]]; then
             echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "90" ]]; then
             echo "" "${level}%" "($rem)"
