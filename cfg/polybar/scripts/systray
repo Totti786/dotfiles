@@ -1,6 +1,8 @@
 #!/bin/bash
 
 hidden=/tmp/syshide.lock
+res="`xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1`"
+
 
 if [[ $(pidof stalonetray) ]]; then
 	if [[ ! -e $hidden ]]; then
@@ -14,5 +16,10 @@ if [[ $(pidof stalonetray) ]]; then
 		rm "$hidden"
 	fi
 else
-	stalonetray &
+	if [[ $res -gt "1920" ]]; then
+		new="$(( $res - 1920 + 4 ))"
+		stalonetray --geometry 1x1-$new+27
+	else
+		stalonetray &
+	fi
 fi
