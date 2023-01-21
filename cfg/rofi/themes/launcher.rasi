@@ -178,7 +178,7 @@ message {
 textbox {
     padding:                     15px;
     border-radius:               10px;
-    background-color:            @background-alt;
+    background-color:            transparent;
     text-color:                  @foreground;
     vertical-align:              0.5;
     horizontal-align:            0.0;
