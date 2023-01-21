@@ -3,7 +3,6 @@
 hidden=/tmp/syshide.lock
 res="`xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1`"
 
-
 if [[ $(pidof stalonetray) ]]; then
 	if [[ ! -e $hidden ]]; then
 		polybar-msg action "#systray.hook.1"
