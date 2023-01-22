@@ -5,7 +5,6 @@
 		background-position: center;
 		border-radius: 20px;
 		transition: 0s;
-
 	}
 	.song {
 		border-radius: 20px;
@@ -22,17 +21,21 @@
 			font-weight: bolder;
 			color: $fg;
 		}
-		.song-artist,
+		.song-artist{
+			font-weight: bold;
+			color: $purple;
+		}
 		.song-position {
 			font-weight: bold;
 			color: $purple;
+			padding: 0px 0px 10px 0px;
 		}
 		.song-controls {
 			button {
 				font-size: 25px;
 				font-weight: bold;
 				margin: 0 0.32em 0.2em;
-				padding: 18px;
+				padding: 0px 18px 10px 18px;
 				transition: 0.2s;
 				&:hover {
 					color: $blue;

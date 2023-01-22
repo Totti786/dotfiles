@@ -9,12 +9,20 @@ active_players="$(playerctl -l | head -n 1)"
 
 listen(){
 	while true ; do 
+		#id=$(wmctrl -l | awk '{print $1}' | xprop -root | grep _NET_ACTIVE_WINDOW | head -1 | awk '{print $5}' | sed 's/,//' | sed 's/^0x/0x0/')
+		#check=$(echo $(xwininfo -all -id $id | grep Fullscreen))
+		#if [[ $check == "Fullscreen" ]]; then
+			#xdo lower -N eww-controls
+		#else
+			#xdo raise -N eww-controls
+		#fi 
+	
 		if [[ ! -z "$(playerctl -l | head -n 1)" ]] &> /dev/null; then
 			eww update music-panel=true
 		else 
 			eww update music-panel=false
 		fi
-		sleep 2
+		sleep 0.5
 	done 
 }
 

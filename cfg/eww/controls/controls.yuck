@@ -125,8 +125,8 @@
 					:space-evenly true
 		        (sysblock
 					:icon "${record_status == 'on' ? '' : '逸'}"
-					:onclick "~/.config/openbox/pipemenus/record --toggle"
-					:onrightclick "~/.config/openbox/pipemenus/record --toggle"
+					:onclick " "
+					:onrightclick " "
 					:active "${record_status == 'on' ? true : false}"
 					:label "Recorder"
 		        )
@@ -287,13 +287,14 @@
 	)
 )
 
+(defvar music-expand false)
 (defwidget music []
 	(revealer
 		:reveal music-panel
 		:transition "slideup"
-		(box
-			:orientation "h"
-			:space-evenly true
+		(eventbox
+			:onhover "${EWW_CMD} update music-expand=true"
+			:onhoverlost "${EWW_CMD} update music-expand=false"
 			:halign "center"
 			:class "music-box"
 			(box
@@ -329,6 +330,9 @@
 						:halign "start"			
 						:text song-position
 					)
+					(revealer
+						:reveal music-expand
+						:transition "slideup"
 					(eventbox
 						(box
 							:class "song-controls"
@@ -357,6 +361,7 @@
 								:onclick "playerctl -p ${players} shuffle toggle" "列"
 							)
 						)
+					)
 					)
 				)
 			)
