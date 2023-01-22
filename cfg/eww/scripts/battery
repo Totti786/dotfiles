@@ -79,9 +79,44 @@ icon() {
     fi
 }
 
+
+comp(){
+if [[ `pgrep picom` ]]; then 
+	pkill picom 
+	brightnessctl set 50%
+else
+	picom -b
+	brightnessctl set 100%
+fi
+}
+
+toggle(){
+	lock=/tmp/battery-saver.lock
+	if [[ -e $lock ]]; then 
+		comp
+		rm $lock
+	else
+		comp
+		touch $lock
+	fi
+	
+	}
+status(){
+	if [[ -e $lock ]]; then 
+		echo "On"
+	else
+		echo "Off"
+	fi
+	}
+
+
 if [[ $1 = "-l" ]]; then
     echo "${level}%"
-elif [[ $1 = "-i" ]]; then
+elif [[ $1 = "status" ]]; then
+	status
+elif [[ $1 = "toggle" ]]; then
+	toggle
+elif [[ $1 = "icon" ]]; then
 	if [[ -z "$(acpi -V | grep -i Battery)" ]]; then 
 		echo "" "AC"
 	else

@@ -50,6 +50,11 @@
 	        :halign "end"
 	        :valign "start"
 	        :spacing 5
+	        (button
+				:class "button ${ battery-saver == 'On' ? 'active' : ''}"
+				:onclick "~/.config/eww/scripts/battery toggle"
+				""
+			)
 			(button
 				:class "button"
 				:onclick "~/.config/eww/scripts/tools.sh"

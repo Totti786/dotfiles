@@ -14,7 +14,10 @@
 )
 
 (defpoll battery-icon
-	:interval "2s" "scripts/battery -i"
+	:interval "2s" "scripts/battery icon"
+)
+(defpoll battery-saver
+	:interval "2s" "scripts/battery status"
 )
 
 ;; Network
