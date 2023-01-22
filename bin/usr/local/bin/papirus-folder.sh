@@ -54,7 +54,7 @@ dark_stroke_fallback="$(darker "$ICONS_COLOR" 56)"
 : "${ICONS_SYMBOLIC_PANEL:=${HDR_FG:-}}"
 
 #echo ":: Replacing accent colors..."
-for size in 22x22 24x24 32x32 48x48 64x64; do
+for size in 24x24 32x32 48x48 64x64; do
 	for icon_path in \
 		"$dir/Papirus/$size/places/folder-custom"{-*,}.svg \
 		"$dir/Papirus/$size/places/user-custom"{-*,}.svg
