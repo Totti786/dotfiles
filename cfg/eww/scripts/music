@@ -9,7 +9,7 @@ cache="$HOME/.cache/eww/music"
 
 [ ! -d $cache ] && mkdir $cache
 
-status_icon () {
+status_icon(){
     if [ "$player_status" = "Playing" ]; then
 	    echo ""
     elif [ "$player_status" = "Paused" ]; then
@@ -17,6 +17,13 @@ status_icon () {
     else
 	    echo ""
     fi
+}
+
+status_shuffle(){
+	echo "`playerctl -p ${players} shuffle`"
+}
+status_loop(){
+	echo "`playerctl -p ${players} loop`"
 }
 
 status_value () {
@@ -75,7 +82,11 @@ position () {
 	#duration=$(playerctl -p $players metadata mpris:length | sed 's/.\{6\}$//')
 	#percent="$(( $position * 100 / $duration ))"
 	#echo $percent
-    playerctl metadata --format "{{duration(position) }} "/" {{ duration(mpris:length)}}"
+	if [[ -z `playerctl metadata --format "{{ duration(mpris:length)}}"` ]]; then
+		echo "" 
+	else
+		playerctl metadata --format "{{duration(position) }} "/" {{ duration(mpris:length)}}"
+    fi
 }
 
 case $1 in
@@ -102,5 +113,11 @@ case $1 in
     ;;
     position)
         position || echo "--:-- / --:-- "
+    ;;
+    shuffle)
+        status_shuffle
+    ;;
+    loop)
+        status_loop
     ;;
 esac

@@ -1,8 +1,9 @@
 #!/bin/bash
 
+#--Brightness---------#
 # @requires: brightnessctl
 
-percentage () {
+br_percentage() {
   local val=$(echo $1 | tr '%' ' ' | awk '{print $1}')
   local icon1=$2
   local icon2=$3
@@ -19,28 +20,28 @@ percentage () {
   fi
 }
 
-get_brightness () {
+br_get() {
   (( br = $(brightnessctl get) * 100 / $(brightnessctl max) ))
   echo $br
 }
 
-get_percent () {
-  echo $(get_brightness)%
+br_percent() {
+  echo $(br_get)%
 }
 
-get_icon () {
-  local br=$(get_percent)
-  echo $(percentage "$br" "" "" "" "")
+br_icon () {
+  local br=$(br_get)
+  echo $(br_percentage "$br" "" "" "" "")
 }
 
 case $1 in
     icon)
-        get_icon
+        br_icon
         ;;
     percent)
-        get_percent
+        br_percent
         ;;
 	br)
-		get_brightness
+		br_get
         ;;
 esac

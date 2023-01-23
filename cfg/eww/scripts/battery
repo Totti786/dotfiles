@@ -30,11 +30,11 @@ else
     fi
 fi
 
-icon() {
+level() {
     if [[ "$bat" == *"until"* ]]; then
         
         if [[ "$level" -ge "95" ]]; then
-            echo "" "${level}%" "($rem)"
+            echo "" "${level}%" 
             elif [[ "$level" -ge "90" ]]; then
             echo "" "${level}%" "($rem)"
             elif [[ "$level" -ge "80" ]]; then
@@ -79,7 +79,7 @@ icon() {
     fi
 }
 
-
+lock=/tmp/battery-saver.lock
 comp(){
 if [[ `pgrep picom` ]]; then 
 	pkill picom 
@@ -91,7 +91,6 @@ fi
 }
 
 toggle(){
-	lock=/tmp/battery-saver.lock
 	if [[ -e $lock ]]; then 
 		comp
 		rm $lock
@@ -110,16 +109,16 @@ status(){
 	}
 
 
-if [[ $1 = "-l" ]]; then
-    echo "${level}%"
+if [[ $1 = "rem" ]]; then
+    echo "($rem)"
 elif [[ $1 = "status" ]]; then
 	status
 elif [[ $1 = "toggle" ]]; then
 	toggle
-elif [[ $1 = "icon" ]]; then
+elif [[ $1 = "level" ]]; then
 	if [[ -z "$(acpi -V | grep -i Battery)" ]]; then 
 		echo "" "AC"
 	else
-		icon 
+		level 
 	fi
 fi

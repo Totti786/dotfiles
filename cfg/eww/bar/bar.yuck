@@ -100,116 +100,43 @@
 	)
 )
 
+(defwidget top-left []
+    (box
+		:class "top-panel"
+        :orientation "h"
+        :space-evenly true
+        :halign "end"
+	)
+)
+(defwidget top-center []
+  (box
+		:class "top-panel"
+        :orientation "h"
+        :space-evenly true
+        :halign "center"
+		(label 
+			:class "modules"
+			:text "${network_speed}" 
+        )
+	)
+)
+
 
 (defwidget top-right []
     (box
         :orientation "h"
         :space-evenly false
         :halign "end"
-
         (eventbox
             :onclick "$HOME/.config/sweetconfigs-xorg/bin/widgets/control-panel &"
             :onhover "${EWW_CMD} update control-panel-hover=true"
             :onhoverlost "${EWW_CMD} update control-panel-hover=false"
             :cursor "pointer"
-
-            (box
-	    	    :class "actions"
-                :style {control-panel-hover ? "background-color: #22262a; padding: .6em;" : "background-color: #1b1f23"}
-	    	    :orientation "h"
-	    	    :space-evenly false
-                :valign "center"
-
-                (box
-                    :orientation "h"  
-                    :space-evenly false
-                    :spacing 2
-
-                    (eventbox
-                        :onscroll "brightnessctl set {}"
-            
-                        (label 
-                            :class "brightness-icon" 
-                            :tooltip "Brightness: ${br}%"	
-                            :text {br_icon}
-                        )
-                    )
-                )
-                
-                (box
-                    :orientation "h" 	  
-                    :space-evenly "false" 
-                    :spacing 2
-
-                    (eventbox
-                        :onscroll "~/.config/eww/scripts/volume.sh set {}"
-                    
-                        (button
-                            :onclick "pamixer -t"   
-                            :class "volume-icon" 
-		    	    		:tooltip "Volume: ${volume_value}%"
-                            {volume_icon}
-                        )
-                    )
-                )
-                
-                (box
-                    :orientation "h" 	  
-                    :space-evenly false
-                    :spacing 2
-                    
-                    (button
-                        :onclick "$HOME/.config/sweetconfigs-xorg/bin/menu/network &"
-                        :tooltip "${network_ssid}"
-                        :class "network-icon" 
-                        {network_icon}
-                    )
-                )
-            )
-        )
-
-        (box 
-	    	:orientation "h"
-	    	:class "time"
-	    	:space-evenly "false"
-	    	:halign "end"
-            :valign "center"
-
-	    	(label
-	    		:class "time-icon"
-	    		:text ""
-	    	)
-
-            (eventbox
-                :cursor "pointer"
-
-	    	    (button
-	    		    :class "time-text"
-	    		    :tooltip "${date}"
-	    		    :onclick "$HOME/.config/sweetconfigs-xorg/bin/widgets/info-panel &"
-  	    		    {time}
-	    	    )
-            )
-	    )
-
-        (box 
-	    	:orientation "h"
-	    	:space-evenly "false"
-	    	:halign "end"
-            :valign "center"
-
-            (eventbox
-                :cursor "pointer"
-
-                (button
-	    	        :class "tray"
-                    :onclick "$HOME/.config/sweetconfigs-xorg/bin/bar/tray eww &"
-                    {"tray" == "On" ? "" : ""}
-                )
-            )
         )
     )
 )
+
+
 
 
 (defwidget top-panel []

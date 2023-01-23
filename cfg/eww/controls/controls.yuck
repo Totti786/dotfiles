@@ -17,7 +17,7 @@
 					:class "time"
 				)
 				(label 
-					:text "${day} \\n${date} "
+					:text "${day}\\n${date} "
 					:class "day"
 					:valign "end"
 					:halign "start"
@@ -27,22 +27,27 @@
 	)
 )
 
+(defvar battery true)
 (defwidget footer []
 	(box
 		:class "datebox"
 		:orientation "h"
 		:space-evenly true
-	    (box
+	    (eventbox
+			:onhover "${EWW_CMD} update battery=true"
+			:onhoverlost "${EWW_CMD} update battery=false"
+			:onclick "~/.config/eww/scripts/battery toggle"
 			:class "useractions"
-			:space-evenly false
-			:orientation "h"
 			:halign "start"
 			:valign "center"
-			(label 
-				:class "button" 
-				:text "${battery-icon}"
+			(box
+				(label 
+					:class "button ${ battery_saver == 'On' ? 'active' : ''}"
+					:text "${battery_icon}"
+				)
 			)
 	    )
+	
 	    (box
 			:class "useractions"
 	        :space-evenly false
@@ -50,11 +55,6 @@
 	        :halign "end"
 	        :valign "start"
 	        :spacing 5
-	        (button
-				:class "button ${ battery-saver == 'On' ? 'active' : ''}"
-				:onclick "~/.config/eww/scripts/battery toggle"
-				""
-			)
 			(button
 				:class "button"
 				:onclick "~/.config/eww/scripts/tools.sh"
@@ -91,7 +91,7 @@
 			:space-evenly true
 			:spacing 8
 			(box
-				:class "firstrow"
+				:class "block-container"
 				:orientation "h"
 				:space-evenly true
 				:spacing 8
@@ -121,20 +121,20 @@
 			    )
 			)
 		    (box
-				:class "secondrow"
+				:class "block-container"
 				:orientation "h"
 				:space-evenly true
 				(box
 					:halign "start"
 					:orientation "h"
 					:space-evenly true
-		        (sysblock
-					:icon "${record_status == 'on' ? '' : '逸'}"
-					:onclick " "
-					:onrightclick " "
-					:active "${record_status == 'on' ? true : false}"
-					:label "Recorder"
-		        )
+			        (sysblock
+						:icon "${record_status == 'on' ? '' : '逸'}"
+						:onclick " "
+						:onrightclick " "
+						:active "${record_status == 'on' ? true : false}"
+						:label "Recorder"
+			        )
 				)
 				(box
 					:halign "end"
@@ -150,7 +150,7 @@
 				)
 		    )
 			(box
-				:class "thirdrow"
+				:class "block-container"
 				:orientation "h"
 				:space-evenly true
 				(box
@@ -225,33 +225,33 @@
 				:spacing 1
 				:valign "start"
 				:space-evenly false
-			(box
-				:class "iconbox"
-				:halign "start"
-				:valign "center"
-				:space-evenly true
-				:orientation "h"
-				(label
-					:text "${icon}" 
-					:class "icon"
+				(box
+					:class "iconbox"
+					:halign "start"
+					:valign "center"
+					:space-evenly true
+					:orientation "h"
+					(label
+						:text "${icon}" 
+						:class "icon"
+					)
 				)
-			)
-			(box
-				:class "labelbox"
-				:halign "start"
-				:valign "start"
-				:orientation "v"
-				(label
-					:halign "center" 
-					:text "${label}" 
-					:class "label"
+				(box
+					:class "labelbox"
+					:halign "start"
+					:valign "start"
+					:orientation "v"
+					(label
+						:halign "center" 
+						:text "${label}" 
+						:class "label"
+					)
+					(label
+						:halign "start" 
+						:text "${active ? 'On' : 'Off'}" 
+						:class "label__status"
+					)
 				)
-				(label
-					:halign "start" 
-					:text "${active ? 'On' : 'Off'}" 
-					:class "label__status"
-				)
-			)
 			)
 		)
 	)
@@ -338,35 +338,35 @@
 					(revealer
 						:reveal music-expand
 						:transition "slideup"
-					(eventbox
-						(box
-							:class "song-controls"
-							:orientation "h"
-							:halign "center"
-							(button
-								:class "music-controls"
-								:onclick "playerctl -p ${players} loop track" 
-								:onrightclick "playerctl -p ${players} loop playlist"
-								:onmiddleclick "playerctl -p ${players} loop none" "ﯩ"
-							)
-							(button
-								:class "music-controls"
-								:onclick "playerctl -p ${players} previous" "玲"
-							)
-							(button
-								:class "music-play"
-								:onclick "playerctl -p ${players} play-pause" play-pause
-							)
-							(button
-								:class "music-controls"
-								:onclick "playerctl -p ${players} next" "怜"
-							)
-							(button
-								:class "music-controls"
-								:onclick "playerctl -p ${players} shuffle toggle" "列"
+						(eventbox
+							(box
+								:class "song-controls"
+								:orientation "h"
+								:halign "center"
+								(button
+									:class "music-controls ${play_loop != 'None' ? 'active' : ''}"
+									:onclick "playerctl -p ${players} loop track" 
+									:onrightclick "playerctl -p ${players} loop none "
+									:onmiddleclick "playerctl -p ${players} loop playlist" "ﯩ"
+								)
+								(button
+									:class "music-controls"
+									:onclick "playerctl -p ${players} previous" "玲"
+								)
+								(button
+									:class "music-play"
+									:onclick "playerctl -p ${players} play-pause" play-pause
+								)
+								(button
+									:class "music-controls"
+									:onclick "playerctl -p ${players} next" "怜"
+								)
+								(button
+									:class "music-controls ${play_shuffle == 'On' ? 'active' : ''}"
+									:onclick "playerctl -p ${players} shuffle toggle" "列"
+								)
 							)
 						)
-					)
 					)
 				)
 			)
@@ -374,79 +374,6 @@
 	)
 )
 
-(defwidget music-new []
-	(revealer
-		:reveal music-panel
-		:transition "slideup"
-	(box
-				:class "song-cover"
-				:orientation "v"
-				:style "background-image: url('${music-cover}')"
-		(box
-			:orientation "v"
-			:space-evenly true
-			:halign "center"
-			:class "music-box"
-			:hexpand "false" 
-			:vexpand "false"
-			(box
-				(label
-						:class "now-playing" 
-						:halign "start" 
-						:text {song-status}
-						:limit-width 40
-				)
-			)
-			(box
-				:space-evenly "true" 
-				:spacing 200
-			:class "music-box"
-				(label
-						:class "song-title" 
-						:halign "start"			
-						:text {song-title}
-						:limit-width 25
-				)
-				(button
-								:class "music-play"
-								:onclick "playerctl -p ${players} play-pause" play-pause
-				)
-			)
-			(box
-					(eventbox
-						(box
-							:class "song-controls"
-							:orientation "h"
-							:halign "center"
-							(button
-								:class "music-controls"
-								:onclick "playerctl -p ${players} previous" "玲"
-							)
-												(label
-						:class "song-position" 
-						:halign "start"			
-						:text song-position
-					)
-							(button
-								:class "music-controls"
-								:onclick "playerctl -p ${players} next" "怜"
-							)
-							(button
-								:class "music-controls"
-								:onclick "playerctl -p ${players} shuffle toggle" "列"
-							)
-							(button
-								:class "music-controls"
-								:onclick "playerctl -p ${players} loop track" 
-								:onrightclick "playerctl -p ${players} loop playlist"
-								:onmiddleclick "playerctl -p ${players} loop none" "ﯩ"
-							)
-						)
-					)
-			)
-		)
-	))
-)
 (defwidget control-panel []
 	(box
 		:class "actions"

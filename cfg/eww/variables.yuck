@@ -13,11 +13,14 @@
 	:interval "0.5s" "scripts/brightness.sh br"
 )
 
-(defpoll battery-icon
-	:interval "2s" "scripts/battery icon"
+(defpoll battery_icon
+	:interval "2s" "scripts/battery level"
 )
-(defpoll battery-saver
-	:interval "2s" "scripts/battery status"
+(defpoll battery_rem
+	:interval "2s" "scripts/battery rem"
+)
+(defpoll battery_saver
+	:interval "0.5s" "scripts/battery status"
 )
 
 ;; Network
@@ -57,7 +60,7 @@
 	:interval "2s" "./scripts/dnd status"
 )
 (defpoll record_status 
-	:interval "2s" "~/.config/openbox/pipemenus/record --status"
+	:interval "2s" "./scripts/recorder status"
 )
 (defpoll vpn_status 
 	:interval "2s" "./scripts/vpn.sh status"
@@ -103,6 +106,14 @@
 	:interval "2s"
 	"scripts/music title-artist"
 )
+(defpoll play_shuffle
+	:interval "2s"
+	"scripts/music shuffle"
+)
+(defpoll play_loop
+	:interval "2s"
+	"scripts/music loop"
+)
 (deflisten music-scroll
     "scripts/scroll scroll-toggle"
 )
@@ -113,9 +124,9 @@
 	"scripts/workspaces"
 )
 
-;(defpoll network_speed
-;	:interval "1s" "scripts/network-speed.sh"
-;)
+(deflisten network_speed
+	"scripts/network-speed.sh"
+)
 
 (defvar top-panel-music false)
 (defvar control-panel-hover false)

@@ -99,7 +99,7 @@
 		}
 	}
 }
-.top-panel-window {
+.top-panel {
     .time {
         color: $blue;
         .time-text {
@@ -128,5 +128,10 @@
                 color: $blue;
             }
         }
+    }
+    .modules{
+		font-weight: bold;
+		font-family: 'JetBrainsMono Nerd Font';
+		color: $fg;
     }
 }
