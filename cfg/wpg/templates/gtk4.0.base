@@ -13,11 +13,11 @@
 @define-color error_color #ffb4a9;
 @define-color error_bg_color #930006;
 @define-color error_fg_color #680003;
-@define-color window_bg_color {color8};
+@define-color window_bg_color {color0};
 @define-color window_fg_color #ede0db;
-@define-color view_bg_color {color8};
+@define-color view_bg_color {color0};
 @define-color view_fg_color #ede0db;
-@define-color headerbar_bg_color {color8};
+@define-color headerbar_bg_color {color0};
 @define-color headerbar_fg_color #ede0db;
 @define-color headerbar_border_color rgba(255, 182, 144, 0.8);
 @define-color headerbar_backdrop_color @headerbar_bg_color;
@@ -25,9 +25,9 @@
 @define-color card_bg_color rgba(255, 182, 144, 0.05);
 @define-color card_fg_color {color15};
 @define-color card_shade_color #000000;
-@define-color dialog_bg_color {color8};
+@define-color dialog_bg_color {color0};
 @define-color dialog_fg_color {color15};
-@define-color popover_bg_color {color8};
+@define-color popover_bg_color {color0};
 @define-color popover_fg_color {color15};
 @define-color shade_color #000000;
 @define-color scrollbar_outline_color {color4};
