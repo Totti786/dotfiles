@@ -1,12 +1,9 @@
 /**
- *
  * Author : Tarek 
  * Github : @Totti786
- * 
- * Rofi Theme File
- * Rofi Version: 1.7.5
- **/
- 
+**/
+
+/*****----- Configuration -----*****/
 configuration {
 	click-to-exit: 		true;
 	fixed-num-lines:	false;
@@ -16,9 +13,12 @@ configuration {
 	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
 }
 
+/*****----- Global Properties -----*****/
+
 @import "colors.rasi"
 @import "fonts.rasi"
 
+/*****----- Main Window -----*****/
 window {
     transparency:                   "real";
     background-color:               @background;
@@ -39,6 +39,7 @@ listview {
     layout:                         vertical;
 }
 
+/*****----- Main Box -----*****/
 mainbox {
     background-color:               transparent;
     children:                       [ listview ];

@@ -1,11 +1,7 @@
 /**
- *
  * Author : Tarek 
  * Github : @Totti786
- * 
- * Rofi Theme File
- * Rofi Version: 1.7.5
- **/
+**/
  
 configuration {
 	click-to-exit: 		true;
