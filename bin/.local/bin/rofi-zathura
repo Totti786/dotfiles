@@ -2,7 +2,7 @@
 
 cached="$HOME/.cache/zcache"
 
-if [[ ! -d ~/.cache/zcache ]]; then mkdir $cached ; fi 
+if [[ ! -d $HOME/.cache/zcache ]]; then mkdir $cached ; fi 
 > $cached/zlist
 history="$HOME/.local/share/zathura/history"
 grep -i "home" $history  | tr -d "[]" | while read -r line ; do
@@ -24,7 +24,7 @@ if [ "$type" == "PDF" ] || [ "$type" == "EPUB" ]; then
 fi
 done
 
-book=$(cat ~/.cache/zcache/zlist | rofi -dmenu -p "Zathura" -theme ~/.config/rofi/themes/Zselect.rasi)
+book=$(cat $HOME/.cache/zcache/zlist | rofi -dmenu -p "Zathura" -theme ~/.config/rofi/themes/Zselect.rasi)
 
 if ! [[ -z $book ]]; then 
 	zathura "$book" &
