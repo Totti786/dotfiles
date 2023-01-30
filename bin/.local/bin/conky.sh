@@ -31,10 +31,12 @@ toggle(){
 	}
 
 restart(){
-	pkill conky &&
-	changefont
-	conky -c $conkyConfig &> /dev/null
-	xdo lower -N Conky
+	if [ ! -z "$(pgrep conky)" ]; then 
+		pkill conky &&
+		changefont
+		conky -c $conkyConfig &> /dev/null
+		xdo lower -N Conky
+	fi
 	}
 		
 if [[ $1 == "restart" ]]; then 
