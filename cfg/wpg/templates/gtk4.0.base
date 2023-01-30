@@ -1,4 +1,4 @@
-@define-color accent_color #ffb690;
+@define-color accent_color {color10};
 @define-color accent_bg_color {color9};
 @define-color accent_fg_color {color15};
 @define-color destructive_color {color15};
@@ -10,13 +10,13 @@
 @define-color warning_color #e6beac;
 @define-color warning_bg_color #432a1e;
 @define-color warning_fg_color rgba(255, 182, 144, 0.8);
-@define-color error_color #ffb4a9;
-@define-color error_bg_color #930006;
-@define-color error_fg_color #680003;
+@define-color error_color {color1};
+@define-color error_bg_color {color0};
+@define-color error_fg_color {color15};
 @define-color window_bg_color {color0};
-@define-color window_fg_color #ede0db;
+@define-color window_fg_color {color15};
 @define-color view_bg_color {color0};
-@define-color view_fg_color #ede0db;
+@define-color view_fg_color {color15};
 @define-color headerbar_bg_color {color0};
 @define-color headerbar_fg_color #ede0db;
 @define-color headerbar_border_color rgba(255, 182, 144, 0.8);
