@@ -134,7 +134,7 @@ super + shift + {h,v,q}
 super + ctrl + {1-9}
 	bspc node -o 0.{1-9}
 
-# Fullscreen or Monocle
+# Fullscreen
 super + shift + f
 #	bspc desktop -l next
     bspc node -t "~"fullscreen
