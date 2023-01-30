@@ -129,9 +129,9 @@
 					:orientation "h"
 					:space-evenly true
 			        (sysblock
-						:icon "${record_status == 'on' ? '' : '逸'}"
-						:onclick " "
-						:onrightclick " "
+						:icon "${record_status == 'on' ? '󱣴' : '󰹑'}"
+						:onclick "~/.config/openbox/pipemenus/record --toggle"
+						:onrightclick "~/.config/openbox/pipemenus/record --toggle"
 						:active "${record_status == 'on' ? true : false}"
 						:label "Recorder"
 			        )
@@ -187,6 +187,7 @@
 	(revealer
 		:reveal timer_reveal
 		:transition "slidedown"
+		:duration "250ms"
 		(box
 			:class "timer_container"
 			:orientation "h"
@@ -316,13 +317,13 @@
 						:class "now-playing" 
 						:halign "start" 
 						:text {song-status}
-						:limit-width 40
+						:limit-width 30
 					)
 					(label
 						:class "song-title" 
 						:halign "start"			
 						:text {song-title}
-						:limit-width 25
+						:limit-width 32
 					)
 					(label
 						:class "song-artist" 
@@ -338,16 +339,15 @@
 					(revealer
 						:reveal music-expand
 						:transition "slideup"
+						:duration "280ms"
 						(eventbox
 							(box
 								:class "song-controls"
 								:orientation "h"
 								:halign "center"
 								(button
-									:class "music-controls ${play_loop != 'None' ? 'active' : ''}"
-									:onclick "playerctl -p ${players} loop track" 
-									:onrightclick "playerctl -p ${players} loop none "
-									:onmiddleclick "playerctl -p ${players} loop playlist" "ﯩ"
+									:class "music-controls ${play_shuffle == 'On' ? 'active' : ''}"
+									:onclick "playerctl -p ${players} shuffle toggle" "列"
 								)
 								(button
 									:class "music-controls"
@@ -362,8 +362,10 @@
 									:onclick "playerctl -p ${players} next" "怜"
 								)
 								(button
-									:class "music-controls ${play_shuffle == 'On' ? 'active' : ''}"
-									:onclick "playerctl -p ${players} shuffle toggle" "列"
+									:class "music-controls ${play_loop == 'Playlist' || play_loop == 'Track' ? 'active' : ''}"
+									:onclick "playerctl -p ${players} loop playlist" 
+									:onrightclick "playerctl -p ${players} loop none "
+									:onmiddleclick "playerctl -p ${players} loop track" "ﯩ"
 								)
 							)
 						)

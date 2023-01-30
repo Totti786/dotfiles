@@ -16,11 +16,8 @@
 (defpoll battery_icon
 	:interval "2s" "scripts/battery level"
 )
-(defpoll battery_rem
-	:interval "2s" "scripts/battery rem"
-)
 (defpoll battery_saver
-	:interval "0.5s" "scripts/battery status"
+	:interval "1s" "scripts/battery status"
 )
 
 ;; Network
@@ -28,7 +25,7 @@
 	:interval "2s" "scripts/network.sh status"
 )
 (defpoll network_icon
-	:interval "3s" "scripts/network.sh icon"
+	:interval "7s" "scripts/network.sh icon"
 )
 (defpoll network_ssid
 	:interval "2s" "scripts/network.sh ssid"
@@ -60,15 +57,10 @@
 	:interval "2s" "./scripts/dnd status"
 )
 (defpoll record_status 
-	:interval "2s" "./scripts/recorder status"
+	:interval "1s" "~/.config/openbox/pipemenus/record --status"
 )
 (defpoll vpn_status 
 	:interval "2s" "./scripts/vpn.sh status"
-)
-
-;; Notifications
-(deflisten notifications-cards 
-    "scripts/logger subscribe"
 )
 
 ;; Music
@@ -114,10 +106,11 @@
 	:interval "2s"
 	"scripts/music loop"
 )
-(deflisten music-scroll
-    "scripts/scroll scroll-toggle"
-)
 
+;; Notifications
+(deflisten notifications-cards 
+    "scripts/logger subscribe"
+)
 
 ;; Top Panel
 (deflisten workspaces
