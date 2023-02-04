@@ -49,7 +49,7 @@ check_border=$(cat $dir/picom.conf | grep 'round-borders =' | cut -d'=' -f2 | tr
 check_shadow=$(cat $dir/picom.conf | grep 'shadow =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
 check_fading=$(cat $dir/picom.conf | grep 'fading =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
 check_blur=$(cat $dir/picom.conf | grep 'method =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
-check_animations=$(cat $dir/picom.conf | grep 'animations: ' | head -n1 | cut -d':' -f2 | tr -d ';,[:blank:],"')
+check_animations=$(cat $dir/picom.conf | grep 'animations = ' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
 
 ## Kill picom
 forcekill_picom() {
@@ -197,10 +197,10 @@ elif [[ $1 = '--update-blur' ]]; then
 ##-- animations ---------------
 
 elif [[ $1 = '--enable-animations' ]]; then
-	sed -i -e "s/animations: .*/animations: true;/g" $dir/picom.conf
+	sed -i -e "s/animations = .*/animations = true;/g" $dir/picom.conf
 	
 elif [[ $1 = '--disable-animations' ]]; then
-	sed -i -e "s/animations:.*/animations: false;/g" $dir/picom.conf
+	sed -i -e "s/animations =.*/animations = false;/g" $dir/picom.conf
 
 ##-- menu ---------------------
 
