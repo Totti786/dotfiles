@@ -9,6 +9,7 @@ if [[ $(pidof stalonetray) ]]; then
 		polybar-msg action "#systray.hook.1"
 		xdo hide -n stalonetray
 		touch "$hidden"
+		killall -9 systray
 	else
 		polybar-msg action "#systray.hook.0"
 		xdo show -n stalonetray
