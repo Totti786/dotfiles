@@ -61,6 +61,7 @@ xdg-user-dirs-gtk
 xdotool
 xfce4-power-manager
 xfce4-settings
+xorg-xdpyinfo
 xorg-xkill
 xorg-xrdb
 xorg-xsetroot
