@@ -29,8 +29,7 @@ getfonts () {
 
 font_bar () {
 	if [[ "$FONT" ]]; then
-		PSTYLE=$(cat $pdir/launch.sh | grep STYLE | head -n 1 | tr -d 'STYLE=' | tr -d \" | tr -d "[:blank:]")
-		sed -i -e "s/font-0 = .*/font-0 = $FNAME:$FSTYLE:size=$FSIZE;2/g" $pdir/"$PSTYLE"/config.ini
+		sed -i -e "s/font-0 = .*/font-0 = $FNAME:$FSTYLE:size=$FSIZE;2/g" $pdir/config.ini
 		polybar-msg cmd restart
 	else
 		exit 0
