@@ -7,57 +7,110 @@ DIR="$HOME/.config"
 DAY="$(expr $(date "+%d") - 1)"
 MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"
+
+## Get City if the file doesn't have it
+[ -z $CITY ] && CITY=$(wget --timeout=2 http://ipinfo.io/city -qO -)
+
+## Get Country if the file doesn't have it
+[ -z $COUNTRY ] && 	COUNTRY=$(wget --timeout=2 http://ipinfo.io/country -qO -)
+
 prayer_rofi="$HOME/.cache/prayer_rofi_"$CITY"_$DAY:$MONTH"
 prayer_cache="$HOME/.cache/prayertimes_"$CITY"_$MONTH:$YEAR"
 
-## Get City
-if [[ -z $CITY ]]; then 
-	CITY=$(wget --timeout=2 http://ipinfo.io/city -qO -)
-fi
-
-## Get Country
-if [[ -z $COUNTRY ]]; then 
-	COUNTRY=$(wget --timeout=2 http://ipinfo.io/country -qO -)
-fi
-
-# pure jank
-convert(){
-	if ! [[ "$1" < 12 ]]; then
-		hr=$(echo "$1" | cut -d ":" -f1)
-		mn=$(echo "$1" | cut -d ":" -f2)
-		if [[ "$hr" == 12 ]]; then
-			echo $hr:$mn "PM" 
-		else
-			echo $(( $hr - 12 )):$mn "PM" 
-		fi
-	else  
-		ti=$(echo "$1" | sed 's/^0*//') 
-		echo $ti "AM"
-	fi
-}
-
-
-if [ ! -f "$prayer_cache" ]; then
-	echo `curl -X GET --header 'Accept: application/json'\
+## Get data from the prayer API in JSON form
+[ ! -f "$prayer_cache" ] &&	echo `curl -X GET --header 'Accept: application/json'\
 	"http://api.aladhan.com/v1/calendarByCity?city="$CITY"&country="$COUNTRY"&month="$MONTH"&year="$YEAR"&method=4"` > ${prayer_cache}
-fi
+
+make_unix(){
+	names=("Fajr" "Sunrise" "Dhuhr" "Asr" "Maghrib" "Isha")
+	times=() # Initialize the times array outside of the loop
+	for n in "${names[@]}"; do 
+	    time=$(cat $prayer_cache | jq -r ".data["$DAY"].timings.$n" | cut -d " " -f1)
+	    times+=("$time") # Append the new time to the times array
+	done
+	
+	times_unix=()
+	for t in "${times[@]}"; do
+	    time_unix=$(date -d "$t" +%s)
+	    times_unix+=("$time_unix")
+	done
+	}
+
 
 if [ -f "$prayer_cache" ]; then
 	if [ ! -f "$prayer_rofi" ]; then
-		fajr=$(cat $prayer_cache | jq -r ".data["$DAY"].timings.Fajr" | cut -d " " -f1)
-		sunrise=$(cat $prayer_cache | jq -r ".data["$DAY"].timings.Sunrise" | cut -d " " -f1)
-		duhr=$(cat $prayer_cache | jq -r ".data["$DAY"].timings.Dhuhr" | cut -d " " -f1)
-		asr=$(cat $prayer_cache | jq -r ".data["$DAY"].timings.Asr" | cut -d " " -f1)
-		maghrib=$(cat $prayer_cache| jq -r ".data["$DAY"].timings.Maghrib" | cut -d " " -f1)
-		isha=$(cat $prayer_cache | jq -r ".data["$DAY"].timings.Isha" | cut -d " " -f1)
-		echo -e "City: $CITY \nFajr: `convert $fajr` \nSunrise: `convert $sunrise` \nDuhr: `convert $duhr` \nAsr: `convert $asr` \nMaghrib: `convert $maghrib` \nIsha: `convert $isha`" > ${prayer_rofi}
+	make_unix
+	cat > $prayer_rofi <<- EOF
+	City: $CITY
+	Fajr: `date -d "@${times_unix[0]}" +"%-I:%M %p"`
+	Sunrise: `date -d "@${times_unix[1]}" +"%-I:%M %p"`
+	Duhr: `date -d "@${times_unix[2]}" +"%-I:%M %p"`
+	Asr: `date -d "@${times_unix[3]}" +"%-I:%M %p"`
+	Maghrib: `date -d "@${times_unix[4]}" +"%-I:%M %p"`
+	Isha: `date -d "@${times_unix[5]}" +"%-I:%M %p"`
+	EOF
 	fi
 fi
 
 remaining(){
-	echo Prayer in $(( $(date +%H -d "$fajr") - $( date +%H ))):`echo $(( $(date +%M -d "$fajr") - $( date +%M ) )) | tr -d '-'`
-	}
-#remaining
+	make_unix
+	current_time=$(date +%s)
 
-cat $prayer_rofi | rofi -dmenu -p "Prayer Times" -theme "$DIR"/rofi/themes/prayer.rasi
+	# Check if the current time is greater than or equal to the last time
+	if [ $current_time -ge ${times_unix[-1]} ]; then
+	  # Add one day to the current time and find the closest time for the next day
+	  current_time=$(($current_time + 86400)) # 86400 seconds in a day
+	  times_unix=()
+	  for t in "${times[@]}"; do
+	    time_unix=$(date -d "$t" +%s)
+	    times_unix+=($time_unix)
+	  done
+	  closest_time_index=0
+	  closest_time_unix=${times_unix[0]}
+	  remaining_time=$(($closest_time_unix - $current_time))
+	else
+	  # Find the closest time of the day
+	  closest_time_diff=$((${times_unix[0]} - $current_time))
+	  closest_time_index=0
+	  for i in "${!times_unix[@]}"; do
+	    diff=$((${times_unix[$i]} - $current_time))
+	    if [ $diff -ge 0 -a $diff -lt $closest_time_diff ]; then
+	      closest_time_diff=$diff
+	      closest_time_index=$i
+	    fi
+	  done
+	  closest_time_unix=${times_unix[$closest_time_index]}
+	  remaining_time=$(($closest_time_unix - $current_time))
+	  
+	  # If the closest time has already passed, move to the next time
+	  if [ $remaining_time -lt 0 ]; then
+	    closest_time_index=$(($closest_time_index + 1))
+	    if [ $closest_time_index -lt ${#times[@]} ]; then
+	      closest_time_unix=${times_unix[$closest_time_index]}
+	      remaining_time=$(($closest_time_unix - $current_time))
+	    else
+	      # Add one day to the current time and find the closest time for the next day
+	      current_time=$(($current_time + 86400)) # 86400 seconds in a day
+	      times_unix=()
+	      for t in "${times[@]}"; do
+	        time_unix=$(date -d "$t" +%s)
+	        times_unix+=($time_unix)
+	      done
+	      closest_time_index=0
+	      closest_time_unix=${times_unix[0]}
+	      remaining_time=$(($closest_time_unix - $current_time))
+	    fi
+	  fi
+	fi
+	
+	# Convert remaining time to hours and minutes
+	remaining_hours=$(date -u --date=@$remaining_time +%H)
+	remaining_minutes=$(date -u --date=@$remaining_time +%M)
+	
+	# Display the name of the closest time
+	closest_time_name=${names[$closest_time_index]}
+	echo "$closest_time_name in $remaining_hours:$remaining_minutes"
+}
 
+
+[ -z $1 ] && cat $prayer_rofi | rofi -dmenu -p "Prayer Times" -theme "$DIR"/rofi/themes/prayer.rasi || remaining
