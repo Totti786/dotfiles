@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+rofi_command="rofi -theme ~/.config/rofi/themes/layouts.rasi"
+
+# Variable passed to rofi
+options="Default Bar\nMinimal Bar\nUpdate Menu\nExit"
+
+chosen="$(echo -e "$options" | $rofi_command -p 'Tools' -dmenu -selected-row 0 )"
+case $chosen in
+    Default\ Bar)
+		sed -i 's/^style=.*/style=base/' ~/.profile && sh ~/.config/polybar/launch.sh
+        ;;
+    Minimal\ Bar)
+   		sed -i 's/^style=.*/style=minimal/' ~/.profile && sh ~/.config/polybar/launch.sh
+   		killall -9 conky
+        ;;
+    Update\ Menu)
+		~/.scripts/dots-update.sh
+        ;;
+    Exit)
+		exit
+        ;;
+esac
