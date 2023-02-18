@@ -57,9 +57,15 @@
 	        :spacing 5
 			(button
 				:class "button"
+				:onclick "~/.config/eww/scripts/apps lock"
+				:onrightclick "eww reload"
+				""
+			)
+			(button
+				:class "button"
 				:onclick "~/.config/eww/scripts/tools.sh"
 				:onrightclick "eww reload"
-				""
+				"󰋩"
 			)
 			(button
 				:class "button ${redshift_state == 'on' ? 'active' : ''}"
