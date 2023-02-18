@@ -178,6 +178,8 @@ update(){
 	## backup weather info file
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
 		cp ~/.config/polybar/scripts/info ~/.cache/info
+	[ ! -f "$HOME/.profile" ] && 
+		$DIR/deps/.profile ~/
 	## move udpated scripts and configs
 	sudo cp -r $DIR/bin/usr/ /
 	cp -r $DIR/bin/.scripts/ ~/ 
