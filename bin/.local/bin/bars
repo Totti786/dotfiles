@@ -3,16 +3,23 @@
 rofi_command="rofi -theme ~/.config/rofi/themes/layouts.rasi"
 
 # Variable passed to rofi
-options="Default Bar\nMinimal Bar\nUpdate Menu\nExit"
+options="Default Bar\nMinimal Bar\nBattery Saver\nUpdate Menu\nExit"
 
 chosen="$(echo -e "$options" | $rofi_command -p 'Tools' -dmenu -selected-row 0 )"
 case $chosen in
     Default\ Bar)
 		sed -i 's/^style=.*/style=base/' ~/.profile && sh ~/.config/polybar/launch.sh
+   		sed -i "/class_g ?= 'polybar'/s/^#//" ~/.config/picom/picom.conf		
+   		pkill stalonetray && ~/.config/polybar/scripts/systray &
         ;;
     Minimal\ Bar)
    		sed -i 's/^style=.*/style=minimal/' ~/.profile && sh ~/.config/polybar/launch.sh
+   		sed -i "/class_g ?= 'polybar'/s/^/#/" ~/.config/picom/picom.conf
    		killall -9 conky
+   		pkill stalonetray && ~/.config/polybar/scripts/systray &
+        ;;
+    Battery\ Saver)
+		~/.config/eww/scripts/battery toggle
         ;;
     Update\ Menu)
 		~/.scripts/dots-update.sh
