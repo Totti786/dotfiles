@@ -2,6 +2,8 @@
 
 ## Autostart Programs ----------------------------------------#
 
+source ~/.profile
+
 ## XDG Autostart 
 xdg-autostart &
 
@@ -41,11 +43,17 @@ picom -b &
 ## CopyQ
 copyq --start-server &
 
+## Thunar 
+killall -9 thunar
+thunar --daemon  &
+
 ## Plank
 plank &
 
 ## Conky
-sh ~/.local/bin/conky.sh &
+if [ $conky == "On" ]; then 
+	sh ~/.local/bin/conky.sh &
+fi
 
 ## Fix Plank
 bspc subscribe node_add | while read -r _
