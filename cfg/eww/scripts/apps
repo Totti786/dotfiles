@@ -1,14 +1,11 @@
 #!/bin/bash
 
-close(){
-	eww close-all
-	polybar-msg action "#control.hook.1"
-	rm ~/.cache/eww/control-center.eww
-}
-
 case $1 in
     power)
        ~/.config/rofi/bin/powermenu
+        ;;
+    lock)
+		lockscreen
         ;;
     blue)
         blueman-manager
@@ -32,5 +29,4 @@ case $1 in
 		pavucontrol
         ;;
 esac &
-close
-
+sh ~/.config/eww/scripts/controls.sh
