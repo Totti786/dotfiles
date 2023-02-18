@@ -81,14 +81,14 @@ level() {
 
 lock=/tmp/battery-saver.lock
 comp(){
-	cc=`grep "background" ~/.config/polybar/colors.ini | cut -d ' ' -f3`
+	cc=`cat ~/.cache/wal/colors | head -n1`
 	
 	if [[ `pgrep picom` ]]; then 
 		pkill picom 
 		brightnessctl set 50%
 		sed -i "s/opacity: .*/opacity: 1.0/g" ~/.config/alacritty/alacritty.yml
-		sed -i -e "s/background = .*/background = ${cc::-2}/g" ~/.config/polybar/colors.ini
-		sed -i -e "s/background: .*/background: ${cc::-2};/g" ~/.config/rofi/themes/colors.rasi		
+		sed -i -e "s/background = .*/background = ${cc}/g" ~/.config/polybar/colors.ini
+		sed -i -e "s/background: .*/background: ${cc};/g" ~/.config/rofi/themes/colors.rasi		
 		~/.config/polybar/launch.sh
 	else
 		picom -b
