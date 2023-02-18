@@ -35,6 +35,7 @@ moveConfigs(){
 	cp -r $DIR/bin/.scripts/ ~/ && echo "moved scripts home"
 	cp -r $DIR/cfg/* ~/.config/ && echo "moved config files"
 	cp -r $DIR/bin/.local/ ~/ && echo "moved bin"
+	cp $DIR/dpes/.profile ~/
 	# extracts the icons and moves them to the correct directory
 	[ ! -d "$HOME/.local/share/icons" ] && mkdir ~/.local/share/icons
 	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons
