@@ -17,10 +17,10 @@ symbol() {
 }
 
 name() {
-  nmcli -t -f name connection show --active
+  nmcli -t -f name connection show --active | head -n1
 }
 
-cut () {
+cut() {
   toshow="$1"
   maxlen="$2"
 
@@ -33,49 +33,7 @@ cut () {
   echo "${toshow:0:$maxlen}$sufix"
 }
 
-[ "$1" = "icon" ] && symbol
-
-if [[ $1 == "ssid" ]]; then
-  ssid=$(name)
-  if [[ "$ssid" == "" ]]; then
-    cut "Disconnected" 10
-  else
-    cut "$ssid" 10
-  fi
-fi
-
-if [[ $1 == "name" || $1 == "class" ]]; then
-  wifiname=$(name)
-  if [[ $wifiname == "" ]]; then
-    if [[ $1 == "name" ]]; then
-      echo "Disconnected"
-    elif [[ $1 == "class" ]]; then
-      echo "disconnected"
-    fi
-  else
-    if [[ $1 == "name" ]]; then
-      echo "Connected to $wifiname"
-    elif [[ $1 == "class" ]]; then
-      echo "connected"
-    fi
-  fi
-fi
-
-if [[ $1 == "status" ]]; then
-  name=$(name)
-  if [[ $name != "" ]]; then
-    echo "Connected"
-  else
-    echo "Disconnected"
-  fi
-fi
-
-if [[ $1 == "disconnect" ]]; then
-  local wifiname="nmcli d | grep wifi | sed 's/^.*wifi.*connected//g' | xargs"
-  nmcli con down id "${wifiname}"
-fi
-
-radio_status () {
+radio_status() {
   radio_status=$(nmcli radio wifi)
   if [[ $radio_status == "enabled" ]]; then
     echo "on"
@@ -84,15 +42,57 @@ radio_status () {
   fi
 }
 
-if [[ $1 == "radio-status" ]]; then
-  radio_status
-fi
 
-if [[ $1 == "toggle-radio" ]]; then
-  stat=$(radio_status)
-  if [[ $stat == "on" ]]; then
-    nmcli radio wifi off
-  else
-    nmcli radio wifi on
-  fi
-fi
+case $1 in
+	"icon")
+        symbol
+    ;;
+    "ssid")
+        ssid=$(name)
+		if [[ "$ssid" == "" ]]; then
+			cut "Disconnected" 10
+		else
+			cut "$ssid" 10
+		fi
+    ;;
+    #"name" || "class")
+    "name")
+        wifiname=$(name)
+		if [[ $wifiname == "" ]]; then
+			if [[ $1 == "name" ]]; then
+				echo "Disconnected"
+			elif [[ $1 == "class" ]]; then
+				echo "disconnected"
+			fi
+		else
+		    if [[ $1 == "name" ]]; then
+		      echo "Connected to $wifiname"
+		    elif [[ $1 == "class" ]]; then
+		      echo "connected"
+		    fi
+		fi
+    ;;
+	"status")
+		name=$(name)
+		if [[ $name != "" ]]; then
+			echo "Connected"
+		else
+			echo "Disconnected"
+		fi
+    ;;
+	"disconnect")
+		local wifiname="nmcli d | grep wifi | sed 's/^.*wifi.*connected//g' | xargs"
+		nmcli con down id "${wifiname}"
+    ;;
+	"radio-status")
+		radio_status
+    ;;
+	"toggle-radio")
+		stat=$(radio_status)
+		if [[ $stat == "on" ]]; then
+			nmcli radio wifi off
+		else
+			nmcli radio wifi on
+		fi
+    ;;
+esac
