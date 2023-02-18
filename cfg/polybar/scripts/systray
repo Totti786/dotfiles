@@ -15,7 +15,7 @@ if [[ $(pidof stalonetray) ]]; then
 		xdo show -n stalonetray
 		xdo raise -n stalonetray
 		rm "$hidden"
-		sleep 3 && main
+		sleep 5 && main
 	fi
 else
 	if [[ $res -gt "1920" ]]; then
@@ -23,6 +23,7 @@ else
 		stalonetray --geometry 1x1-$new+27
 	else
 		stalonetray &
+		main
 	fi
 fi
 }
