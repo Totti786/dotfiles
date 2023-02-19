@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.profile
+
 ## Autostart Programs
 #xdg-autostart &
 
@@ -13,7 +15,7 @@ xfce4-power-manager --daemon &
 dunst &
 
 ## Picom (Compositor)	
-picom -b &
+#picom -b &
 
 ## Restore Wallpaper
 wal -Re &
@@ -32,5 +34,7 @@ copyq --start-server &
 ## Plank (Dock)
 plank &
 
-## Conky (Keybinds Menu)
-sh ~/.local/bin/conky.sh
+## Conky
+if [ $conky == "On" ]; then 
+	sh ~/.local/bin/conky.sh &
+fi
