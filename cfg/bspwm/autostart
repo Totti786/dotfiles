@@ -44,10 +44,10 @@ picom -b &
 copyq --start-server &
 
 ## Thunar 
-killall -9 thunar
-thunar --daemon  &
+#thunar --daemon  &
 
 ## Plank
+killall -9 plank
 plank &
 
 ## Conky
