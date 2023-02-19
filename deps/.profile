@@ -21,8 +21,9 @@ fi
 export TERMINAL="alacritty"
 export BROWSER="firefox"
 
-# Polybar style settings
-style=minimal
+# Polybar and bspwm style settings
+style=base
+border="2"
 
 if [[ $style == "base" ]];then
 	tp="23"
