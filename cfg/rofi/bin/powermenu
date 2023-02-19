@@ -46,14 +46,13 @@ case $chosen in
 		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ $ans == $confirm ]]; then
 			if [[ $current_desktop == "Openbox" ]]; then
-				systemctl --user exit
 				openbox --exit
 			elif [[ $current_desktop == "i3" ]]; then
-				systemctl --user exits
 				i3 exit
 			elif [[ $current_desktop == "bspwm" ]]; then
-				systemctl --user exit
 				bspc quit
+			elif [[ $XDG_SESSION_TYPE == "wayland" ]]; then
+				killall -9 Hyprland
 			fi
         fi
         ;;
