@@ -21,7 +21,7 @@ Compositor,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//compositor" -
 ^sep()
 Change Font,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//change-fonts" --tag="Change Font")
 ^sep()
-Update Dotfiles, sh ~/.scripts/dots-update.sh
+Toolbox, sh ~/.local/bin/bars
 ^sep()
 Change Wallpaper,sh ~/.local/bin/wpgtk pick
 Appearance Settings,xfce4-appearance-settings
