@@ -14,6 +14,7 @@ cava="$HOME/.config/cava/config"
 copyq="$HOME/.config/copyq/copyq.conf"
 jgmenu="$HOME/.config/jgmenu/jgmenurc"
 eww="$HOME/.config/eww/colors.scss"
+waybar="$HOME/.config/waybar/colors.css"
 conky1="$HOME/.config/conky/conky-Openbox.conf"
 conky2="$HOME/.config/conky/conky-bspwm.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
@@ -151,6 +152,24 @@ change_colors() {
 	sed -i -e "s/\$gray: #.*/\$gray: $bright_black;/g" 		   $eww
 	sed -i -e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" $eww
 	
+	# waybar
+	cat > $waybar <<- EOF
+	/*
+	* Pywal Generated Palette
+	*/
+	
+	@define-color foreground ${FG};
+	@define-color background rgba(${bg_rgb},0.8);
+	@define-color surface3 #394161;
+	@define-color red $bright_red;
+	@define-color green $bright_green;
+	@define-color yellow $bright_yellow;
+	@define-color blue $bright_blue;
+	@define-color purple $bright_magenta;
+	@define-color cyan $bright_cyan;
+
+	EOF
+	
 	# resize and move wallpaper for use by other programs
 	#convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
 	cp $wallpaper ~/.config/wpg/templates/wallpaper.jpg
@@ -198,7 +217,7 @@ copyWal(){
 restart(){
 	if [[ $(pidof $1) ]]; then
 		killall -q $1 &&
-		$1 $2 $3 &
+		$1 $2 $3 & disown
 		echo "$1 restarted"
 	else 
 		$1 $2 $3 &
@@ -225,6 +244,9 @@ wall(){
 	if [ -z "$1" ]; then
 	echo "No image was selected"
 	else 
+	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
+		~/.scripts/wall $1
+	fi
 	wpg -A "$1" && wpg -s "$1" 
 	rm "$1""_wal_sample.png"
 	fi
@@ -250,8 +272,16 @@ main(){
 	copyWal
 	papirus-folder.sh --color ${red:1} &
 	#sh ~/.config/polybar/launch.sh &> /dev/null
-	sh ~/.config/bspwm/bsp-border &
+	[[ `wmctrl -m | grep -i name | cut -d ' ' -f2` == "bspwm" ]] && sh ~/.config/bspwm/bsp-border &
 	sh conky.sh restart
+	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
+		#~/.scripts/wall ~/.config/wpg/templates/wallpaper.jpg
+		~/.config/waybar/launch_waybar
+		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
+		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
+		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
+		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor'
+	fi
 	check spicetify -q update &
 	check razer-cli -a & exit
 	#sh ~/.scripts/phoneWal.sh &
@@ -296,9 +326,9 @@ create_colors() {
 ## Check if wpg is installed and get colors
 run(){
 	if [[ -f "/usr/bin/wpg" ]]; then
-		source "$HOME/.cache/wal/colors.sh"
 		## check if the files exists and import colors from wpg
 		if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+			source "$HOME/.cache/wal/colors.sh"
 			# Normal colors
 			BG=`printf "%s\n" "$background"`
 			FG=`printf "%s\n" "$foreground"`
@@ -324,6 +354,7 @@ run(){
 			create_colors
 			bg_light=`printf "%s\n" "$color0_lighter_60"`
 			bg_dark=`printf "%s\n" "$color0_darker_50"`
+			bg_rgb="$((0x${background:1:2})),$((0x${background:3:2})),$((0x${background:5:2}))"
 			## merging the Xresources files with the main one
 			xrdb -merge ~/.cache/wal/colors.Xresources		
 		fi 
