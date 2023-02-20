@@ -47,7 +47,6 @@
 				)
 			)
 	    )
-	
 	    (box
 			:class "useractions"
 	        :space-evenly false
@@ -80,6 +79,7 @@
 			(button
 				:class "button"
 				:onclick "~/.config/eww/scripts/apps power"
+				:onrightclick "${EWW_CMD} close-all"
 				"⏻"
 			)
 	    )
@@ -398,10 +398,11 @@
 )
 
 (defwindow controls
+
 	:geometry
 		(geometry
-			:x "-10px"
-			:y "33px"
+			:x "-0.5%"
+			:y "3.1%"
 			:anchor "top right"
 		)
 	:monitor 0

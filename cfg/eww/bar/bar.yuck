@@ -168,7 +168,8 @@
 								:width "100%"
 								:height "25px"
 								:anchor "top center")
-			:stacking "bg"
+			:stacking "fg"
+			:exclusive true
 			:reserve (struts :distance "23px" :side "top")
 			:windowtype "dock"
 			:wm-ignore false
@@ -182,7 +183,8 @@
                                :width "100%"
                                :height "24px"
                                :anchor "bottom center")
-           :stacking "bg"
+           :stacking "fg"
+           	:exclusive true
            :reserve (struts :distance "23px" :side "bottom")
            :windowtype "dock"
            :wm-ignore false

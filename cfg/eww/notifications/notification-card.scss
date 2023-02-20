@@ -26,6 +26,7 @@
 .notification-close {
     color: $accent;
     font-size: 18px;
+    padding-right: 4px;
     transition: 0.5s;
     &:hover {
         color: $blue;

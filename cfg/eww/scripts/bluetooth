@@ -19,11 +19,6 @@ bt_toggle () {
   fi
 }
 
-
-
-
-
-
 if [[ $1 == "state" ]]; then
   bt_state
 fi

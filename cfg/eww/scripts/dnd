@@ -8,7 +8,7 @@ toggle() {
     else
         dunstctl set-paused false
         icon="~/.local/share/icons/Papirus/24x24/panel/dino-status-dnd.svg"
-		dunstify -a Do\ Not\ Disturb -u low --replace=97 "Do Not Disturb" -i $icon "Notifications are Unpaused" -u Normal
+		notify-send  -a Do\ Not\ Disturb -u low -r 64 "Do Not Disturb" -i $icon "Notifications are Unpaused" -u Normal
     fi
 }
 
