@@ -7,7 +7,7 @@ get_volume() {
 	volume=`pamixer --get-volume-human`
 	echo "$volume"
 }
-s
+
 get_icon() {
 	volume="$(get_volume)"
 	current="${volume%%%}"
@@ -25,21 +25,21 @@ get_icon() {
 
 # Increase Volume
 inc_volume() {
-	pamixer -u -i 5 && get_icon && dunstify -u low --replace=69 -i "$icon" "Volume : $(get_volume)"
+	pamixer -u -i 5 && get_icon && notify-send -u low -r 69 -i "$icon" "Volume : $(get_volume)"
 }
 
 # Decrease Volume
 dec_volume() {
-	pamixer -u -d 10 && get_icon && dunstify -u low --replace=69 -i "$icon" "Volume : $(get_volume)"
+	pamixer -u -d 10 && get_icon && notify-send -u low -r 69 -i "$icon" "Volume : $(get_volume)"
 }
 
 # Toggle Mute
 toggle_mute() {
 	status=`pamixer --get-mute`
 	if [[ "$status" == "false" ]]; then
-		pamixer -t && get_icon && dunstify -u low --replace=69 -i "$icon" "Mute"
+		pamixer -t && get_icon && notify-send -u low -r 69 -i "$icon" "Mute"
 	else
-		pamixer -t && get_icon && dunstify -u low --replace=69 -i "$icon" "Unmute"
+		pamixer -t && get_icon && notify-send -u low -r 69 -i "$icon" "Unmute"
 	fi
 }
 
