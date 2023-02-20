@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+if [[ -f ~/.profile ]]; then source ~/.profile ;else style="base" ;fi
+
+killall -q waybar
+
+# env GTK_DEBUG=interactive
+if [ $style == "base" ]; then 
+	waybar -l info -c ~/.config/waybar/config -s ~/.config/waybar/style.css > /tmp/waybar.log 2>&1 & disown
+elif [ $style == "minimal" ]; then 
+	waybar -l info -c ~/.config/waybar//minimal/config-minimal -s ~/.config/waybar/style.css > /tmp/waybar.log 2>&1 & disown
+fi
