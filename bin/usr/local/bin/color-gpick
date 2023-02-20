@@ -15,7 +15,7 @@ main() {
 		# generate preview
 		convert -size 48x48 xc:"$color" ${image}
 		# notify about it
-		dunstify -u low --replace=69 -i ${image} "$color, copied to clipboard."
+		notify-send -u low -r 70 -i ${image} "$color, copied to clipboard."
 	fi
 }
 
