@@ -1,35 +1,35 @@
 #!/usr/bin/env bash
 
 # This script retrieves Islamic prayer times based on the user's location, using the ipinfo.io and api.aladhan.com APIs.
-# It can display the prayer times in a rofi window or the remaining time until the next prayer.
+# It can display the prayer times in a rofi window or the remaining time until the next prayer. 
 # The script depends on wget, jq, and rofi, and requires an internet connection when first used.
 
 ## Get city and country from a differnt file
-source ~/.config/polybar/scripts/info
+source "$HOME"/.config/polybar/scripts/info
 
 DIR="$HOME/.config"
-DAY="$(expr $(date "+%d") - 1)"
+DAY="$(("$(date "+%d")" - 1))"
 MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"
 
 ## Get City if the file doesn't have it
-[ -z $CITY ] && CITY=$(wget --timeout=2 http://ipinfo.io/city -qO -)
+[ -z "$CITY" ] && CITY=$(wget --timeout=2 http://ipinfo.io/city -qO -)
 
 ## Get Country if the file doesn't have it
-[ -z $COUNTRY ] && COUNTRY=$(wget --timeout=2 http://ipinfo.io/country -qO -)
+[ -z "$COUNTRY" ] && COUNTRY=$(wget --timeout=2 http://ipinfo.io/country -qO -)
 
-prayer_rofi="$HOME/.cache/prayer_rofi_"$CITY"_$DAY:$MONTH"
-prayer_cache="$HOME/.cache/prayertimes_"$CITY"_$MONTH:$YEAR"
+prayer_rofi="$HOME/.cache/prayer_rofi_$CITY_$DAY:$MONTH"
+prayer_cache="$HOME/.cache/prayertimes_$CITY_$MONTH:$YEAR"
 
 ## Get data from the prayer API in JSON form
-[ ! -f "$prayer_cache" ] || [ ! -s "$prayer_cache" ] && `wget -qO- \
-	"http://api.aladhan.com/v1/calendarByCity?city="$CITY"&country="$COUNTRY"&month="$MONTH"&year="$YEAR"&method=4" > ${prayer_cache}`
+[ ! -f "$prayer_cache" ] || [ ! -s "$prayer_cache" ] && wget -qO- \
+	"http://api.aladhan.com/v1/calendarByCity?city=$CITY&country=$COUNTRY&month=$MONTH&year=$YEAR&method=4" > "${prayer_cache}"
 
 make_unix(){
 	names=("Fajr" "Sunrise" "Dhuhr" "Asr" "Maghrib" "Isha")
 	times=() # Initialize the times array outside of the loop
 	for n in "${names[@]}"; do 
-	    time=$(cat $prayer_cache | jq -r ".data["$DAY"].timings.$n" | cut -d " " -f1)
+	    time=$( < "$prayer_cache"  jq -r ".data[$DAY].timings.$n" | cut -d " " -f1)
 	    times+=("$time") # Append the new time to the times array
 	done
 	times_unix=() # Initialize the times array outside of the loop
@@ -58,6 +58,7 @@ remaining(){
 	if [[ -n "$next_prayer" ]]; then
 	    remaining_time=$(( next_prayer_time - current_time ))
 	    echo "$next_prayer in $(date -u -d @${remaining_time} +%H:%M)"
+	    notify-send  -r 34 -a Prayer "$next_prayer in" "$(date -u -d @${remaining_time} +%H:%M)"
 	else
 	    echo "No upcoming prayers"
 	fi
@@ -66,16 +67,16 @@ remaining(){
 if [ -f "$prayer_cache" ]; then
 	if [ ! -f "$prayer_rofi" ]; then
 	make_unix
-	cat > $prayer_rofi <<- EOF
+	cat > "$prayer_rofi" <<- EOF
 	City: $CITY
-	Fajr: `date -d "@${times_unix[0]}" +"%-I:%M %p"`
-	Sunrise: `date -d "@${times_unix[1]}" +"%-I:%M %p"`
-	Duhr: `date -d "@${times_unix[2]}" +"%-I:%M %p"`
-	Asr: `date -d "@${times_unix[3]}" +"%-I:%M %p"`
-	Maghrib: `date -d "@${times_unix[4]}" +"%-I:%M %p"`
-	Isha: `date -d "@${times_unix[5]}" +"%-I:%M %p"`
+	Fajr: $(date -d "@${times_unix[0]}" +"%-I:%M %p")
+	Sunrise: $(date -d "@${times_unix[1]}" +"%-I:%M %p")
+	Duhr: $(date -d "@${times_unix[2]}" +"%-I:%M %p")
+	Asr: $(date -d "@${times_unix[3]}" +"%-I:%M %p")
+	Maghrib: $(date -d "@${times_unix[4]}" +"%-I:%M %p")
+	Isha: $(date -d "@${times_unix[5]}" +"%-I:%M %p")
 	EOF
 	fi
 fi
 
-[ -z $1 ] && cat $prayer_rofi | rofi -dmenu -p "Prayer Times" -theme "$DIR"/rofi/themes/prayer.rasi || remaining
+[ -z "$1" ] && < "$prayer_rofi" rofi -dmenu -p "Prayer Times" -theme "$DIR"/rofi/themes/prayer.rasi || remaining
