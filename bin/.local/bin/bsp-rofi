@@ -1,5 +1,8 @@
 #!/bin/bash
 
-tile=$(bsp-layout layouts | rofi -dmenu -monitor -3 -yoffset 25 -width 50% -theme ~/.config/rofi/themes/layouts.rasi)
+if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ; else y="25" ;fi
+if [ $style == "minimal" ]; then  y="-250" ; else y="25" ;fi
+
+tile=$(bsp-layout layouts | rofi -dmenu -monitor -3 -yoffset $y -width 50% -theme ~/.config/rofi/themes/layouts.rasi)
 bsp-layout set $tile
 
