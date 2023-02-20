@@ -9,14 +9,12 @@ chosen="$(echo -e "$options" | $rofi_command -p 'Tools' -dmenu -selected-row 0 )
 case $chosen in
     Default\ Bar)
 		sed -i 's/^style=.*/style=base/' ~/.profile && sh ~/.config/polybar/launch.sh
-   		sed -i "/class_g ?= 'polybar'/s/^#//" ~/.config/picom/picom.conf		
    		pkill stalonetray && ~/.config/polybar/scripts/systray &
         ;;
     Minimal\ Bar)
    		sed -i 's/^style=.*/style=minimal/' ~/.profile && sh ~/.config/polybar/launch.sh
-   		sed -i "/class_g ?= 'polybar'/s/^/#/" ~/.config/picom/picom.conf
    		pkill stalonetray && ~/.config/polybar/scripts/systray &
- 		killall -9 conky
+ 		killall -q -9 conky
         ;;
     Battery\ Saver)
 		~/.config/eww/scripts/battery toggle
