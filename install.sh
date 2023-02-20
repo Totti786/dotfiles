@@ -11,7 +11,7 @@ checkChaotic(){
 		checkYay
 	else 
 		echo "Adding the Chaotic AUR repo"
-		sh $DIR/deps/chaotic-aur
+		sh "$DIR"/deps/chaotic-aur
 		checkYay
 	fi
 	}
@@ -26,22 +26,22 @@ checkYay(){
 	}
 
 installDependencies(){
-		sudo pacman -Sy - < $DIR/deps/minimal.txt --needed
-		sudo pacman -U $DIR/deps/packages/* --needed
+		sudo pacman -Sy - < "$DIR"/deps/minimal.txt --needed
+		sudo pacman -U "$DIR"/deps/packages/* --needed
 	}
 
 moveConfigs(){
-	sudo cp -r $DIR/bin/usr/ / && echo "moved bin to /usr/local"
-	cp -r $DIR/bin/.scripts/ ~/ && echo "moved scripts home"
-	cp -r $DIR/cfg/* ~/.config/ && echo "moved config files"
-	cp -r $DIR/bin/.local/ ~/ && echo "moved bin"
-	cp $DIR/deps/.profile ~/
+	sudo cp -r "$DIR"/bin/usr/ / && echo "moved bin to /usr/local"
+	cp -r "$DIR"/bin/.scripts/ ~/ && echo "moved scripts home"
+	cp -r "$DIR"/cfg/* ~/.config/ && echo "moved config files"
+	cp -r "$DIR"/bin/.local/ ~/ && echo "moved bin"
+	cp "$DIR"/deps/.profile ~/
 	# extracts the icons and moves them to the correct directory
 	[ ! -d "$HOME/.local/share/icons" ] && mkdir ~/.local/share/icons
-	tar -xzf $DIR/deps/Papirus-icons.tar.gz -C ~/.local/share/icons
+	tar -xzf "$DIR"/deps/Papirus-icons.tar.gz -C ~/.local/share/icons
 	# extracts the fonts and moves them to the correct directory
 	[ ! -d "$HOME/.local/share/fonts" ] && mkdir ~/.local/share/fonts
-	tar -xzf $DIR/deps/fonts.tar.gz -C ~/.local/share/fonts
+	tar -xzf "$DIR"/deps/fonts.tar.gz -C ~/.local/share/fonts
 	}
 	
 # This function allows you to change the plank configuration (courtesy of Archcraft by @adi1090x)
@@ -78,27 +78,27 @@ changeTheme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
 	change_dock && cat "$HOME"/.cache/plank.conf | dconf load /net/launchpad/plank/docks/
-	cp -r $DIR/bin/.icons ~/
+	cp -r "$DIR"/bin/.icons ~/
 
 	}
 
 wpgtk(){
-	sh $DIR/bin/.local/bin/wpgtk run &&
+	sh "$DIR"/bin/.local/bin/wpgtk run &&
 	if $Dialog --yesno "Do you want your Login Screen background to sync with your wallpaper? 
 			(This only works with the included SDDM theme)" 20 60 ;then
-		sh $DIR/bin/.local/bin/wpgtk lockPerms &&
-		sh $DIR/bin/.local/bin/wpgtk wall $DIR/deps/background.jpg 
+		sh "$DIR"/bin/.local/bin/wpgtk lockPerms &&
+		sh "$DIR"/bin/.local/bin/wpgtk wall "$DIR"/deps/background.jpg 
 	else
-		sh $DIR/bin/.local/bin/wpgtk wall $DIR/deps/background.jpg
+		sh "$DIR"/bin/.local/bin/wpgtk wall "$DIR"/deps/background.jpg
 		exit
 	fi
 	}
 
 base(){
 	checkChaotic &&
-	sudo pacman -Sy $(cat $DIR/deps/minimal.txt $DIR/deps/additional.txt) --needed
-	sudo pacman -U $DIR/deps/packages/essential/* --needed
-	sudo pacman -U $DIR/deps/packages/additional/* --needed
+	sudo pacman -Sy "$(cat "$DIR"/deps/minimal.txt "$DIR"/deps/additional.txt)" --needed
+	sudo pacman -U "$DIR"/deps/packages/essential/* --needed
+	sudo pacman -U "$DIR"/deps/packages/additional/* --needed
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
 	changeTheme
@@ -115,15 +115,15 @@ minimal(){
 #---- Additional configurations ----------
 
 zsh(){
-	sh $DIR/deps/zsh/zsh.sh
+	sh "$DIR"/deps/zsh/zsh.sh
 	}
 	
 sddm(){
-	cd $DIR/deps/sddm && sh sddm.sh && cd $DIR
+	cd "$DIR"/deps/sddm && sh sddm.sh && cd "$DIR"
 	}
 	
 grub(){
-	cd $DIR/deps/grub && sudo sh grub.sh && cd $DIR
+	cd "$DIR"/deps/grub && sudo sh grub.sh && cd "$DIR"
 	}
 
 wallpapers(){
@@ -149,8 +149,8 @@ menu(){
 	}
 
 progressBar(){
-	for i in `seq 1 100`;do
-	date +"`printf $i $i`"
+	for i in $(seq 1 100);do
+	date +"$(printf $i $i)"
 	sleep .0005
 	done | $Dialog --gauge "$1" 20 60 0
 	}
@@ -159,11 +159,11 @@ additionalPrograms(){
 	if $Dialog --yesno "Do you want to select wich additional apps you want to install?\n	
 		Seleceting \"No\" will install all the additional apps" 20 60 ;then
 	  	progs=$($Dialog --no-items --checklist "Choose the programs you want installed:"  20 60 12 \
-		$(for app in $(cat $DIR/deps/extra.txt); do	echo "$app" off ;done) \
+		$(for app in $(cat "$DIR"/deps/extra.txt); do	echo "$app" off ;done) \
 		2>&1 >/dev/tty) &&
 		sudo pacman -Sy $progs --needed
 	else
-		sudo pacman -Sy - < $DIR/deps/extra.txt --needed
+		sudo pacman -Sy - < "$DIR"/deps/extra.txt --needed
 	fi
 	}
 
@@ -180,12 +180,12 @@ update(){
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
 		cp ~/.config/polybar/scripts/info ~/.cache/info
 	[ ! -f "$HOME/.profile" ] && 
-		$DIR/deps/.profile ~/
+		"$DIR"/deps/.profile ~/
 	## move udpated scripts and configs
-	sudo cp -r $DIR/bin/usr/ /
-	cp -r $DIR/bin/.scripts/ ~/ 
-	cp -r $DIR/cfg/* ~/.config 
-	cp -r $DIR/bin/.local/ ~/
+	sudo cp -r "$DIR"/bin/usr/ /
+	cp -r "$DIR"/bin/.scripts/ ~/ 
+	cp -r "$DIR"/cfg/* ~/.config 
+	cp -r "$DIR"/bin/.local/ ~/
 	# restore weather info file
 	cp ~/.cache/info ~/.config/polybar/scripts/info
 	}
@@ -238,7 +238,7 @@ main(){
 			;;
 		5)
 			git pull
-			sh $DIR/install.sh
+			sh "$DIR"/install.sh
 			;;
 		6)
 			exit
