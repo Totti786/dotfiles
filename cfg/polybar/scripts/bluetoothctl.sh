@@ -24,9 +24,9 @@ connect(){
 
 	if bluetoothctl show | grep -q "Powered: yes"; then
 		if [[ $(bluetoothctl info) = "Missing device address argument" ]]; then
-			bluetoothctl connect $device && dunstify -u low --appname=Bluetooth "$name" "Connected"
+			bluetoothctl connect $device && notify-send -r 98 -u low --appn-ame=Bluetooth "$name" "Connected"
 		else
-			bluetoothctl disconnect && dunstify -u low --appname=Bluetooth "$name" "Disconnected"
+			bluetoothctl disconnect && notify-send -r 98 -u low --app-name=Bluetooth "$name" "Disconnected"
 		fi
 	else 
 		bluetoothctl power on
