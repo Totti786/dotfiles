@@ -13,16 +13,16 @@ file="Capture_${time}.mp4"
 # notify
 notify_user () {
 	if [[ -e "$dir/$file" ]]; then
-		dunstify -u low --replace=699  "Saved in $dir"
+		notify-send -u low -r 699  "Saved in $dir"
 	else
-		dunstify -u low --replace=699 "Video Deleted."
+		notify-send -u low -r 699 "Video Deleted."
 	fi
 }
 
 # countdown
 countdown () {
 	for sec in `seq $1 -1 1`; do
-		dunstify -t 1000 --replace=699 "Starting in : $sec"
+		notify-send -t 1000 -r 699 "Starting in : $sec"
 		sleep 1
 	done
 }
