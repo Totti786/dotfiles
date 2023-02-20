@@ -245,7 +245,7 @@ wall(){
 	echo "No image was selected"
 	else 
 	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
-		~/.scripts/wall $1
+		~/.config/hypr/scripts/wall $1
 	fi
 	wpg -A "$1" && wpg -s "$1" 
 	rm "$1""_wal_sample.png"
