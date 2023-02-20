@@ -26,10 +26,9 @@ else
 			stalonetray --geometry 1x1-$new-34 --grow-gravity SW &
 			main			
 		else
+			stalonetray --geometry 1x1-94-34 --grow-gravity SW &
 			main
 		fi
-		stalonetray --geometry 1x1-94-34 --grow-gravity SW &
-		main
 	else
 		if [[ $res -gt "1920" ]]; then
 			new="$(( $res - 1920 + 4 ))"
