@@ -2,7 +2,7 @@
 
 . "$HOME/.cache/wal/colors.sh"
 
-apps=(polybar openbox zathura dunst alacritty picom stalonetrayrc rofi bspwm sxhkd jgmenu conky) 
+apps=(polybar openbox zathura dunst alacritty picom stalonetrayrc rofi bspwm sxhkd jgmenu conky hypr waybar) 
 DIR="$HOME/.config/"
 BackupDir="$HOME/Documents/GitHub/dotfiles/"
 
