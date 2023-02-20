@@ -15,8 +15,8 @@ case $chosen in
     Minimal\ Bar)
    		sed -i 's/^style=.*/style=minimal/' ~/.profile && sh ~/.config/polybar/launch.sh
    		sed -i "/class_g ?= 'polybar'/s/^/#/" ~/.config/picom/picom.conf
-   		killall -9 conky
    		pkill stalonetray && ~/.config/polybar/scripts/systray &
+ 		killall -9 conky
         ;;
     Battery\ Saver)
 		~/.config/eww/scripts/battery toggle
