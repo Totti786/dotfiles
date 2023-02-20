@@ -11,7 +11,6 @@ current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g')
 
 if [[ -f ~/.profile ]]; then 
 	source ~/.profile
-	echo hello
 else
 	style="base"
 	tp="23"
