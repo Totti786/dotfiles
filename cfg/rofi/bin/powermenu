@@ -5,7 +5,6 @@
 
 DIR="$HOME/.config"
 rofi_command="rofi -theme $DIR/rofi/themes/power-screen.rasi"
-#uptime=$(uptime -p | sed -e 's/up //g')
 
 # Options
 shutdown=""
@@ -22,24 +21,18 @@ chosen="$(echo -e "$options" | $rofi_command -p "UP - $uptime" -dmenu -selected-
 case $chosen in
     $shutdown)
 		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ $ans == $confirm ]]; then
-			systemctl poweroff
-		fi
+		if [[ $ans == $confirm ]]; then systemctl poweroff ;fi
         ;;
     $reboot)
 		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ $ans == $confirm ]]; then
-			systemctl reboot
-        fi
+		if [[ $ans == $confirm ]]; then	systemctl reboot ;fi
         ;;
     $lock)
 		lockscreen
        	;;
     $suspend)
 		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ $ans == $confirm ]]; then
-			systemctl suspend && lockscreen
-		fi
+		if [[ $ans == $confirm ]]; then systemctl suspend && lockscreen ;fi
         ;;
     $logout)
 		current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
