@@ -11,3 +11,6 @@ createMic(){
 }
 
 [[ -z "`pactl list sources | grep "VirtualMic"`" ]] && createMic
+	
+	pw-link VirtualSpeaker:monitor_FL VirtualMic:input_FL
+	pw-link VirtualSpeaker:monitor_FR VirtualMic:input_FR
