@@ -18,7 +18,7 @@ notify_user () {
 
 countdown () {
 	for sec in `seq $1 -1 1`; do
-		notify-send -a Clock -u normal -t 1000 -i $timer_icon "Countdown" "Taking shot in : $sec"
+		notify-send -a Clock -u normal -t 1000 -r 799 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
 }
@@ -62,8 +62,6 @@ shot_10 () {
 	sleep 1 && cd $dir && maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
   notify_user
 }
-
-
 
 docs () {
 	echo "
