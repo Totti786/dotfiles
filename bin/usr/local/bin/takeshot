@@ -1,29 +1,29 @@
 #!/bin/bash
 
-time=$(date +%Y-%m-%d-%I-%M-%S)
-geometry=$(xrandr | head -n1 | cut -d',' -f2 | tr -d '[:blank:],current')
+time="$(date +%Y-%m-%d-%I-%M-%S)"
+geometry="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
 dir="$(xdg-user-dir PICTURES)/Screenshots"
-file="Screenshot_${time}_${geometry}.png"
+file="$dir/Screenshot_${time}_${geometry}.png"
 
 [ ! -d $dir ] && mkdir -p $dir
 
-notify_user () {
+notify_user() {
 	notify-send -a Clipboard -i $clipboard_icon -u low -r 699 "Clipboard" "Screenshot saved on clipboard"
-	if [[ -e $dir/$file ]]; then
-		notify-send -a Screenshot -u low -i $dir/$file "Screenshot Saved"
+	if [[ -e $file ]]; then
+		notify-send -a Screenshot -u low -i $file "Screenshot Saved"
 	else
 		notify-send -a Screenshot -u low "Screenshot Deleted"
 	fi
 }
 
-countdown () {
+countdown() {
 	for sec in `seq $1 -1 1`; do
 		notify-send -a Clock -u normal -t 1000 -r 799 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
 }
 
-magic () {
+magic() {
 	convert $file +antialias \
 	\( +clone  -alpha extract \
     -draw 'fill black polygon 0,0 0,20 20,0 fill white circle 20,20 20,0' \
@@ -36,36 +36,56 @@ magic () {
 	+swap -background none -layers merge +repage $file
 }
 
-shot () {
-	cd $dir && maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
+shot() {
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
+		grim $file && wl-copy < $file
+	else
+		maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
+	fi
 	notify_user
 }
 
-shot_window () {
-	cd $dir && maim -u -f png -i `xdotool getactivewindow` $file && xclip -selection clipboard -t image/png -i $file
+shot_window() {
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
+		grim $file && wl-copy < $file
+	else
+		maim -u -f png -i `xdotool getactivewindow` $file && xclip -selection clipboard -t image/png -i $file
+	fi	
+	notify_user	
+}
+
+shot_area() {
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+		grim -g "$(slurp -c cba6f788 -b 00000055)" $file && wl-copy < $file
+	else
+		maim -u -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l $file && xclip -selection clipboard -t image/png -i $file
+	fi
 	notify_user
 }
 
-shot_area () {
-	cd $dir && maim -u -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l $file && xclip -selection clipboard -t image/png -i $file
-	notify_user
-}
-
-shot_5 () {
+shot_5() {
 	countdown '5'
-	sleep 1 && cd $dir && maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
+		grim $file && wl-copy < $file
+	else
+		maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
+	fi
 	notify_user
 }
 
-shot_10 () {
+shot_10() {
 	countdown '10'
-	sleep 1 && cd $dir && maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
-  notify_user
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
+		grim $file && wl-copy < $file
+	else
+		maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
+	fi	
+	notify_user
 }
 
 docs () {
 	echo "
-Usage:	screenshot [Options]
+Usage:	takeshot [Options]
     
 Options:
     --now     -   Take screenshot of the desktop
