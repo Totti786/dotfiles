@@ -22,7 +22,7 @@
     horizontal_padding = 15
     text_icon_padding = 0
     frame_width = 0
-    frame_color = "#CEA154"
+    frame_color = "#99B6C7"
     separator_color = frame
     sort = yes
     font = JetBrains Mono Regular 10
@@ -55,20 +55,20 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#0c0f1880"
-    foreground = "#fffff5"
+    background = "#0c101380"
+    foreground = "#f3ffff"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#0c0f1880"
-    foreground = "#fffff5"
+    background = "#0c101380"
+    foreground = "#f3ffff"
     highlight  = "#b6beca"
     timeout = 20
 
 [urgency_critical]
-    background = "#0c0f1880"
-    foreground = "#fffff5"
+    background = "#0c101380"
+    foreground = "#f3ffff"
     highlight  = "#b6beca"
     timeout = 60
     
