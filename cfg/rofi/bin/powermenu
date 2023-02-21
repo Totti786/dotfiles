@@ -28,8 +28,8 @@ case $chosen in
 		if [[ $ans == $confirm ]]; then	systemctl reboot ;fi
         ;;
     $lock)
-		lockscreen
-       	;;
+		if [ "$XDG_SESSION_TYPE" == "wayland" ]; then swaylock else; lockscreen ;fi
+    	;;
     $suspend)
 		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ $ans == $confirm ]]; then systemctl suspend && lockscreen ;fi
