@@ -3,7 +3,7 @@
 ## Copyright (C) 2020-2022 Aditya Shakya <adi1090x@gmail.com>
 
 # Background Image
-IMAGE="$HOME/.config/hypr/wallpapers/lockscreen.png"
+IMAGE="$HOME/.config/wpg/templates/wallpaper.jpg"
 
 # Colors
 bg='20262C'		bgl='343A40'		fg='F1FCF9'
@@ -12,7 +12,7 @@ blue='75DBE1'	magenta='B4A1DB'	cyan='9EE9EA'
 alpha='00000000'
 
 # CMD
-swaylock -f \
+swaylock  \
 	\
 	`# General` \
 	--ignore-empty-password \
