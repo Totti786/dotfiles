@@ -12,7 +12,7 @@ blue='75DBE1'	magenta='B4A1DB'	cyan='9EE9EA'
 alpha='00000000'
 
 # CMD
-swaylock  \
+swaylock -f  \
 	\
 	`# General` \
 	--ignore-empty-password \
@@ -32,15 +32,15 @@ swaylock  \
 	--caps-lock-bs-hl-color ${red} \
 	\
 	`# Indicator` \
-	--indicator-radius 120 \
+	--indicator-radius 160 \
 	--indicator-thickness 10 \
 	\
 	`# Inside Circle Colors` \
 	--inside-color ${alpha} \
 	--inside-clear-color ${alpha} \
 	--inside-caps-lock-color ${alpha} \
-	--inside-ver-color ${blue} \
-	--inside-wrong-color ${red} \
+	--inside-ver-color ${alpha} \
+	--inside-wrong-color ${alpha} \
 	\
 	`# Layout Colors` \
 	--layout-bg-color ${cyan} \
