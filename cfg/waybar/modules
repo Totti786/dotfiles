@@ -1,5 +1,5 @@
 // Waybar modules configuration
-//
+
 {
 	"hyprland/window": {
         "format": "{}"
@@ -23,8 +23,7 @@
 		},
 		"on-scroll-up": "hyprctl dispatch workspace e-1",
         "on-scroll-down": "hyprctl dispatch workspace e+1",
-        "on-click": "activate",
-		"sort-by-number": true
+		// "sort-by-number": true
 	},
     "cpu": {
         "format": " {usage}%",
