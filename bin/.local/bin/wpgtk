@@ -159,7 +159,7 @@ change_colors() {
 	*/
 	
 	@define-color foreground ${FG};
-	@define-color background rgba(${bg_rgb},0.8);
+	@define-color background rgba(${bg_rgb},0.2);
 	@define-color surface3 #394161;
 	@define-color red $bright_red;
 	@define-color green $bright_green;
