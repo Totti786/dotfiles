@@ -2,12 +2,6 @@
 
 DIR="$HOME/.config"
 rofi_command="rofi -theme $DIR/rofi/themes/power-screen.rasi"
-
-time=`date +%Y-%m-%d-%H-%M-%S`
-geometry=`xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2`
-dir="`xdg-user-dir PICTURES`/Screenshots"
-file="Screenshot_${time}_${geometry}.png"
-
 # Buttons
 screen=""
 area=""
