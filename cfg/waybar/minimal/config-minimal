@@ -3,8 +3,8 @@
 {
 // Configuration for the bottom bar
 	
-	"name": "bottom-bar", 			// Waybar name
-	"id": "bottom-bar", 			// Waybar id
+	"name": "main-bar", 			// Waybar name
+	"id": "main-bar",	 			// Waybar id
     "layer": "top",					// Waybar at top layer
     "position": "bottom", 			// Waybar position (top|bottom|left|right)
     "exclusive": true, 				// Request an exclusive zone from the compositor
@@ -18,6 +18,8 @@
     "margin-left": 80, 				// Space to the left of the bar
     "margin-right": 80, 			// Space to the right of the bar
     "fixed-center": true, 			// Center modules position
+    "ipc": true, 					// Control waybar with `swaymsg bar` commands
+
     "include": "~/.config/waybar/modules",
 
     // Choose the order of the modules
