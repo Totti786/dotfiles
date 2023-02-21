@@ -67,23 +67,6 @@
         // "tooltip-format": "{}",
         // "exec-tooltip": "~/.scripts/updates tooltip"
     },
-    "custom/music": {
-        "format": "{icon}{}",
-        "format-icons": {
-            // "Playing": " ", // Uncomment if not using the dynamic script
-            "Paused": " ",
-            "Stopped": "&#x202d;ﭥ " // This stop symbol is RTL. So &#x202d; is left-to-right override.
-        },
-        "escape": true,
-        "tooltip": true,
-        "exec": "~/.scripts/caway -b 10",
-        "return-type": "json",
-        "on-click": "playerctl play-pause",
-        "on-scroll-up": "playerctl previous",
-        "on-scroll-down": "playerctl next",
-        "on-click-right": "g4music",
-        "max-length": 35
-    },
     "hyprland/window": {
         "format": "{}",
         "separate-outputs": true,
@@ -214,13 +197,30 @@
             "deactivated": ""
         }
     },
+    "custom/music": {
+        "format": "{icon}{}",
+        "format-icons": {
+            // "Playing": " ", // Uncomment if not using the dynamic script
+            "Paused": " ",
+            "Stopped": "&#x202d;ﭥ " // This stop symbol is RTL. So &#x202d; is left-to-right override.
+        },
+        "escape": true,
+        "tooltip": true,
+        "exec": "~/.scripts/caway -b 10",
+        "return-type": "json",
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl previous",
+        "on-scroll-down": "playerctl next",
+        "on-click-right": "g4music",
+        "max-length": 35
+    },
     "custom/launcher": {
         "format": "{}",
         "tooltip": true,
         "exec": "echo '{\"text\":\"ﴂ\",\"tooltip\":\"Drun | Run\"}'",
         "return-type": "json",
-        "on-click": "pkill wofi || wofi --show drun -n",
-        "on-click-right": "pkill wofi || wofi --show run -n",
+        "on-click": "pkill rofi || ~/.config/rofi/bin/launcher",
+        "on-click-right": "pkill rofi || bars",
     },
     "custom/wall": {
         "format": "{}",
@@ -243,28 +243,5 @@
         "on-click": "rofi-bluetooth",
 		"on-click-right": "~/.config/polybar/scripts/bluetoothctl.sh connect",
         "interval": 1
-    },
-    "custom/clipboard": {
-        "format": "{}",
-        "exec": "~/.scripts/tools/expand clipboard",
-        "return-type": "json",
-        // Here "-l top_right -x -15 -y 10" doesn't matter as '-n' mode is used
-        // Window position is managed in Hyperland config's windowrulev2
-        "on-click": "pkill wofi || cliphist list | wofi --dmenu -p clippick -l top_right -x -15 -y 10 -n | cliphist decode | wl-copy",
-        "on-click-middle": "rm -f ~/.cache/cliphist/db",
-        "on-click-right": "pkill wofi || cliphist list | wofi --dmenu -p clippick -l top_right -x -15 -y 10 -n | cliphist delete",
-        "escape": true
-    },
-    "custom/power": {
-        "format": "{}",
-        "exec": "~/.scripts/tools/expand power",
-        "return-type": "json",
-        "on-click": "~/.config/wlogout/launch.sh"
-    },
-    "custom/custom": {
-        "format": "{}",
-        "exec": "~/.scripts/tools/expand arrow-icon",
-        "on-click": "~/.scripts/tools/expand_toolbar",
-        "return-type": "json"
     }
 }
