@@ -40,4 +40,4 @@ ydotool
 libinput-gestuers
 hyprland
 waybar-hyprland-git
-grim 
+grim
