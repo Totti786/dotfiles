@@ -6,6 +6,12 @@ active_players="$(playerctl -l | head -n 1)"
 
 [ ! -d $cache_dir ] && mkdir $cache_dir
 
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then 
+	_eww=eww-wayland
+else
+	_eww=eww
+fi
+
 listen(){
 	while true ; do 
 		if [[ ! -z "$(playerctl -l | head -n 1)" ]] &> /dev/null; then
@@ -19,7 +25,7 @@ listen(){
 
 run() {
 	eww open controls
-	polybar-msg action "#control.hook.0"
+	[[ `pgrep polybar` ]] && polybar-msg action "#control.hook.0"
 	touch $cache
 	sleep 0.1 && listen &
 }
@@ -27,14 +33,14 @@ run() {
 close() {
 	[[ ! -z $active_players ]] && eww update music-panel=false
 	eww close-all
-	polybar-msg action "#control.hook.1"
+	[[ `pgrep polybar` ]] && polybar-msg action "#control.hook.1"
 	eww update timer_reveal=false
 	rm $cache
 	killall -9 controls.sh
 }
 	
-if [[ ! `pidof eww` ]]; then
-	eww daemon &
+if [[ ! `pidof $_eww` ]]; then
+	$_eww daemon &
 	sleep 0.5 &&
 	run
 else
