@@ -99,6 +99,7 @@ base(){
 	sudo pacman -Sy "$(cat "$DIR"/deps/minimal.txt "$DIR"/deps/additional.txt)" --needed
 	sudo pacman -U "$DIR"/deps/packages/essential/* --needed
 	sudo pacman -U "$DIR"/deps/packages/additional/* --needed
+	sudo pacman -U "$DIR"/deps/packages/wayland/* --needed
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
 	changeTheme
