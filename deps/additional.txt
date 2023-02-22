@@ -33,3 +33,11 @@ rofi-calc
 timeshift
 xorg-xbacklight
 qbittorrent-enhanced-git
+swayidle
+wl-clipboard
+slurp
+ydotool
+libinput-gestuers
+hyprland
+waybar-hyprland-git
+grim 
