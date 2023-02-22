@@ -97,7 +97,7 @@
         "format": "{icon} {volume}%", // {format_source}
         "format-bluetooth": "{icon} {volume}%", // {format_source}
         "format-bluetooth-muted": "", // {format_source}
-        "format-muted": "", // {format_source}
+        "format-muted": " Muted", // {format_source}
         "format-source": "{volume}% ",
         "format-source-muted": "",
         "format-icons": {
@@ -112,7 +112,7 @@
                 ""
             ]
         },
-        "on-click": "pavucontrol"
+        "on-click-right": "pavucontrol"
     },
     "backlight": {
         // "device": "acpi_video1",
@@ -138,10 +138,11 @@
             "warning": 30,
             "critical": 10
         },
-        "format": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
+        "format": "{icon} {capacity}% ({time})",
+        "format-charging": " {capacity}% ({time})",
         "format-plugged": " {capacity}%",
-        "format-alt": "{icon} {time}",
+        "format-alt": "{icon} {power} w",
+        "format-time": "{H}:{M}",
         // "format-good": "", // An empty format will hide the module
         "format-full": " {capacity}%",
         "format-icons": [
@@ -197,7 +198,7 @@
             "deactivated": ""
         }
     },
-    "custom/music": {
+    "custom/media": {
         "format": "{icon}{}",
         "format-icons": {
             // "Playing": " ", // Uncomment if not using the dynamic script
@@ -206,13 +207,14 @@
         },
         "escape": true,
         "tooltip": true,
-        "exec": "~/.scripts/caway -b 10",
-        "return-type": "json",
+        "exec": "~/.config/polybar/scripts/playerctl.sh --status",
         "on-click": "playerctl play-pause",
         "on-scroll-up": "playerctl previous",
         "on-scroll-down": "playerctl next",
         "on-click-right": "g4music",
-        "max-length": 35
+        "max-length": 35,
+        "interval": 1
+
     },
     "custom/launcher": {
         "format": "{}",
