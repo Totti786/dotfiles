@@ -1,6 +1,5 @@
 scrot
 fzf
-gradience
 drawing
 video-trimmer
 cheese
@@ -37,7 +36,7 @@ swayidle
 wl-clipboard
 slurp
 ydotool
-libinput-gestuers
+libinput-gestures
 hyprland
 waybar-hyprland-git
 grim
