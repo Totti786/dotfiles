@@ -43,7 +43,6 @@ qt5ct
 qt5-styleplugins
 ranger
 redshift
-rofi
 stalonetray
 sxhkd
 sxiv
