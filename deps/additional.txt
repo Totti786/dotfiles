@@ -8,11 +8,9 @@ lxappearance-obconf
 termdown
 thunar-volman
 thunar-archive-plugin
-alsa-utils
 appimagelauncher
 axel
 blueman
-geany-plugins
 gnome-calculator
 gnome-disk-utility
 kdeconnect
