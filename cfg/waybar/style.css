@@ -126,13 +126,6 @@
   animation-direction: alternate;
 }
 
-@keyframes blink {
-  to {
-    background: @red;
-    color: @surface1;
-  }
-}
-
 /* =============================== */
 /* Network Module */
 #network {
