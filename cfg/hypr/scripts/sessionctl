@@ -1,9 +1,9 @@
 #!/bin/sh
 swayidle -w \
-	timeout 295 'gtklock -d -m playerctl-module -m powerbar-module -m userinfo-module' \
-	timeout 300 'hyprctl dispatch dpms off' \
+	timeout 895 'gtklock -d -m playerctl-module -m powerbar-module -m userinfo-module' \
+	timeout 900 'hyprctl dispatch dpms off' \
 	resume  'hyprctl dispatch dpms on' \
-	timeout 5 'if pgrep gtklock; then hyprctl dispatch dpms off;fi' \
+	timeout 10 'if pgrep gtklock; then hyprctl dispatch dpms off;fi' \
 	resume 'if pgrep gtklock; then hyprctl dispatch dpms on ;fi' \
 	before-sleep 'gtklock -d -m playerctl-module -m powerbar-module -m userinfo-module' \
 	after-resume  'sleep 2 && clamshell' \
