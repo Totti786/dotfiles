@@ -15,6 +15,7 @@ copyq="$HOME/.config/copyq/copyq.conf"
 jgmenu="$HOME/.config/jgmenu/jgmenurc"
 eww="$HOME/.config/eww/colors.scss"
 waybar="$HOME/.config/waybar/colors.css"
+hypr="$HOME/.config/hypr/colors.conf"
 conky1="$HOME/.config/conky/conky-Openbox.conf"
 conky2="$HOME/.config/conky/conky-bspwm.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
@@ -170,6 +171,18 @@ change_colors() {
 
 	EOF
 	
+	# hypr
+	cat > $hypr <<- EOF 
+		\$black		= ${bright_black:1}ff
+		\$red 		= ${bright_red:1}ff
+		\$green		= ${bright_green:1}ff
+		\$yellow 	= ${bright_yellow:1}ff
+		\$blue 		= ${bright_blue:1}ff
+		\$magenta 	= ${bright_magenta:1}ff
+		\$cyan 		= ${bright_cyan:1}ff
+		\$white 	= ${bright_white:1}ff
+		EOF
+
 	# resize and move wallpaper for use by other programs
 	#convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
 	cp $wallpaper ~/.config/wpg/templates/wallpaper.jpg
@@ -271,7 +284,6 @@ main(){
 	restart copyq --start-server
 	copyWal
 	papirus-folder.sh --color ${red:1} &
-	#sh ~/.config/polybar/launch.sh &> /dev/null
 	[[ `wmctrl -m | grep -i name | cut -d ' ' -f2` == "bspwm" ]] && sh ~/.config/bspwm/bsp-border &
 	sh conky.sh restart
 	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
