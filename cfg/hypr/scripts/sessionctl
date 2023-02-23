@@ -1,0 +1,11 @@
+#!/bin/sh
+swayidle -w \
+	timeout 300 'brightnessctl set 50%' \
+		resume 'brightnessctl set 100%' \
+	timeout 895 'lockscreen'\
+	timeout 900 'hyprctl dispatch dpms off' \
+		resume  'hyprctl dispatch dpms on' \
+	timeout 10 'if pgrep gtklock; then hyprctl dispatch dpms off;fi' \
+	resume 'if pgrep gtklock; then hyprctl dispatch dpms on ;fi' \
+	before-sleep 'lockscreen' \
+	lock 'lockscreen' \
