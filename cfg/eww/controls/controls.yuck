@@ -401,8 +401,8 @@
 
 	:geometry
 		(geometry
-			:x "-0.5%"
-			:y "3.1%"
+			:x "4.2%"
+			:y "31.25%"
 			:anchor "top right"
 		)
 	:monitor 0
