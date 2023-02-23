@@ -112,6 +112,7 @@
                 ""
             ]
         },
+        "on-click": "pamixer -t",
         "on-click-right": "pavucontrol"
     },
     "backlight": {
@@ -198,35 +199,40 @@
             "deactivated": ""
         }
     },
-    "custom/media": {
-        "format": "{icon}{}",
-        "format-icons": {
-            // "Playing": " ", // Uncomment if not using the dynamic script
-            "Paused": " ",
-            "Stopped": "&#x202d;ﭥ " // This stop symbol is RTL. So &#x202d; is left-to-right override.
-        },
-        "escape": true,
-        "tooltip": true,
-        "exec": "~/.config/polybar/scripts/playerctl.sh --status",
-        "on-click": "playerctl play-pause",
-        "on-scroll-up": "playerctl previous",
-        "on-scroll-down": "playerctl next",
-        "on-click-right": "g4music",
-        "max-length": 35,
-        "interval": 1
+    "custom/playerctl": {
+        "format": "{}",
+         "escape": true,
+        "tooltip": false,
+        "exec": "[[ \"$(playerctl -l)\" != \"No players found\" ]] && playerctl metadata --format \"{{ title }}: {{ artist }}\" || echo \"Doesn't look like anything to me\"",
+        "on-click": "playerctl -p playerctld play-pause",
+        "on-scroll-up": "playerctl volume 0.1+",
+        "on-scroll-down": "playerctl volume 0.1-",
+        "on-click-right": "playerctld shift",
+        "on-click-middle": "playerctl -a pause",
+        "max-length": 40,
+        "interval": 2
 
     },
+    "custom/playpause": {
+        "format": "{}",
+        "escape": true,
+        "tooltip": false,
+        "exec": "[[ \"$(playerctl status)\" == \"Playing\" ]] && echo   || echo ",
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous",
+        "interval": 1
+    },    
     "custom/launcher": {
         "format": "{}",
-        "tooltip": true,
-        "exec": "echo '{\"text\":\"ﴂ\",\"tooltip\":\"Drun | Run\"}'",
-        "return-type": "json",
-        "on-click": "pkill rofi || ~/.config/rofi/bin/launcher",
-        "on-click-right": "pkill rofi || bars",
+        "tooltip": false,
+        "exec": "echo 'ﴂ'",
+        "on-click": "~/.config/rofi/bin/launcher",
+        "on-click-right": "bars",
     },
     "custom/wall": {
         "format": "{}",
-        "tooltip": true,
+        "tooltip": false,
         "exec": "echo '󰸉'",
         "on-click": "~/.local/bin/wpgtk random",
     },
