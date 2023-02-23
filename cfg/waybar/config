@@ -11,7 +11,7 @@
     "passthrough": false, 			// Pass any pointer events to the window under the bar
     "height": 23, 					// Waybar height (to be removed for auto height)
     "width": "", 					// Waybar width (empty for auto width)
-    "spacing": 5, 					// Gaps between modules (0px) Adjusted in the css
+    "spacing": 0, 					// Gaps between modules (0px) Adjusted in the css
     "margin": 0, 					// Space around the bar
     "fixed-center": true, 			// Center modules position
     "ipc": true, 					// Control waybar with `swaymsg bar` commands
@@ -44,15 +44,15 @@
 {
 // Configuration for the bottom bar
 	
-	"name": "bottom-bar", 				// Waybar name
-	"id": "bottom-bar", 				// Waybar id
+	"name": "bottom-bar", 			// Waybar name
+	"id": "bottom-bar", 			// Waybar id
     "layer": "top",					// Waybar at top layer
     "position": "bottom", 			// Waybar position (top|bottom|left|right)
     "exclusive": true, 				// Request an exclusive zone from the compositor
     "passthrough": false, 			// Pass any pointer events to the window under the bar
     "height": 23, 					// Waybar height (to be removed for auto height)
     "width": "", 					// Waybar width (empty for auto width)
-    "spacing": 2, 					// Gaps between modules (0px) Adjusted in the css
+    "spacing": 0, 					// Gaps between modules (0px) Adjusted in the css
     "margin": 0, 					// Space around the bar
     "fixed-center": true, 			// Center modules position
     "include": "~/.config/waybar/modules",
@@ -60,7 +60,8 @@
     // Choose the order of the modules
     
     "modules-left": [
-		"custom/media",
+		"custom/playpause",
+		"custom/playerctl",
     ],
     
     "modules-center": [
