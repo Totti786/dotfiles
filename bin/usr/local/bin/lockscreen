@@ -37,21 +37,15 @@ lock() {
         --pointer=default
 }
 run() {
-    lock
+	if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then 
+		gtklock -m playerctl-module -m powerbar-module -m userinfo-module -b $image -s "$HOME"/.config/gtklock/style.css
+    else 
+		lock
+	fi
 }
 
 status=$(playerctl -p %any status || true)
-if [ "$status" == "Playing" ]; then
-	playerctl pause
-fi
+if [ "$status" == "Playing" ]; then	playerctl pause ;fi
 
-if [[ ! -f "$LOCK_FILE" ]]; then
-    if pgrep -x rofi; then
-        killall rofi
-    fi
-    run
-fi
-
-if [ "$status" == "Playing" ]; then
-    playerctl play
-fi
+run &&
+if [ "$status" == "Playing" ]; then playerctl play ;fi
