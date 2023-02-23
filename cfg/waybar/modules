@@ -2,7 +2,8 @@
 
 {
 	"hyprland/window": {
-        "format": "{}"
+        "format": "{}",
+        "max-length": 45
     },
 	"wlr/workspaces": {
         "all-outputs": true,
@@ -235,6 +236,13 @@
         "tooltip": false,
         "exec": "echo '󰸉'",
         "on-click": "~/.local/bin/wpgtk random",
+    },
+    "custom/eww": {
+        "format": "{}",
+        "tooltip": false,
+        "exec": "echo '󰹯 '",
+        "on-click": "~/.config/eww/scripts/controls.sh",
+        "on-click-right": "~/.config/eww/scripts/controls.sh f",
     },
     "custom/weather": {
         "tooltip": true,
