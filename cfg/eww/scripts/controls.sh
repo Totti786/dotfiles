@@ -8,8 +8,24 @@ active_players="$(playerctl -l | head -n 1)"
 
 if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then 
 	_eww=eww-wayland
+	
+	## change the controls window location based on the display server
+	sed -i 's/:x .*/:x "4.2%"/g' ~/.config/eww/controls/controls.yuck
+	sed -i 's/:y .*/:y "31.25%"/g' ~/.config/eww/controls/controls.yuck
+	
+	sed -i 's/:x .*/:x "4.2%"/g' ~/.config/eww/notifications/notification-panel.yuck 
+	sed -i 's/:y .*/:y "43%"/g' ~/.config/eww/notifications/notification-panel.yuck 
+
 else
 	_eww=eww
+
+	## change the controls window location based on the display server
+	sed -i 's/:x .*/:x "-0.5%"/g' ~/.config/eww/controls/controls.yuck
+	sed -i 's/:y .*/:y "3.1%"/g' ~/.config/eww/controls/controls.yuck
+
+	sed -i 's/:x .*/:x "-10px"/g' ~/.config/eww/notifications/notification-panel.yuck 
+	sed -i 's/:y .*/:y "33px"/g' ~/.config/eww/notifications/notification-panel.yuck 
+ 
 fi
 
 listen(){
@@ -38,15 +54,23 @@ close() {
 	rm $cache
 	killall -9 controls.sh
 }
+
+notification(){
+	eww open --toggle notification-panel
+	}
 	
-if [[ ! `pidof $_eww` ]]; then
-	$_eww daemon &
-	sleep 0.5 &&
-	run
-else
-	if [ ! -f $cache ]; then
+main(){
+	if [[ ! `pidof $_eww` ]]; then
+		$_eww daemon &
+		sleep 0.5 &&
 		run
 	else
-		close
+		if [ ! -f $cache ]; then
+			run
+		else
+			close
+		fi
 	fi
-fi
+}
+
+if [[ ! "$1" ]];then main ;else notification ;fi
