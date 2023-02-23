@@ -192,8 +192,8 @@
 (defwindow notification-panel
 	:geometry 
 		(geometry 
-			:x "-10px"
-			:y "33px"
+			:x "4.2%"
+			:y "43%"
 			:width "0%" 
 			:height "0%"
 			:anchor "top right"
