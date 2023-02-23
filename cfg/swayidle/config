@@ -1,9 +1,0 @@
-# Lock after 15 minutes -5 seconds of inactivity
-timeout 895 'lockscreen'
-# Turn off the screen after 15 minutes of inactivity
-timeout 900 'hyprctl dispatch dpms off'
-# Lock when system goes to sleep
-before-sleep 'lockscreen'
-# Check if gtklock is running and turn off the screen after 10 seconds of inactivity
-timeout 10 'if pgrep gtklock; then hyprctl dispatch dpms off;fi'
-lock 'lockscreen'
