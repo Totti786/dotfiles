@@ -6,9 +6,6 @@
 * {
   border: none;
   border-radius: 0;
-  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", sans-serif;
-  font-size: 12px;
-  font-weight: 500;
   min-height: 0;
 }
 /* =============================== */
@@ -21,7 +18,6 @@
 
 /* =============================== */
 /* Main Modules */
-#custom-launcher,
 #window,
 #tray,
 #backlight,
@@ -29,19 +25,30 @@
 #battery,
 #pulseaudio,
 #network,
-#custom-wall,
+#workspaces,
 #cpu,
 #memory,
 #disk,
 #tray,
 #temperature,
-#custom-music,
+#custom-playerctl,
+#custom-playpause,
 #custom-updates,
+#custom-launcher,
 #custom-bluetooth,
 #custom-weather {
-  color: @foreground;
-  padding: 5px 10px 5px 10px;
+	color: @foreground;
+	padding: 5px 10px 5px 10px;
+	font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", sans-serif;
+	font-size: 12px;
+	font-weight: 700;
 }
+
+#custom-wall, 
+#custom-launcher {
+	font-weight: 500;
+}
+
 
 /* =============================== */
 /* Workspaces */
@@ -50,7 +57,7 @@
   }
 
 #workspaces button {
-  color: @green;
+  color: @foreground;
   padding: 0px;
   margin: 0px 10px 0px 15px;
   background: transparent;
@@ -67,6 +74,11 @@
 #workspaces button:hover {
   background-color: transparent;
   color: @cyan;
+
+}
+#workspaces button.urgent {
+  background-color: transparent;
+  color: @green;
 
 }
 
@@ -153,8 +165,23 @@
   border-radius: 0;
   margin-right: 0px;
   padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 10px;
 }
+/* =============================== */
+
+#custom-wall {
+  padding: 5px 10px 5px 7px;
+}
+
+/* =============================== */
+
+#custom-playpause {
+	padding-left: 10px;
+	padding-right: 0px;
+	font-size: 14px;
+	font-weight: 500;
+}
+
 /* =============================== */
 
 #window {
