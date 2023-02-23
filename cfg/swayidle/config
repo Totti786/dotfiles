@@ -1,9 +1,9 @@
-# Lock after 19 minutes of inactivity
-timeout 895 'gtklock -d -m playerctl-module -m powerbar-module -m userinfo-module'
-# Turn off the screen after 20 minutes of inactivity
+# Lock after 15 minutes -5 seconds of inactivity
+timeout 895 'lockscreen'
+# Turn off the screen after 15 minutes of inactivity
 timeout 900 'hyprctl dispatch dpms off'
 # Lock when system goes to sleep
-before-sleep 'gtklock -d -m playerctl-module -m powerbar-module -m userinfo-module'
+before-sleep 'lockscreen'
 # Check if gtklock is running and turn off the screen after 10 seconds of inactivity
 timeout 10 'if pgrep gtklock; then hyprctl dispatch dpms off;fi'
-lock 'gtklock -d -m playerctl-module -m powerbar-module -m userinfo-module'
+lock 'lockscreen'
