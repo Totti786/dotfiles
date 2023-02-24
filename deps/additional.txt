@@ -17,8 +17,6 @@ kdeconnect
 yad
 evince
 nvtop
-ttf-dejavu
-ttf-liberation
 openssh
 openvpn
 python
