@@ -69,15 +69,16 @@ change_colors() {
 	EOF
 	
 	# geany
-	sed -i -e "s/bg=#.*/bg=${BG}/g" 									$geany
-	sed -i -e "s/fg=#.*/fg=${FG}/g" 									$geany
-	sed -i -e "s/tag_yellow=#.*/tag_yellow=${bright_cyan}/g" 			$geany
-	sed -i -e "s/fold_bg_grey=#.*/fold_bg_grey=${bright_red}/g" 		$geany
-	sed -i -e "s/keyword_orange=#.*/keyword_orange=${bright_magenta}/g" $geany
-	sed -i -e "s/string_green=#.*/string_green=${bright_green}/g" 		$geany
-	sed -i -e "s/margin_bg_grey=#.*/margin_bg_grey=${black}/g"			$geany
-	sed -i -e "s/error_red=#.*/error_red=${bright_magenta}/g" 			$geany
-	sed -i -e "s/selection_blue=#.*/selection_blue=${white}/g"			$geany
+	sed -i -e "s/bg=.*/bg=${BG}/g" 									$geany
+	sed -i -e "s/fg=.*/fg=${FG}/g" 									$geany
+	sed -i -e "s/tag_yellow=.*/tag_yellow=${bright_cyan}/g" 			$geany
+	sed -i -e "s/fold_bg_grey=.*/fold_bg_grey=${BG}/g" 		$geany
+	sed -i -e "s/keyword_orange=.*/keyword_orange=${bright_magenta}/g" $geany
+	sed -i -e "s/string_green=.*/string_green=${bright_green}/g" 		$geany
+	sed -i -e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g"			$geany
+	sed -i -e "s/margin_fg_grey=.*/margin_fg_grey=${black}/g"			$geany
+	sed -i -e "s/error_red=.*/error_red=${bright_magenta}/g" 			$geany
+	sed -i -e "s/selection_blue=.*/selection_blue=${white}/g"			$geany
 	
 	# copyq 
 	sed -i -e "s/bg=#.*/bg=${BG}/g" 				$copyq
@@ -187,6 +188,7 @@ change_colors() {
 	#convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
 	cp $wallpaper ~/.config/wpg/templates/wallpaper.jpg
 	ln -s $wallpaper ~/.config/wpg/wallpapers &> /dev/null
+	#convert -resize 1920x1080 -blur 0x8 $wallpaper ~/.config/wpg/templates/wallpaper-blur.jpg
 }
 
 # this functions should only be used if you have a system with a seperate home partition 
@@ -229,12 +231,12 @@ copyWal(){
 ## Kill already running process
 restart(){
 	if [[ $(pidof $1) ]]; then
-		killall -q $1 &&
+		pkill $1 &&
 		$1 $2 $3 & disown
-		echo "$1 restarted"
+		#echo "$1 restarted"
 	else 
-		$1 $2 $3 &
-		echo "$1 is running"
+		$1 $2 $3 & disown
+		#echo "$1 is running"
 	fi
 	}
 	
@@ -259,6 +261,8 @@ wall(){
 	else 
 	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
 		~/.config/hypr/scripts/wall $1
+	else 
+		feh --no-fehbg --bg-fill $1
 	fi
 	wpg -A "$1" && wpg -s "$1" 
 	rm "$1""_wal_sample.png"
@@ -278,25 +282,28 @@ pick(){
 	wall $wal
 	}	
 	
-main(){
-	change_colors
-	restart dunst
-	restart copyq --start-server
-	copyWal
-	papirus-folder.sh --color ${red:1} &
-	[[ `wmctrl -m | grep -i name | cut -d ' ' -f2` == "bspwm" ]] && sh ~/.config/bspwm/bsp-border &
-	sh conky.sh restart
+gui(){
 	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
-		#~/.scripts/wall ~/.config/wpg/templates/wallpaper.jpg
 		~/.config/waybar/launch_waybar
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor'
+	else 
+		[[ `wmctrl -m | grep -i name | cut -d ' ' -f2` == "bspwm" ]] && sh ~/.config/bspwm/bsp-border &
+		sh conky.sh restart
 	fi
+	}
+	
+main(){
+	change_colors
+	gui
+	restart dunst
+	restart copyq --start-server
+	copyWal
+		papirus-folder.sh --color ${red:1} &
 	check spicetify -q update &
 	check razer-cli -a & exit
-	#sh ~/.scripts/phoneWal.sh &
 }
 
 ## Create a lighter shade of the color using bash (courtesy of @guillaumeboehm)
