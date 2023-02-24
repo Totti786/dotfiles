@@ -19,7 +19,7 @@ create_cache () {
     TIMESTAMP=$(date '+%d %b, %I:%M %p')
 
     [ "$DUNST_SUMMARY" = "" ] && summary="Summary unavailable." || summary="$DUNST_SUMMARY"
-    [ "$DUNST_BODY" = "" ] && body="Body unavailable." || body="$(printf "$DUNST_BODY" | perl -MHTML::Entities -pe 'decode_entities($_);')"
+    [ "$DUNST_BODY" = "" ] && body="Body unavailable." || body="$(printf '%s' "$DUNST_BODY" | perl -MHTML::Entities -pe 'decode_entities($_);')"
 
     # TODO: Getting and caching web notification icons (dunstctl history won't show the icon path :()
     if [[ $DUNST_ICON_PATH == "" ]]; then
