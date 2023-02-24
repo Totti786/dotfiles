@@ -1,7 +1,8 @@
 acpi
 alacritty
 bc
-bluez-git
+bluez
+bluez-utils
 brightnessctl
 bspwm
 conky
