@@ -8,13 +8,23 @@ options="Default Bar\nMinimal Bar\nBattery Saver\nUpdate Menu\nExit"
 chosen="$(echo -e "$options" | $rofi_command -p 'Tools' -dmenu -selected-row 0 )"
 case $chosen in
     Default\ Bar)
-		sed -i 's/^style=.*/style=base/' ~/.profile && sh ~/.config/polybar/launch.sh
-   		pkill stalonetray && ~/.config/polybar/scripts/systray &
+		sed -i 's/^style=.*/style=base/' ~/.profile
+   		if [ "$XDG_SESSION_TYPE" == "x11" ];then
+			sh ~/.config/polybar/launch.sh
+			pkill stalonetray && ~/.config/polybar/scripts/systray &
+		else 
+			sh ~/.config/waybar/launch_waybar
+		fi
         ;;
     Minimal\ Bar)
-   		sed -i 's/^style=.*/style=minimal/' ~/.profile && sh ~/.config/polybar/launch.sh
-   		pkill stalonetray && ~/.config/polybar/scripts/systray &
- 		killall -q -9 conky
+   		sed -i 's/^style=.*/style=minimal/' ~/.profile
+   		if [ "$XDG_SESSION_TYPE" == "x11" ];then
+			sh ~/.config/polybar/launch.sh
+			pkill stalonetray && ~/.config/polybar/scripts/systray &
+			killall -q -9 conky
+		else
+			sh ~/.config/waybar/launch_waybar
+		fi
         ;;
     Battery\ Saver)
 		~/.config/eww/scripts/battery toggle
