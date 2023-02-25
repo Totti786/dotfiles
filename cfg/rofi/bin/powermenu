@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ## This script should work with any Arch based system that uses systemd
-## The logout option only works with Openbox, i3 and BSPWM
+## The logout option only works with Openbox, i3 and BSPWM and Hyprland
 
 DIR="$HOME/.config"
 rofi_command="rofi -theme $DIR/rofi/themes/power-screen.rasi"
@@ -45,7 +45,7 @@ case $chosen in
 			elif [[ $current_desktop == "bspwm" ]]; then
 				bspc quit
 			elif [[ $XDG_SESSION_TYPE == "wayland" ]]; then
-				killall -9 Hyprland
+				loginctl kill-user $(whoami)
 			fi
         fi
         ;;
