@@ -178,14 +178,13 @@
         "escape": true
     },
     "tray": {
-        "icon-size": 15,
+        "icon-size": 16,
         "spacing": 15
     },
     "clock": {
         "format":" {:%I:%M %p}",
         //"format": " {:%a %b %d %Y | %H:%M}",
         "format-alt": " {:%a %b %d, %G}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "calendar-weeks-pos": "right",
         "today-format": "<span color='#f38ba8'><b><u>{}</u></b></span>",
         "format-calendar": "<span color='#f2cdcd'><b>{}</b></span>",
