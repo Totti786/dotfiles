@@ -17,6 +17,9 @@
 					:class "time"
 				)
 				(label 
+					:text music_listen
+				)
+				(label 
 					:text "${day}\\n${date} "
 					:class "day"
 					:valign "end"
@@ -401,8 +404,8 @@
 
 	:geometry
 		(geometry
-			:x "4.2%"
-			:y "31.25%"
+			:x "-0.5%"
+			:y "3.1%"
 			:anchor "top right"
 		)
 	:monitor 0

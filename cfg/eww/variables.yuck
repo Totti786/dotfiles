@@ -117,8 +117,12 @@
 	"scripts/workspaces"
 )
 
+
 (deflisten network_speed
 	"scripts/network-speed.sh"
+)
+(deflisten music_listen
+	"scripts/music-listener"
 )
 
 (defvar top-panel-music false)

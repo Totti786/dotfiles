@@ -63,6 +63,28 @@
     )
 )
 
+
+(defvar ws-icons '["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"]')
+
+(defwidget workspace-hyprland []
+  (eventbox
+        :onscroll "echo {} | sed -e \"s/up/-1/g\" -e \"s/down/+1/g\" | xargs hyprctl dispatch workspace"
+        (box
+            :class "module workspace"
+            :spacing 8
+         (for i in workspaces
+           (button
+                    :onclick "hyprctl dispatch workspace ${i.number}"
+                    :class "ws icon"
+                    :style "color: ${i.color};"
+                    (label :style "font-size: 15pt;" :text "${ws-icons[i.number - 1]}")))))
+)
+
+
+
+
+
+
 (defwidget bottom-right []
 	(box
 		:class "controlbars"
@@ -155,39 +177,51 @@
         :class "bottom-panel-window"
         :space-evenly true
         (bottom-left)
-        (bottom-center)
+        (workspace-hyprland)
         (bottom-right)
     )
 )
 
+(defwindow minimal-bar
+	:monitor 0
+	:geometry (geometry :x "0px"
+						:y "5px"
+						:width "90%"
+						:height "25px"
+						:anchor "bottom center")
+	:stacking "fg"
+	:exclusive true
+	(workspace-hyprland)
+)
+
 
 (defwindow bar1
-            :monitor 0
-            :geometry (geometry :x "0%"
-								:y "0px"
-								:width "100%"
-								:height "25px"
-								:anchor "top center")
-			:stacking "fg"
-			:exclusive true
-			:reserve (struts :distance "23px" :side "top")
-			:windowtype "dock"
-			:wm-ignore false
-			(top-panel)
+	:monitor 0
+	:geometry (geometry :x "0%"
+						:y "0px"
+						:width "100%"
+						:height "25px"
+						:anchor "top center")
+	:stacking "fg"
+	:exclusive true
+	:reserve (struts :distance "23px" :side "top")
+	:windowtype "dock"
+	:wm-ignore false
+	(top-panel)
 )
 
 (defwindow bar2
-           :monitor 0
-           :geometry (geometry :x "0%"
-                               :y "0px"
-                               :width "100%"
-                               :height "24px"
-                               :anchor "bottom center")
-           :stacking "fg"
-           	:exclusive true
-           :reserve (struts :distance "23px" :side "bottom")
-           :windowtype "dock"
-           :wm-ignore false
+   :monitor 0
+   :geometry (geometry :x "0%"
+					   :y "0px"
+					   :width "100%"
+					   :height "24px"
+					   :anchor "bottom center")
+   :stacking "fg"
+	:exclusive true
+   :reserve (struts :distance "23px" :side "bottom")
+   :windowtype "dock"
+   :wm-ignore false
   (bottom-panel)
 )
 
