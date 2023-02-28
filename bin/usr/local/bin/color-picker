@@ -19,7 +19,7 @@ x11_picker() {
 wl_picker() {
 	if [[ "$color" ]]; then 
 		# declare color variable
-		echo $color 
+		echo $color | tr -d "\n" | wl-copy 
 		# generate preview
 		convert -size 48x48 xc:"$color" ${image}
 		# notify about it
@@ -29,7 +29,7 @@ wl_picker() {
 
 
 if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then 
-	color=$(hyprpicker)
+	color=$(hyprpicker -n)
 	image=/tmp/${color}.png
 	wl_picker
 else
