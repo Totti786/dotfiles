@@ -9,4 +9,5 @@ swayidle -w \
 	timeout 15 'if pgrep gtklock; then hyprctl dispatch dpms off;fi' \
 		resume 'hyprctl dispatch dpms on' \
 	before-sleep 'lockscreen' \
+		after-resume 'hyprctl dispatch dpms on' \
 	lock 'lockscreen' \
