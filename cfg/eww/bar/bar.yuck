@@ -7,6 +7,8 @@
         (eventbox
             :onhover "${EWW_CMD} update top-panel-music=true"
             :onhoverlost "${EWW_CMD} update top-panel-music=false"
+            :onscroll "playerctl volume 0.1+ {up}"
+            :onclick "playerctl play-pause"
             :cursor "pointer"
             (box 
                 :class "music-bar" 
@@ -82,7 +84,24 @@
 
 
 
+(defwidget lanuncher []
+	(box 
+		:class "controlbars"
+		:orientation "h"
+		:space-evenly false
+		:spacing 15
+		:valign "center"
+		:halign "end"
+		(eventbox
+			(button
+				:class "button"
+				:onclick "~/.config/eww/scripts/apps settings"
+				"ﴂ"
+			)
+		)
+	)
 
+)
 
 
 (defwidget bottom-right []
@@ -191,6 +210,7 @@
 						:anchor "bottom center")
 	:stacking "fg"
 	:exclusive true
+
 	(workspace-hyprland)
 )
 

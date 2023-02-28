@@ -1,5 +1,22 @@
 .music-box {
 	transition: 0.1s;
+	
+	.music-bar scale {
+		highlight {
+			background-image: linear-gradient(to right, $purple, $cyan, $yellow);
+			border-radius: 24px;
+		}
+		trough {
+			background-color: $bg;
+			border-radius: 24px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			margin-right: 20px;
+			margin-left: 10px;
+			min-height: 5px;
+			min-width: 170px;
+		}
+	}
 	.song-cover {
 		background-size: cover;
 		background-repeat: no-repeat;

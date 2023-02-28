@@ -1,65 +1,13 @@
-##!/bin/bash
+#!/bin/bash
 
-active_players="$(playerctl -l | head -n 1)"
+config="$HOME/.config/eww"
 
-
-
-#if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then 
-	#_eww=eww-wayland
-	
-	### change the controls window location based on the display server
-	#sed -i 's/:x .*/:x "4.2%"/g' ~/.config/eww/controls/controls.yuck
-	#sed -i 's/:y .*/:y "31.25%"/g' ~/.config/eww/controls/controls.yuck
-	
-	#sed -i 's/:x .*/:x "4.2%"/g' ~/.config/eww/notifications/notification-panel.yuck 
-	#sed -i 's/:y .*/:y "43%"/g' ~/.config/eww/notifications/notification-panel.yuck 
-
-#else
-	#_eww=eww
-
-	### change the controls window location based on the display server
-	#sed -i 's/:x .*/:x "-0.5%"/g' ~/.config/eww/controls/controls.yuck
-	#sed -i 's/:y .*/:y "3.1%"/g' ~/.config/eww/controls/controls.yuck
-
-	#sed -i 's/:x .*/:x "-10px"/g' ~/.config/eww/notifications/notification-panel.yuck 
-	#sed -i 's/:y .*/:y "33px"/g' ~/.config/eww/notifications/notification-panel.yuck 
- 
-#fi
-
-#listen(){
-	while true ; do 
-		if [[ ! -z "$(playerctl -l | head -n 1)" ]] &> /dev/null; then
-			eww update music-panel=true
-		else 
-			eww update music-panel=false
-		fi
-		sleep 0.5
-	done 
-#}
-
-#run() {
-	#eww open --toggle controls
-	#[[ `pgrep polybar` ]] && polybar-msg action "#control.hook.0"
-	#touch $cache
-	#sleep 0.1 && listen &
-#}
-
-#close() {
-	#[[ ! -z $active_players ]] && eww update music-panel=false
-	#eww close-all
-	#[[ `pgrep polybar` ]] && polybar-msg action "#control.hook.1"
-	#eww update timer_reveal=false
-	#rm $cache
-	#killall -9 controls.sh
-#}
-
-	
-#main(){
-	#if [[ ! `pidof $_eww` ]]; then
-		#$_eww daemon &
-		#sleep 0.5 &&
-		#run
-	#else
-	#fi
-#}
+while true ; do 
+	if [[ ! -z "$(playerctl -l | head -n 1)" ]] &> /dev/null; then
+		eww -c $config update music-panel=true
+	else 
+		eww -c $config update music-panel=false
+	fi
+	sleep 0.5
+done 
 

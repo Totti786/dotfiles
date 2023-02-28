@@ -1,17 +1,13 @@
 #!/bin/bash
 
 symbol() {
-  if [ $(cat /sys/class/net/enp*/operstate) = up ]
-  then
+  if [[ $(cat /sys/class/net/enp*/operstate) == "up" ]]; then
     echo 
-  elif [ $(cat /sys/class/net/w*/operstate) = up ]
-  then
+  elif [[ $(cat /sys/class/net/w*/operstate) == "up" ]]; then
     echo 
-  elif [ $(cat /sys/class/net/enp*/operstate) = down ]
-  then
-    echo 
-  elif [ $(cat /sys/class/net/w*/operstate) = down ]
-  then
+  elif [[ $(cat /sys/class/net/enp*/operstate) == "down" ]]; then
+    echo 󰈂
+  elif [[ $(cat /sys/class/net/w*/operstate) == "down" ]]; then
     echo 睊
   fi
 }
