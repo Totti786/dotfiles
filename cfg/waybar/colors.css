@@ -2,13 +2,13 @@
 * Pywal Generated Palette
 */
 
-@define-color foreground #cbfbf1;
-@define-color background rgba(3,26,29,0.2);
+@define-color foreground #fffbf4;
+@define-color background rgba(10,21,25,0.2);
 @define-color surface3 #394161;
-@define-color red #518b70;
-@define-color green #309e8c;
-@define-color yellow #2a726a;
-@define-color blue #2e8383;
-@define-color purple #166562;
-@define-color cyan #288b7c;
+@define-color red #e44870;
+@define-color green #9a7c6f;
+@define-color yellow #daa98c;
+@define-color blue #c58e79;
+@define-color purple #edc0ac;
+@define-color cyan #8bbaad;
 
