@@ -602,7 +602,7 @@
     </keybind>
     <keybind key="W-p">
       <action name="Execute">
-        <command>color-gpick</command>
+        <command>color-picker</command>
       </action>
     </keybind>
     <!-- CLI Apps -->
