@@ -39,9 +39,9 @@ close() {
 	[[ $(pgrep polybar) ]] && polybar-msg action "#control.hook.1"
 }
 
-#notification(){
-	#eww -c $config open --toggle notification-panel
-	#}
+notification(){
+	eww -c $config open --toggle notification-panel
+	}
 	
 main(){
 	if [[ ! $(pidof $_eww) ]]; then
@@ -52,5 +52,5 @@ main(){
 		if [ ! -f $cache ]; then open ;else	close ;fi
 	fi
 }
-main
-#if [[ ! "$1" ]];then main ;else notification ;fi
+
+if [[ ! "$1" ]];then main ;else notification ;fi
