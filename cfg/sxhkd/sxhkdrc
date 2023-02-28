@@ -48,7 +48,7 @@ super + {m,x,r,s,i,n}
 
 # Launch Apps
 super + {e,f,w,o,g,b,y,a,v,p,z}
-	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq show,color-gpick,discord}
+	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq show,color-picker,discord}
 
 super + shift + {s,w,r,d,g}
 	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura}
