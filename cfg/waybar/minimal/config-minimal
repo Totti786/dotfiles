@@ -18,19 +18,21 @@
     "margin-left": 80, 				// Space to the left of the bar
     "margin-right": 80, 			// Space to the right of the bar
     "fixed-center": true, 			// Center modules position
-    "ipc": true, 					// Control waybar with `swaymsg bar` commands
+    //"ipc": true, 					// Control waybar with `swaymsg bar` commands
 
     "include": "~/.config/waybar/modules",
 
     // Choose the order of the modules
     
     "modules-left": [
-        "custom/launcher",
-        "hyprland/window",
+        "custom/playpause",
+    	"custom/playerctl",
+ 	    "hyprland/window",	
+
     ],
     
     "modules-center": [
-        "wlr/workspaces",
+        "wlr/workspaces",  
     ],
     
     "modules-right": [

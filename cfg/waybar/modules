@@ -3,6 +3,7 @@
 {
 	"hyprland/window": {
         "format": "{}",
+        "on-click": "~/.config/rofi/bin/launcher",
         "max-length": 45
     },
 	"wlr/workspaces": {
@@ -25,6 +26,21 @@
 		"on-scroll-up": "hyprctl dispatch workspace e-1",
         "on-scroll-down": "hyprctl dispatch workspace e+1",
 		// "sort-by-number": true
+	},
+	"wlr/taskbar": {
+		"format": "{icon}",
+		"icon-size": 14,
+		"icon-theme": "Papirus",
+		"active-first": "true",
+		"tooltip-format": "{title}",
+		"on-click": "activate",
+		"on-click-middle": "close",
+		"ignore-list": [
+			"Alacritty"
+		],
+		"app_ids-mapping": {
+			 "firefoxdeveloperedition": "firefox-developer-edition"
+		}
 	},
     "cpu": {
         "format": " {usage}%",
@@ -95,6 +111,7 @@
     },
     "pulseaudio": {
         "scroll-step": 5, // %, can be a float
+        "smooth-scrolling-threshold": 1,
         "format": "{icon} {volume}%", // {format_source}
         "format-bluetooth": "{icon} {volume}%", // {format_source}
         "format-bluetooth-muted": "", // {format_source}
@@ -130,6 +147,7 @@
             "",
             ""
         ],
+        "smooth-scrolling-threshold": 1,
         "on-scroll-up": " brightnessctl s 5%+",
         "on-scroll-down": " brightnessctl s 5%-",
         "interval": 2
@@ -179,18 +197,14 @@
     },
     "tray": {
         "icon-size": 16,
-        "spacing": 15
+        "spacing": 12
     },
     "clock": {
         "format":" {:%I:%M %p}",
         //"format": " {:%a %b %d %Y | %H:%M}",
         "format-alt": " {:%a %b %d, %G}",
         "calendar-weeks-pos": "right",
-        "today-format": "<span color='#f38ba8'><b><u>{}</u></b></span>",
-        "format-calendar": "<span color='#f2cdcd'><b>{}</b></span>",
-        "format-calendar-weeks": "<span color='#94e2d5'><b>W{:%U}</b></span>",
-        "format-calendar-weekdays": "<span color='#f9e2af'><b>{}</b></span>",
-        "interval": 60
+        "interval": 40
     },
     "idle_inhibitor": {
         "format": "{icon}",
@@ -203,7 +217,8 @@
         "format": "{}",
          "escape": true,
         "tooltip": false,
-        "exec": "[[ \"$(playerctl -l)\" != \"No players found\" ]] && playerctl metadata --format \"{{ title }}: {{ artist }}\" || echo \"Doesn't look like anything to me\"",
+       //"exec": "[[ \"$(playerctl -l)\" != \"No players found\" ]] && playerctl metadata --format \"{{ title }}: {{ artist }}\" || echo \"Doesn't look like anything to me\"",
+        "exec": "playerctl metadata --format \"{{ title }}: {{ artist }}\"",
         "on-click": "playerctl -p playerctld play-pause",
         "on-scroll-up": "playerctl volume 0.1+",
         "on-scroll-down": "playerctl volume 0.1-",
@@ -217,8 +232,9 @@
         "format": "{}",
         "escape": true,
         "tooltip": false,
-        "exec": "[[ \"$(playerctl status)\" == \"Playing\" ]] && echo   || echo ",
+        "exec": "if [[ $(playerctl status) == \"Playing\" ]]; then echo   ;elif [[ `playerctl status` == \"Paused\" ]]; then echo   ;else echo 'ﴂ';fi",
         "on-click": "playerctl play-pause",
+        "on-click-right": "bars",
         "on-scroll-up": "playerctl next",
         "on-scroll-down": "playerctl previous",
         "interval": 1

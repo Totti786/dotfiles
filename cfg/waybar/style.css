@@ -26,11 +26,13 @@
 #pulseaudio,
 #network,
 #workspaces,
+#backlight,
+#pulseaudio,
 #cpu,
 #memory,
 #disk,
-#tray,
 #temperature,
+#custom-eww,
 #custom-playerctl,
 #custom-playpause,
 #custom-updates,
@@ -38,7 +40,7 @@
 #custom-bluetooth,
 #custom-weather {
 	color: @foreground;
-	padding: 5px 10px 5px 10px;
+	padding: 5px 5px 5px 5px;
 	font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", sans-serif;
 	font-size: 12px;
 	font-weight: 700;
@@ -185,6 +187,7 @@
 /* =============================== */
 
 #window {
+padding-left: 10px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
