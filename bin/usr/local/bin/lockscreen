@@ -46,6 +46,6 @@ run() {
 
 status=$(playerctl -p %any status || true)
 if [ "$status" == "Playing" ]; then	playerctl pause ;fi
-
+pkill rofi
 run && 
 if [ "$status" == "Playing" ]; then playerctl play ;fi
