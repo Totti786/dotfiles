@@ -25,6 +25,10 @@ else
 			new="$(( $res - 1920 + 94 ))"
 			stalonetray --geometry 1x1-$new-34 --grow-gravity SW &
 			main			
+		elif [[ $res -lt "1920" ]]; then
+			stalonetray --geometry 1x1-66-34 --grow-gravity SW &
+			echo "hello"
+			main
 		else
 			stalonetray --geometry 1x1-94-34 --grow-gravity SW &
 			main
