@@ -82,7 +82,7 @@
 			(button
 				:class "button"
 				:onclick "~/.config/eww/scripts/apps power"
-				:onrightclick "${EWW_CMD} close-all"
+				:onrightclick "~/.config/eww/scripts/controls.sh"
 				"⏻"
 			)
 	    )
@@ -306,7 +306,7 @@
 (defwidget music []
 	(revealer
 		:reveal music-panel
-		:transition "slideup"
+		:transition "slidedown"
 		(eventbox
 			:onhover "${EWW_CMD} update music-expand=true"
 			:onhoverlost "${EWW_CMD} update music-expand=false"
@@ -402,13 +402,51 @@
 	)
 )
 
-(defwindow controls
+(defwindow controls-wayland-base
+	:geometry
+		(geometry
+			:x "0.6%"
+			:y "1.0%"
+			:anchor "top right"
+		)
+	:monitor 0
+	:windowtype "dialog"
+	:wm-ignore true
+	(control-panel)
+)
 
+(defwindow controls-x11-base
+	:geometry
+		(geometry
+			:x "-0.5%"
+			:y "3.1%"
+			:anchor "top right"
+		)
+	:monitor 0
+	:windowtype "dialog"
+	:wm-ignore true
+	(control-panel)
+)
+
+(defwindow controls-wayland-minimal
 	:geometry
 		(geometry
 			:x "4.2%"
-			:y "31.25%"
-			:anchor "top right"
+			:y "1.0%"
+			:anchor "bottom right"
+		)
+	:monitor 0
+	:windowtype "dialog"
+	:wm-ignore true
+	(control-panel)
+)
+
+(defwindow controls-x11-minimal
+	:geometry
+		(geometry
+			:x "-5.0%"
+			:y "-4.6%"
+			:anchor "bottom right"
 		)
 	:monitor 0
 	:windowtype "dialog"

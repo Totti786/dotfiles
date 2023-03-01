@@ -60,7 +60,7 @@
 		transition: all ease .1s;
 		color: $fg;
 		&:hover { 
-			background-color: $blue; 
+			background-image: linear-gradient(to right, $blue, $yellow);
 		}
 		&:active { 
 			background-color: $yellow; 
@@ -73,9 +73,10 @@
 			border-radius: 25px ;
 			&.active {
 				color: $bgSecondary;
-				background-color: $accent;
+				background-image: linear-gradient(to right, $red, $yellow);
 				&:hover {
 					background-color: $cyan;
+					
 				}
 				&:active {
 					background-color: $bg;
@@ -164,7 +165,7 @@
 		border-radius: 100px;
 	}
 	highlight {
-		background-color: $accent;
+			background-image: linear-gradient(to right, $red, $blue, $green);
 		border-radius: 100px;
 	}
 }
@@ -172,7 +173,7 @@
 .active {
 	trough {
 		slider {
-			background: $accent;
+			background: $green;
 			border-radius: 100%;
 			margin: -8px;
 		}

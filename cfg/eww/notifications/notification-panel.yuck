@@ -178,7 +178,6 @@
     )
 )
 
-
 (defwidget panel []
     (box 
         :orientation "h"
@@ -189,11 +188,57 @@
     )  
 )
 
-(defwindow notification-panel
+(defwindow notification-panel-wayland-minimal
 	:geometry 
 		(geometry 
 			:x "4.2%"
-			:y "43%"
+			:y "1.0%"
+			:width "0%" 
+			:height "0%"
+			:anchor "bottom right"
+		)
+    :monitor 0
+	:windowtype "dock"
+	:wm-ignore true
+	(panel)
+)
+
+(defwindow notification-panel-x11-minimal
+	:geometry 
+		(geometry 
+			:x "-4.8%"
+			:y "-4.6%"
+			:width "0%" 
+			:height "0%"
+			:anchor "bottom right"
+		)
+    :monitor 0
+	:windowtype "dock"
+	:wm-ignore true
+	(panel)
+)
+
+
+(defwindow notification-panel-wayland-base
+	:geometry 
+		(geometry 
+			:x "0.6%"
+			:y "1%"
+			:width "0%" 
+			:height "0%"
+			:anchor "top right"
+		)
+    :monitor 0
+	:windowtype "dock"
+	:wm-ignore true
+	(panel)
+)
+
+(defwindow notification-panel-x11-base
+	:geometry 
+		(geometry 
+			:x "-0.5%"
+			:y "3.1%"
 			:width "0%" 
 			:height "0%"
 			:anchor "top right"

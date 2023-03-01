@@ -20,10 +20,10 @@ status_icon(){
 }
 
 status_shuffle(){
-	echo "`playerctl -p ${players} shuffle`"
+	echo "$(playerctl -p ${players} shuffle)"
 }
 status_loop(){
-	echo "`playerctl -p ${players} loop`"
+	echo "$(playerctl -p ${players} loop)"
 }
 
 status_value () {
@@ -46,27 +46,6 @@ artist () {
 			echo "by $artist"
 		fi
 	fi
-}
-
-cover_notification () {
-    cover_dir="$cache/notification-cover"
-    [ ! -d $cover_dir ] && mkdir $cover_dir
-    cover="$cover_dir/$RANDOM-cover.png"
-    fallback="$HOME/.config/eww/assets/fallback.png"
-
-    players_pass=$1
-    
-    if [[ $players_pass == "mpd" ]]; then
-      albumart="$(playerctl -p mpd metadata mpris:artUrl)"
-    elif [[ $players_pass == "rhythmbox" ]]; then
-      albumart="$(playerctl -p rhythmbox metadata mpris:artUrl)"
-    else
-      albumart="$(playerctl -p $players_pass metadata mpris:artUrl | sed -e 's/open.spotify.com/i.scdn.co/g')"
-    fi
-
-    [ $(playerctl -p $players_pass metadata mpris:artUrl) ] && curl -s "$albumart" --output $cover || cp $fallback $cover
-
-    echo $cover | tail -n 1
 }
 
 cover () {
