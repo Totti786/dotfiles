@@ -80,6 +80,19 @@ elif [ "$1" == "--name" ]; then
         update_hooks "$PARENT_BAR_PID" 1
 		player
     fi
+elif [ "$1" == "--name-minimal" ]; then
+    if [ "$STATUS" = "Stopped" ]; then
+        echo "No music is playing"
+    elif [ "$STATUS" = "Paused"  ]; then
+        update_hooks "$PARENT_BAR_PID" 2
+        player
+    elif [ "$STATUS" = "No player is running"  ]; then
+        echo ""
+        update_hooks "$PARENT_BAR_PID" 3
+    else
+        update_hooks "$PARENT_BAR_PID" 1
+		player
+    fi
 elif [ "$1" == "--duration" ]; then
 	 if [ "$STATUS" = "Stopped" ]; then
         echo ""
