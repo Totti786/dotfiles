@@ -2,7 +2,7 @@
 
 ## Autostart Programs ----------------------------------------#
 
-source ~/.profile
+if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ; else  conky="On" ;fi
 
 ## XDG Autostart 
 xdg-autostart &
