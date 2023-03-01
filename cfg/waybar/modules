@@ -7,7 +7,8 @@
         "max-length": 45
     },
 	"wlr/workspaces": {
-        "all-outputs": true,
+        "all-outputs": false,
+        "active-only": false,
         "sort-by-number": true,
 		"format": "{icon}",
 		"on-click": "activate",
