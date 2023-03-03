@@ -111,7 +111,7 @@ case $1 in
        cover_notification $2
     ;;
     position)
-        position || echo "--:-- / --:-- "
+        position
     ;;
     shuffle)
         status_shuffle
