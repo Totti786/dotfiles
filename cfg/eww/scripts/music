@@ -79,13 +79,6 @@ position () {
     position=$(playerctl -p $players position)
 	duration=$(playerctl -p $players metadata mpris:length | sed 's/.\{6\}$//')
 	echo "scale=10; $position * 100/$duration" | bc
-
-	#percent="$(( $position * 100 / $duration ))"
-	#if [[ -z `playerctl metadata --format "{{ duration(mpris:length)}}"` ]]; then
-		#echo "" 
-	#else
-		#playerctl metadata --format "{{duration(position) }} "/" {{ duration(mpris:length)}}"
-    #fi
 }
 
 case $1 in

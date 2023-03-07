@@ -38,7 +38,6 @@ radio_status() {
   fi
 }
 
-
 case $1 in
 	"icon")
         symbol

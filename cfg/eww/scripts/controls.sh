@@ -25,7 +25,7 @@ close() {
 notification(){
 	eww -c $config open --toggle notification-panel-"$XDG_SESSION_TYPE"-"$style"
 	}
-	
+
 main(){
 	if [[ ! $(pidof $_eww) ]]; then
 		$_eww -c $config daemon &

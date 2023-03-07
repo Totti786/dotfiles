@@ -64,12 +64,6 @@
 				""
 			)
 			(button
-				:class "button"
-				:onclick "~/.config/eww/scripts/tools.sh"
-				:onrightclick "eww reload"
-				"󰋩"
-			)
-			(button
 				:class "button ${redshift_state == 'on' ? 'active' : ''}"
 				:onclick "~/.local/bin/redshift.sh toggle"
 				"ﯧ"
@@ -350,7 +344,7 @@
 					(revealer
 						:reveal music-expand
 						:transition "slideup"
-						:duration "280ms"
+						:duration "350ms"
 						(eventbox
 							(box
 								:class "song-controls"
