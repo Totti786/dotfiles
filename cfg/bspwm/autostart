@@ -2,7 +2,7 @@
 
 ## Autostart Programs ----------------------------------------#
 
-if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ; else  conky="On" ;fi
+if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ;else  conky="On" ;fi
 
 ## XDG Autostart 
 xdg-autostart &
@@ -44,7 +44,7 @@ picom -b &
 copyq --start-server &
 
 ## Thunar 
-#thunar --daemon  &
+#thunar --daemon &
 
 ## Plank
 killall -9 plank
