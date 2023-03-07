@@ -22,7 +22,7 @@
     horizontal_padding = 15
     text_icon_padding = 0
     frame_width = 0
-    frame_color = "#AFA569"
+    frame_color = "#CD9670"
     separator_color = frame
     sort = yes
     font = JetBrains Mono Regular 10
@@ -43,7 +43,7 @@
 	icon_theme = "Papirus"
 	max_icon_size = 100
     always_run_script = true
-    dmenu = wofi --show dmenu -p dunst:
+    dmenu = rofi --show dmenu -p dunst:
     mouse_left_click = do_action, close_current  
     mouse_middle_click = do_action, close_current
     mouse_right_click = close_all
@@ -56,20 +56,20 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#041B2B80"
-    foreground = "#ccffff"
+    background = "#040A1880"
+    foreground = "#c1ffff"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#041B2B80"
-    foreground = "#ccffff"
+    background = "#040A1880"
+    foreground = "#c1ffff"
     highlight  = "#b6beca"
     timeout = 20
 
 [urgency_critical]
-    background = "#041B2B80"
-    foreground = "#ccffff"
+    background = "#040A1880"
+    foreground = "#c1ffff"
     highlight  = "#b6beca"
     timeout = 60
     

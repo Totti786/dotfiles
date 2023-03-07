@@ -1,9 +1,9 @@
 #               __    __       __
 #    ______  __/ /_  / /______/ /
-#   / ___/ |/_/ __ \/ //_/ __  / 
-#  (__  )>  </ / / / ,< / /_/ /  
-# /____/_/|_/_/ /_/_/|_|\__,_/   
-#        
+#   / ___/ |/_/ __ \/ //_/ __  /
+#  (__  )>  </ / / / ,< / /_/ /
+# /____/_/|_/_/ /_/_/|_|\__,_/
+#
 
 ##---------- Keybindings ----------##
 
@@ -18,7 +18,7 @@ super + shift + Return
 # Drop Down Terminal
 alt + Return
 	tdrop -a -w 70% -h 50% -y 33 -x 15% alacritty
-	
+
 # Terminal (fullscreen)
 super + t
 	furminal --full
@@ -54,13 +54,13 @@ super + shift + {s,w,r,d,g}
 	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura}
 
 # Terminal Apps
-ctrl + alt + {v,n,r,h}
-	alacritty -e {vim,nvim,ranger,htop}
+ctrl + alt + {v,r,h}
+	alacritty -e {vim,ranger,htop}
 
 # Reset Wallpaper
 ctrl + alt + b
 	sh ~/.fehbg
-	
+
 # Lockscreen
 ctrl + alt + l
    lockscreen
@@ -74,7 +74,7 @@ ctrl + alt + w
 # Take a screenshot
 Print
 	takeshot --now
-	
+
 # Take screenshot using flameshot
 alt + Print
 	flameshot gui
@@ -90,27 +90,31 @@ ctrl + Print
 # Brighness control
 XF86MonBrightness{Up,Down}
 	brightness{ --inc, --dec}
-	
+
 # Volume control
 XF86Audio{RaiseVolume,LowerVolume}
 	volume{ --inc, --dec}
 
 XF86AudioMute
 	volume --toggle
-	
+
 # Music control
 XF86Audio{Next,Prev,Play,Pause,Stop}
 	playerctl {next,previous,play-pause,play-pause,stop}
 
 ##---------- Bspwm ----------##
 
-# focus to the given desktop
+# Focus to the given desktop
 super + {1-9,0}
     eval "$(xdotool getmouselocation --shell)" &&\
     xdotool mousemove 960 1185 click 1 &&\
     bspc desktop -f '^{1-9,10}' &&\
     xdotool mousemove --screen $SCREEN $X $Y
-    
+
+# Move to the next or the previous workspace
+super + {~button4, ~button5}
+	bspc desktop -f {prev.local,next.local}
+
 # Close App
 super + {q,c}
 	bspc node -c
@@ -118,7 +122,7 @@ super + {q,c}
 # Kill window
 super + Escape
 	xkill
-	
+
 # Reload Keybinding
 ctrl + alt + Escape
     pkill -USR1 -x sxhkd
@@ -178,7 +182,7 @@ super + {_,shift + }{1-8}
 ctrl + shift + {Left,Right}
 	bspc node --to-desktop {prev,next} --follow
 
-## Resizing windows
+# Resizing windows
 super + alt + Left
 	bspc node -z right -20 0 & bspc node -z left +20 0
 super + alt + Right
@@ -188,18 +192,14 @@ super + alt + Up
 super + alt + Down
 	bspc node -z top 0 +20 & bspc node -z bottom 0 -20
 
-## Rotate windows
+# Rotate windows
 ctrl + super + {r,KP_Divide}
   bspc node @/ -R {90,90}
-
-## Move floating windows
-alt + shift + {Left,Down,Up,Right}
-	bspc node -v {-20 0,0 20,0 -20,20 0}jj
 
 # Hide/Unhide Window
 super + d
 	~/.config/bspwm/winmask		
-	
+
 # Restart Polybar
 super + shift + m
 	sh ~/.config/polybar/launch.sh
