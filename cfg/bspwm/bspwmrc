@@ -18,7 +18,7 @@ workspaces
 bspc config window_gap 10
 bspc config split_ratio 0.50
 sh ~/.config/bspwm/bsp-border
-bspc config borderless_monocle false
+bspc config borderless_monocle true
 bspc config gapless_monocle false
 bspc config single_monocle true
 bspc config focus_follows_pointer true
