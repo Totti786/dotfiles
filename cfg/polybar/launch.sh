@@ -72,7 +72,7 @@ launch_bar() {
 		polybar -q top -c "$DIR"/config.ini &
 		polybar -q bottom -c "$DIR"/config.ini &
 	elif [ $style == "minimal" ]; then 
-		polybar -q bottom -c "$DIR"/minimal/config-minimal.ini &
+		polybar -q main -c "$DIR"/minimal/config-minimal.ini &
 	fi
 }
 
