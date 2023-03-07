@@ -10,7 +10,7 @@ get(){
 			if $(bluetoothctl devices Connected) &> /dev/null; then
 				echo " Not Connected"
 			else 
-				echo  $(bluetoothctl devices Connected | head -n1 | cut -d " " -f3,4,5)
+				echo " $(bluetoothctl devices Connected | head -n1 | cut -d " " -f3-7)"
 			fi
 		fi	
 	else 
@@ -20,7 +20,7 @@ get(){
 
 connect(){
 	device=$(bluetoothctl devices Paired | head -n1 | cut -d " " -f2)
-	name=$(bluetoothctl devices Paired | head -n1 | cut -d " " -f3,4,5)
+	name=$(bluetoothctl devices Paired | head -n1 | cut -d " " -f3-7)
 
 	if bluetoothctl show | grep -q "Powered: yes"; then
 		if [[ $(bluetoothctl info) = "Missing device address argument" ]]; then
@@ -34,4 +34,4 @@ connect(){
 	fi
 }
 
-"$@"
+if [[ ! "$1" ]];then get ;else connect ;fi
