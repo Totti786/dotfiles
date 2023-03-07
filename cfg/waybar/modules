@@ -271,7 +271,7 @@
     "custom/bluetooth": {
         "tooltip": true,
         "format": "{}",
-        "exec": "~/.config/polybar/scripts/bluetoothctl.sh get",
+        "exec": "~/.config/polybar/scripts/bluetoothctl.sh",
         "on-click": "rofi-bluetooth",
 		"on-click-right": "~/.config/polybar/scripts/bluetoothctl.sh connect",
         "interval": 1
