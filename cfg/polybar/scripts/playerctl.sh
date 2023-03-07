@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # The name of polybar bar which houses the main spotify module and the control modules.
-PARENT_BAR="bottom"
+if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ; else  border="2" ;fi
+if [[ "$style" == "base" ]]; then PARENT_BAR="bottom" ; else PARENT_BAR="main" ;fi
+
 PARENT_BAR_PID=$(pgrep -a "polybar" | grep "$PARENT_BAR" | cut -d" " -f1)
 
 # Sends $2 as message to all polybar PIDs that are part of $1
@@ -22,19 +24,19 @@ player(){
 	Current="$(playerctl metadata --format "$Format")"
 	PlayerName="$(playerctl -l | head -n1 | cut -f1 -d ".")"
 	case $PlayerName in
-	  spotify) echo $Current 
+	  spotify) echo "$Current "
 	  ;;
-	  firefox) echo $Current 
+	  firefox) echo "$Current "
 	  ;;
-	  kdeconnect) echo $Current 
+	  kdeconnect) echo "$Current "
 	  ;;  
-	  vlc) echo $Current 嗢
+	  vlc) echo "$Current 嗢"
 	  ;;  
-	  mpv) echo $Current 
+	  mpv) echo "$Current "
 	  ;;  
-	  rhythmbox) echo $Current 蓼
+	  rhythmbox) echo "$Current 蓼"
 	  ;;
-	  *) echo $Current
+	  *) echo "$Current"
 	esac
 }
 duration(){
