@@ -8,7 +8,7 @@
 source "$HOME"/.config/polybar/scripts/info
 
 DIR="$HOME/.config"
-DAY="$(("$(date "+%d")" - 1))"
+DAY="$(( 10#$(date '+%d') - 1 ))"
 MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"
 
