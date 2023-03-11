@@ -26,7 +26,7 @@ checkYay(){
 	}
 
 installDependencies(){
-		sudo pacman -Sy - < "$DIR"/deps/minimal.txt --needed
+		sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt) --needed
 		sudo pacman -U "$DIR"/deps/packages/* --needed
 	}
 
@@ -99,7 +99,6 @@ base(){
 	sudo pacman -Sy "$(cat "$DIR"/deps/minimal.txt "$DIR"/deps/additional.txt)" --needed
 	sudo pacman -U "$DIR"/deps/packages/essential/* --needed
 	sudo pacman -U "$DIR"/deps/packages/additional/* --needed
-	sudo pacman -U "$DIR"/deps/packages/wayland/* --needed
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
 	changeTheme
