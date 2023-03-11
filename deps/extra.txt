@@ -3,9 +3,7 @@ audacity
 baobab
 blanket
 copyq
-curtail
 discord
-discover-overlay
 drawing
 evince
 flatpak
@@ -23,15 +21,13 @@ jre-openjdk
 kotatogram-desktop-beta-dynamic-bin
 krita
 libreoffice-fresh
-losslesscut-bin
 lutris
 mangohud
 megatools
 mkvtoolnix-cli
-obs-studio-browser
+obs-studio
 openboard
 polychromatic
-pulseeffects-legacy
 python-pip
 qbittorrent-enhanced-git
 scrcpy
