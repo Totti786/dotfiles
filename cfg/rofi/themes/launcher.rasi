@@ -101,7 +101,7 @@ button {
 }
 button selected {
     background-color:            @highlight;
-    text-color:                  @foreground;
+    text-color:                  @background-alt;
 }
 
 /*****----- Listview -----*****/
@@ -145,7 +145,7 @@ element normal.active {
 }
 element selected.normal {
     background-color:            @selected;
-    text-color:                  @foreground;
+    text-color:                  @background-alt;
 }
 element selected.urgent {
     background-color:            @urgent;
