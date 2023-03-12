@@ -29,9 +29,8 @@ done
 
 book=$(tac $HOME/.cache/zcache/zlist |  grep -o "/'.*'" | tr -d "'" | tr -d "/" | sed "s/\..*//g" | rofi $rofi_command)
 
-if ! [[ -z $book ]]; then 
+[[ ! -z $book ]] &&
 	zathura "$(grep "$book" "$HOME/.cache/zcache/zlist" | tr -d "'")" &
-fi
 
 }
 
