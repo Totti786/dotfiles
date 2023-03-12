@@ -40,7 +40,7 @@
 #custom-bluetooth,
 #custom-weather {
 	color: @foreground;
-	padding: 5px 5px 5px 5px;
+	padding: 0px 5px 0px 5px;
 	font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", sans-serif;
 	font-size: 12px;
 	font-weight: 700;
