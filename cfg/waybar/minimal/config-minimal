@@ -14,7 +14,7 @@
     "spacing": 2, 					// Gaps between modules (0px) Adjusted in the css
     "margin": 0, 					// Space around the bar
     "margin-top": 0, 				// Space above the bar
-    "margin-bottom": 7, 			// Space below the bar
+    "margin-bottom": 5, 			// Space below the bar
     "margin-left": 80, 				// Space to the left of the bar
     "margin-right": 80, 			// Space to the right of the bar
     "fixed-center": true, 			// Center modules position
