@@ -2,14 +2,16 @@
 
 cached="$HOME/.cache/zcache"
 history="$HOME/.local/share/zathura/history"
+rofi_command="-dmenu -p 'Zathura' -theme ~/.config/rofi/themes/Zselect.rasi"
 
-if [[ ! -d $HOME/.cache/zcache ]]; then mkdir $cached ; fi 
+[[ ! -d "$HOME"/.cache/zcache ]] && mkdir $cached
+> "$cached"/zlist
 
-> $cached/zlist
-
+main() {
 grep -i "home" $history  | tr -d "[]" | while read -r line ; do
-	type=$(file "$line" | cut -d ":" -f2 | cut -d " " -f2)
+	type=$(file -b "$line" | cut -d ' ' -f1)
 	name=$(echo "$line" | rev | cut -d "/" -f1 | rev)
+
 	if [ "$type" == "PDF" ] || [ "$type" == "EPUB" ]; then 
 		if [ "$type" == "PDF" ]; then
 			#if ! [[ -f "$cached/$name.png" ]]; then
@@ -25,8 +27,16 @@ grep -i "home" $history  | tr -d "[]" | while read -r line ; do
 	fi
 done
 
-book=$(tac $HOME/.cache/zcache/zlist |  grep -o "/'.*'" | tr -d "'" | tr -d "/" | sed "s/\..*//g" | rofi -dmenu -p "Zathura" -markup-rows -theme ~/.config/rofi/themes/Zselect.rasi)
+book=$(tac $HOME/.cache/zcache/zlist |  grep -o "/'.*'" | tr -d "'" | tr -d "/" | sed "s/\..*//g" | rofi $rofi_command)
 
 if ! [[ -z $book ]]; then 
 	zathura "$(grep "$book" "$HOME/.cache/zcache/zlist" | tr -d "'")" &
+fi
+
+}
+
+if [[ $(grep -i "home" "$history") ]]; then 
+	main
+else
+	echo "No Documents Were Found" | rofi $rofi_command
 fi
