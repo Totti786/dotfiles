@@ -47,7 +47,7 @@ case $1 in
 		changeTemp $((REDSHIFT_TEMP)) $((REDSHIFT_TEMP-changeValue));
 	fi
     ;;
-  temperature)
+  *)
     case $REDSHIFT in
       on)
         printf " %dK" "$REDSHIFT_TEMP"
