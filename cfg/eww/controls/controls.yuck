@@ -10,7 +10,7 @@
 	        :halign "center"
 	        :valign "center"
 	        :spacing 10
-	        :style "background-image: url('controls/cover')"
+	        :style "background-image: url('.././wpg/templates/wallpaper.jpg')"
 			(overlay
 				(label 
 					:text "${time}" 
@@ -344,7 +344,6 @@
 					(revealer
 						:reveal music-expand
 						:transition "slideup"
-						:duration "350ms"
 						(eventbox
 							(box
 								:class "song-controls"
