@@ -1,7 +1,7 @@
 #!/bin/bash
 
 res="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
-wm="$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g')"
+wm="$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g' | cut -d " " -f1)"
 conkyConfig=$HOME/.config/conky/conky-"$wm".conf
 
 changefont(){
