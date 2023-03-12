@@ -28,7 +28,7 @@ case $chosen in
 		if [[ $ans == $confirm ]]; then	systemctl reboot ;fi
         ;;
     $lock)
-		if [ "$XDG_SESSION_TYPE" == "wayland" ]; then swaylock else; lockscreen ;fi
+		lockscreen
     	;;
     $suspend)
 		ans=$($HOME/.config/rofi/bin/confirm &)
@@ -45,7 +45,7 @@ case $chosen in
 			elif [[ $current_desktop == "bspwm" ]]; then
 				bspc quit
 			elif [[ $XDG_SESSION_TYPE == "wayland" ]]; then
-				loginctl kill-user $(whoami)
+				hyprctl dispatch exit
 			fi
         fi
         ;;
