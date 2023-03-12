@@ -205,7 +205,7 @@
         //"format": " {:%a %b %d %Y | %H:%M}",
         "format-alt": " {:%a %b %d, %G}",
         "calendar-weeks-pos": "right",
-        "interval": 40
+        "interval": 5
     },
     "idle_inhibitor": {
         "format": "{icon}",
@@ -238,7 +238,7 @@
         "on-click-right": "bars",
         "on-scroll-up": "playerctl next",
         "on-scroll-down": "playerctl previous",
-        "interval": 1
+        "interval": 2
     },    
     "custom/launcher": {
         "format": "{}",
