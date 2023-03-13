@@ -39,7 +39,7 @@
 	    (eventbox
 			:onhover "${EWW_CMD} update battery=true"
 			:onhoverlost "${EWW_CMD} update battery=false"
-			:onclick "~/.config/eww/scripts/battery toggle"
+			:onclick "./scripts/battery toggle"
 			:class "useractions"
 			:halign "start"
 			:valign "center"
@@ -59,7 +59,7 @@
 	        :spacing 5
 			(button
 				:class "button"
-				:onclick "~/.config/eww/scripts/apps lock"
+				:onclick "./scripts/apps lock"
 				:onrightclick "eww reload"
 				""
 			)
@@ -70,13 +70,13 @@
 			)
 			(button
 				:class "button"
-				:onclick "~/.config/eww/scripts/apps settings"
+				:onclick "./scripts/apps settings"
 				"漣"
 			)
 			(button
 				:class "button"
-				:onclick "~/.config/eww/scripts/apps power"
-				:onrightclick "~/.config/eww/scripts/controls.sh"
+				:onclick "./scripts/apps power"
+				:onrightclick "./scripts/controls.sh"
 				"⏻"
 			)
 	    )
@@ -104,8 +104,8 @@
 					:space-evenly true
 					(sysblock
 				        :icon "${network_icon}"
-				        :onclick "~/.config/eww/scripts/apps wifi"
-				        :onrightclick "~/.config/eww/scripts/apps wifi"
+				        :onclick "./scripts/apps wifi"
+				        :onrightclick "./scripts/apps wifi"
 				        :active "${network_status == 'Connected' ? true : false}"
 				        :label "${network_ssid}"
 					)
@@ -116,7 +116,7 @@
 					:space-evenly true
 			        (sysblock
 						:icon "${bluetooth_state == 'on' ? '' : ''}"
-						:onclick "~/.config/eww/scripts/bluetooth toggle"
+						:onclick "./scripts/bluetooth toggle"
 						:onrightclick "~/.config/polybar/scripts/bluetoothctl.sh connect"
 						:active "${bluetooth_state == 'on' ? true : false}"
 						:label "Bluetooth"
@@ -145,8 +145,8 @@
 					:space-evenly true
 					(sysblock
 						:icon "${dnd_status == 'On' ? '󰍶' : '󱑙'}"
-						:onclick "~/.config/eww/scripts/dnd toggle"
-						:onrightclick "~/.config/eww/scripts/dnd toggle"
+						:onclick "./scripts/dnd toggle"
+						:onrightclick "./scripts/dnd toggle"
 						:active "${dnd_status == 'On' ? true : false}"
 						:label "Don't Disturb"
 					)
@@ -162,8 +162,8 @@
 					:space-evenly true
 					(sysblock
 						:icon "${timer == 'Timer' ? '' : ''}"
-						:onclick "~/.config/eww/scripts/timer.sh toggle"
-						:onrightclick "~/.config/eww/scripts/timer.sh toggle"
+						:onclick "./scripts/timer.sh toggle"
+						:onrightclick "./scripts/timer.sh toggle"
 						:active "${timer == 'Timer' ? false : true}"
 						:label timer
 					)
@@ -174,8 +174,8 @@
 					:space-evenly true
 					(sysblock
 						:icon "${vpn_status == 'On' ? '旅' : 'ﯳ'}"
-						:onclick "~/.config/eww/scripts/vpn.sh toggle"
-						:onrightclick "~/.config/eww/scripts/vpn.sh toggle"
+						:onclick "./scripts/vpn.sh toggle"
+						:onrightclick "./scripts/vpn.sh toggle"
 						:active "${vpn_status == 'On' ? true : false}"
 						:label "VPN"
 					)
@@ -199,7 +199,7 @@
 				:class "timer"
 				(button
 					:class "button"
-					:onclick "~/.config/eww/scripts/timer.sh stopwatch"
+					:onclick "./scripts/timer.sh stopwatch"
 					"祥"
 				)
 	        )
@@ -207,7 +207,7 @@
 				:class "timer"	
 				(button
 					:class "button"
-					:onclick "~/.config/eww/scripts/timer.sh countdown"
+					:onclick "./scripts/timer.sh countdown"
 					""
 				)
 			)
@@ -275,7 +275,7 @@
 			(scale
 				:value volume_value
 				:hexpand true
-				:onchange "~/.config/eww/scripts/volume.sh set {}"
+				:onchange "./scripts/volume.sh set {}"
 				:min 0
 				:max 101
 			)
@@ -337,8 +337,9 @@
 					(box
 						:class "music-bar"
 						(scale
-						:onchange "playerctl position `bc \"{} * $(playerctl metadata mpris:length) / 1000000 / 100\"`"
-						:value {song-position}
+							:hexpand true
+							:value {song-position}
+							:onchange "scripts/music seek {}"
 						)
 			        )
 					(revealer
@@ -445,4 +446,25 @@
 	:windowtype "dialog"
 	:wm-ignore true
 	(control-panel)
+)
+
+(defwidget closer []
+    (eventbox
+		:onclick "./scripts/controls.sh"
+		:onrightclick "./scripts/controls.sh"
+		:onscroll "./scripts/controls.sh"
+    
+    )
+)
+  
+(defwindow background-closer
+	:monitor 0
+	:geometry
+		(geometry
+			:width "99%" 
+			:height "94%"
+			:anchor "center"
+		)
+	:stacking "fg"
+	(closer)
 )
