@@ -10,14 +10,15 @@ if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ; else  style="base" ;f
 
 open() {
 	touch $cache
+	eww -c $config open --toggle background-closer
 	eww -c $config open controls-"$XDG_SESSION_TYPE"-"$style" &&
-	[[ $(pgrep polybar) ]] && polybar-msg action "#control.hook.0"	
-}
+	[[ $(pgrep polybar) ]] && polybar-msg action "#control.hook.0"
+	}
 
 close() {
 	rm $cache
 	[[ -z "$(playerctl -l | head -n 1)" ]] && eww -c $config update music-panel=false
-	eww -c $config close controls-"$XDG_SESSION_TYPE"-"$style" &&
+	eww -c $config close-all &&
 	[[ $(pgrep polybar) ]] && polybar-msg action "#control.hook.1"
 }
 
