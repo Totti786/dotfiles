@@ -17,7 +17,7 @@
                 (eventbox
                     :cursor "pointer"
                     (button 
-                        :onclick "scripts/logger remove ${SL}"
+                        :onclick "./scripts/logger remove ${SL}"
                         :class "notification-close" 
                         :halign "end"
                         :tooltip "Remove this notification"
@@ -95,7 +95,7 @@
                 (eventbox
                     :cursor "pointer"
                     (button 
-                        :onclick "scripts/logger remove ${SL}"
+                        :onclick "./scripts/logger remove ${SL}"
                         :class "notification-close" 
                         :halign "end"
                         :tooltip "Remove this notification"
@@ -126,7 +126,7 @@
                             "Open"
                         )
                         (button 
-                            :onclick "scripts/logger remove ${SL} && rm -rf ${image}" 
+                            :onclick "./scripts/logger remove ${SL} && rm -rf ${image}" 
                             :class "notification-screenshot-delete" 
                             "Delete" 
                         )
@@ -163,7 +163,7 @@
 	                 
 	                    (button 
 	                        :class "notification-box-clear"
-	                        :onclick "scripts/logger clear"
+	                        :onclick "./scripts/logger clear"
 	                        :valign "center"
 	                        :halign "end" 
 	                        "Clear All" 
