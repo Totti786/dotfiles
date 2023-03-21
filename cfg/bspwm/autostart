@@ -55,8 +55,9 @@ if [ $conky == "On" ]; then
 	sh ~/.local/bin/conky.sh &
 fi
 
-## Fix Plank
-bspc subscribe node_add | while read -r _
-do
-  xdo raise -N Plank
-done &
+### Fix Plank
+if [[ $(pgrep plank) ]]; then xdo raise -N Plank ;fi
+#bspc subscribe node_add | while read -r _
+#do
+  #xdo raise -N Plank
+#done &
