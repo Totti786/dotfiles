@@ -21,7 +21,7 @@ checkYay(){
 		echo "Installing the AUR helper yay..."
 		sudo pacman -Syu yay
 	else 
-		 echo "The AUR helper yay is already installed"
+		echo "The AUR helper yay is already installed"
 	fi
 	}
 
@@ -159,7 +159,7 @@ additionalPrograms(){
 	if $Dialog --yesno "Do you want to select wich additional apps you want to install?\n	
 		Seleceting \"No\" will install all the additional apps" 20 60 ;then
 	  	progs=$($Dialog --no-items --checklist "Choose the programs you want installed:"  20 60 12 \
-		$(for app in $(cat "$DIR"/deps/extra.txt); do	echo "$app" off ;done) \
+		$(for app in $(cat "$DIR"/deps/extra.txt); do echo "$app" off ;done) \
 		2>&1 >/dev/tty) &&
 		sudo pacman -Sy $progs --needed
 	else
