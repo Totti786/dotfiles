@@ -41,8 +41,8 @@ alt + F1
 	sh ~/.config/rofi/bin/launcher
 
 # Rofi Menus/Applets
-super + {m,x,r,s,i,n}
-	sh ~/.config/rofi/bin/{media,powermenu,asroot,screenshot,network,~/.config/rofi/bin/network_menu}
+super + {m,x,r,s}
+	sh ~/.config/rofi/bin/{media,powermenu,asroot,screenshot}
 
 ##---------- Applications ----------##
 
@@ -92,13 +92,10 @@ XF86MonBrightness{Up,Down}
 	brightness{ --inc, --dec}
 
 # Volume control
-XF86Audio{RaiseVolume,LowerVolume}
-	volume{ --inc, --dec}
+XF86Audio{RaiseVolume,LowerVolume,Mute}
+	volume{ --inc, --dec, --toggle}
 
-XF86AudioMute
-	volume --toggle
-
-# Music control
+# Media control
 XF86Audio{Next,Prev,Play,Pause,Stop}
 	playerctl {next,previous,play-pause,play-pause,stop}
 
@@ -111,9 +108,31 @@ super + {1-9,0}
     bspc desktop -f '^{1-9,10}' &&\
     xdotool mousemove --screen $SCREEN $X $Y
 
+# Switch workspace
+ctrl + super + {Left,Right}
+	bspc desktop -f {prev.local,next.local}
+
 # Move to the next or the previous workspace
 super + {~button4, ~button5}
 	bspc desktop -f {prev.local,next.local}
+
+# Send focused window to another workspace and switch to the workspace
+super + {_,shift + }{1-8}
+	bspc {desktop -f,node -d} '^{1-8}' --follow
+
+ctrl + shift + {Left,Right}
+	bspc node --to-desktop {prev,next} --follow
+
+ctrl + shift + {~button4, ~button5}
+	bspc node --to-desktop {prev,next} --follow
+
+# Switch window
+alt + Tab
+	windowswitch windowcd
+
+# Switch window (across worksapces)
+super + Tab
+	windowswitch window
 
 # Close App
 super + {q,c}
@@ -122,14 +141,7 @@ super + {q,c}
 # Kill window
 super + Escape
 	xkill
-
-# Reload Keybinding
-ctrl + alt + Escape
-    pkill -USR1 -x sxhkd
-
-# Quit/Restart bspwm
-ctrl + shift + q
-	bspc exit 	
+	
 # Split horizontal, vertical or cancel
 super + shift + {h,v,q}
 	bspc node -p {east,south,cancel}
@@ -140,8 +152,11 @@ super + ctrl + {1-9}
 
 # Fullscreen
 super + shift + f
-#	bspc desktop -l next
     bspc node -t "~"fullscreen
+
+# Monocle
+super + shift + t
+	bspc desktop -l next
 
 # Toggle beetwen floating & tiled
 super + space
@@ -149,7 +164,6 @@ super + space
 
 # Pseudo Tiled & tiled mode
 super + shift + space
-#super + {p,t}
     bspc node -t "~"{pseudo_tiled,tiled}
 
 # Set the node flags
@@ -163,24 +177,6 @@ alt + F8
 super + {_,shift + }{Left,Down,Up,Right}
 	bspc node -{f,s} {west,south,north,east}
 
-# Switch window
-alt + Tab
-	windowswitch windowcd
-
-# Switch window (across worksapces)
-super + Tab
-	windowswitch window
-
-# Switch workspace
-ctrl + super + {Left,Right}
-	bspc desktop -f {prev.local,next.local}
-
-# Send focused window to another workspace and switch to the workspace
-super + {_,shift + }{1-8}
-	bspc {desktop -f,node -d} '^{1-8}' --follow
-
-ctrl + shift + {Left,Right}
-	bspc node --to-desktop {prev,next} --follow
 
 # Resizing windows
 super + alt + Left
@@ -196,6 +192,14 @@ super + alt + Down
 ctrl + super + {r,KP_Divide}
   bspc node @/ -R {90,90}
 
+# Reload Keybinding
+ctrl + alt + Escape
+    pkill -USR1 -x sxhkd
+
+# Quit bspwm
+ctrl + shift + q
+	bspc exit 	
+
 # Hide/Unhide Window
 super + d
 	~/.config/bspwm/winmask		
@@ -203,5 +207,6 @@ super + d
 # Restart Polybar
 super + shift + m
 	sh ~/.config/polybar/launch.sh
+
 
 ##---------- EOF ----------##
