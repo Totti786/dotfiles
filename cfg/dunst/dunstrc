@@ -16,13 +16,13 @@
     progress_bar_max_width = 300
     indicate_hidden = yes
     transparency = 1
-    corner_radius = 14
+    corner_radius = 12
     separator_height = 5
     padding = 15
     horizontal_padding = 15
     text_icon_padding = 0
     frame_width = 0
-    frame_color = "#A39D97"
+    frame_color = "#CD9670"
     separator_color = frame
     sort = yes
     font = JetBrains Mono Regular 10
@@ -56,20 +56,20 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#0c151d80"
-    foreground = "#fffaeb"
+    background = "#040A1880"
+    foreground = "#c1ffff"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#0c151d80"
-    foreground = "#fffaeb"
+    background = "#040A1880"
+    foreground = "#c1ffff"
     highlight  = "#b6beca"
     timeout = 20
 
 [urgency_critical]
-    background = "#0c151d80"
-    foreground = "#fffaeb"
+    background = "#040A1880"
+    foreground = "#c1ffff"
     highlight  = "#b6beca"
     timeout = 60
     
