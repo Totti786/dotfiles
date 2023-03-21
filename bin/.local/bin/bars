@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-rofi_command="rofi -theme ~/.config/rofi/themes/layouts.rasi"
+rofi_command="rofi -theme $HOME/.config/rofi/themes/layouts.rasi"
 
 # Variable passed to rofi
 options="Default Bar\nMinimal Bar\nBattery Saver\nUpdate Menu\nExit"
@@ -10,20 +10,20 @@ case $chosen in
     Default\ Bar)
 		sed -i 's/^style=.*/style=base/' ~/.profile
    		if [ "$XDG_SESSION_TYPE" == "x11" ];then
-			sh ~/.config/polybar/launch.sh
+			"$HOME"/.config/polybar/launch.sh
 			pkill stalonetray && ~/.config/polybar/scripts/systray &
 		else 
-			sh ~/.config/waybar/launch_waybar
+			"$HOME"/.config/waybar/launch_waybar
 		fi
         ;;
     Minimal\ Bar)
    		sed -i 's/^style=.*/style=minimal/' ~/.profile
    		if [ "$XDG_SESSION_TYPE" == "x11" ];then
-			sh ~/.config/polybar/launch.sh
-			pkill stalonetray && ~/.config/polybar/scripts/systray &
-			killall -q -9 conky
+			"$HOME"/.config/polybar/launch.sh
+			pkill stalonetray && "$HOME"/.config/polybar/scripts/systray &
+			pkill conky
 		else
-			sh ~/.config/waybar/launch_waybar
+			"$HOME"/.config/waybar/launch_waybar
 		fi
         ;;
     Battery\ Saver)
