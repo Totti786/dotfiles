@@ -17,7 +17,7 @@ open() {
 
 close() {
 	rm $cache
-	[[ -z "$(playerctl -l | head -n 1)" ]] && eww -c $config update music-panel=false
+	[[ -z "$(playerctl -sl | head -n 1)" ]] && eww -c $config update music-panel=false
 	eww -c $config close-all &&
 	[[ $(pgrep polybar) ]] && polybar-msg action "#control.hook.1"
 }

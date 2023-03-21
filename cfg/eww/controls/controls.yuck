@@ -1,32 +1,58 @@
+(defvar cover-reveal true)
 (defwidget header []
-	(box
-		:class "datebox"
-        :orientation "h"
-        :space-evenly true
+	(revealer
+		:reveal cover-reveal
+		:transition "slidedown"
 		(box
-			:class "date-cover"
-	        :space-evenly false
+			:class "datebox"
 	        :orientation "h"
-	        :halign "center"
-	        :valign "center"
-	        :spacing 10
-	        :style "background-image: url('.././wpg/templates/wallpaper.jpg')"
-			(overlay
-				(label 
-					:text "${time}" 
-					:class "time"
+	        :space-evenly true
+			(eventbox
+				:onrightclick "${EWW_CMD} update cover-reveal=false && ${EWW_CMD} update todo=true"
+				;;:onhoverlost "${EWW_CMD} update cover-reveal=true"
+				:class "date-cover"
+		        :halign "center"
+		        :valign "center"
+		        :style "background-image: url('.././wpg/templates/wallpaper.jpg')"
+				(overlay
+					(label
+						:text "${time}"
+						:class "time"
+					)
+					(label
+						:text music_listen
+					)
+					(label 
+						:text "${day}\\n${date} "
+						:class "day"
+						:valign "end"
+						:halign "start"
+					)
 				)
-				(label 
-					:text music_listen
-				)
-				(label 
-					:text "${day}\\n${date} "
-					:class "day"
-					:valign "end"
-					:halign "start"
+		    )
+		)
+	)
+)
+
+(defvar todo false)
+(defwidget todo []
+	(revealer
+		:reveal todo
+		:transition "slideup"
+		(eventbox
+			:onrightclick "${EWW_CMD} update todo=false && ${EWW_CMD} update cover-reveal=true"
+			(box
+				:orientation "v"
+				:space-evenly false
+	            :spacing 0
+	            :class 'todobox'
+				(box :class 'todo'
+					(literal
+						:content todo-cards
+					)
 				)
 			)
-	    )
+		)
 	)
 )
 
@@ -317,29 +343,28 @@
 					:hexpand "false" 
 					:vexpand "false"
 					(label
-						:class "now-playing" 
-						:halign "start" 
+						:class "now-playing"
+						:halign "start"
 						:text {song-status}
 						:limit-width 30
 					)
 					(label
-						:class "song-title" 
-						:halign "start"			
+						:class "song-title"
+						:halign "start"
 						:text {song-title}
 						:limit-width 32
 					)
 					(label
-						:class "song-artist" 
-						:halign "start"			
+						:class "song-artist"
+						:halign "start"
 						:text {song-artist}
 						:limit-width 45
 					)
 					(box
 						:class "music-bar"
 						(scale
-							:hexpand true
 							:value {song-position}
-							:onchange "scripts/music seek {}"
+							;;:onchange "scripts/music seek {}"
 						)
 			        )
 					(revealer
@@ -388,6 +413,7 @@
 		:space-evenly false
 		:spacing 10
 	(header)
+	(todo)
 	(sysbuttons)
 	(timer)
 	(music)
@@ -452,8 +478,7 @@
     (eventbox
 		:onclick "./scripts/controls.sh"
 		:onrightclick "./scripts/controls.sh"
-		:onscroll "./scripts/controls.sh"
-    
+		;;:onscroll "./scripts/controls.sh"    
     )
 )
   

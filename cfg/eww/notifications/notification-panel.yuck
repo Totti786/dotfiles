@@ -160,7 +160,6 @@
 	                )
 	                (eventbox
 	                    :cursor "pointer"
-	                 
 	                    (button 
 	                        :class "notification-box-clear"
 	                        :onclick "./scripts/logger clear"

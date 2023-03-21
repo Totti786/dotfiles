@@ -2,7 +2,7 @@
 .actions {
 	background-color: $bg;
 	color: $fg;
-	border-radius: 16px;  
+	border-radius: 12px;  
 	font-family: JetBrainsMono Nerd Font;
 	padding: 10px 10px 10px 10px;
 }
@@ -15,21 +15,21 @@
 		background-position: center;
 		border-radius: 16px;
 		transition: 0s;
-		padding: 7px;
 		.time {
 			color: $fg-alt;
 			font-size: 105px;
-			padding: 5px 23px 5px 23px;
+			padding: 10px 30px 10px 30px;
 		}
 		.day {
 			color: $fg;
-			margin-left: 5px;
+			margin-left: 10px;
+			margin-bottom: 2px;
 			font-family: 'JetBrainsMono Nerd Font';
 			font-size: 30px;
 		}
 		.date {
-		color: $accent;
-		font-size: 25px;
+			color: $accent;
+			font-size: 25px;
 		}
 	}
 }
@@ -200,6 +200,33 @@
 			}
 		}
 	}	
+}
+
+/** TODO ******************************/
+
+.todobox{
+	background-color: $cyan;
+	border-radius: 18px;
+	.todo{
+		padding: 5px;
+		background-image: linear-gradient(to right, $cyan, $purple, $green);
+		border-radius: 15px;
+		.line{
+			background-color: $bg;
+			color: $fg;
+			border-radius: 12px;
+			font-size: 14px;
+			padding: 7px;
+		}
+		.button{
+			&:hover {
+				color: $green;
+			}
+			&:active {
+				background-color: $bg;
+			}
+		}
+	}
 }
 
 /*************************************************/

@@ -85,7 +85,7 @@ comp(){
 	
 	if [[ `pgrep picom` ]]; then 
 		pkill picom 
-		brightnessctl set 50%
+		brightnessctl set 25%
 		sed -i "s/opacity: .*/opacity: 1.0/g" ~/.config/alacritty/alacritty.yml
 		sed -i -e "s/background = .*/background = ${cc}/g" ~/.config/polybar/colors.ini
 		sed -i -e "s/background: .*/background: ${cc};/g" ~/.config/rofi/themes/colors.rasi		

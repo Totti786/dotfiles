@@ -70,9 +70,12 @@ make_literal () {
     caches="$(cat "$cache" | head -n40 | tr '\n' ' ')"
 
     if [[ "$caches" == "" ]]; then
-        echo '(box :class "notifications-empty-box" :height 500 :orientation "v" :space-evenly "false" (image :class "notifications-empty-banner" :valign "end" :vexpand true :path "assets/notifications/notifications-off.svg" :image-width 300 :image-height 200) (label :vexpand true :valign "start" :wrap true :class "notifications-empty-label" :text "No Notifications"))'
+        echo '(box :class "notifications-empty-box" :height 500 :orientation "v" :space-evenly "false" \
+			 (image :class "notifications-empty-banner" :valign "end" :vexpand true :path "assets/notifications/notifications-off.svg" :image-width 300 :image-height 200) \
+			 (label :vexpand true :valign "start" :wrap true :class "notifications-empty-label" :text "No Notifications"))'
     else    
-        echo "(scroll :height 500 :vscroll true (box :orientation 'v' :class 'notification-scroll-box' :spacing 10 :space-evenly 'false' $caches))"
+        echo "(scroll :height 500 :vscroll true \
+			 (box :orientation 'v' :class 'notification-scroll-box' :spacing 10 :space-evenly 'false' $caches))"
     fi
 }
 

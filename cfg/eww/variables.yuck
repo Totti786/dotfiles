@@ -112,11 +112,15 @@
     "scripts/logger subscribe"
 )
 
+;; TODO
+(deflisten todo-cards
+	"scripts/todo.sh literal"
+)
+
 ;; Top Panel
 (deflisten workspaces
 	"scripts/workspaces"
 )
-
 
 (deflisten network_speed
 	"scripts/network-speed.sh"
