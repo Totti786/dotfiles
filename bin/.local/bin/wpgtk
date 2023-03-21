@@ -375,7 +375,7 @@ run(){
 			bg_dark=`printf "%s\n" "$color0_darker_50"`
 			bg_rgb="$((0x${background:1:2})),$((0x${background:3:2})),$((0x${background:5:2}))"
 			## merging the Xresources files with the main one
-			xrdb -merge ~/.cache/wal/colors.Xresources		
+			xrdb -merge "$HOME"/.cache/wal/colors.Xresources		
 		fi 
 	else
 		echo "[!] 'wpgtk' is not installed."
