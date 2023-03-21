@@ -40,7 +40,7 @@ player(){
 	esac
 }
 duration(){
-	CurrentD="$(playerctl metadata --format "$Duration")"
+	CurrentD="$(playerctl -s metadata --format "$Duration")"
 	PlayerName="$(playerctl -l | head -n1 | cut -f1 -d ".")"
 	case $PlayerName in
 	  spotify) echo " $CurrentD "
