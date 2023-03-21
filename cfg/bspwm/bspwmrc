@@ -37,7 +37,7 @@ declare -a floating=(alacritty-float Lxappearance obs
 	Xfce4-settings-manager Sxiv Trackma-gtk gnome-calculator
 	org.gnome.Weather Xfce4-display-settings Steam Wpg
 	TelegramDesktop KotatogramDesktop Anki
-	Xfce4-power-manager-settings Eog)
+	Xfce4-power-manager-settings Eog loupe)
 	
 
 for i in ${floating[@]}; do
@@ -49,7 +49,12 @@ for i in "${tiled[@]}"; do
 	bspc rule -a "$i" manage=on state=tiled
 done
 bspc rule -a '*:*:Picture-in-Picture' sticky=on
-bspc rule -a Plank manage=off locked=on border=off state=floating focus=off
+bspc rule -a Plank layer=above manage=off locked=on border=off state=floating focus=off
+
 
 ## Autostart
 sh ~/.config/bspwm/autostart
+
+
+
+
