@@ -5,7 +5,7 @@ export PATH="${PATH}:$HOME/.local/bin"
 
 ## Configuration --------------------------------------------#
 
-workspaces() {
+workspaces(){
 	name=1
 	for monitor in `bspc query -M`; do
 		bspc monitor ${monitor} -n "$name" -d '一' '二' '三' '四' '五' '六' '七' '八'
@@ -39,7 +39,6 @@ declare -a floating=(alacritty-float Lxappearance obs
 	TelegramDesktop KotatogramDesktop Anki
 	Xfce4-power-manager-settings Eog loupe)
 	
-
 for i in ${floating[@]}; do
    bspc rule -a $i state=floating follow=on focus=on; done
 
@@ -54,7 +53,3 @@ bspc rule -a Plank layer=above manage=off locked=on border=off state=floating fo
 
 ## Autostart
 sh ~/.config/bspwm/autostart
-
-
-
-
