@@ -17,9 +17,7 @@ xcape -e 'Super_L=Alt_L|F1' &
 xcape -e 'Super_R=Alt_L|F1' &
 
 # Polkit agent
-#if [[ ! `pidof xfce-polkit` ]]; then
-	#/usr/lib/xfce-polkit/xfce-polkit &
-#fi 
+#if [[ ! $(pidof xfce-polkit) ]]; then /usr/lib/xfce-polkit/xfce-polkit & ;fi 
 
 ## Fix cursor
 xsetroot -cursor_name left_ptr &
@@ -55,9 +53,8 @@ if [ $conky == "On" ]; then
 	sh ~/.local/bin/conky.sh &
 fi
 
-### Fix Plank
-if [[ $(pgrep plank) ]]; then xdo raise -N Plank ;fi
-#bspc subscribe node_add | while read -r _
-#do
-  #xdo raise -N Plank
-#done &
+## Fix Plank
+bspc subscribe node_add | while read -r _
+do
+  xdo raise -N Plank
+done &
