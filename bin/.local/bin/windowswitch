@@ -9,7 +9,7 @@ window(){
        -kb-row-down "Super+Tab,Super+l,Super+ISO_Left_Tab" \
        -kb-row-up "Super+Shift+Tab,Super+h,Super+n""
 
-	if [[ $(bspc query --nodes) ]]; then 
+	if [[ $(wmctrl -l) ]]; then 
 		rofi $1 -theme $path $options -modi "window" -show &
 	else
 		echo "          Doesn't look like anything to me" | rofi -theme $path -dmenu
