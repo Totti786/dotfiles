@@ -46,7 +46,7 @@ get_weather_data() {
 			UV Index: $uv 
 			Air Quality: $aqi
 			Precipitation: $(printf "%.2f" $precipitation)%
-			Windspeed: $windspeed m/s \n
+			Windspeed: $windspeed m/s
 			EOF
 		fi
 		
