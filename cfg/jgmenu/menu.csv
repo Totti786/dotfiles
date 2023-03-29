@@ -39,10 +39,11 @@ Edit weather Data,exo-open ~/.config/polybar/scripts/info
 
 ^tag(bspwm)
 Back,^back()
-Restart bspwm,bspc wm -r 
-Restart sxhkd,pkill -USR1 -x sxhkd
+Edit Autostart,exo-open ~/.config/bspwm/autostart
 Edit config,exo-open ~/.config/bspwm/bspwmrc
 Edit keybinds,exo-open ~/.config/sxhkd/sxhkdrc
+Restart bspwm,bspc wm -r 
+Restart sxhkd,pkill -USR1 -x sxhkd
 
 
 ^tag(Exit)
