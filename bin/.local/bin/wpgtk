@@ -4,7 +4,8 @@
 alacritty="$HOME/.config/alacritty/colors.yml"
 polybar="$HOME/.config/polybar/colors.ini"
 rofi="$HOME/.config/rofi/themes/colors.rasi"
-discord="$HOME/.config/BetterDiscord/data/stable/custom.css"
+#discord="$HOME/.config/BetterDiscord/data/stable/custom.css"
+discord="$HOME/.config/Vencord/settings/quickCss.css"
 dunst="$HOME/.config/dunst/dunstrc"
 geany="$HOME/.config/geany/colorschemes/Pywal.conf"
 zathura="$HOME/.config/zathura/zathurarc"
@@ -21,7 +22,7 @@ conky2="$HOME/.config/conky/conky-bspwm.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
 
 ## Change colors
-change_colors() {
+change_colors(){
 	run &&
 	# rofi
 	cat > $rofi <<- EOF
@@ -185,10 +186,9 @@ change_colors() {
 		EOF
 
 	# resize and move wallpaper for use by other programs
-	#convert -resize 1920x1080! $wallpaper ~/.config/wpg/templates/wallpaper.jpg
-	cp $wallpaper ~/.config/wpg/templates/wallpaper.jpg
+	#cp $wallpaper ~/.config/wpg/templates/wallpaper.jpg
+	convert -resize $(xdpyinfo | awk '/dimensions/{print $2}') -blur 0x6 "$wallpaper" ~/.config/wpg/templates/wallpaper.jpg
 	ln -s $wallpaper ~/.config/wpg/wallpapers &> /dev/null
-	#convert -resize 1920x1080 -blur 0x8 $wallpaper ~/.config/wpg/templates/wallpaper-blur.jpg
 }
 
 # this functions should only be used if you have a system with a seperate home partition 
@@ -208,7 +208,7 @@ lockPerms(){
 	else 
 		echo "Can't find a compatible sddm theme"
 	fi
-	}
+}
 
 # this funcction only works after using the lockPermissions function
 copyWal(){
@@ -226,7 +226,7 @@ copyWal(){
 	else 
 		echo "Can't find a compatible sddm theme"
 	fi
-	}
+}
 
 ## Kill already running process
 restart(){
@@ -238,26 +238,28 @@ restart(){
 		$1 $2 $3 & disown
 		#echo "$1 is running"
 	fi
-	}
+}
 	
 ## Check if the command exists and then runs it
 check(){
 	if command -v $1 &> /dev/null; then 
 		$1 $2 $3 & disown
 	fi
-	}
-	
+}
+
 # change the wpg config file so this script can run whenever wpg is invoked 
 wpgConfig(){
 	sed -i -e 's/execute_cmd = false/execute_cmd = true/g' ~/.config/wpg/wpg.conf
 	sed -i -e 's/reload = .*/reload = true/g' ~/.config/wpg/wpg.conf
 	sed -i -e 's/auto_adjust = false/auto_adjust = true/g' ~/.config/wpg/wpg.conf
 	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" ~/.config/wpg/wpg.conf
-	}	
+}	
 
 wall(){
 	if [ -z "$1" ]; then
 	echo "No image was selected"
+	elif [[ "$1" == "$(cat $HOME/.fehbg | cut -d "'" -f2  | tail -n1)" ]]; then
+		echo "This wallpaper is already set"
 	else 
 	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
 		~/.config/hypr/scripts/wall $1
@@ -267,20 +269,41 @@ wall(){
 	wpg -A "$1" && wpg -s "$1" 
 	rm "$1""_wal_sample.png"
 	fi
-	}
+}
 	
 random(){
 	cd $Wallpapers/Wallpapers.git/ &&
 	image=$(find -type f -not -path "./.git/*" | shuf -n 1)
 	wall $Wallpapers/Wallpapers.git/${image:2}
-	}
+}
 
 # this function uses implements a sxiv to create a wallpaper selector for wpg 
 # to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
 pick(){
 	wal=$(sxiv -torb $Wallpapers)
 	wall $wal
-	}	
+}	
+
+dynamic(){
+	dynmaic_wall="$HOME/Pictures/Dynamic"
+	if [[ -d "$dynmaic_wall" ]]; then 
+		ls "$dynmaic_wall"
+		# get current hour
+		if [[ ! -z "$1" ]]; then
+			num=$(($(date +%k)/1))
+			image="$dynmaic_wall/$1/$num"
+
+			# get image format
+			if [[ -f "${image}.png" ]]; then
+				wall "$dynmaic_wall/$1/$num.png"
+			elif [[ -f "${image}.jpg" ]]; then
+				wall "$dynmaic_wall/$1/$num.jpg"
+			fi	
+		fi
+	else
+		echo "Dynamic Wallpapers Not Found!"
+	fi
+}
 	
 gui(){
 	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
@@ -293,7 +316,7 @@ gui(){
 		[[ `wmctrl -m | grep -i name | cut -d ' ' -f2` == "bspwm" ]] && sh ~/.config/bspwm/bsp-border &
 		sh conky.sh restart
 	fi
-	}
+}
 	
 main(){
 	change_colors
