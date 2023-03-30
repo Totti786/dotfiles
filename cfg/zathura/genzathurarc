@@ -35,7 +35,10 @@ set index-active-fg "$background"
 set render-loading-bg "$background"
 set render-loading-fg "$foreground"
 
+set guioptions none
 set window-title-home-tilde true
+set window-title-basename true
+set window-title-page true
 set statusbar-basename true
 set selection-clipboard clipboard
 CONF
