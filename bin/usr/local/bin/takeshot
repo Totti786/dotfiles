@@ -18,7 +18,7 @@ notify_user() {
 
 countdown() {
 	for sec in `seq $1 -1 1`; do
-		notify-send -a Clock -u normal -t 1000 -r 799 "Countdown" "Taking shot in : $sec"
+		notify-send -a Clock -u low -r 79 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
 }
