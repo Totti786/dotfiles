@@ -14,22 +14,20 @@
 		background-repeat: no-repeat;
 		background-position: center;
 		border-radius: 16px;
-		transition: 0s;
+		font-family: 'JetBrainsMono Nerd Font';
 		.time {
 			color: $fg-alt;
 			font-size: 105px;
-			padding: 10px 30px 10px 30px;
+			padding: 5px 30px 10px 30px;
 		}
 		.day {
-			color: $fg;
-			margin-left: 10px;
-			margin-bottom: 2px;
-			font-family: 'JetBrainsMono Nerd Font';
-			font-size: 30px;
+			color: $fg-alt;
+			margin-bottom: 5px;
+			font-size: 20px;
 		}
 		.date {
-			color: $accent;
-			font-size: 25px;
+			color: $fg-alt;
+			font-size: 20px;
 		}
 	}
 }

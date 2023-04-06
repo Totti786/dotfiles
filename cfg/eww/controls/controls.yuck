@@ -15,18 +15,19 @@
 		        :valign "center"
 		        :style "background-image: url('.././wpg/templates/wallpaper.jpg')"
 				(overlay
+			        :orientation "v"
 					(label
 						:text "${time}"
 						:class "time"
 					)
-					(label
-						:text music_listen
-					)
 					(label 
-						:text "${day}\\n${date} "
+						:text "${day} - ${date} "
 						:class "day"
 						:valign "end"
-						:halign "start"
+						:halign "center"
+					)
+					(label
+						:text music_listen
 					)
 				)
 		    )
@@ -352,7 +353,7 @@
 						:class "song-title"
 						:halign "start"
 						:text {song-title}
-						:limit-width 32
+						:limit-width 30
 					)
 					(label
 						:class "song-artist"
@@ -413,7 +414,7 @@
 		:space-evenly false
 		:spacing 10
 	(header)
-	(todo)
+	;;(todo)
 	(sysbuttons)
 	(timer)
 	(music)
