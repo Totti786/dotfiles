@@ -192,26 +192,13 @@
     </keybind>
     <!-- Switch b/w Applications -->
     <keybind key="A-Tab">
-      <action name="NextWindow">
-        <allDesktops>no</allDesktops>
-        <raise>yes</raise>
-        <!-- Hide black border around windows -->
-        <bar>no</bar>
-        <finalactions>
-          <action name="Focus"/>
-          <action name="UnshadeRaise"/>
-        </finalactions>
+      <action name="Execute">
+        <command>~/.local/bin/windowswitch windowcd</command>
       </action>
     </keybind>
     <keybind key="W-Tab">
-      <action name="NextWindow">
-        <allDesktops>yes</allDesktops>
-        <!-- Hide black border around windows -->
-        <bar>no</bar>
-        <finalactions>
-          <action name="focus"/>
-          <action name="raise"/>
-        </finalactions>
+      <action name="Execute">
+        <command>~/.local/bin/windowswitch window</command>
       </action>
     </keybind>
     <!-- Window Tiling: Snap feature -->
@@ -285,8 +272,8 @@
     <keybind key="A-z">
       <action name="Unmaximize"/>
       <action name="MoveResizeTo">
-        <x>0</x>
-        <y>31</y>
+        <x>0%</x>
+        <y>4%</y>
         <height>97%</height>
         <width>33%</width>
       </action>
@@ -660,10 +647,16 @@
         <command>ytfzf -fD</command>
       </action>
     </keybind>
-    <!-- Evince -->
+    <!-- Zathura -->
     <keybind key="W-g">
       <action name="Execute">
         <command>zathura</command>
+      </action>
+    </keybind>
+    <!-- Zathura Menu -->
+    <keybind key="W-S-g">
+      <action name="Execute">
+        <command>~/.local/bin/rofi-zathura</command>
       </action>
     </keybind>
     <!-- Discord -->
@@ -1167,9 +1160,13 @@
   # end of the example
 -->
     <application name="org.pwmt.zathura" class="Zathura" title="org.pwmt.zathura" type="normal">
-      <decor>no</decor>
+      <decor>yes</decor>
       <layer>default</layer>
       <maximized>yes</maximized>
+    </application>
+    <application name="Picture-in-Picture" class="Toolkit" title="Picture-in-Picture" type="normal">
+      <desktop>all</desktop>
+      <layer>above</layer>
     </application>
     <application name="stalonetray" class="stalonetray" title="stalonetray" type="dock">
       <desktop>all</desktop>
