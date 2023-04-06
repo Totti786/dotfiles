@@ -117,7 +117,6 @@ alt + Tab
 super + Tab
 	windowswitch window
 
-
 ##---------- Bspwm ----------##
 
 # Focus to the given desktop
@@ -129,11 +128,17 @@ super + {1-9,0}
     
 # Switch workspace
 ctrl + super + {Left,Right}
-	bspc desktop -f {prev.local,next.local}
+	eval "$(xdotool getmouselocation --shell)" &&\
+    xdotool mousemove 960 1185 click 1 &&\
+	bspc desktop -f {prev.local,next.local} &&\
+    xdotool mousemove --screen $SCREEN $X $Y
 
 # Move to the next or the previous workspace
 super + {~button4, ~button5}
-	bspc desktop -f {prev.local,next.local}
+	eval "$(xdotool getmouselocation --shell)" &&\
+    xdotool mousemove 960 1185 click 1 &&\
+	bspc desktop -f {prev.local,next.local} &&\
+    xdotool mousemove --screen $SCREEN $X $Y
 
 # Send focused window to another workspace and switch to the workspace
 super + {_,shift + }{1-8}
