@@ -2,6 +2,10 @@
 
 ## Script To Manage Volume Using Pamixer
 
+# Dependencies: `pamixer` `notify-send`
+
+icons="$HOME/.local/share/icons/Papirus/symbolic/status"
+
 # Get Volume
 get_volume() {
 	volume=`pamixer --get-volume-human`
@@ -13,13 +17,13 @@ get_icon() {
 	current="${volume%%%}"
 	echo $current
 	if [[ ("$current" -ge "0") && ("$current" -le "20") ]]; then
-		icon='~/.local/share/icons/Papirus/symbolic/status/audio-volume-low-symbolic.svg'
+		icon="$icons/audio-volume-low-symbolic.svg"
 	elif [[ ("$current" -ge "20") && ("$current" -le "40") ]]; then
-		icon='~/.local/share/icons/Papirus/symbolic/status/audio-volume-low-symbolic.svg'
+		icon="$icons/audio-volume-low-symbolic.svg"
 	elif [[ ("$current" -ge "40") && ("$current" -le "60") ]]; then
-		icon='~/.local/share/icons/Papirus/symbolic/status/audio-volume-medium-symbolic.svg'
+		icon="$icons/audio-volume-medium-symbolic.svg"
 	elif [[ ("$current" -ge "60") && ("$current" -le "100") ]]; then
-		icon='~/.local/share/icons/Papirus/symbolic/status/audio-volume-high-symbolic.svg'
+		icon="$icons/audio-volume-high-symbolic.svg"
 	fi
 }
 
@@ -30,7 +34,7 @@ inc_volume() {
 
 # Decrease Volume
 dec_volume() {
-	pamixer -u -d 10 && get_icon && notify-send -u low -r 69 -i "$icon" "Volume : $(get_volume)"
+	pamixer -u -d 5 && get_icon && notify-send -u low -r 69 -i "$icon" "Volume : $(get_volume)"
 }
 
 # Toggle Mute
@@ -52,6 +56,15 @@ elif [[ "$1" == "--dec" ]]; then
 	dec_volume
 elif [[ "$1" == "--toggle" ]]; then
 	toggle_mute
+elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+    echo "Usage: $(basename $0) [options] [--]
+	
+	Options:
+	--help		Display this message
+	--toggle	Toggle Mute
+	--get   	Display the current volume
+	--inc  		Increase the volume by 5%
+	--dec		Decrease the volume by 5%"
 else
 	get_volume
 fi
