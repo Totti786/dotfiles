@@ -2,12 +2,15 @@
 
 ## Script To Manage Brightness using brightnessctl or light
 
+# Dependencies: `brightnessctl` `light` `awk` `find` `grep` `tr` `printf` `notify-send`
+
 # Graphics card
-CARD=$(basename "$(find /sys/class/backlight/* | head -n 1)")
+card=$(basename "$(find /sys/class/backlight/* | head -n 1)")
+icons="$HOME/.local/share/icons/Papirus/symbolic/status"
 
 # Get brightness
 get_backlight() {
-	if [[ "$CARD" == *"intel_"* ]]; then
+	if [[ "$card" == *"intel_"* ]]; then
 		LIGHT=$(brightnessctl | grep -o "(.*" | tr -d "()")
 	else
 		LIGHT="$(printf '%s' "$(light -G)" | awk 'BEGIN {FS="."}{print $1}')%"
@@ -20,19 +23,19 @@ get_icon() {
 	backlight="$(get_backlight)"
 	current="${backlight%%%}"
 	if [[ ("$current" -ge "0") && ("$current" -le "20") ]]; then
-		icon='~/.local/share/icons/Papirus/symbolic/status/display-brightness-off-symbolic.svg'
+		icon="$icons/display-brightness-off-symbolic.svg"
 	elif [[ ("$current" -ge "20") && ("$current" -le "40") ]]; then
-		icon='~/.local/share/icons/Papirus/symbolic/status/display-brightness-low-symbolic.svg'
+		icon="$icons/display-brightness-low-symbolic.svg"
 	elif [[ ("$current" -ge "40") && ("$current" -le "60") ]]; then
-		icon='~/.local/share/icons/Papirus/symbolic/status/display-brightness-medium-symbolic.svg'
+		icon="$icons/display-brightness-medium-symbolic.svg"
 	elif [[ ("$current" -ge "60") && ("$current" -le "100") ]]; then
-		icon='~/.local/share/icons/Papirus/symbolic/status/display-brightness-high-symbolic.svg'
+		icon="$icons/display-brightness-high-symbolic.svg"
 	fi
 }
 
 # Increase brightness
 inc_backlight() {
-	if [[ "$CARD" == *"intel_"* ]]; then
+	if [[ "$card" == *"intel_"* ]]; then
 		brightnessctl s 10%+ && get_icon && notify-send -u low -r 69 -i "$icon" "Brightness : $(get_backlight)"
 	else
 		light -A 5 && get_icon && notify-send -u low -r 69 -i "$icon" "Brightness : $(get_backlight)"
@@ -41,7 +44,7 @@ inc_backlight() {
 
 # Decrease brightness
 dec_backlight() {
-	if [[ "$CARD" == *"intel_"* ]]; then
+	if [[ "$card" == *"intel_"* ]]; then
 		brightnessctl s 10%- && get_icon && notify-send -u low -r 69 -i "$icon" "Brightness : $(get_backlight)"
 	else
 		light -U 5 && get_icon && notify-send -u low -r 69 -i "$icon" "Brightness : $(get_backlight)"
@@ -55,6 +58,14 @@ elif [[ "$1" == "--inc" ]]; then
 	inc_backlight
 elif [[ "$1" == "--dec" ]]; then
 	dec_backlight
+elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+    echo "Usage: $(basename $0) [options] [--]
+	
+	Options:
+	--help		Display this message
+	--get   	Display the current brightness
+	--inc  		Increase the brightness by 10%
+	--dec		Decrease the brightness by 10%"
 else
 	get_backlight
 fi
