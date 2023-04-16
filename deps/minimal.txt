@@ -35,6 +35,7 @@ noto-fonts-emoji
 obconf
 openbox
 pamixer
+pastel
 pavucontrol
 perl
 plank
