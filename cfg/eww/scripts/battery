@@ -80,36 +80,28 @@ level() {
 }
 
 lock=/tmp/battery-saver.lock
-comp(){
+toggle(){
 	cc=`cat ~/.cache/wal/colors | head -n1`
-	
-	if [[ `pgrep picom` ]]; then 
-		pkill picom 
-		brightnessctl set 25%
-		sed -i "s/opacity: .*/opacity: 1.0/g" ~/.config/alacritty/alacritty.yml
-		sed -i -e "s/background = .*/background = ${cc}/g" ~/.config/polybar/colors.ini
-		sed -i -e "s/background: .*/background: ${cc};/g" ~/.config/rofi/themes/colors.rasi		
-		~/.config/polybar/launch.sh
-	else
+	if [[ -e $lock ]]; then 
+		rm $lock &&
 		picom -b
 		brightnessctl set 100%
 		sed -i "s/opacity: .*/opacity: 0.7/g" ~/.config/alacritty/alacritty.yml
 		sed -i -e "s/background = .*/background = ${cc}00/g" ~/.config/polybar/colors.ini
 		sed -i -e "s/background: .*/background: ${cc}90;/g" ~/.config/rofi/themes/colors.rasi
 		~/.config/polybar/launch.sh
-	fi
-}
-
-toggle(){
-	if [[ -e $lock ]]; then 
-		rm $lock &&
-		comp
+		eww reload
 	else
 		touch $lock &&
-		comp
+		pkill picom 
+		brightnessctl set 25%
+		sed -i "s/opacity: .*/opacity: 1.0/g" ~/.config/alacritty/alacritty.yml
+		sed -i -e "s/background = .*/background = ${cc}/g" ~/.config/polybar/colors.ini
+		sed -i -e "s/background: .*/background: ${cc};/g" ~/.config/rofi/themes/colors.rasi		
+		~/.config/polybar/launch.sh
 	fi
+}
 	
-	}
 status(){
 	if [[ -e $lock ]]; then 
 		echo "On"
