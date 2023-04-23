@@ -10,7 +10,7 @@ if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ; else  style="base" ;f
 
 open() {
 	touch $cache
-	eww -c $config open --toggle background-closer
+	[[ "$XDG_SESSION_TYPE" == "x11" ]] && eww -c $config open --toggle background-closer
 	eww -c $config open controls-"$XDG_SESSION_TYPE"-"$style" &&
 	[[ $(pgrep polybar) ]] && polybar-msg action "#control.hook.0"
 	}
