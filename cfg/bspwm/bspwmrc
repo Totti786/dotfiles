@@ -7,9 +7,8 @@ export PATH="${PATH}:$HOME/.local/bin"
 
 workspaces(){
 	name=1
-	for monitor in `bspc query -M`; do
-		bspc monitor ${monitor} -n "$name" -d '一' '二' '三' '四' '五' '六' '七' '八'
-		#bspc monitor ${monitor} -n "$name" -d '' '' '' '' '' '' '' '九' '十'
+	for monitor in $(bspc query -M); do
+		bspc monitor ${monitor} -n "$name" -d '1' '2' '3' '4' '5' '6' '7' '8'
 		let name++
 	done
 }
@@ -17,7 +16,7 @@ workspaces
 
 bspc config window_gap 10
 bspc config split_ratio 0.50
-sh ~/.config/bspwm/bsp-border
+"$HOME"/.config/bspwm/bsp-border
 bspc config borderless_monocle true
 bspc config gapless_monocle false
 bspc config single_monocle true
@@ -37,17 +36,21 @@ declare -a floating=(alacritty-float Lxappearance obs
 	Xfce4-settings-manager Sxiv Trackma-gtk gnome-calculator
 	org.gnome.Weather Xfce4-display-settings Steam Wpg
 	TelegramDesktop KotatogramDesktop Anki
-	Xfce4-power-manager-settings Eog loupe)
+	Xfce4-power-manager-settings Eog loupe scrcpy
+	'*:*:AudioRelay')
 	
 for i in ${floating[@]}; do
-   bspc rule -a $i state=floating follow=on focus=on; done
+   bspc rule -a $i state=floating follow=on focus=on
+done
 
 # Force tile windows
 declare -a tiled=(Zathura)
 for i in "${tiled[@]}"; do
 	bspc rule -a "$i" manage=on state=tiled
 done
+
 bspc rule -a '*:*:Picture-in-Picture' sticky=on
+bspc rule -a 'alacritty-drop' state=floating follow=on focus=on sticky=on layer=above locked=on 
 bspc rule -a Plank layer=above manage=off locked=on border=off state=floating focus=off
 
 
