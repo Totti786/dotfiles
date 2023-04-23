@@ -50,10 +50,10 @@ case $1 in
   *)
     case $REDSHIFT in
       on)
-        printf " %dK" "$REDSHIFT_TEMP"
+        printf "%dK" "$REDSHIFT_TEMP"
         ;;
       off)
-        printf " Off"
+        printf "Off"
         ;;
     esac
     ;;
