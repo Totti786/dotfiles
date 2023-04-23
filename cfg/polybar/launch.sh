@@ -38,7 +38,7 @@ fix_modules() {
 			-i -e 's/wm-restack = .*/wm-restack = bspwm/g' 						"$DIR"/config.ini "$DIR"/minimal/config-minimal.ini 
 	elif [[ $current_desktop == "i3" ]]; then
 		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' \
-			-i -e 's/override-redirect = .*/override-redirect = true/g' \
+			-i -e 's/override-redirect = .*/override-redirect = false/g' \
 			-i -e 's/titlex\b/title/g' \
 			-i -e 's/wm-restack = .*/wm-restack = i3/g' 						"$DIR"/config.ini "$DIR"/minimal/config-minimal.ini 
 	elif [[ $current_desktop == "Openbox" ]]; then
