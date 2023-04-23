@@ -4,10 +4,10 @@
 
 if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ;else  conky="On" ;fi
 
-## XDG Autostart 
-xdg-autostart &
+# XDG Autostart 
+[[ ! $(pgrep xfce-polkit) ]] && xdg-autostart &
 
-## Keybinds
+# Keybinds
 killall -9 sxhkd
 exec sxhkd &
 
@@ -19,42 +19,45 @@ xcape -e 'Super_R=Alt_L|F1' &
 # Polkit agent
 #if [[ ! $(pidof xfce-polkit) ]]; then /usr/lib/xfce-polkit/xfce-polkit & ;fi 
 
-## Fix cursor
+# Fix cursor
 xsetroot -cursor_name left_ptr &
 
-## xfce4-settings daemon
+# xfce4-settings daemon
 xfsettingsd &
 
-## Dunst
+# Dunst
 dunst &
 
-## Restore Wallpaper
+# Restore Wallpaper
 wal -Re &
-sh ~/.scripts/wpgtk run &
+sh ~/.local/bin/wpgtk run &
 
-## Launch Polybar
+# Launch Polybar
 sh ~/.config/polybar/launch.sh &
 
-## Picom 
+# Launch System Tray
+sh ~/.config/polybar/scripts/systray &
+
+# Picom 
 picom -b &
 
-## CopyQ
+# CopyQ
 copyq --start-server &
 
-## Thunar 
+# Thunar 
 #thunar --daemon &
 
-## Plank
+# Plank
 killall -9 plank
 plank &
 
-## Conky
+# Conky
 if [ $conky == "On" ]; then 
 	sh ~/.local/bin/conky.sh &
 fi
 
-## Fix Plank
+# Fix Plank
 bspc subscribe node_add | while read -r _
 do
-  xdo raise -N Plank
+	xdo raise -N Plank
 done &
