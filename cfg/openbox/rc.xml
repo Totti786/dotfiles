@@ -523,7 +523,7 @@
     </keybind>
     <keybind key="A-Return">
       <action name="Execute">
-        <command>tdrop -ma -w -20 -y "0"  alacritty</command>
+        <command>furminal --drop</command>
       </action>
     </keybind>
     <keybind key="W-t">
@@ -1163,6 +1163,14 @@
       <decor>yes</decor>
       <layer>default</layer>
       <maximized>yes</maximized>
+    </application> 
+    <application class="alacritty-drop" type="normal">
+      <decor>no</decor>
+      <desktop>all</desktop>
+      <focus>yes</focus>
+      <skip_pager>yes</skip_pager>
+      <skip_taskbar>no</skip_taskbar>
+      <layer>above</layer>
     </application>
     <application name="Picture-in-Picture" class="Toolkit" title="Picture-in-Picture" type="normal">
       <desktop>all</desktop>
