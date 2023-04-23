@@ -1,4 +1,10 @@
 #!/usr/bin/bash
 
 swww query || swww init
-swww img "$1" --transition-fps 60 --transition-type random --transition-pos 0.954,0.04 --transition-duration 0.5
+#swww img "$1" --transition-fps 60 --transition-type random --transition-pos 0.954,0.04 --transition-duration 0.5
+ swww img "$1" \
+    --transition-bezier .43,1.19,1,.4 \
+    --transition-type grow \
+    --transition-duration 1 \
+    --transition-fps 60 \
+    --transition-pos 0.954,0.04
