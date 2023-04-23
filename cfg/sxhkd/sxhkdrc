@@ -11,15 +11,15 @@
 super + Return
 	alacritty
 
-# Terminal (floating)
+# Drop-down Terminal
+alt + Return
+	furminal --drop
+
+# Floating Terminal
 super + shift + Return
 	furminal --float
 
-# Drop Down Terminal
-alt + Return
-	tdrop -a -w 70% -h 50% -y 33 -x 15% alacritty
-
-# Terminal (fullscreen)
+# Fullscreen Terminal
 super + t
 	furminal --full
 
@@ -211,6 +211,10 @@ ctrl + alt + Escape
 # Quit bspwm
 ctrl + shift + q
 	bspc exit
+
+# Quit bspwm
+ctrl + shift + r
+	bspc wm --restart
 
 # Hide/Unhide Window
 super + d
