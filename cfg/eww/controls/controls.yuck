@@ -8,7 +8,7 @@
 	        :orientation "h"
 	        :space-evenly true
 			(eventbox
-				:onrightclick "${EWW_CMD} update cover-reveal=false && ${EWW_CMD} update todo=true"
+				;;:onrightclick "${EWW_CMD} update cover-reveal=false && ${EWW_CMD} update todo=true"
 				;;:onhoverlost "${EWW_CMD} update cover-reveal=true"
 				:class "date-cover"
 		        :halign "center"
