@@ -50,7 +50,7 @@
     browser = /usr/bin/firefox -new-tab
     
     frame_width = 3
-    frame_color = "#6C5392CF"
+    frame_color = "#4B5251CF"
     
 [logger]
   summary = "*"
@@ -59,20 +59,20 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#090d1a80"
-    foreground = "#ffedff"
+    background = "#0a0d1180"
+    foreground = "#fffffc"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#090d1a80"
-    foreground = "#ffedff"
+    background = "#0a0d1180"
+    foreground = "#fffffc"
     highlight  = "#b6beca"
     timeout = 20
 
 [urgency_critical]
-    background = "#090d1a80"
-    foreground = "#ffedff"
+    background = "#0a0d1180"
+    foreground = "#fffffc"
     highlight  = "#b6beca"
     timeout = 60
     
