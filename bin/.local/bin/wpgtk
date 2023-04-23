@@ -1,5 +1,15 @@
 #!/bin/bash
 
+## TODO
+## wpg -z wallpaper.jpg # shuffles the positions of the colors in your colorscheme
+## wpg --sat wallpaper.jpg 0.1 # increases the saturation of all colors by 0.1
+## wpg --brt wallpaper.jpg 100 # increases the brightness of all colors by 100
+## wpg -A wallpaper.jpg # gives you a distinct foreground and background
+## This adds 0.1 saturation to your colorscheme and then it gets re-applied
+## wpg --sat $(wpg -c) 0.1 && wpg -s $(wpg -c)
+## This gives you the 'light' version of the theme you're using.
+## wpg -LA $(wpg -c) && wpg -s $(wpg -c)
+
 # Color files
 alacritty="$HOME/.config/alacritty/colors.yml"
 polybar="$HOME/.config/polybar/colors.ini"
@@ -161,7 +171,7 @@ change_colors(){
 	*/
 	
 	@define-color foreground ${FG};
-	@define-color background rgba(${bg_rgb},0.2);
+	@define-color background rgba(${bg_rgb:4:-1},0.2);
 	@define-color surface3 #394161;
 	@define-color red $bright_red;
 	@define-color green $bright_green;
@@ -328,36 +338,6 @@ main(){
 	check razer-cli -a & exit
 }
 
-## Create a lighter shade of the color using bash (courtesy of @guillaumeboehm & @Totti786)
-create_colors() {
-  colors=(0)
-  for i in "${colors[@]}"; do
-    color="color${i}"
-    c_rgb_12d="$(( 0x"${!color:1:2}" ))"
-    c_rgb_34d="$(( 0x"${!color:3:2}" ))"
-    c_rgb_56d="$(( 0x"${!color:5:2}" ))"
-    c_rgb_12d_60l="$(( c_rgb_12d + c_rgb_12d / 2 ))"
-    c_rgb_34d_60l="$(( c_rgb_34d + c_rgb_34d / 2 ))"
-    c_rgb_56d_60l="$(( c_rgb_56d + c_rgb_56d / 2 ))"
-    [[ "${c_rgb_12d_60l}" -gt 255 ]] && c_rgb_12d_60l=255
-    [[ "${c_rgb_34d_60l}" -gt 255 ]] && c_rgb_34d_60l=255
-    [[ "${c_rgb_56d_60l}" -gt 255 ]] && c_rgb_56d_60l=255
-    c_hex_12d_60l=$(printf "%02x" "$c_rgb_12d_60l")
-    c_hex_34d_60l=$(printf "%02x" "$c_rgb_34d_60l")
-    c_hex_56d_60l=$(printf "%02x" "$c_rgb_56d_60l")
-    c_hex_60l="#${c_hex_12d_60l}${c_hex_34d_60l}${c_hex_56d_60l}"
-    declare -g color"${i}"_lighter_60="$c_hex_60l"
-    c_rgb_12d_50d="$(( c_rgb_12d - c_rgb_12d / 2 ))"
-    c_rgb_34d_50d="$(( c_rgb_34d - c_rgb_34d / 2 ))"
-    c_rgb_56d_50d="$(( c_rgb_56d - c_rgb_56d / 2 ))"
-    c_hex_12d_50d=$(printf "%02x" "$c_rgb_12d_50d")
-    c_hex_34d_50d=$(printf "%02x" "$c_rgb_34d_50d")
-    c_hex_56d_50d=$(printf "%02x" "$c_rgb_56d_50d")
-    c_hex_50d="#${c_hex_12d_50d}${c_hex_34d_50d}${c_hex_56d_50d}"
-    declare -g color"${i}"_darker_50="$c_hex_50d"
-  done
-}
-
 ## Check if wpg is installed and get colors
 run(){
 	if [[ -f "/usr/bin/wpg" ]]; then
@@ -386,10 +366,9 @@ run(){
 			bright_cyan=`printf "%s\n" "$color14"`
 			bright_white=`printf "%s\n" "$color15"`
 			# Additional colors
-			create_colors
-			bg_light=`printf "%s\n" "$color0_lighter_60"`
-			bg_dark=`printf "%s\n" "$color0_darker_50"`
-			bg_rgb="$((0x${background:1:2})),$((0x${background:3:2})),$((0x${background:5:2}))"
+			bg_light="$(pastel lighten 0.02 ${background:1} | pastel format hex)"
+			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
+			bg_rgb="$(pastel format rgb ${background:1})"
 			## merging the Xresources files with the main one
 			xrdb -merge "$HOME"/.cache/wal/colors.Xresources		
 		fi 
