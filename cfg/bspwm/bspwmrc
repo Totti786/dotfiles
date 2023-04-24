@@ -50,7 +50,7 @@ for i in "${tiled[@]}"; do
 done
 
 bspc rule -a '*:*:Picture-in-Picture' sticky=on
-bspc rule -a 'alacritty-drop' state=floating follow=on focus=on sticky=on layer=above locked=on 
+bspc rule -a alacritty-drop state=floating follow=on focus=on sticky=on layer=above locked=on 
 bspc rule -a Plank layer=above manage=off locked=on border=off state=floating focus=off
 
 
