@@ -271,9 +271,9 @@ wall(){
 		echo "This wallpaper is already set"
 	else 
 	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
-		~/.config/hypr/scripts/wall $1
+		"$HOME"/.config/hypr/scripts/wall "$1"
 	else 
-		feh --no-fehbg --bg-fill $1
+		feh --no-fehbg --bg-fill "$1"
 	fi
 	wpg -A "$1" && wpg -s "$1" 
 	rm "$1""_wal_sample.png"
