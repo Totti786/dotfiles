@@ -2,24 +2,40 @@
 
 ## Commands Executed By Openbox Powermenu
 
+MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
+
+# Varia# Variables and functions
+if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
+	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
+	exit 1
+fi
+
 ## Options #############################################
-if  [[ $1 = "--logout" ]]; then
+if  [[ "$1" = "--logout" ]]; then
 	current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
-	if [[ $current_desktop == "Openbox" ]]; then
+	if [[ "$current_desktop" == "Openbox" ]]; then
 		openbox --exit
-	elif [[ $current_desktop == "i3" ]]; then
+	elif [[ "$current_desktop" == "i3" ]]; then
 		i3 exit
-	elif [[ $current_desktop == "bspwm" ]]; then
+	elif [[ "$current_desktop" == "bspwm" ]]; then
 		bspc quit
 	fi
-elif  [[ $1 = "--lock" ]]; then
+elif  [[ "$1" = "--lock" ]]; then
 	lockscreen
-elif  [[ $1 = "--suspend" ]]; then
+elif  [[ "$1" = "--suspend" ]]; then
 	systemctl suspend && lockscreen
-elif  [[ $1 = "--hibernate" ]]; then
+elif  [[ "$1" = "--hibernate" ]]; then
 	systemctl hibernate && lockscreen
-elif  [[ $1 = "--reboot" ]]; then
+elif  [[ "$1" = "--reboot" ]]; then
 	systemctl reboot 
-elif  [[ $1 = "--shutdown" ]]; then
+elif  [[ "$1" = "--shutdown" ]]; then
 	systemctl poweroff
+	else
+    menuStart
+        menuItem 'Lock' "$0 --lock"
+        menuItem 'Suspend' "$0 --suspend"
+        menuItem 'Hibernate' "$0 --hibernate"
+        menuItem 'Reboot' "$0 --reboot"
+        menuItem 'Shutdown' "$0 --shutdown"
+    menuEnd
 fi
