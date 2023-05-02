@@ -4,14 +4,14 @@ cache_dir="$HOME/.cache/eww"
 cache="$cache_dir/control-center.eww"
 config="$HOME/.config/eww"
 
-if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ; else  style="base" ;fi
+if [ -f "$HOME/.zprofile" ]; then source "$HOME/.zprofile" ; else  bar_style="base" ;fi
 [ ! -d $cache_dir ] && mkdir $cache_dir
 
 
 open() {
 	touch $cache
 	[[ "$XDG_SESSION_TYPE" == "x11" ]] && eww -c $config open --toggle background-closer
-	eww -c $config open controls-"$XDG_SESSION_TYPE"-"$style" &&
+	eww -c $config open controls-"$XDG_SESSION_TYPE"-"$bar_style" &&
 	[[ $(pgrep polybar) ]] && polybar-msg action "#control.hook.0"
 	}
 
@@ -23,7 +23,7 @@ close() {
 }
 
 notification(){
-	eww -c $config open --toggle notification-panel-"$XDG_SESSION_TYPE"-"$style"
+	eww -c $config open --toggle notification-panel-"$XDG_SESSION_TYPE"-"$bar_style"
 	}
 
 main(){
