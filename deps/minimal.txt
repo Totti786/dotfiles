@@ -1,5 +1,6 @@
 acpi
 alacritty
+autotiling
 bc
 bluez
 bluez-utils
@@ -17,6 +18,7 @@ geany
 gpick
 grep
 htop
+i3
 i3lock-color
 imagemagick
 jgmenu

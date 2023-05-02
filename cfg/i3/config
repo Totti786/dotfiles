@@ -1,0 +1,152 @@
+## i3wm configuration
+
+include ~/.config/i3/border
+
+##-- Autostart ---------------------------
+
+exec_always --no-startup-id 	~/.config/i3/autostart
+exec_always --no-startup-id 	sxhkd -c ~/.config/sxhkd/i3-sxhkdrc 
+
+##-- Mod Keys ----------------------------
+set $mod Mod4
+set $alt Mod1
+
+##-- Fonts (Global) ----------------------
+font pango:JetBrains Mono Medium 10
+
+##-- Gaps --------------------------------
+
+# Title bar text alignment
+title_align center
+
+# Uncomment this to enable title bars
+#for_window [class=".*"] border normal 4
+
+# Uncomment this to disable title bars
+for_window [class=".*"] border none
+
+# Gaps (Outer gaps are added to the inner gaps)
+gaps inner 10
+gaps outer 0
+
+# Only enable gaps on a workspace when there is at least one container
+#smart_gaps on
+
+# Activate smart borders (always)
+smart_borders on
+
+##-- Window Rules ------------------------
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="dock"] floating enable
+
+for_window [title="Library"] floating enable
+for_window [title="Picture-in-Picture"] floating enable sticky enable
+for_window [title="AudioRelay"] floating enable
+for_window [class="alacritty-float|Music"] floating enable
+for_window [class="alacritty-drop|Music"] floating enable sticky enable
+for_window [class="Plank"] floating enable sticky enable
+for_window [class="stalonetray"] floating enable border none sticky enable unmanage
+for_window [class="Pcmanfm|Onboard|Yad"] floating enable
+for_window [class="Lxappearance|Nitrogen|loupe"] floating enable
+for_window [class="Eog|Xfce4-power-manager-settings|Nm-connection-editor"] floating enable
+for_window [class="feh|Viewnior|Gpicview|Gimp|MPlayer"] floating enable
+for_window [class="Kvantum Manager|qt5ct|Nm-connection-editor"] floating enable
+for_window [class="Steam|Trackma-gtk|obs|Pavucontrol"] floating enable
+for_window [class="feh|Yad|scrcpy|Wpg|Xfce4-settings-manager"] floating enable
+for_window [class="Xfce4-display-settings|org.gnome.Weather"] floating enable
+for_window [class="KotatogramDesktop|gnome-calculator|Sxiv"] floating enable
+for_window [class="Blueman-manager|copyq|TelegramDesktop|Anki"] floating enable
+for_window [class="Xfce4-mouse-settings|Xfce4-appearance-settings"] floating enable
+
+##-- Key Bindings ------------------------
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+##-- Workspaces ---------------------
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+##-- Resize / Move / Gaps ------------------------
+
+# resize window (you can also use the mouse for that)
+mode "Resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+Shift+i mode "Resize"
+
+mode "Move" {
+        # These bindings trigger as soon as you enter the Move mode
+
+        bindsym Left move left 20px
+        bindsym Down move down  20px
+        bindsym Up move up 20px
+        bindsym Right move right 20px
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+m mode "default"
+}
+bindsym $mod+Shift+u mode "Move"
+
+set $mode_gaps Gaps: (o)uter, (i)nner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+o mode "$mode_gaps"

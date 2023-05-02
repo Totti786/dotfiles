@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else top_padding="23" bottom_padding="23" ;fi
+
+i3-msg reload &> /dev/null
+i3-msg gaps top all set "$top_padding" &> /dev/null
+i3-msg gaps bottom all set "$bottom_padding" &> /dev/null
+
+

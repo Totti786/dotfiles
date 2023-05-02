@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+## Autostart Programs ----------------------------------------#
+
+if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else conky="On" ;fi
+
+## XDG Autostart 
+[[ ! $(pgrep xfce-polkit) ]] && xdg-autostart &
+
+# Enable Super Keys For Menu
+killall -9 xcape
+xcape -e 'Super_L=Alt_L|F1' &
+xcape -e 'Super_R=Alt_L|F1' &
+
+# Polkit agent
+#if [[ ! $(pidof xfce-polkit) ]]; then /usr/lib/xfce-polkit/xfce-polkit & ;fi 
+
+## Fix cursor
+xsetroot -cursor_name left_ptr &
+
+## xfce4-settings daemon
+xfsettingsd &
+
+## Autotiling for i3
+autotiling &
+
+## Dunst
+dunst &
+
+## Restore Wallpaper
+wal -Re &
+sh "$HOME"/.local/bin/wpgtk run &
+
+## Launch Polybar
+sh "$HOME"/.config/polybar/launch.sh &
+
+## Picom 
+picom -b &
+
+## CopyQ
+copyq --start-server &
+
+## Thunar 
+#thunar --daemon &
+
+## Conky
+if [ $conky == "On" ]; then 
+	sh "$HOME"/.local/bin/conky.sh &
+fi
