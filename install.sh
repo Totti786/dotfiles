@@ -35,7 +35,7 @@ moveConfigs(){
 	cp -r "$DIR"/bin/.scripts/ ~/ && echo "moved scripts home"
 	cp -r "$DIR"/cfg/* ~/.config/ && echo "moved config files"
 	cp -r "$DIR"/bin/.local/ ~/ && echo "moved bin"
-	cp "$DIR"/deps/.profile ~/
+	cp "$DIR"/deps/.zprofile ~/
 	# extracts the icons and moves them to the correct directory
 	[ ! -d "$HOME/.local/share/icons" ] && mkdir ~/.local/share/icons
 	tar -xzf "$DIR"/deps/Papirus-icons.tar.gz -C ~/.local/share/icons
@@ -179,7 +179,7 @@ update(){
 	## backup weather info file
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
 		cp ~/.config/polybar/scripts/info ~/.cache/info
-	[ ! -f "$HOME/.profile" ] && 
+	[ ! -f "$HOME/.zprofile" ] && 
 		"$DIR"/deps/.profile ~/
 	## move udpated scripts and configs
 	sudo cp -r "$DIR"/bin/usr/ /
