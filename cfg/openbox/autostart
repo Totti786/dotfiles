@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/.profile
+if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else conky="On" ;fi
 
 ## Autostart Programs
 #xdg-autostart &
@@ -15,18 +15,22 @@ xfce4-power-manager --daemon &
 dunst &
 
 ## Picom (Compositor)	
-#picom -b &
+picom -b &
 
 ## Restore Wallpaper
 wal -Re &
-sh ~/.scripts/wpgtk run &
+sh "$HOME"/.local/bin/wpgtk run &
 
 # Enable Super Keys For Menu
+killall -9 xcape
 xcape -e 'Super_L=Alt_L|F1' &
 xcape -e 'Super_R=Alt_L|F1' &
 
-## Launch Polybar
-sh ~/.config/polybar/launch.sh &
+# Launch Polybar
+sh "$HOME"/.config/polybar/launch.sh &
+
+# Launch System Tray
+sh "$HOME"/.config/polybar/scripts/systray &
 
 ## CopyQ (Clipboard Daemon)
 copyq --start-server &
@@ -36,5 +40,5 @@ plank &
 
 ## Conky
 if [ $conky == "On" ]; then 
-	sh ~/.local/bin/conky.sh &
+	sh "$HOME"/.local/bin/conky.sh &
 fi
