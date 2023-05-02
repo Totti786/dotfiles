@@ -11,7 +11,7 @@ Screen Recorder,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//record" 
 Preferences,^checkout(preferences)
 Keybinds, sh ~/.local/bin/conky.sh
 Settings Manager,xfce4-settings-manager
-Power,^checkout(Exit)
+Power,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//powermenu --tag="Power")
 
 ^tag(preferences)
 Back,^back()
@@ -25,6 +25,7 @@ Toolbox, sh ~/.local/bin/bars
 ^sep()
 Change Wallpaper,sh ~/.local/bin/wpgtk pick
 Appearance Settings,xfce4-appearance-settings
+
 ^sep()
 Display Settings,xfce4-display-settings
 Power Settings,xfce4-power-manager-settings
@@ -44,14 +45,3 @@ Edit config,exo-open ~/.config/bspwm/bspwmrc
 Edit keybinds,exo-open ~/.config/sxhkd/sxhkdrc
 Restart bspwm,bspc wm -r 
 Restart sxhkd,pkill -USR1 -x sxhkd
-
-
-^tag(Exit)
-Back,^back()
-Lock,~/.config/openbox/pipemenus/powermenu --lock
-Logout,~/.config/openbox/pipemenus/powermenu --logout
-Suspend,~/.config/openbox/pipemenus/powermenu --suspend
-Hibernate,~/.config/openbox/pipemenus/powermenu --hibernate
-Reboot,~/.config/openbox/pipemenus/powermenu --reboot
-Shutdown,~/.config/openbox/pipemenus/powermenu --shutdown
-
