@@ -18,33 +18,35 @@ confirm="Yes"
 options="$shutdown\n$reboot\n$lock\n$suspend\n$logout"
 
 chosen="$(echo -e "$options" | $rofi_command -p "UP - $uptime" -dmenu -selected-row 2)"
-case $chosen in
-    $shutdown)
+case "$chosen" in
+    "$shutdown")
 		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ $ans == $confirm ]]; then systemctl poweroff ;fi
+		if [[ "$ans" == "$confirm" ]]; then systemctl poweroff ;fi
         ;;
-    $reboot)
+    "$reboot")
 		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ $ans == $confirm ]]; then	systemctl reboot ;fi
+		if [[ "$ans" == "$confirm" ]]; then	systemctl reboot ;fi
         ;;
-    $lock)
+    "$lock")
 		lockscreen
     	;;
-    $suspend)
+    "$suspend")
 		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ $ans == $confirm ]]; then systemctl suspend && lockscreen ;fi
+		if [[ "$ans" == "$confirm" ]]; then systemctl suspend && lockscreen ;fi
         ;;
-    $logout)
+    "$logout")
 		current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
 		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ $ans == $confirm ]]; then
-			if [[ $current_desktop == "Openbox" ]]; then
+		if [[ "$ans" == "$confirm" ]]; then
+			if [[ "$current_desktop" == "Openbox" ]]; then
 				openbox --exit
-			elif [[ $current_desktop == "i3" ]]; then
+			elif [[ "$current_desktop" == "i3" ]]; then
 				i3 exit
-			elif [[ $current_desktop == "bspwm" ]]; then
+			elif [[ "$current_desktop" == "bspwm" ]]; then
 				bspc quit
-			elif [[ $XDG_SESSION_TYPE == "wayland" ]]; then
+			elif [[ "$current_desktop" == "herbstluftwm" ]]; then
+				herbstclient quit
+			elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
 				hyprctl dispatch exit
 			fi
         fi
