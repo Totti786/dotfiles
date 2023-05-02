@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 ## Environtment
-export PATH="${PATH}:$HOME/.local/bin"
+export XDG_CURRENT_DESKTOP=bspwm
 
-## Configuration --------------------------------------------#
+## Configuration ------------------------------------------#
 
 workspaces(){
 	name=1
@@ -22,25 +22,24 @@ bspc config gapless_monocle false
 bspc config single_monocle true
 bspc config focus_follows_pointer true
 
-## Window rules ----------------------------------------------#
+## Window rules -------------------------------------------#
 
 # remove all rules first
 bspc rule -r *:*
 
 ## special rules
 declare -a floating=(alacritty-float Lxappearance obs
-	Onboard Yad '*:*:Picture-in-Picture' Viewnior
+	Onboard Yad Viewnior Eog loupe scrcpy Steam Wpg
 	feh Nm-connection-editor stalonetray Pavucontrol
 	copyq '*:*:Library' Trackma-gtk Blueman-manager
 	Xfce4-appearance-settings Xfce4-mouse-settings
-	Xfce4-settings-manager Sxiv Trackma-gtk gnome-calculator
-	org.gnome.Weather Xfce4-display-settings Steam Wpg
-	TelegramDesktop KotatogramDesktop Anki
-	Xfce4-power-manager-settings Eog loupe scrcpy
-	'*:*:AudioRelay')
+	Xfce4-settings-manager Sxiv Trackma-gtk steamwebhelper
+	org.gnome.Weather Xfce4-display-settings Anki
+	TelegramDesktop KotatogramDesktop gnome-calculator
+	Xfce4-power-manager-settings '*:*:AudioRelay')
 	
-for i in ${floating[@]}; do
-   bspc rule -a $i state=floating follow=on focus=on
+for i in "${floating[@]}"; do
+   bspc rule -a "$i" state=floating follow=on focus=on
 done
 
 # Force tile windows
@@ -49,10 +48,9 @@ for i in "${tiled[@]}"; do
 	bspc rule -a "$i" manage=on state=tiled
 done
 
-bspc rule -a '*:*:Picture-in-Picture' sticky=on
+bspc rule -a '*:*:Picture-in-Picture' sticky=on state=floating
 bspc rule -a alacritty-drop state=floating follow=on focus=on sticky=on layer=above locked=on 
 bspc rule -a Plank layer=above manage=off locked=on border=off state=floating focus=off
 
-
-## Autostart
-sh ~/.config/bspwm/autostart
+## Autostart ----------------------------------------------#
+"$HOME"/.config/bspwm/autostart
