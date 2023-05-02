@@ -2,7 +2,7 @@
 
 ## Autostart Programs ----------------------------------------#
 
-if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ;else  conky="On" ;fi
+if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else conky="On" ;fi
 
 # XDG Autostart 
 [[ ! $(pgrep xfce-polkit) ]] && xdg-autostart &
@@ -30,13 +30,13 @@ dunst &
 
 # Restore Wallpaper
 wal -Re &
-sh ~/.local/bin/wpgtk run &
+"$HOME"/.local/bin/wpgtk run &
 
 # Launch Polybar
-sh ~/.config/polybar/launch.sh &
+"$HOME"/.config/polybar/launch.sh &
 
 # Launch System Tray
-sh ~/.config/polybar/scripts/systray &
+"$HOME"/.config/polybar/scripts/systray &
 
 # Picom 
 picom -b &
@@ -48,12 +48,12 @@ copyq --start-server &
 #thunar --daemon &
 
 # Plank
-killall -9 plank
-plank &
+#killall -9 plank
+#plank &
 
 # Conky
 if [ $conky == "On" ]; then 
-	sh ~/.local/bin/conky.sh &
+	"$HOME"/.local/bin/conky.sh &
 fi
 
 # Fix Plank
