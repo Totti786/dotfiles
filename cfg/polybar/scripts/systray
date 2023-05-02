@@ -1,13 +1,14 @@
 #!/bin/bash
 
-[ -f ~/.profile ] && source ~/.profile
+if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else  bar_style="base" ;fi
+[[ "$XDG_CURRENT_DESKTOP" == "i3" ]] && type="utility" || type="dock"
 
 hidden=/tmp/syshide.lock
-res="`xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1`"
+display_resolution="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)"
 
 main(){
-if [[ $(pidof stalonetray) ]]; then
-	if [[ ! -e $hidden ]]; then
+if [[ "$(pidof stalonetray)" ]]; then
+	if [[ ! -e "$hidden" ]]; then
 		polybar-msg action "#systray.hook.1"
 		xdo hide -n stalonetray
 		touch "$hidden"
@@ -20,26 +21,25 @@ if [[ $(pidof stalonetray) ]]; then
 		sleep 5 && main
 	fi
 else
-	if [[ $style == "minimal" ]]; then 
-		if [[ $res -gt "1920" ]]; then
-			new="$(( $res - 1920 + 94 ))"
-			stalonetray --geometry 1x1-$new-34 --grow-gravity SW &
+	if [[ "$bar_style" == "minimal" ]]; then
+		if [[ "$display_resolution" -gt "1920" ]]; then
+			new="$(( "$display_resolution" - 1920 + 94 ))"
+			stalonetray "$tray" --geometry 1x1-"$new"-34 --grow-gravity SW &
 			main			
-		elif [[ $res -lt "1920" ]]; then
-			stalonetray --geometry 1x1-66-34 --grow-gravity SW &
-			echo "hello"
+		elif [[ "$display_resolution" -lt "1920" ]]; then
+			stalonetray --window-type "$type" --geometry 1x1-66-34 --grow-gravity SW &
 			main
 		else
-			stalonetray --geometry 1x1-94-34 --grow-gravity SW &
+			stalonetray --window-type "$type" --geometry 1x1-94-34 --grow-gravity SW &
 			main
 		fi
-	else
-		if [[ $res -gt "1920" ]]; then
-			new="$(( $res - 1920 + 4 ))"
-			stalonetray --geometry 1x1-$new+27 &
+	elif [[ "$bar_style" == "base" ]]; then
+		if [[ "$display_resolution" -gt "1920" ]]; then
+			new="$(( "$display_resolution" - 1920 + 4 ))"
+			stalonetray --window-type "$type" --geometry 1x1-"$new"+27 &
 			main			
 		else
-			stalonetray &
+			stalonetray --window-type "$type" &
 			main
 		fi
 	fi
