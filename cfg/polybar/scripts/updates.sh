@@ -1,13 +1,13 @@
 #!/bin/bash
 
 while true; do
-	if [[ $(date +%M) == "01" ]]; then
-		$(checkupdates  > ~/.cache/pacman-updates)
+	if [[ "$(date +%M)" == "01" ]]; then
+		checkupdates  > "$HOME"/.cache/pacman-updates
 	fi 
 	
-	updateCount=$(cat ~/.cache/pacman-updates | wc -l)
+	updateCount="$(< "$HOME"/.cache/pacman-updates | wc -l)"
 	
-	if [[ $updateCount == "0" ]]; then 
+	if [[ "$updateCount" == "0" ]]; then 
 		echo " None"
 		sleep 45
 	else 
