@@ -1,5 +1,6 @@
-## Modify xdg-open behaviour
-#export XDG_CURRENT_DESKTOP=XFCE
+# Set system-wide environment variables here for Openbox
+# User-specific variables should be placed in $HOME/.config/openbox/environment
 
-#export QT_QPA_PLATFORMTHEME=q5ct
-export PATH=$HOME/.local/bin:$PATH
+# Make our environment identity considered as GNOME (tdesktop affected, so it will using GTK file chooser)
+export XDG_CURRENT_DESKTOP=Openbox
+
