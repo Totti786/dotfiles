@@ -13,24 +13,20 @@ if [ -d "$HOME/.local/bin" ]; then
   PATH="$HOME/.local/bin:$PATH"
 fi
 
-if [ -d "$HOME/.bin" ]; then
-  PATH="$HOME/.bin:$PATH"
-fi
-
 # Set default mime types
 export TERMINAL="alacritty"
 export BROWSER="firefox"
 
 # Polybar and bspwm style settings
-style=base
-border="2"
+export bar_style=minimal
+export window_border="3"
 
-if [[ $style == "base" ]];then
-	tp="23"
-	bp="23"
-	conky="On"
-elif [[ $style == "minimal" ]];then
-	tp="0"
-	bp="25"
-	conky="Off"
+if [[ "$bar_style" == "base" ]];then
+	export top_padding="23"
+	export bottom_padding="23"
+	export conky="On"
+elif [[ "$bar_style" == "minimal" ]];then
+	export top_padding="0"
+	export bottom_padding="25"
+	export conky="Off"
 fi
