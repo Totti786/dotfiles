@@ -19,7 +19,6 @@ fi
 moveConfigs(){
 	
 	cp $DIR/custom.css ~/.config/BetterDiscord/data/stable
-	cp -r $DIR/plugins/ ~/.config/BetterDiscord/
 	sed -i -e 's/"customcss": false,/"customcss": true,/g' ~/.config/BetterDiscord/data/stable/settings.json
 	
 	}
