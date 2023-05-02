@@ -193,12 +193,12 @@
     <!-- Switch b/w Applications -->
     <keybind key="A-Tab">
       <action name="Execute">
-        <command>~/.local/bin/windowswitch windowcd</command>
+        <command>windowswitch windowcd</command>
       </action>
     </keybind>
     <keybind key="W-Tab">
       <action name="Execute">
-        <command>~/.local/bin/windowswitch window</command>
+        <command>windowswitch window</command>
       </action>
     </keybind>
     <!-- Window Tiling: Snap feature -->
@@ -474,7 +474,7 @@
     <!-- Other Controls -->
     <keybind key="XF86Search">
       <action name="Execute">
-        <command>~/.local/bin/dmenu.sh</command>
+        <command>dmenu.sh</command>
       </action>
     </keybind>
     <!-- Brightness Control -->
@@ -656,7 +656,7 @@
     <!-- Zathura Menu -->
     <keybind key="W-S-g">
       <action name="Execute">
-        <command>~/.local/bin/rofi-zathura</command>
+        <command>rofi-zathura</command>
       </action>
     </keybind>
     <!-- Discord -->
@@ -686,7 +686,7 @@
     <!-- Dmenu -->
     <keybind key="W-S-d">
       <action name="Execute">
-        <command>~/.local/bin/dmenu.sh</command>
+        <command>dmenu.sh</command>
       </action>
     </keybind>
     <!-- Polbar Restart -->
@@ -695,28 +695,16 @@
         <command>~/.config/polybar/launch.sh</command>
       </action>
     </keybind>
-    <!-- Bluetooth Toggle -->
-    <keybind key="W-S-b">
-      <action name="Execute">
-        <command>~/.local/bin/bluetoothC</command>
-      </action>
-    </keybind>
     <!-- Change Wallpaper-->
     <keybind key="W-S-w">
       <action name="Execute">
-        <command>~/.local/bin/wpgtk pick</command>
+        <command>wpgtk pick</command>
       </action>
     </keybind>
     <!-- Random Wallpaper-->
     <keybind key="C-A-w">
       <action name="Execute">
-        <command>~/.local/bin/wpgtk random</command>
-      </action>
-    </keybind>
-    <!-- Rofi Calculator -->
-    <keybind key="W-S-c">
-      <action name="Execute">
-        <command>rofi -modi "calc" -show</command>
+        <command>wpgtk random</command>
       </action>
     </keybind>
     <!-- Spotify -->
@@ -1028,12 +1016,12 @@
     <context name="Root">
       <mousebind action="Press" button="Middle">
         <action name="Execute">
-          <command>~/.local/bin/windowswitch window "-monitor -3"</command>
+          <command>windowswitch window "-monitor -3"</command>
         </action>
       </mousebind>
       <mousebind action="Press" button="A-Right">
         <action name="ShowMenu">
-          <menu>~/.local/bin/windowswitch windowcd</menu>
+          <menu>windowswitch windowcd</menu>
         </action>
       </mousebind>
       <mousebind action="Press" button="Right">
