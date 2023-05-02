@@ -47,8 +47,11 @@ super + {m,x,r,s}
 ##------ Applications -------##
 
 # Launch Apps
-super + {e,f,w,o,g,b,y,a,v,p,z}
-	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq show,color-picker,discord}
+super + {e,f,w,o,g,b,y,a,v,p}
+	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq show,color-picker}
+
+super + z
+	discord --enable-gpu-rasterization
 
 super + shift + {s,w,r,d,g}
 	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura}
@@ -120,17 +123,17 @@ super + Tab
 ##---------- Bspwm ----------##
 
 # Focus to the given desktop
-super + {1-9,0}
+super + {1-8}
     eval "$(xdotool getmouselocation --shell)" &&\
     xdotool mousemove 960 1185 click 1 &&\
-    bspc desktop -f '^{1-9,10}' &&\
+    bspc desktop -f '^{1-8}' &&\
     xdotool mousemove --screen $SCREEN $X $Y
     
 # Switch workspace
-ctrl + super + {Left,Right}
+ctrl + super + {Left,Right,Up,Down}
 	eval "$(xdotool getmouselocation --shell)" &&\
     xdotool mousemove 960 1185 click 1 &&\
-	bspc desktop -f {prev.local,next.local} &&\
+	bspc desktop -f {prev.local,next.local,prev.local,next.local} &&\
     xdotool mousemove --screen $SCREEN $X $Y
 
 # Move to the next or the previous workspace
