@@ -13,20 +13,20 @@ inten=""
 options="$screen\n$area\n$window\n$infive\n$inten"
 
 chosen="$(echo -e "$options" | $rofi_command -p 'Take Screenshot' -dmenu -selected-row 0)"
-case $chosen in
-    $screen)
+case "$chosen" in
+    "$screen")
 		takeshot --now
         ;;
-    $area)
+    "$area")
 		takeshot --area
         ;;
-    $window)
+    "$window")
 		takeshot --win
 		;;
-    $infive)
+    "$infive")
 		takeshot --in5
 		;;
-    $inten)
+    "$inten")
 		takeshot --in10
         ;;
 esac
