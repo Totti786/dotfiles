@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 CONFIG="$HOME/.config/alacritty/alacritty.yml"
-[[ ! -f "$HOME/.zprofile" ]] && bar_style="base"
+if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else bar_style="base" ;fi
+
 
 if [ "$1" == "--float" ]; then
 	alacritty --class 'alacritty-float,alacritty-float' --config-file "$CONFIG" $2 $3
