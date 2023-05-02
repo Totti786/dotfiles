@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ## TODO
 ## wpg -z wallpaper.jpg # shuffles the positions of the colors in your colorscheme
@@ -109,7 +109,7 @@ change_colors(){
 	# jgmenu 
 	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${BG} 60/g" \
 		-i -e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
-		-i -e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 60/g" \
+		-i -e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
 		-i -e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
 		-i -e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"  "$jgmenu"
 	
@@ -316,7 +316,10 @@ dynamic(){
 	
 gui(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
-		[[ `wmctrl -m | grep -i name | cut -d ' ' -f2` == "bspwm" ]] && sh ~/.config/bspwm/bsp-border &
+		[[ $(wmctrl -m | grep -i name | cut -d ' ' -f2) == "bspwm" ]] && sh ~/.config/bspwm/bsp-border &
+		if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then
+			sh "$HOME"/.config/i3/i3-reload
+		fi
 		sh conky.sh restart	
 	else 
 		"$HOME"/.config/waybar/launch_waybar
