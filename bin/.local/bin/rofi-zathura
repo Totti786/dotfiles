@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 cached="$HOME/.cache/zcache"
 history="$HOME/.local/share/zathura/history"
