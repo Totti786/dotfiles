@@ -37,5 +37,3 @@ case $chosen in
         "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float -e vim'
         ;;
 esac
-
-
