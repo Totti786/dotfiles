@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # The name of polybar bar which houses the main spotify module and the control modules.
-if [ -f "$HOME/.profile" ]; then source "$HOME/.profile" ; else  border="2" ;fi
-if [[ "$style" == "base" ]]; then PARENT_BAR="bottom" ; else PARENT_BAR="main" ;fi
+if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else  bar_style="base" ;fi
+if [[ "$bar_style" == "base" ]]; then PARENT_BAR="bottom" ; else PARENT_BAR="main" ;fi
 
 PARENT_BAR_PID=$(pgrep -a "polybar" | grep "$PARENT_BAR" | cut -d" " -f1)
 
@@ -10,7 +10,7 @@ PARENT_BAR_PID=$(pgrep -a "polybar" | grep "$PARENT_BAR" | cut -d" " -f1)
 update_hooks() {
     while IFS= read -r id
     do
-        polybar-msg -p "$id" hook playerctl-playpause $2 1>/dev/null 2>&1
+        polybar-msg -p "$id" hook playerctl-playpause "$2" 1>/dev/null 2>&1
     done < <(echo "$1")
 }
 
