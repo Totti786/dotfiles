@@ -2,7 +2,7 @@
 
 source "$HOME/.cache/wal/colors.sh"
 res="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
-wm="$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g' | cut -d " " -f1)"
+wm="$(wmctrl -m | head -n1 | cut -d " " -f2)"
 conkyConfig="$HOME/.config/conky/conky-$wm.conf"
 
 fixconfig(){
