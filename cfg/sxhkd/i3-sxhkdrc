@@ -172,6 +172,10 @@ super + shift + {j,k,l,semicolon}
 super + shift + {Left,Down,Up,Right}
 	i3-msg move {left,down,up,right}
 
+# Resize focused window
+super + alt + {Left,Down,Up,Right}
+	i3-msg resize {shrink width,grow height,shrink height,grow width} 10 px or 10 ppt
+
 # Reload Keybinding
 ctrl + alt + Escape
     pkill -USR1 -x sxhkd
@@ -187,6 +191,10 @@ ctrl + shift + r
 # Hide/Unhide Window
 super + d
 	~/.config/i3/winmask
+	
+# Restore Previous Workspace
+super + shift + q
+	~/.config/i3/i3-resurrect-dmenu
 
 ##------ herbstluftwm -------##
 
