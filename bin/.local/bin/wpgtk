@@ -367,7 +367,7 @@ run(){
 			bright_cyan="$(printf "%s\n" "$color14")"
 			bright_white="$(printf "%s\n" "$color15")"
 			# Additional colors
-			bg_light="$(pastel lighten 0.02 ${background:1} | pastel format hex)"
+			bg_light="$(pastel lighten 0.04 ${background:1} | pastel format hex)"
 			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
 			bg_rgb="$(pastel format rgb ${background:1})"
 			## merging the Xresources files with the main one
