@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
+wm="$(wmctrl -m | head -n1 | cut -d " " -f2)"
+
+# Varia# Variables and functions
+if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
+	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
+	exit 1
+fi
+
+if [[ "$wm" == "bspwm" ]]; then 
+	menuStart
+		menuItem 'Edit Autostart' "exo-open $HOME/.config/bspwm/autostart"
+		menuItem 'Edit config' "exo-open $HOME/.config/bspwm/bspwmrc"
+		menuItem 'Edit keybinds' "exo-open $HOME/.config/sxhkd/sxhkdrc"
+		menuItem 'Restart bspwm' "bspc wm -r "
+		menuItem 'Restart sxhkd' "pkill -USR1 -x sxhkd"
+	menuEnd
+elif [[ "$wm" == "i3" ]]; then 
+	menuStart
+		menuItem 'Edit Autostart' "exo-open $HOME/.config/i3/autostart"
+		menuItem 'Edit config' "exo-open $HOME/.config/i3/config"
+		menuItem 'Edit keybinds' "exo-open $HOME/.config/sxhkd/i3-sxhkdrc"
+		menuItem 'Reload i3' "$HOME/.config/i3/i3-reload"
+		menuItem 'Restart i3' "i3-msg restart"
+		menuItem 'Restart sxhkd' "pkill -USR1 -x sxhkd"
+	menuEnd
+elif [[ "$wm" == "Openbox" ]]; then 
+	menuStart
+		menuItem 'Edit Autostart' "exo-open $HOME/.config/openbox/autostart"
+		menuItem 'Edit Menu' "exo-open $HOME/.config/openbox/menu.xml"
+		menuItem 'Edit Keybinds' "exo-open $HOME/.config/openbox/rc.xml"
+		menuItem 'Restart' "openbox --restart"
+		menuItem 'Reconfigure' "openbox --reconfigure"
+	menuEnd
+fi
