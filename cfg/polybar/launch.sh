@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 
-#This is a bash script that reads system information and adjusts configuration 
-#files for a Linux desktop environment. It first sets some variables based on the output of various 
-#system commands, such as the graphics card and network interface. 
-#It then uses these variables to modify configuration files based on the current 
-#desktop environment (e.g., bspwm, herbstluftwm, i3, or Openbox) and the availability 
-#of certain modules (e.g., backlight or network modules). Finally, it writes some of these
-#variables to a "system" file.
+# Launchs Polybar from multiple window managers
 
 
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
@@ -14,12 +8,14 @@ graphics_card="$(light -L | grep -m1 'backlight' | cut -d'/' -f3)"
 network_interface="$(ip link | awk '/state UP/ {print $2}' | tr -d :)"
 battery_name=$(upower -i "$(upower -e | grep 'BAT')" | grep 'native-path' | cut -d':' -f2 | tr -d '[:blank:]')
 adapter_name=$(upower -i "$(upower -e | grep 'AC')" | grep 'native-path' | cut -d':' -f2 | tr -d '[:blank:]')
-current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
+current_desktop=$(wmctrl -m | head -n1 | cut -d " " -f2) 
 
 if [[ -f "$HOME/.zprofile" ]]; then 
 	source "$HOME"/.zprofile
 else
-	style="base" tp="23" bp="23"
+	bar_style="base"
+	top_padding="23"
+	bottom_padding="23"
 fi
 
 # Fix backlight and network modules
