@@ -12,7 +12,7 @@ fi
 
 ## Options #############################################
 if  [[ "$1" = "--logout" ]]; then
-	current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
+	current_desktop=$(wmctrl -m | head -n1 | cut -d " " -f2) 
 	if [[ "$current_desktop" == "Openbox" ]]; then
 		openbox --exit
 	elif [[ "$current_desktop" == "i3" ]]; then
