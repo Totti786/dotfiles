@@ -38,37 +38,48 @@ fix_modules() {
 	if [[ "$current_desktop" == "bspwm" ]]; then
 		bspc config -m focused top_padding "$top_padding"
 		bspc config -m focused bottom_padding "$bottom_padding"
-		sed -i -e 's/modules-center = workspaces/modules-center = bspwm/g' \
-			-i -e 's/override-redirect = .*/override-redirect = true/g' \
-			-i -e 's/scroll-up = .*/scroll-up = bspc desktop -f prev.local/g' \
-			-i -e 's/scroll-down = .*/scroll-down = bspc desktop -f next.local/g' \
-			-i -e 's/titlex\b/title/g' \
-			-i -e 's/wm-restack = .*/wm-restack = bspwm/g' 						"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
+		sed -i -e 's/modules-center = workspaces/modules-center = bspwm/g' 			\
+			-i -e 's/override-redirect = .*/override-redirect = true/g' 			\
+			-i -e 's/scroll-up = .*/scroll-up = bspc desktop -f prev.local/g' 		\
+			-i -e 's/scroll-down = .*/scroll-down = bspc desktop -f next.local/g' 	\
+			-i -e 's/titlex\b/title/g'												\
+			-i -e 's/ssep/systray/g'												\
+			-i -e 's/tray-position = .*/tray-position = none/g'						\
+			-i -e 's/wm-restack = .*/wm-restack = bspwm/g' 							"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
+			
 	elif [[ "$current_desktop" == "herbstluftwm" ]]; then
-		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' \
-			-i -e 's/override-redirect = .*/override-redirect = false/g' \
-			-i -e 's/titlex\b/title/g' \
-			-i -e 's/wm-restack = .*/wm-restack = /g' 						"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
+		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' 			\
+			-i -e 's/override-redirect = .*/override-redirect = false/g' 			\
+			-i -e 's/titlex\b/title/g' 												\
+			-i -e 's/ssep/systray/g' 												\
+			-i -e 's/tray-position = .*/tray-position = none/g'						\
+			-i -e 's/wm-restack = .*/wm-restack = /g' 								"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
+			
 	elif [[ "$current_desktop" == "i3" ]]; then
 		i3-msg gaps top all set "$top_padding" &> /dev/null
 		i3-msg gaps bottom all set "$bottom_padding" &> /dev/null
-		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' \
-			-i -e 's/override-redirect = .*/override-redirect = true/g' \
-			-i -e 's/scroll-up = .*/scroll-up = i3-msg workspace prev/g' \
-			-i -e 's/scroll-down = .*/scroll-down = i3-msg workspace next/g' \
-			-i -e 's/titlex\b/title/g' \
-			-i -e 's/wm-restack = .*/wm-restack = i3/g' 						"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
+		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' 			\
+			-i -e 's/override-redirect = .*/override-redirect = true/g' 			\
+			-i -e 's/scroll-up = .*/scroll-up = i3-msg workspace prev/g'			\
+			-i -e 's/scroll-down = .*/scroll-down = i3-msg workspace next/g' 		\
+			-i -e 's/titlex\b/title/g' 												\
+			-i -e 's/systray/ssep/g'												\
+			-i -e 's/tray-position = .*/tray-position = right/g'					\
+			-i -e 's/wm-restack = .*/wm-restack = i3/g' 							"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
+			
 	elif [[ "$current_desktop" == "Openbox" ]]; then
 		openbox --reconfigure
-		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' \
-			-i -e 's/override-redirect = .*/override-redirect = false/g' \
-			-i -e 's/title\b/titlex/g' \
-			-i -e 's/wm-restack = .*/wm-restack = /g' 							"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
+		sed -i -e 's/modules-center = bspwm/modules-center = workspaces/g' 			\
+			-i -e 's/override-redirect = .*/override-redirect = false/g'			\
+			-i -e 's/title\b/titlex/g' 												\
+			-i -e 's/ssep/systray/g' 												\
+			-i -e 's/tray-position = .*/tray-position = none/g'						\
+			-i -e 's/wm-restack = .*/wm-restack = /g' 								"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
 	fi
 	if [[ "$(pgrep picom)" ]]; then 
-		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = false/g'	"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
+		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = false/g'		"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
 	else
-		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = true/g'		"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
+		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = true/g'			"$dir"/config.ini "$dir"/minimal/config-minimal.ini 
 	fi
 
 }
