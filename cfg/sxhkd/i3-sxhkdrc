@@ -196,18 +196,4 @@ super + d
 super + shift + q
 	~/.config/i3/i3-resurrect-dmenu
 
-##------ herbstluftwm -------##
-
-# Focus to the given desktop
-super + {1-9,0}
-	
-# Close App
-super + {q,c}
-	herbstclient close
-	
-# Reload herbstluftwm
-super + ctrl + r
-	herbstluftwm reload
-	
-
 ##---------- EOF ----------##
