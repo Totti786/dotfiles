@@ -7,7 +7,7 @@
 
 # Dir
 pdir="$HOME/.config/polybar"
-rdir="$HOME/.config/polybar/rofi"
+rdir="$HOME/.config/rofi"
 tdir="$HOME/.config/alacritty"
 odir="$HOME/.config/openbox"
 ddir="$HOME/.config/dunst"
