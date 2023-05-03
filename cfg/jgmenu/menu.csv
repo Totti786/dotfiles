@@ -15,33 +15,17 @@ Power,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//powermenu --tag="P
 
 ^tag(preferences)
 Back,^back()
-Bspwm,^checkout(bspwm)
-Polybar,^checkout(polybar)
+Window Manager,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//wm-pipe" --tag="WM")
+Bar,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//bar-pipe" --tag="Bar")
 Compositor,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//compositor" --tag="Compositor")
 ^sep()
 Change Font,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//change-fonts" --tag="Change Font")
 ^sep()
-Toolbox, sh ~/.local/bin/bars
+Toolbox, ~/.local/bin/bars
 ^sep()
 Change Wallpaper,sh ~/.local/bin/wpgtk pick
 Appearance Settings,xfce4-appearance-settings
-
 ^sep()
-Display Settings,xfce4-display-settings
 Power Settings,xfce4-power-manager-settings
 Audio Settings,pavucontrol
-
-^tag(polybar)
-Back,^back()
-Restart,sh ~/.config/polybar/launch.sh
-Edit config,exo-open ~/.config/polybar/config.ini
-Edit modules,exo-open ~/.config/polybar/modules.ini
-Edit weather Data,exo-open ~/.config/polybar/scripts/info
-
-^tag(bspwm)
-Back,^back()
-Edit Autostart,exo-open ~/.config/bspwm/autostart
-Edit config,exo-open ~/.config/bspwm/bspwmrc
-Edit keybinds,exo-open ~/.config/sxhkd/sxhkdrc
-Restart bspwm,bspc wm -r 
-Restart sxhkd,pkill -USR1 -x sxhkd
+Display Settings,xfce4-display-settings
