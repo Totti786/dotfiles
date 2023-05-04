@@ -11,7 +11,7 @@ Screen Recorder,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//record" 
 Preferences,^checkout(preferences)
 Keybinds, sh ~/.local/bin/conky.sh
 Settings Manager,xfce4-settings-manager
-Power,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//powermenu --tag="Power")
+Power Menu,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//powermenu" --tag="Power Menu")
 
 ^tag(preferences)
 Back,^back()
