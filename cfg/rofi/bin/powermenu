@@ -35,7 +35,7 @@ case "$chosen" in
 		if [[ "$ans" == "$confirm" ]]; then systemctl suspend && lockscreen ;fi
         ;;
     "$logout")
-		current_desktop=$(wmctrl -m |sed -n 1p | sed -e 's/Name: //g') 
+		current_desktop=$(wmctrl -m | head -n1 | cut -d " " -f2) 
 		ans=$($HOME/.config/rofi/bin/confirm &)
 		if [[ "$ans" == "$confirm" ]]; then
 			if [[ "$current_desktop" == "Openbox" ]]; then
