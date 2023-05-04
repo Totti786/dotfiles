@@ -18,7 +18,7 @@ geany
 gpick
 grep
 htop
-i3
+i3-wm
 i3lock-color
 imagemagick
 jgmenu
