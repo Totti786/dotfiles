@@ -239,21 +239,25 @@ copyWal(){
 
 ## Kill already running process
 restart(){
-	if [[ $(pidof $1) ]]; then
-		pkill $1 &&
-		$1 $2 $3 & disown
-		#echo "$1 restarted"
+	local cmd="$1"
+    shift
+	if [[ "$(pidof $cmd)" ]]; then
+		killall "$cmd" &&
+        "$cmd" "$@" & disown
 	else 
-		$1 $2 $3 & disown
-		#echo "$1 is running"
+        "$cmd" "$@" & disown
 	fi
 }
 	
 ## Check if the command exists and then runs it
 check(){
-	if command -v $1 &> /dev/null; then 
-		$1 $2 $3 & disown
-	fi
+	local cmd="$1"
+    shift
+    if command -v "$cmd" >/dev/null 2>&1; then
+        "$cmd" "$@" & disown
+    else
+        echo "Command not found: $cmd"
+    fi
 }
 
 # change the wpg config file so this script can run whenever wpg is invoked 
@@ -335,6 +339,7 @@ main(){
 	restart copyq --start-server
 	copyWal
 	papirus-folder.sh --color ${red:1} &
+	jg-color &
 	check spicetify -q update &
 	check razer-cli -a & exit
 }
