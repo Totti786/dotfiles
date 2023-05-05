@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 get(){
 	btstatus="$(systemctl  status bluetooth.service | grep -i "Active:" | cut -d " " -f7)"
