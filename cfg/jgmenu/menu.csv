@@ -18,6 +18,7 @@ Back,^back()
 Window Manager,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//wm-pipe" --tag="WM")
 Bar,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//bar-pipe" --tag="Bar")
 Compositor,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//compositor" --tag="Compositor")
+Color Scheme,^checkout(colorscheme)
 ^sep()
 Change Font,^pipe(jgmenu_run ob --cmd="~/.config/openbox/pipemenus//change-fonts" --tag="Change Font")
 ^sep()
@@ -29,3 +30,6 @@ Appearance Settings,xfce4-appearance-settings
 Power Settings,xfce4-power-manager-settings
 Audio Settings,pavucontrol
 Display Settings,xfce4-display-settings
+
+^tag(colorscheme)
+. ~/.config/jgmenu/colors.csv
