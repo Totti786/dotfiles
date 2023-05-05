@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Set the directory to search in
+declare -a directory=(bspwm openbox i3 polybar rofi eww zathura hypr waybar)
+
+getfiles(){
+	for i in "${directory[@]}"; do
+		files=$(file $(find "$HOME/.config/$i" "$HOME/.local/bin" -type f) | grep  "shell script")
+		file="$( echo "$files" | cut -d ":" -f1)"
+		echo "$file"
+	done
+}
+
+getfiles > /tmp/shell-files
+
+for i in $(cat /tmp/shell-files); do 
+	chmod +x "$i"
+done && echo "Done!"
