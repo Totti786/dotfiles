@@ -128,7 +128,7 @@ super + {1-8}
     
 # Switch workspace
 ctrl + super + {Left,Right,Up,Down}
-	i3-msg workspace {prev,next,prev,next}
+	~/.config/i3/i3-workspaces {prev,next,prev,next}
 
 # Move to the next or the previous workspace
 super + {~button4, ~button5}
@@ -190,7 +190,7 @@ ctrl + shift + r
 
 # Hide/Unhide Window
 super + d
-	~/.config/i3/winmask
+	~/.config/i3/i3-winmask
 	
 # Restore Previous Workspace
 super + shift + q
