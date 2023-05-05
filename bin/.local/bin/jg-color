@@ -6,7 +6,8 @@ COLORS_FILE="$CACHE_DIR/colors.json"
 
 # Read color scheme from JSON file
 color_scheme=($(jq -r '.colors[]' "$COLORS_FILE"))
-
+# Get the current wallpaper
+CURRENT_WALL="$(basename $(jq -r '.wallpaper' "$COLORS_FILE"))"
 # Define output arrays
 out=()
 out2=()
@@ -16,7 +17,7 @@ out+=("^sep(Wallpaper Colors)")
 out+=("北  ReGenerate colors,^checkout(regen)")
 out2+=("^tag(regen)")
 out2+=("^sep(Regenerate)")
-out2+=("Shuffle Colors,wpg -z $(wpg -c) && wpg -s $(wpg -c)")
+out2+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL")
 
 # Add colors from the color scheme
 for i in "${color_scheme[@]}"; do
