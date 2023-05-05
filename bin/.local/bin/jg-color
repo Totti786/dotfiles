@@ -9,33 +9,33 @@ color_scheme=($(jq -r '.colors[]' "$COLORS_FILE"))
 # Get the current wallpaper
 CURRENT_WALL="$(basename $(jq -r '.wallpaper' "$COLORS_FILE"))"
 # Define output arrays
-out=()
-out2=()
+menu=()
+submenu=()
 
 # Add wallpaper colors section
-out+=("^sep(Wallpaper Colors)")
-out+=("北  ReGenerate colors,^checkout(regen)")
-out2+=("^tag(regen)")
-out2+=("^sep(Regenerate)")
-out2+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL")
+menu+=("^sep(Wallpaper Colors)")
+menu+=("北  ReGenerate colors,^checkout(regen)")
+submenu+=("^tag(regen)")
+submenu+=("^sep(Regenerate)")
+submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL")
 
 # Add colors from the color scheme
 for i in "${color_scheme[@]}"; do
-    out+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>,^checkout(${i:1}$((++n)))")
-    out2+=("^tag(${i:1}$n)")
-    out2+=("^sep(<tt>Color <small>$i</small> <span bgcolor='$i'>    </span></tt>)")
-    out2+=("Set as Folder Color,papirus-folder.sh --color '${i}'")
+    menu+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>,^checkout(${i:1}$((++n)))")
+    submenu+=("^tag(${i:1}$n)")
+    submenu+=("^sep(<tt>Color <small>$i</small> <span bgcolor='$i'>    </span></tt>)")
+    submenu+=("Set as Folder Color,papirus-folder.sh --color '${i}'")
 done
 
 # Add set random wallpaper section
-out+=("^sep(Set random wallpaper)")
+menu+=("^sep(Set random wallpaper)")
 userwallp="$(shopt -s globstar nullglob ; files=($WALLPAPERS_DIR/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}) ; echo "${#files[@]}")"
-out+=("  Wallpapers (<small>${userwallp}</small>),wpgtk random")
+menu+=("  Wallpapers (<small>${userwallp}</small>),wpgtk random")
 
 # Define main function to output results
 main() {
-    printf '%s\n' "${out[@]}"
-    printf '%s\n' "${out2[@]}"
+    printf '%s\n' "${menu[@]}"
+    printf '%s\n' "${submenu[@]}"
 }
 
 # Write results to output file
