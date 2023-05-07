@@ -26,15 +26,13 @@ jgmenu="$HOME/.config/jgmenu/jgmenurc"
 eww="$HOME/.config/eww/colors.scss"
 waybar="$HOME/.config/waybar/colors.css"
 hypr="$HOME/.config/hypr/colors.conf"
-conky1="$HOME/.config/conky/conky-Openbox.conf"
-conky2="$HOME/.config/conky/conky-bspwm.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
 
 ## Change colors
 change_colors(){
 	run &&
 	# rofi
-	cat > $rofi <<- EOF
+	cat > "$rofi" <<- EOF
 	/* colors */
 	* {
 		background:       ${BG}90; 
@@ -49,7 +47,7 @@ change_colors(){
 		EOF
 	
 	# alacritty 
-	cat > $alacritty <<- EOF 
+	cat > "$alacritty" <<- EOF 
 	#Colors 
 	colors:
 	  primary:
@@ -114,10 +112,10 @@ change_colors(){
 		-i -e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"  "$jgmenu"
 	
 	# zathura (courtesy of @GideonWolfe)
-	$gzathura > $zathura
+	"$gzathura" > "$zathura"
 	
 	# discord
-	if [[ -f $discord ]]; then 
+	if [[ -f "$discord" ]]; then 
 	sed -i -e "s/--accent-color: .*/--accent-color: ${FG};/g" \
 		-i -e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" \
 		-i -e "s/--background-1: .*/--background-1: ${bg_light};/g" \
@@ -200,6 +198,14 @@ change_colors(){
 	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers &> /dev/null
 }
 
+# change the wpg config file so this script can run whenever wpg is invoked 
+wpgConfig(){
+	sed -i -e 's/execute_cmd = false/execute_cmd = true/g' \
+		-i -e 's/reload = .*/reload = true/g' \
+		-i -e 's/auto_adjust = false/auto_adjust = true/g' \
+		-i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" "$HOME/.config/wpg/wpg.conf"
+}
+
 # this functions should only be used if you have a system with a seperate home partition 
 # (this is bad)
 lockPerms(){
@@ -214,7 +220,7 @@ lockPerms(){
 	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
 		sudo chgrp -R $(whoami) /usr/share/sddm/
 		sudo chmod -R ug+rwX  /usr/share/sddm/
-	else 
+	else
 		echo "Can't find a compatible sddm theme"
 	fi
 }
@@ -232,7 +238,7 @@ copyWal(){
 	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
 		cp ~/.config/wpg/templates/wallpaper.jpg \
 		/usr/share/sddm/themes/Arch/components/artwork/background.jpg
-	else 
+	else
 		echo "Can't find a compatible sddm theme"
 	fi
 }
@@ -260,26 +266,20 @@ check(){
     fi
 }
 
-# change the wpg config file so this script can run whenever wpg is invoked 
-wpgConfig(){
-	sed -i -e 's/execute_cmd = false/execute_cmd = true/g' ~/.config/wpg/wpg.conf
-	sed -i -e 's/reload = .*/reload = true/g' ~/.config/wpg/wpg.conf
-	sed -i -e 's/auto_adjust = false/auto_adjust = true/g' ~/.config/wpg/wpg.conf
-	sed -i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" ~/.config/wpg/wpg.conf
-}	
-
 wall(){
 	if [ -z "$1" ]; then
-	echo "No image was selected"
+		echo "No image was selected"
 	elif [[ "$1" == "$(cat $HOME/.fehbg | cut -d "'" -f2  | tail -n1)" ]]; then
 		echo "This wallpaper is already set"
 	else 
-	if [[ $XDG_SESSION_TYPE == "wayland" ]]; then 
-		"$HOME"/.config/hypr/scripts/wall "$1"
-	else 
+	
+	if [[ $XDG_SESSION_TYPE == "x11" ]]; then
 		feh --no-fehbg --bg-fill "$1"
+	else
+		"$HOME"/.config/hypr/scripts/wall "$1"
 	fi
-	wpg -A "$1" && wpg -s "$1" 
+	
+	wpg -A "$1" && wpg -s "$1"
 	rm "$1""_wal_sample.png"
 	fi
 }
@@ -294,7 +294,7 @@ random(){
 # to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
 pick(){
 	wal=$(sxiv -torb $Wallpapers)
-	wall "$wal"
+	wall "$wal" &
 }	
 
 dynamic(){
@@ -335,7 +335,7 @@ gui(){
 main(){
 	change_colors
 	gui
-	restart dunst
+	restart dunst 
 	restart copyq --start-server
 	copyWal
 	papirus-folder.sh --color ${red:1} &
