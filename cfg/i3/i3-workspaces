@@ -7,7 +7,7 @@ num=$(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).num')
 
 # Function to switch to the next workspace.
 next(){
-	if [[ "$num" < 8 ]]; then
+	if [[ "$num" -lt 8 ]]; then
 		i3-msg workspace number $(( $num + 1)) || echo "Error: Failed to switch to next workspace."
 	else 
 		i3-msg workspace number 1 || echo "Error: Failed to switch to workspace 1."
@@ -16,7 +16,7 @@ next(){
 
 # Function to switch to the previous workspace.
 prev(){
-	if [[ "$num" > 1 ]]; then
+	if [[ "$num" -gt 1 ]]; then
 		i3-msg workspace number $(( $num - 1)) || echo "Error: Failed to switch to previous workspace."
 	else 
 		i3-msg workspace number 8 || echo "Error: Failed to switch to workspace 8."
