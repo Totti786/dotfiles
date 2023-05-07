@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #                       _____ __   
 #     ____  _________  / __(_) /__ 
@@ -16,17 +16,18 @@ fi
 # Set default mime types
 export TERMINAL="alacritty"
 export BROWSER="firefox"
+export QT_STYLE_OVERRIDE="qt5ct"
 
 # Polybar and bspwm style settings
-export bar_style=minimal
-export window_border="3"
+bar_style=minimal
+window_border="3"
 
 if [[ "$bar_style" == "base" ]];then
-	export top_padding="23"
-	export bottom_padding="23"
-	export conky="On"
+	top_padding="23"
+	bottom_padding="23"
+	conky="On"
 elif [[ "$bar_style" == "minimal" ]];then
-	export top_padding="0"
-	export bottom_padding="25"
-	export conky="Off"
+	top_padding="0"
+	bottom_padding="25"
+	conky="Off"
 fi
