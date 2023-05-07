@@ -2,7 +2,6 @@
 
 # Launchs Polybar from multiple window managers
 
-
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 graphics_card="$(light -L | grep -m1 'backlight' | cut -d'/' -f3)"
 network_interface="$(ip link | awk '/state UP/ {print $2}' | tr -d :)"
@@ -13,7 +12,6 @@ config_file="$dir/config.ini"
 minimal_config_file="$dir/minimal/config-minimal.ini"
 
 
-
 if [[ -f "$HOME/.zprofile" ]]; then 
 	source "$HOME/.zprofile"
 else
@@ -21,6 +19,17 @@ else
 	top_padding="23"
 	bottom_padding="23"
 fi
+
+change_modules(){
+	sed -i -e "/^\[bar\/\(bottom\|main\)\]$/,/^\[/ s/modules-center = .*/modules-center = $1/" 	\
+		-i -e "s/wm-name = .*/wm-name = $2/g" \
+		-i -e "s/wm-restack = .*/wm-restack = $2/g" \
+		-i -e "s/override-redirect = .*/override-redirect = $3/g" \
+		-i -e "s/tray-position = .*/tray-position = $4/g" \
+		-i -e "s/scroll-up = .*/scroll-up = $5/g" \
+		-i -e "s/scroll-down = .*/scroll-down = $6/g" \
+		"$config_file" "$minimal_config_file"
+}
 
 # Fix backlight and network modules
 fix_modules() {
@@ -36,70 +45,56 @@ fix_modules() {
 
 	# check if bspwm is the curren wm and changes the workspaces module 
 	case "$current_desktop" in
+	 "Openbox")
+		sed -i -e 's/title\b/titlex/g' \
+			-i -e 's/ssep/systray/g' \
+			"$config_file" "$minimal_config_file"
+		change_modules "workspaces" "openbox" "false" "none" "~\/.config\/openbox\/ob-workspaces prev" "~\/.config\/openbox\/ob-workspaces next"
+	 	;;
 	 "bspwm")
 		bspc config -m focused top_padding "$top_padding"
 		bspc config -m focused bottom_padding "$bottom_padding"
-		sed -i -e 's/modules-center = \(i3\|workspaces\)/modules-center = bspwm/g'  \
-			-i -e 's/override-redirect = .*/override-redirect = true/g' 			\
-			-i -e 's/scroll-up = .*/scroll-up = bspc desktop -f prev.local/g' 		\
-			-i -e 's/scroll-down = .*/scroll-down = bspc desktop -f next.local/g' 	\
-			-i -e 's/titlex\b/title/g'												\
-			-i -e 's/ssep/systray/g'												\
-			-i -e 's/tray-position = .*/tray-position = none/g'						\
-			-i -e 's/wm-restack = .*/wm-restack = bspwm/g' 							"$config_file" "$minimal_config_file"
+		sed -i -e 's/titlex\b/title/g' \
+			-i -e 's/ssep/systray/g' \
+			"$config_file" "$minimal_config_file"
+		change_modules "bspwm" "bspwm" "true" "none" "bspc desktop -f prev.local" "bspc desktop -f next.local"
 		;;
-	 "herbstluftwm")
-		sed -i -e 's/modules-center = \(i3\|bspwm\)/modules-center = workspaces/g' 	\
-			-i -e 's/override-redirect = .*/override-redirect = false/g' 			\
-			-i -e 's/titlex\b/title/g' 												\
-			-i -e 's/ssep/systray/g' 												\
-			-i -e 's/tray-position = .*/tray-position = none/g'						\
-			-i -e 's/wm-restack = .*/wm-restack = /g' 								"$config_file" "$minimal_config_file"
-		;;	
 	 "i3")
 		i3-msg gaps top all set "$top_padding" &> /dev/null
 		i3-msg gaps bottom all set "$bottom_padding" &> /dev/null
-		sed -i -e 's/modules-center = \(bspwm\|workspaces\)/modules-center = i3/g' 	\
-			-i -e 's/override-redirect = .*/override-redirect = true/g' 			\
-			-i -e 's/scroll-up = .*/scroll-up = ~\/.config\/i3\/i3-workspaces prev/g' \
-			-i -e 's/scroll-down = .*/scroll-down = ~\/.config\/i3\/i3-workspaces next/g' \
-			-i -e 's/titlex\b/title/g' 												\
-			-i -e 's/systray/ssep/g'												\
-			-i -e 's/tray-position = .*/tray-position = right/g'					\
-			-i -e 's/wm-restack = .*/wm-restack = i3/g' 							"$config_file" "$minimal_config_file"
+		sed -i -e 's/titlex\b/title/g' \
+			-i -e 's/systray/ssep/g' \
+			"$config_file" "$minimal_config_file"			
+		change_modules "i3" "i3" "true" "right" "~\/.config\/i3\/i3-workspaces prev" "~\/.config\/i3\/i3-workspaces next"
+		"$HOME"/.config/i3/i3-reload
+		;;
+	 "herbstluftwm")
+		sed -i -e 's/titlex\b/title/g' \
+			-i -e 's/ssep/systray/g' \
+			"$config_file" "$minimal_config_file"
+		change_modules "workspaces" "herbstluftwm" "false" "none" " " " "
 		;;	
-	 "Openbox")
-		openbox --reconfigure
-		sed -i -e 's/modules-center = \(i3\|bspwm\)/modules-center = workspaces/g'	\
-			-i -e 's/override-redirect = .*/override-redirect = false/g'			\
-			-i -e 's/title\b/titlex/g' 												\
-			-i -e 's/ssep/systray/g' 												\
-			-i -e 's/tray-position = .*/tray-position = none/g'						\
-			-i -e 's/wm-restack = .*/wm-restack = /g' 								"$config_file" "$minimal_config_file"
-	 	;;
-	 	
 	 *)	 	 
 		echo "Unknown window manager: $current_desktop"
 		;;
 	esac
 	if [[ "$(pgrep picom)" ]]; then 
-		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = false/g'		"$config_file" "$minimal_config_file"
+		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = false/g' "$config_file" "$minimal_config_file"
 	else
-		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = true/g'			"$config_file" "$minimal_config_file"
+		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = true/g'	"$config_file" "$minimal_config_file"
 	fi
-
 }
 
 ## Write values to `system` file
 set_values() {
 	[[ "$adapter_name" ]] &&
-		sed -i -e "s/adapter = .*/adapter = $adapter_name/g"							"$dir"/system.ini
+		sed -i -e "s/adapter = .*/adapter = $adapter_name/g"							"$dir/system.ini"
 	[[ "$battery_name" ]] &&
-		sed -i -e "s/battery = .*/battery = $battery_name/g" 							"$dir"/system.ini
+		sed -i -e "s/battery = .*/battery = $battery_name/g" 							"$dir/system.ini"
 	[[ "$graphics_card" ]] &&
-		sed -i -e "s/graphics_card = .*/graphics_card = $graphics_card/g" 				"$dir"/system.ini
+		sed -i -e "s/graphics_card = .*/graphics_card = $graphics_card/g" 				"$dir/system.ini"
 	[[ "$network_interface" ]] &&
-		sed -i -e "s/network_interface = .*/network_interface = $network_interface/g" 	"$dir"/system.ini
+		sed -i -e "s/network_interface = .*/network_interface = $network_interface/g" 	"$dir/system.ini"
 }
 
 # Launch the bar
@@ -109,10 +104,10 @@ launch_bar() {
 	# Launch the bar
 	if [[ "$bar_style" == "base" ]]; then 
 		killall -q -9 updates.sh zscroll playerctl-scroll.sh
-		polybar -q top -c "$dir"/config.ini &
-		polybar -q bottom -c "$dir"/config.ini &
+		polybar -q top -c "$dir/config.ini" &
+		polybar -q bottom -c "$dir/config.ini" &
 	elif [[ "$bar_style" == "minimal" ]]; then
-		polybar -q main -c "$dir"/minimal/config-minimal.ini &
+		polybar -q main -c "$dir/minimal/config-minimal.ini" &
 	fi
 }
 set_values
