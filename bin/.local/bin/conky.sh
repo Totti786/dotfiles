@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 source "$HOME/.cache/wal/colors.sh"
 res="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
