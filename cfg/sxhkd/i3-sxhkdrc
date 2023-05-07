@@ -132,7 +132,7 @@ ctrl + super + {Left,Right,Up,Down}
 
 # Move to the next or the previous workspace
 super + {~button4, ~button5}
-	i3-msg workspace {prev,next}
+	~/.config/i3/i3-workspaces {prev,next}
 
 # Send focused window to another workspace and switch to the workspace
 super + shift + {1-8}
