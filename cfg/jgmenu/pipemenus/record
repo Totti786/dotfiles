@@ -9,9 +9,10 @@ time=`date +%Y-%m-%d-%H-%M-%S`
 screen=`xdpyinfo | awk '/dimensions/{print $2}'`
 dir="`xdg-user-dir VIDEOS`/Screenrecorder"
 file="Capture_${time}.mp4"
-MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
 
 # Variables and functions
+MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+
 if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
 	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
 	exit 1

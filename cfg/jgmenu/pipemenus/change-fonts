@@ -13,7 +13,8 @@ odir="$HOME/.config/openbox"
 ddir="$HOME/.config/dunst"
 
 # Variables and functions
-MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
+MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+
 if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
 	echo "Error: Failed to locate archcraft.cfg in $MENUS_LIBDIR" >&2
 	exit 1

@@ -6,10 +6,11 @@
 ## Openbox Pipemenu For Picom Compositor
 
 # User's config dir
-dir="$HOME/.config/picom/"
-MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
+PICOM_DIR="$HOME/.config/picom/"
 
 # Variables and functions
+MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+
 if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
 	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
 	exit 1
@@ -43,13 +44,13 @@ done
 declareDependencies picom
 
 ##-- various checks ---------------------
-check_backend=$(cat $dir/picom.conf | grep "backend = " | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
-check_corners=$(cat $dir/picom.conf | grep 'corner-radius =' | cut -d'=' -f2 | tr -d ';,[:blank:]')
-check_border=$(cat $dir/picom.conf | grep 'round-borders =' | cut -d'=' -f2 | tr -d ';,[:blank:]')
-check_shadow=$(cat $dir/picom.conf | grep 'shadow =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
-check_fading=$(cat $dir/picom.conf | grep 'fading =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
-check_blur=$(cat $dir/picom.conf | grep 'method =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
-check_animations=$(cat $dir/picom.conf | grep 'animations = ' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
+check_backend=$(cat $PICOM_DIR/picom.conf | grep "backend = " | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
+check_corners=$(cat $PICOM_DIR/picom.conf | grep 'corner-radius =' | cut -d'=' -f2 | tr -d ';,[:blank:]')
+check_border=$(cat $PICOM_DIR/picom.conf | grep 'round-borders =' | cut -d'=' -f2 | tr -d ';,[:blank:]')
+check_shadow=$(cat $PICOM_DIR/picom.conf | grep 'shadow =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
+check_fading=$(cat $PICOM_DIR/picom.conf | grep 'fading =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
+check_blur=$(cat $PICOM_DIR/picom.conf | grep 'method =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
+check_animations=$(cat $PICOM_DIR/picom.conf | grep 'animations = ' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
 
 ## Kill picom
 forcekill_picom() {
@@ -98,33 +99,33 @@ elif [[ $1 = '--watch' ]]; then
 ##-- backend ------------------
 
 elif [[ $1 = '--use-glx' ]]; then
-	sed -i -e "s/backend = .*/backend = \"glx\";/g" $dir/picom.conf
+	sed -i -e "s/backend = .*/backend = \"glx\";/g" "$PICOM_DIR/picom.conf"
 
 elif [[ $1 = '--use-xrender' ]]; then
-	sed -i -e "s/backend = .*/backend = \"xrender\";/g" $dir/picom.conf
+	sed -i -e "s/backend = .*/backend = \"xrender\";/g" "$PICOM_DIR/picom.conf"
 
 ##-- corners ---------------------
 
 elif [[ $1 = '--corner-radius' ]]; then
 	cradius=$(zenity --text='Corner Radius' --scale --value=6 --min-value=0 --max-value=40)
 	if [[ "$cradius" ]]; then
-		sed -i -e "s/backend = .*/backend = \"glx\";/g" $dir/picom.conf
-		sed -i -e "s/corner-radius = .*/corner-radius = $cradius;/g" $dir/picom.conf
+		sed -i -e "s/backend = .*/backend = \"glx\";/g" "$PICOM_DIR/picom.conf"
+		sed -i -e "s/corner-radius = .*/corner-radius = $cradius;/g" "$PICOM_DIR/picom.conf"
     fi
 
 elif [[ $1 = '--disable-corners' ]]; then
-    sed -i -e "s/corner-radius = .*/corner-radius = 0;/g" $dir/picom.conf	
+    sed -i -e "s/corner-radius = .*/corner-radius = 0;/g" "$PICOM_DIR/picom.conf"
 
 ##-- borders ---------------------
 
 elif [[ $1 = '--border-size' ]]; then
 	cborder=$(zenity --text='Border Size' --scale --value=4 --min-value=0 --max-value=100)
 	if [[ "$cborder" ]]; then
-		sed -i -e "s/round-borders = .*/round-borders = $cborder;/g" $dir/picom.conf
+		sed -i -e "s/round-borders = .*/round-borders = $cborder;/g" "$PICOM_DIR/picom.conf"
     fi
 
 elif [[ $1 = '--disable-borders' ]]; then
-    sed -i -e "s/round-borders = .*/round-borders = 0;/g" $dir/picom.conf	
+    sed -i -e "s/round-borders = .*/round-borders = 0;/g" "$PICOM_DIR/picom.conf"
 
 ##-- shadows ---------------------
 
@@ -135,23 +136,23 @@ elif [[ $1 = '--update-shadows' ]]; then
 	shadow_x=$(echo $get_shadows | cut -d'|' -f3)
 	shadow_y=$(echo $get_shadows | cut -d'|' -f4)
 	if [[ "$get_shadows" ]]; then
-		sed -i -e "s/shadow-radius = .*/shadow-radius = $shadow_r;/g" $dir/picom.conf
-		sed -i -e "s/shadow-opacity = .*/shadow-opacity = $shadow_o;/g" $dir/picom.conf
-		sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = $shadow_x;/g" $dir/picom.conf
-		sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = $shadow_y;/g" $dir/picom.conf
+		sed -i -e "s/shadow-radius = .*/shadow-radius = $shadow_r;/g" "$PICOM_DIR/picom.conf"
+		sed -i -e "s/shadow-opacity = .*/shadow-opacity = $shadow_o;/g"" $PICOM_DIR/picom.conf"
+		sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = $shadow_x;/g" "$PICOM_DIR/picom.conf"
+		sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = $shadow_y;/g" "$PICOM_DIR/picom.conf"
 	fi
 
 elif [[ $1 = '--disable-shadows' ]]; then
-    sed -i -e "s/shadow = .*/shadow = false;/g" $dir/picom.conf	
+    sed -i -e "s/shadow = .*/shadow = false;/g" "$PICOM_DIR/picom.conf"	
 
 elif [[ $1 = '--enable-shadows' ]]; then
-    sed -i -e "s/shadow = .*/shadow = true;/g" $dir/picom.conf	
+    sed -i -e "s/shadow = .*/shadow = true;/g" "$PICOM_DIR/picom.conf"	
 
 elif [[ $1 = '--reset-shadows' ]]; then
-	sed -i -e "s/shadow-radius = .*/shadow-radius = 14;/g" $dir/picom.conf
-	sed -i -e "s/shadow-opacity = .*/shadow-opacity = 0.30;/g" $dir/picom.conf
-	sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = -12;/g" $dir/picom.conf
-	sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = -12;/g" $dir/picom.conf
+	sed -i -e "s/shadow-radius = .*/shadow-radius = 14;/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/shadow-opacity = .*/shadow-opacity = 0.30;/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = -12;/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = -12;/g" "$PICOM_DIR/picom.conf"
 
 ##-- fading ---------------------
 
@@ -161,46 +162,46 @@ elif [[ $1 = '--update-fading' ]]; then
 	fading_out=$(echo $get_fading | cut -d'|' -f2)
 	fading_delta=$(echo $get_fading | cut -d'|' -f3)
 	if [[ "$get_fading" ]]; then
-		sed -i -e "s/fade-in-step = .*/fade-in-step = $fading_in;/g" $dir/picom.conf
-		sed -i -e "s/fade-out-step = .*/fade-out-step = $fading_out;/g" $dir/picom.conf
-		sed -i -e "s/fade-delta = .*/fade-delta = $fading_delta;/g" $dir/picom.conf
+		sed -i -e "s/fade-in-step = .*/fade-in-step = $fading_in;/g" "$PICOM_DIR/picom.conf"
+		sed -i -e "s/fade-out-step = .*/fade-out-step = $fading_out;/g" "$PICOM_DIR/picom.conf"
+		sed -i -e "s/fade-delta = .*/fade-delta = $fading_delta;/g" "$PICOM_DIR/picom.conf"
 	fi
 
 elif [[ $1 = '--disable-fading' ]]; then
-    sed -i -e "s/fading = .*/fading = false;/g" $dir/picom.conf	
+    sed -i -e "s/fading = .*/fading = false;/g" "$PICOM_DIR/picom.conf"
 
 elif [[ $1 = '--enable-fading' ]]; then
-    sed -i -e "s/fading = .*/fading = true;/g" $dir/picom.conf	
+    sed -i -e "s/fading = .*/fading = true;/g" "$PICOM_DIR/picom.conf"	
 
 elif [[ $1 = '--reset-fading' ]]; then
-	sed -i -e "s/fade-in-step = .*/fade-in-step = 0.03;/g" $dir/picom.conf
-	sed -i -e "s/fade-out-step = .*/fade-out-step = 0.03;/g" $dir/picom.conf
-	sed -i -e "s/fade-delta = .*/fade-delta = 5;/g" $dir/picom.conf
+	sed -i -e "s/fade-in-step = .*/fade-in-step = 0.03;/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/fade-out-step = .*/fade-out-step = 0.03;/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/fade-delta = .*/fade-delta = 5;/g" "$PICOM_DIR/picom.conf"
 
 ##-- blur ---------------------
 
 elif [[ $1 = '--enable-blur' ]]; then
-	sed -i -e "s/backend = .*/backend = \"glx\";/g" $dir/picom.conf
-	sed -i -e "s/method = .*/method = \"dual_kawase\";/g" $dir/picom.conf
-	sed -i -e "s/strength = .*/strength = 7;/g" $dir/picom.conf
+	sed -i -e "s/backend = .*/backend = \"glx\";/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/method = .*/method = \"dual_kawase\";/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/strength = .*/strength = 7;/g" "$PICOM_DIR/picom.conf"
 
 elif [[ $1 = '--disable-blur' ]]; then
-	sed -i -e "s/method = .*/method = \"none\";/g" $dir/picom.conf
-	sed -i -e "s/strength = .*/strength = 0;/g" $dir/picom.conf
+	sed -i -e "s/method = .*/method = \"none\";/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/strength = .*/strength = 0;/g" "$PICOM_DIR/picom.conf"
 
 elif [[ $1 = '--update-blur' ]]; then
 	bstrength=$(zenity --text='Blur Strength' --scale --value=7 --min-value=1 --max-value=20)
 	if [[ "$bstrength" ]]; then
-		sed -i -e "s/strength = .*/strength = $bstrength;/g" $dir/picom.conf
+		sed -i -e "s/strength = .*/strength = $bstrength;/g" "$PICOM_DIR/picom.conf"
 	fi
 
 ##-- animations ---------------
 
 elif [[ $1 = '--enable-animations' ]]; then
-	sed -i -e "s/animations = .*/animations = true;/g" $dir/picom.conf
+	sed -i -e "s/animations = .*/animations = true;/g" "$PICOM_DIR/picom.conf"
 	
 elif [[ $1 = '--disable-animations' ]]; then
-	sed -i -e "s/animations =.*/animations = false;/g" $dir/picom.conf
+	sed -i -e "s/animations =.*/animations = false;/g" "$PICOM_DIR/picom.conf"
 
 ##-- menu ---------------------
 

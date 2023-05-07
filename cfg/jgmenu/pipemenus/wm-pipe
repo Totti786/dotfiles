@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-MENUS_LIBDIR="$HOME/.config/openbox/pipemenus"
 wm="$(wmctrl -m | head -n1 | cut -d " " -f2)"
 
 # Varia# Variables and functions
+MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+
 if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
 	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
 	exit 1
@@ -17,7 +18,7 @@ borderWidth(){
 				sed -i -e "s/pixel .*/pixel $width/g" "$HOME"/.config/i3/config &&
 				"$HOME"/.config/i3/i3-reload
 			else
-				sed -i -e "s/bar_style=.*/bar_style=\"$width\"/g" "$HOME"/.zprofile
+				sed -i -e "s/window_border=.*/window_border=\"$width\"/g" "$HOME"/.zprofile
 				"$HOME"/.config/bspwm/bsp-border
 			fi
 		fi
@@ -50,8 +51,8 @@ else
 		menuEnd
 	elif [[ "$wm" == "Openbox" ]]; then 
 		menuStart
+			menuItem 'Settings' "obconf"
 			menuItem 'Edit Autostart' "exo-open $HOME/.config/openbox/autostart"
-			menuItem 'Edit Menu' "exo-open $HOME/.config/openbox/menu.xml"
 			menuItem 'Edit Keybinds' "exo-open $HOME/.config/openbox/rc.xml"
 			menuItem 'Restart' "openbox --restart"
 			menuItem 'Reconfigure' "openbox --reconfigure"
