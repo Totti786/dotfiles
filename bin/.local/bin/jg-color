@@ -14,7 +14,7 @@ submenu=()
 
 # Add wallpaper colors section
 menu+=("^sep(Wallpaper Colors)")
-menu+=("北  ReGenerate colors,^checkout(regen)")
+menu+=("北  ReGenerate Colors,^checkout(regen)")
 submenu+=("^tag(regen)")
 submenu+=("^sep(Regenerate)")
 submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL")
