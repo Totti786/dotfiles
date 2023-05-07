@@ -190,6 +190,16 @@
         <desktop>6</desktop>
       </action>
     </keybind>
+    <keybind key="S-W-7">
+      <action name="SendToDesktop">
+        <desktop>7</desktop>
+      </action>
+    </keybind>
+    <keybind key="S-W-8">
+      <action name="SendToDesktop">
+        <desktop>8</desktop>
+      </action>
+    </keybind>
     <!-- Switch b/w Applications -->
     <keybind key="A-Tab">
       <action name="Execute">
@@ -758,8 +768,8 @@
     </keybind>
     <!-- Launch Openbox Menu -->
     <keybind key="W-space">
-      <action name="ShowMenu">
-        <menu>root-menu</menu>
+      <action name="Execute">
+        <command>jgmenu_run</command>
       </action>
     </keybind>
     <keybind key="C-A-space">
@@ -1025,22 +1035,12 @@
         </action>
       </mousebind>
       <mousebind action="Press" button="Right">
-        <action name="ShowMenu">
-          <menu>root-menu</menu>
+        <action name="Execute">
+          <command>jgmenu_run</command>
         </action>
       </mousebind>
     </context>
   </mouse>
-  <!-- ################################ Menu Settings ################################ -->
-  <menu>
-    <file>menu.xml</file>
-    <hideDelay>200</hideDelay>
-    <middle>no</middle>
-    <submenuShowDelay>100</submenuShowDelay>
-    <submenuHideDelay>200</submenuHideDelay>
-    <applicationIcons>yes</applicationIcons>
-    <manageDesktops>yes</manageDesktops>
-  </menu>
   <!-- ################################ Applications Rules ################################ -->
   <applications>
     <application name="gl" class="mpv" title="Unnamed Window" type="normal">
@@ -1151,7 +1151,7 @@
       <decor>yes</decor>
       <layer>default</layer>
       <maximized>yes</maximized>
-    </application> 
+    </application>
     <application class="alacritty-drop" type="normal">
       <decor>no</decor>
       <desktop>all</desktop>
