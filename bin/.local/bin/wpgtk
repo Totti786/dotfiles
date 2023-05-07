@@ -294,7 +294,7 @@ random(){
 # to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
 pick(){
 	wal=$(sxiv -torb $Wallpapers)
-	wall "$wal" &
+	wall "$wal"
 }	
 
 dynamic(){
