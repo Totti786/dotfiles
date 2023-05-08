@@ -35,16 +35,16 @@ else
 			menuItem 'Switch to Minimal' "$0 -m"
 			menuItem 'Reload' "$HOME/.config/polybar/launch.sh"
 			menuItem 'Edit Config' "exo-open $HOME/.config/polybar/config.ini"
-			menuItem 'Edit Modules' "exo-open $HOME/polybar/modules.ini"
-			menuItem 'Edit Weather Data' "exo-open $HOME/polybar/scripts/info"
+			menuItem 'Edit Modules' "exo-open $HOME/.config/polybar/modules.ini"
+			menuItem 'Edit Weather Data' "exo-open $HOME/.config/polybar/scripts/info"
 		menuEnd
 	elif [[ "$bar_style" == "minimal" ]]; then 
 		menuStart
 			menuItem 'Switch to Base' "$0 -b"
 			menuItem 'Reload Polybar' "$HOME/.config/polybar/launch.sh"
 			menuItem 'Edit Config' "exo-open $HOME/.config/polybar/minimal/config-minimal.ini"
-			menuItem 'Edit Modules' "exo-open $HOME/polybar/minimal/modules-minimal.ini"
-			menuItem 'Edit Weather Data' "exo-open $HOME/polybar/scripts/info"
+			menuItem 'Edit Modules' "exo-open $HOME/.config/polybar/minimal/modules-minimal.ini"
+			menuItem 'Edit Weather Data' "exo-open $HOME/.config/polybar/scripts/info"
 		menuEnd
 	fi
 fi
