@@ -339,7 +339,6 @@ main(){
 	restart copyq --start-server
 	copyWal
 	papirus-folder.sh --color ${red:1} &
-	jg-color &
 	check spicetify -q update &
 	check razer-cli -a & exit
 }
