@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
+CACHE_DIR="$HOME/.cache/wal"
+COLORS_FILE="$CACHE_DIR/colors.json"
+WPG_DIR="$HOME/.config/wpg/schemes"
+CURRENT_THEME="$WPG_DIR/$(sed 'y/\/./__/' $HOME/.fehbg | tail -n1 | cut -d "'" -f2)_dark_wal__1.1.0.json"
+
+# Read color scheme from JSON file
+color_scheme=($(jq -r '.colors[]' "$COLORS_FILE"))
+# Get the current wallpaper
+CURRENT_WALL="$(cat .fehbg | cut -d "'" -f2 | tail -n1)"
+#CURRENT_WALL="$(basename $(jq -r '.wallpaper' "$COLORS_FILE"))"
+# Define output arrays
+menu=()
+submenu=()
+
+change_color(){
+    new_color="$(zenity --title="Choose a color" --color-selection --color=$1 | pastel format hex)"
+    if [ "$2" = "0" ]; then
+        jq --arg value "$new_color" '.colors.color0 = $value | .special.background = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+    elif [ "$2" = "15" ]; then
+        jq --arg value "$new_color" '.colors.color15 = $value | .special.foreground = $value | .special.cursor = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+    else
+        jq --arg key "color$2" --arg value "$new_color" '.colors[$key] = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+    fi
+    cat "$CURRENT_THEME" > "$COLORS_FILE"
+    jg-color
+}
+
+# Add wallpaper colors section
+menu+=("^sep(Wallpaper Colors)")
+menu+=("北  ReGenerate Colors,^checkout(regen)")
+submenu+=("^tag(regen)")
+submenu+=("^sep(Regenerate)")
+submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL")
+submenu+=("Reapply Colors,wpg -s $CURRENT_WALL")
+submenu+=("Reset Colors,wpg -R $CURRENT_WALL && wpg -s $CURRENT_WALL")
+
+# Add colors from the color scheme
+for i in "${color_scheme[@]}"; do
+    menu+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>,^checkout(${i:1}$((++n)))")
+    submenu+=("^tag(${i:1}$n)")
+    submenu+=("^sep(<tt>Color <small>$i</small> <span bgcolor='$i'>    </span></tt>)")
+    submenu+=("Set as Folder Color,papirus-folder.sh --color '${i}'")
+    submenu+=("Chnage Color,$0 change_color \"$i\" \"$(( $n - 1 ))\" ")
+
+done
+
+# Add set random wallpaper section
+menu+=("^sep(Set random wallpaper)")
+userwallp="$(shopt -s globstar nullglob ; files=($WALLPAPERS_DIR/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}) ; echo "${#files[@]}")"
+menu+=("  Wallpapers (<small>${userwallp}</small>),wpgtk random")
+
+# Define main function to output results
+main() {
+    printf '%s\n' "${menu[@]}"
+    printf '%s\n' "${submenu[@]}"
+}
+
+# Write results to output file
+[[ "$1" ]] && "$@" || main

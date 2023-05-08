@@ -32,4 +32,3 @@ Audio Settings,pavucontrol
 Display Settings,xfce4-display-settings
 
 ^tag(colorscheme)
-. ~/.config/jgmenu/colors.csv

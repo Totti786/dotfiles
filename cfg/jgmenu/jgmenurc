@@ -27,4 +27,5 @@ color_norm_fg        = #fcffff 100
 color_sel_bg         = #2d282d 40
 color_sel_fg         = #ef724e 100
 color_sep_fg         = #5c8294 40
-csv_cmd              = cat ~/.config/jgmenu/menu.csv 
+csv_cmd              = cat ~/.config/jgmenu/menu.csv && ~/.config/jgmenu/pipemenus/jg-color
+
