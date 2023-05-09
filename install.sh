@@ -6,7 +6,7 @@ DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 
 checkChaotic(){
 	chaotic="$(grep -i "chaotic" /etc/pacman.conf | head -n1)"
-	if [[ $chaotic == "[chaotic-aur]" ]]; then 
+	if [[ "$chaotic" == "[chaotic-aur]" ]]; then 
 		echo "The Chaotic AUR repo is already added"
 		checkYay
 	else
@@ -26,59 +26,45 @@ checkYay(){
 	}
 
 installDependencies(){
-	sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt) --needed
-	sudo pacman -U "$DIR"/deps/packages/essential/* --needed
+	sudo pacman -Sy "$(cat "$DIR"/deps/minimal.txt)" --needed
+	sudo pacman -U "$DIR"/deps/packages/*.zst --needed
+	}
+
+minimal(){
+	checkChaotic &&
+	installDependencies &&
+	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
+	moveConfigs
+	changeTheme
+	}
+
+base(){
+	minimal
+	sudo pacman -U "$DIR"/deps/packages/additional/*.zst --needed
 	}
 
 moveConfigs(){
 	sudo cp -r "$DIR"/bin/usr/ / && echo "moved bin to /usr/local"
-	cp -r "$DIR"/bin/.scripts/ ~/ && echo "moved scripts home"
-	cp -r "$DIR"/cfg/* ~/.config/ && echo "moved config files"
-	cp -r "$DIR"/bin/.local/ ~/ && echo "moved bin"
-	cp "$DIR"/deps/.zprofile ~/
-	# extracts the icons and moves them to the correct directory
-	[ ! -d "$HOME/.local/share/icons" ] && mkdir ~/.local/share/icons
-	tar -xzf "$DIR"/deps/Papirus-icons.tar.gz -C ~/.local/share/icons
-	# extracts the fonts and moves them to the correct directory
-	[ ! -d "$HOME/.local/share/fonts" ] && mkdir ~/.local/share/fonts
-	tar -xzf "$DIR"/deps/fonts.tar.gz -C ~/.local/share/fonts
+	cp -r "$DIR"/bin/.scripts/ "$HOME"/ && echo "moved scripts home"
+	cp -r "$DIR"/cfg/* "$HOME"/.config/ && echo "moved config files"
+	cp -r "$DIR"/bin/.local/ "$HOME" && echo "moved bin"
+	cp -r "$DIR"/deps/.zprofile "$HOME"/
+	
+    mkdir -p "$HOME/.local/share/icons"
+    mkdir -p "$HOME/.local/share/fonts"
+    
+    tar -xf "$DIR"/deps/Papirus-icons.tar.gz -C "$HOME/.local/share/icons"
+	tar -xf "$DIR"/deps/fonts.tar.gz -C "$HOME/.local/share/fonts"
 	}
 	
-# This function allows you to change the plank configuration (courtesy of Archcraft by @adi1090x)
-change_dock() {
-	cat > "$HOME"/.cache/plank.conf <<- _EOF_
-		[dock1]
-		alignment='center'
-		auto-pinning=true
-		current-workspace-only=false
-		dock-items=['applications.dockitem', 'Alacritty.dockitem', 'thunar.dockitem', 'firefox.dockitem', 'geany.dockitem', 'xfce-settings-manager.dockitem']
-		hide-delay=0
-		hide-mode='window-dodge'
-		icon-size=32
-		items-alignment='center'
-		lock-items=false
-		monitor=''
-		offset=0
-		pinned-only=false
-		position='left'
-		pressure-reveal=false
-		show-dock-item=false
-		theme='Transparent'
-		tooltips-enabled=true
-		unhide-delay=0
-		zoom-enabled=true
-		zoom-percent=120
-	_EOF_
-	}
-
 changeTheme(){
 	if ! [[ "$(grep -i "qt5ct" /etc/environment | head -n1)" == "QT_QPA_PLATFORMTHEME=\"qt5ct\"" ]]; then
 		echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
 	fi
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
-	change_dock && cat "$HOME"/.cache/plank.conf | dconf load /net/launchpad/plank/docks/
-	cp -r "$DIR"/bin/.icons ~/
+	cat "$DIR/cfg/plank.conf" | dconf load /net/launchpad/plank/docks/
+	cp -r "$DIR"/bin/.icons "$HOME"/
 
 	}
 
@@ -94,18 +80,6 @@ wpgtk(){
 	fi
 	}
 
-minimal(){
-	checkChaotic &&
-	installDependencies &&
-	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
-	moveConfigs
-	changeTheme
-	}
-
-base(){
-	minimal
-	sudo pacman -U "$DIR"/deps/packages/additional/* --needed
-	}	
 
 #---- Additional configurations ----------
 
@@ -185,7 +159,7 @@ install(){
 		grub "Grub Theme" off\
 		wpgtk "Generate color-schemes from wallpapers" off\
 		2>&1 >/dev/tty)
-	$installOptions
+	"$installOptions"
 	}
 
 main(){
