@@ -19,7 +19,7 @@ checkChaotic(){
 checkYay(){
 	if ! pacman -Q yay &> /dev/null; then 
 		echo "Installing the AUR helper yay..."
-		sudo pacman -Syu yay
+		sudo pacman -Sy yay --noconfirm
 	else
 		echo "The AUR helper yay is already installed"
 	fi
@@ -91,7 +91,7 @@ install_zsh(){
 	}
 	
 install_sddm(){
-	sh "$DIR"/deps/sddm/sddm.sh
+	cd "$DIR"/deps/sddm && sh sddm.sh && cd "$DIR"
 	}
 	
 install_grub(){
