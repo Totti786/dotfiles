@@ -55,29 +55,38 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 
 ## Configuration
 
+## Scripted Install
+
+In Progress...
+
+## Manual Install
 
 ## Dependencies
+
+These configs are tested on Arch Linux, with 1920x1080 resolution.
 
 #### Packages
 
 :warning: **The following instructions have only been written for arch-based distros**
 Install an [AUR helper](https://wiki.archlinux.org/title/AUR_helpers) of your choice
-You are also required to have the Chaotic-AUR repo added on your system
-- Using the [yay](https://github.com/Jguer/yay#installation) helper
+You are required to have the [Chaotic-AUR](https://aur.chaotic.cx/) repo added on your system
+- Using `pacman` with the Chaotic-AUR enabled
 
 ```bash
 sudo pacman -Syu --needed \
-acpi alacritty bc bluez-git brightnessctl bspwm conky \
-copyq dmenu dunst fd feh firefox flameshot geany gpick \
-grep htop i3lock-color imagemagick jgmenu light maim man \
-moreutils mpv mpv-mpris mugshot ncdu network-manager-applet \
-networkmanager-openvpn noto-fonts noto-fonts-emoji obconf openbox \
-pavucontrol perl plank playerctl polybar qt5ct qt5-styleplugins \
-ranger redshift rofi stalonetray sxhkd sxiv thunar tumbler viewnior \
-wget wmctrl xarchiver xcape xclip xdg-autostart xdg-user-dirs \
-xdg-user-dirs-gtk xdotool xfce4-power-manager xfce4-settings \
-xorg-xkill xorg-xrdb xorg-xsetroot zathura zathura-cb \
-zathura-pdf-mupdf zenity zsh
+acpi alacritty autotiling bc bluez bluez-utils brightnessctl \
+bspwm conky copyq dmenu dunst fd feh firefox flameshot geany \
+gpick grep htop i3lock-color i3-wm imagemagick jgmenu jq \
+light maim man moreutils mpv mpv-mpris mugshot ncdu \
+network-manager-applet networkmanager-openvpn noto-fonts \
+noto-fonts-emoji obconf openbox pamixer pastel pavucontrol \
+perl plank playerctl polybar qt5ct qt5-styleplugins ranger \
+redshift rofi-lbonn-wayland-git stalonetray sxhkd sxiv thunar \
+tumbler viewnior wget wmctrl xarchiver xcape xclip xdg-autostart \
+xdg-user-dirs xdg-user-dirs-gtk xdotool xfce4-power-manager \
+xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb \
+xorg-xsetroot xorg-xwininfo zathura zathura-cb zathura-pdf-mupdf \
+zenity zsh
 ```
 
 ## Credits
