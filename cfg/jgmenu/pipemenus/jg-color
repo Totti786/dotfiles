@@ -33,13 +33,13 @@ menu+=("ReGenerate Colors,^checkout(regen)")
 submenu+=("^tag(regen)")
 submenu+=("^sep(Regenerate)")
 submenu+=("Manage Color Schemes,wpg")
-submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL")
+submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
 #submenu+=("Increase Saturation,wpg --sat $CURRENT_WALL 0.1")
 #submenu+=("Decrease Saturation,wpg --sat $CURRENT_WALL -0.1")
 #submenu+=("Increase Brightness,wpg --brt $CURRENT_WALL 10")
 #submenu+=("Decrease Brightness,wpg --brt $CURRENT_WALL -10")
 submenu+=("Apply Colors,wpg -s $CURRENT_WALL")
-submenu+=("Reset Colors,wpg -R $CURRENT_WALL && wpg -s $CURRENT_WALL")
+submenu+=("Reset Colors,wpg -R $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
 
 # Add colors from the color scheme
 for i in "${color_scheme[@]}"; do
