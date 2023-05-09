@@ -8,22 +8,22 @@ options="Update System\nUpdate Configs\nUpdate Wallpapers\nExit"
 
 chosen="$(echo -e "$options" | $rofi_command -p 'Update Menu' -dmenu -selected-row 0)"
 case $chosen in
-    Update\ System)
+    "Update System")
 		alacritty --class 'alacritty-float,alacritty-float' --hold -e bash -c 'sudo pacman -Syu && dunstify --appname=pacman "Update Successful" && cat > ~/.cache/pacman-updates'
         ;;
-    Update\ Configs)
-   		cd $dots
+    "Update Configs")
+   		cd "$dots"
 		alacritty --class 'alacritty-float,alacritty-float' -e sh $dots/install.sh --update &&
 		## remove already existing json file for background color scheme
-		rm ~/.config/wpg/schemes/_home_$(whoami)_dotfiles_deps_background_jpg_dark_wal__1.1.0.json
+		wpg -R "$dots"/deps/background.jpg 
 		## change wallpaper and update color scheme 
-		sh $dots/bin/.local/bin/wpgtk wall $dots/deps/background.jpg 
+		sh "$dots"/bin/.local/bin/wpgtk wall "$dots"/deps/background.jpg 
         ;;
-    Update\ Wallpapers)
+    "Update Wallpapers")
 		cd $dots
 		alacritty --class 'alacritty-float,alacritty-float' -e sh $HOME/dotfiles/install.sh --wallpapers
         ;;
-    Exit)
+    "Exit")
 		exit
         ;;
 esac
