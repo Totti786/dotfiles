@@ -2,14 +2,14 @@
 
 WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
 CACHE_DIR="$HOME/.cache/wal"
-COLORS_FILE="$CACHE_DIR/colors.json"
 WPG_DIR="$HOME/.config/wpg/schemes"
+COLORS_FILE="$CACHE_DIR/colors.json"
 CURRENT_THEME="$WPG_DIR/$(sed 'y/\/./__/' $HOME/.fehbg | tail -n1 | cut -d "'" -f2)_dark_wal__1.1.0.json"
 
 # Read color scheme from JSON file
 color_scheme=($(jq -r '.colors[]' "$COLORS_FILE"))
 # Get the current wallpaper
-CURRENT_WALL="$(cat .fehbg | cut -d "'" -f2 | tail -n1)"
+CURRENT_WALL="$(cat $HOME/.fehbg | cut -d "'" -f2 | tail -n1)"
 #CURRENT_WALL="$(basename $(jq -r '.wallpaper' "$COLORS_FILE"))"
 # Define output arrays
 menu=()
@@ -25,7 +25,6 @@ change_color(){
         jq --arg key "color$2" --arg value "$new_color" '.colors[$key] = $value' "$COLORS_FILE" > "$CURRENT_THEME"
     fi
     cat "$CURRENT_THEME" > "$COLORS_FILE"
-    sed -i 's/= 1/= 1/' $HOME/.config/jgmenu/jgmenurc
 }
 
 # Add wallpaper colors section
@@ -33,8 +32,13 @@ menu+=("^sep(Wallpaper Colors)")
 menu+=("北  ReGenerate Colors,^checkout(regen)")
 submenu+=("^tag(regen)")
 submenu+=("^sep(Regenerate)")
+submenu+=("Manage Color Schemes,wpg")
 submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL")
-submenu+=("Reapply Colors,wpg -s $CURRENT_WALL")
+#submenu+=("Increase Saturation,wpg --sat $CURRENT_WALL 0.1")
+#submenu+=("Decrease Saturation,wpg --sat $CURRENT_WALL -0.1")
+#submenu+=("Increase Brightness,wpg --brt $CURRENT_WALL 10")
+#submenu+=("Decrease Brightness,wpg --brt $CURRENT_WALL -10")
+submenu+=("Apply Colors,wpg -s $CURRENT_WALL")
 submenu+=("Reset Colors,wpg -R $CURRENT_WALL && wpg -s $CURRENT_WALL")
 
 # Add colors from the color scheme
