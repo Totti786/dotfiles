@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 
 #---- Core functions ---------------------
 
@@ -9,7 +9,7 @@ checkChaotic(){
 	if [[ $chaotic == "[chaotic-aur]" ]]; then 
 		echo "The Chaotic AUR repo is already added"
 		checkYay
-	else 
+	else
 		echo "Adding the Chaotic AUR repo"
 		sh "$DIR"/deps/chaotic-aur
 		checkYay
@@ -20,14 +20,14 @@ checkYay(){
 	if ! pacman -Q yay &> /dev/null; then 
 		echo "Installing the AUR helper yay..."
 		sudo pacman -Syu yay
-	else 
+	else
 		echo "The AUR helper yay is already installed"
 	fi
 	}
 
 installDependencies(){
-		sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt) --needed
-		sudo pacman -U "$DIR"/deps/packages/essential/* --needed
+	sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt) --needed
+	sudo pacman -U "$DIR"/deps/packages/essential/* --needed
 	}
 
 moveConfigs(){
@@ -94,16 +94,6 @@ wpgtk(){
 	fi
 	}
 
-base(){
-	checkChaotic &&
-	sudo pacman -Sy "$(cat "$DIR"/deps/minimal.txt "$DIR"/deps/additional.txt)" --needed
-	sudo pacman -U "$DIR"/deps/packages/essential/* --needed
-	sudo pacman -U "$DIR"/deps/packages/additional/* --needed
-	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
-	moveConfigs
-	changeTheme
-	}
-	
 minimal(){
 	checkChaotic &&
 	installDependencies &&
@@ -112,27 +102,32 @@ minimal(){
 	changeTheme
 	}
 
+base(){
+	minimal
+	sudo pacman -U "$DIR"/deps/packages/additional/* --needed
+	}	
+
 #---- Additional configurations ----------
 
-zsh(){
+install_zsh(){
 	sh "$DIR"/deps/zsh/zsh.sh
 	}
 	
-sddm(){
+install_sddm(){
 	cd "$DIR"/deps/sddm && sh sddm.sh && cd "$DIR"
 	}
 	
-grub(){
+install_grub(){
 	cd "$DIR"/deps/grub && sudo sh grub.sh && cd "$DIR"
 	}
 
 wallpapers(){
 	if [[ -d "$HOME/Pictures/Wallpapers/Wallpapers.git" ]]; then
-		cd ~/Pictures/Wallpapers/Wallpapers.git
+		cd "$HOME"/Pictures/Wallpapers/Wallpapers.git
 		git pull
 	else 
-		git clone --depth 1 https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers/Wallpapers.git
-
+		mkdir -p "$HOME"/Pictures/Wallpapers
+		git clone --depth 1 https://github.com/Totti786/Wallpapers.git "$HOME"/Pictures/Wallpapers/Wallpapers.git
 	fi
 	}
 
@@ -141,18 +136,14 @@ wallpapers(){
 Dialog="dialog"
 
 menu(){
-	if $Dialog --yesno "$1" 20 60 ;then
-		$2
-	else
-		$3
-	fi
+	if $Dialog --yesno "$1" 20 60 ;then	"$2" ;else "$3" ;fi
 	}
 
 progressBar(){
 	for i in $(seq 1 100);do
 	date +"$(printf $i $i)"
 	sleep .0005
-	done | $Dialog --gauge "$1" 20 60 0
+	done | "$Dialog" --gauge "$1" 20 60 0
 	}
 
 additionalPrograms(){
@@ -161,9 +152,9 @@ additionalPrograms(){
 	  	progs=$($Dialog --no-items --checklist "Choose the programs you want installed:"  20 60 12 \
 		$(for app in $(cat "$DIR"/deps/extra.txt); do echo "$app" off ;done) \
 		2>&1 >/dev/tty) &&
-		sudo pacman -Sy $progs --needed
+		sudo pacman -Sy "$progs" --needed
 	else
-		sudo pacman -Sy - < "$DIR"/deps/extra.txt --needed
+		sudo pacman -Sy $(cat "$DIR"/deps/extra.txt) --needed
 	fi
 	}
 
@@ -171,23 +162,18 @@ update(){
 	## update dependencies and install new ones
 	installDependencies
 	progressBar "Updating... "
-	## check if files exists and if not create a symbolic link
-	[ ! -f "$HOME/.config/wpg/templates/polybar-colors" ] &&
-		ln -sf ~/.config/polybar/colors.ini ~/.config/wpg/templates/polybar-colors
-	[ ! -f "$HOME/.config/wpg/templates/gtk4.0" ] &&
-		ln -sf ~/.config/gtk-4.0/gtk.css ~/.config/wpg/templates/gtk4.0
 	## backup weather info file
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
-		cp ~/.config/polybar/scripts/info ~/.cache/info
+		cp "$HOME"/.config/polybar/scripts/info "$HOME"/.cache/info
 	[ ! -f "$HOME/.zprofile" ] && 
-		"$DIR"/deps/.profile ~/
+		"$DIR"/deps/.zprofile "$HOME"/
 	## move udpated scripts and configs
 	sudo cp -r "$DIR"/bin/usr/ /
-	cp -r "$DIR"/bin/.scripts/ ~/ 
-	cp -r "$DIR"/cfg/* ~/.config 
-	cp -r "$DIR"/bin/.local/ ~/
+	cp -r "$DIR"/bin/.scripts/ "$HOME"/ 
+	cp -r "$DIR"/cfg/* "$HOME"/.config/
+	cp -r "$DIR"/bin/.local/ "$HOME"/
 	# restore weather info file
-	cp ~/.cache/info ~/.config/polybar/scripts/info
+	cp "$HOME"/.cache/info "$HOME"/.config/polybar/scripts/info
 	}
 
 install(){
