@@ -154,9 +154,9 @@ install(){
 	installOptions=$($Dialog --radiolist  "Choose one of the following options:"  15 60 4\
 		base "Install with optional useful utilities" off\
 		minimal "Install only the essential dependencies" off\
-		zsh "Zsh Configuration" off\
-		sddm "SDDM Theme" off\
-		grub "Grub Theme" off\
+		install_zsh "Zsh Configuration" off\
+		install_sddm "SDDM Theme" off\
+		install_grub "Grub Theme" off\
 		wpgtk "Generate color-schemes from wallpapers" off\
 		2>&1 >/dev/tty)
 	"$installOptions"
