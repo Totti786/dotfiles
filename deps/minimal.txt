@@ -22,6 +22,7 @@ i3lock-color
 i3-wm
 imagemagick
 jgmenu
+jq
 light
 maim
 man
