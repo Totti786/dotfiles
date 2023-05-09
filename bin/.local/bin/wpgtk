@@ -11,21 +11,22 @@
 ## wpg -LA $(wpg -c) && wpg -s $(wpg -c)
 
 # Color files
-alacritty="$HOME/.config/alacritty/colors.yml"
-polybar="$HOME/.config/polybar/colors.ini"
-rofi="$HOME/.config/rofi/themes/colors.rasi"
-discord="$HOME/.config/BetterDiscord/data/stable/custom.css"
-dunst="$HOME/.config/dunst/dunstrc"
-geany="$HOME/.config/geany/colorschemes/Pywal.conf"
-zathura="$HOME/.config/zathura/zathurarc"
-gzathura="$HOME/.config/zathura/genzathurarc"
-systray="$HOME/.config/stalonetrayrc"
-cava="$HOME/.config/cava/config"
-copyq="$HOME/.config/copyq/copyq.conf"
-jgmenu="$HOME/.config/jgmenu/jgmenurc"
-eww="$HOME/.config/eww/colors.scss"
-waybar="$HOME/.config/waybar/colors.css"
-hypr="$HOME/.config/hypr/colors.conf"
+config="$HOME/.config"
+alacritty="$config/alacritty/colors.yml"
+polybar="$config/polybar/colors.ini"
+rofi="$config/rofi/themes/colors.rasi"
+discord="$config/BetterDiscord/data/stable/custom.css"
+dunst="$config/dunst/dunstrc"
+geany="$config/geany/colorschemes/Pywal.conf"
+zathura="$config/zathura/zathurarc"
+gzathura="$config/zathura/genzathurarc"
+systray="$config/stalonetrayrc"
+cava="$config/cava/config"
+copyq="$config/copyq/copyq.conf"
+jgmenu="$config/jgmenu/jgmenurc"
+eww="$config/eww/colors.scss"
+waybar="$config/waybar/colors.css"
+hypr="$config/hypr/colors.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
 
 ## Change colors
@@ -78,38 +79,38 @@ change_colors(){
 	
 	# geany
 	sed -i -e "s/bg=.*/bg=${BG}/g" \
-		-i -e "s/fg=.*/fg=${FG}/g" \
-		-i -e "s/tag_yellow=.*/tag_yellow=${bright_cyan}/g" \
-		-i -e "s/fold_bg_grey=.*/fold_bg_grey=${BG}/g" \
-		-i -e "s/keyword_orange=.*/keyword_orange=${bright_magenta}/g" \
-		-i -e "s/string_green=.*/string_green=${bright_green}/g" \
-		-i -e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g" \
-		-i -e "s/margin_fg_grey=.*/margin_fg_grey=${black}/g" \
-		-i -e "s/error_red=.*/error_red=${bright_magenta}/g" \
-		-i -e "s/selection_blue=.*/selection_blue=${white}/g" "$geany"
+		-e "s/fg=.*/fg=${FG}/g" \
+		-e "s/tag_yellow=.*/tag_yellow=${bright_cyan}/g" \
+		-e "s/fold_bg_grey=.*/fold_bg_grey=${BG}/g" \
+		-e "s/keyword_orange=.*/keyword_orange=${bright_magenta}/g" \
+		-e "s/string_green=.*/string_green=${bright_green}/g" \
+		-e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g" \
+		-e "s/margin_fg_grey=.*/margin_fg_grey=${black}/g" \
+		-e "s/error_red=.*/error_red=${bright_magenta}/g" \
+		-e "s/selection_blue=.*/selection_blue=${white}/g" "$geany"
 	
 	# copyq 
 	sed -i -e "s/bg=#.*/bg=${BG}/g" \
-		-i -e "s/alt_bg=#.*/alt_bg=$bright_black/g" \
-		-i -e "s/fg=#.*/fg=${FG}/g" \
-		-i -e "s/sel_bg=#.*/sel_bg=$cyan/g" \
-		-i -e "s/sel_fg=#.*/sel_fg${FG}/g" "$copyq"
+		-e "s/alt_bg=#.*/alt_bg=$bright_black/g" \
+		-e "s/fg=#.*/fg=${FG}/g" \
+		-e "s/sel_bg=#.*/sel_bg=$cyan/g" \
+		-e "s/sel_fg=#.*/sel_fg${FG}/g" "$copyq"
 	
 	# dunst
 	sed -i -e "s/background = \"#.*\"/background = \"${BG}80\"/g" \
-		-i -e "s/foreground = \"#.*\"/foreground = \"${FG}\"/g" \
-		-i -e "s/highlight = \"#.*\"/highlight = \"${FG}\"/g" \
-		-i -e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g" "$dunst"
+		-e "s/foreground = \"#.*\"/foreground = \"${FG}\"/g" \
+		-e "s/highlight = \"#.*\"/highlight = \"${FG}\"/g" \
+		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g" "$dunst"
 
 	# stalonetray 
 	sed -i -e "s/background \"#.*\"/background \"$BG\"/g" $systray
 	
 	# jgmenu 
 	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${BG} 60/g" \
-		-i -e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
-		-i -e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
-		-i -e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
-		-i -e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"  "$jgmenu"
+		-e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
+		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
+		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
+		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g" "$jgmenu"
 	
 	# zathura (courtesy of @GideonWolfe)
 	"$gzathura" > "$zathura"
@@ -117,18 +118,18 @@ change_colors(){
 	# discord
 	if [[ -f "$discord" ]]; then 
 	sed -i -e "s/--accent-color: .*/--accent-color: ${FG};/g" \
-		-i -e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" \
-		-i -e "s/--background-1: .*/--background-1: ${bg_light};/g" \
-		-i -e "s/--background-2: .*/--background-2: ${BG};/g" \
-		-i -e "s/--border-color: .*/--border-color: $bright_black;/g" \
-		-i -e "s/--background-modifier-hover: .*/--background-modifier-hover: ${bright_magenta};/g" \
-		-i -e "s/--background-accent: .*/--background-accent: ${BG};/g" \
-		-i -e "s/--button-destructive: .*/--button-destructive: ${bright_yellow};/g" \
-		-i -e "s/--button-background-hover: .*/--button-background-hover: ${bright_red};/g" \
-		-i -e "s/--tab-selected: .*/--tab-selected: ${bright_blue};/g" \
-		-i -e "s/--text-muted: .*/--text-muted: ${FG};/g" "$discord"
+		-e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" \
+		-e "s/--background-1: .*/--background-1: ${bg_light};/g" \
+		-e "s/--background-2: .*/--background-2: ${BG};/g" \
+		-e "s/--border-color: .*/--border-color: $bright_black;/g" \
+		-e "s/--background-modifier-hover: .*/--background-modifier-hover: ${bright_magenta};/g" \
+		-e "s/--background-accent: .*/--background-accent: ${BG};/g" \
+		-e "s/--button-destructive: .*/--button-destructive: ${bright_yellow};/g" \
+		-e "s/--button-background-hover: .*/--button-background-hover: ${bright_red};/g" \
+		-e "s/--tab-selected: .*/--tab-selected: ${bright_blue};/g" \
+		-e "s/--text-muted: .*/--text-muted: ${FG};/g" "$discord"
 	fi 
-	
+
 	# spotify
 	# Spotify can be themed using the xrdb backend i.e. ${xrdb:color0:#222}
 	
@@ -139,28 +140,27 @@ change_colors(){
 		#-i -e "s/color2 = '#.*',/color2 = '${bright_blue}',/g" \
 		#-i -e "s/color3 = '#.*',/color3 = '${bright_yellow}',/g" "$conky1" "$conky2"
 	
-	
 	# cava 
 	sed -i -e "s/gradient_color_1 = '.*'/gradient_color_1 = '${bright_red}'/g" \
-		-i -e "s/gradient_color_2 = '.*'/gradient_color_2 = '${bright_green}'/g" \
-		-i -e "s/gradient_color_3 = '.*'/gradient_color_3 = '${bright_blue}'/g" \
-		-i -e "s/gradient_color_4 = '.*'/gradient_color_4 = '${bright_yellow}'/g" \
-		-i -e "s/gradient_color_5 = '.*'/gradient_color_5 = '${bright_magenta}'/g" \
-		-i -e "s/gradient_color_6 = '.*'/gradient_color_6 = '${bright_cyan}'/g"	"$cava"
+		-e "s/gradient_color_2 = '.*'/gradient_color_2 = '${bright_green}'/g" \
+		-e "s/gradient_color_3 = '.*'/gradient_color_3 = '${bright_blue}'/g" \
+		-e "s/gradient_color_4 = '.*'/gradient_color_4 = '${bright_yellow}'/g" \
+		-e "s/gradient_color_5 = '.*'/gradient_color_5 = '${bright_magenta}'/g" \
+		-e "s/gradient_color_6 = '.*'/gradient_color_6 = '${bright_cyan}'/g"	"$cava"
 	
 	# eww
 	sed -i -e "s/\$background: #.*/\$background: ${BG};/g" \
-		-i -e "s/\$bg-alt: #.*/\$bg-alt: ${bg_light};/g" \
-		-i -e "s/\$fg: #.*/\$fg: ${FG};/g" \
-		-i -e "s/\$fg-alt: #.*/\$fg-alt: $white;/g" \
-		-i -e "s/\$red: #.*/\$red: $bright_red;/g" \
-		-i -e "s/\$green: #.*/\$green: $bright_green;/g" \
-		-i -e "s/\$yellow: #.*/\$yellow: $bright_yellow;/g" \
-		-i -e "s/\$blue: #.*/\$blue: $bright_blue;/g" \
-		-i -e "s/\$purple: #.*/\$purple: $bright_magenta;/g" \
-		-i -e "s/\$cyan: #.*/\$cyan: $bright_cyan;/g" \
-		-i -e "s/\$gray: #.*/\$gray: $bright_black;/g" \
-		-i -e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" "$eww"
+		-e "s/\$bg-alt: #.*/\$bg-alt: ${bg_light};/g" \
+		-e "s/\$fg: #.*/\$fg: ${FG};/g" \
+		-e "s/\$fg-alt: #.*/\$fg-alt: $white;/g" \
+		-e "s/\$red: #.*/\$red: $bright_red;/g" \
+		-e "s/\$green: #.*/\$green: $bright_green;/g" \
+		-e "s/\$yellow: #.*/\$yellow: $bright_yellow;/g" \
+		-e "s/\$blue: #.*/\$blue: $bright_blue;/g" \
+		-e "s/\$purple: #.*/\$purple: $bright_magenta;/g" \
+		-e "s/\$cyan: #.*/\$cyan: $bright_cyan;/g" \
+		-e "s/\$gray: #.*/\$gray: $bright_black;/g" \
+		-e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" "$eww"
 	
 	# waybar
 	cat > "$waybar" <<- EOF
