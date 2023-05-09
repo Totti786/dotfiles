@@ -29,7 +29,7 @@ change_color(){
 
 # Add wallpaper colors section
 menu+=("^sep(Wallpaper Colors)")
-menu+=("北  ReGenerate Colors,^checkout(regen)")
+menu+=("ReGenerate Colors,^checkout(regen)")
 submenu+=("^tag(regen)")
 submenu+=("^sep(Regenerate)")
 submenu+=("Manage Color Schemes,wpg")
