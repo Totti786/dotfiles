@@ -71,6 +71,7 @@ xorg-xkill
 xorg-xrdb
 xorg-xsetroot
 xorg-xwininfo
+xorg-xrandr
 zathura
 zathura-cb
 zathura-pdf-mupdf
