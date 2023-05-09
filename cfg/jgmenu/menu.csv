@@ -18,7 +18,7 @@ Back,^back()
 Window Manager,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus//wm-pipe" --tag="WM")
 Bar,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus//bar-pipe" --tag="Bar")
 Compositor,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus//compositor" --tag="Compositor")
-Color Scheme,^checkout(colorscheme)
+Color Scheme,^pipe(~/.config/jgmenu/pipemenus/jg-color)
 ^sep()
 Change Font,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus//change-fonts" --tag="Change Font")
 ^sep()
@@ -31,4 +31,3 @@ Power Settings,xfce4-power-manager-settings
 Audio Settings,pavucontrol
 Display Settings,xfce4-display-settings
 
-^tag(colorscheme)
