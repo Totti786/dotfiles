@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 theme="Arch"
 
 changeDM(){
@@ -15,11 +15,10 @@ current="$(grep 'ExecStart=' /etc/systemd/system/display-manager.service | cut -
 		sudo systemctl disable lightdm.service && 
 		installSDDM
 	else 
-		echo $current
+		echo "$current"
 		installSDDM
 	fi
 }
-
 
 installSDDM(){
 if command -v sddm &> /dev/null; then
@@ -30,16 +29,16 @@ if command -v sddm &> /dev/null; then
 		else
 			echo "theme conf file not found, creating and moving files" 
 			sudo mkdir /etc/sddm.conf.d/
-			sudo cp $DIR/theme.conf /etc/sddm.conf.d/ &&
+			sudo cp "./theme.conf" /etc/sddm.conf.d/ &&
 			sudo sed -i -e "s/Current=.*/Current=$theme/g" /etc/sddm.conf.d/theme.conf
-			cp $DIR/.face ~/.face
+			cp "./.face" "$HOME"/.face
 		fi
 	else 
-		sudo cp -r $DIR/$theme /usr/share/sddm/themes/ &&
+		sudo cp -r "./$theme" /usr/share/sddm/themes/ &&
 		installSDDM
 	fi
 else
-	sudo pacman -Sy sddm plasma-framework && 
+	sudo pacman -Sy sddm plasma-framework --noconfirm && 
 	sudo systemctl enable sddm.service && 
 	installSDDM
 fi	
