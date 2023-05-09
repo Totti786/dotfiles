@@ -91,7 +91,7 @@ install_zsh(){
 	}
 	
 install_sddm(){
-	cd "$DIR"/deps/sddm && sh sddm.sh && cd "$DIR"
+	sh "$DIR"/deps/sddm/sddm.sh
 	}
 	
 install_grub(){
