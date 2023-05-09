@@ -19,6 +19,8 @@ if  [[ "$1" = "--logout" ]]; then
 		i3 exit
 	elif [[ "$current_desktop" == "bspwm" ]]; then
 		bspc quit
+	elif [[ "$current_desktop" == "herbstluftwm" ]]; then
+		herbstclient quit
 	fi
 elif  [[ "$1" = "--lock" ]]; then
 	lockscreen
@@ -33,6 +35,7 @@ elif  [[ "$1" = "--shutdown" ]]; then
 	else
     menuStart
         menuItem 'Lock' "$0 --lock"
+        menuItem 'Logout' "$0 --logout"
         menuItem 'Suspend' "$0 --suspend"
         menuItem 'Hibernate' "$0 --hibernate"
         menuItem 'Reboot' "$0 --reboot"
