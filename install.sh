@@ -36,6 +36,9 @@ minimal(){
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
 	changeTheme
+	install_zsh
+	install_sddm
+	install_grub
 	}
 
 base(){
@@ -154,9 +157,6 @@ install(){
 	installOptions=$($Dialog --radiolist  "Choose one of the following options:"  15 60 4\
 		base "Install with optional useful utilities" off\
 		minimal "Install only the essential dependencies" off\
-		install_zsh "Zsh Configuration" off\
-		install_sddm "SDDM Theme" off\
-		install_grub "Grub Theme" off\
 		wpgtk "Generate color-schemes from wallpapers" off\
 		2>&1 >/dev/tty)
 	"$installOptions"
