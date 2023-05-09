@@ -25,25 +25,35 @@ checkYay(){
 	fi
 	}
 
-installDependencies(){
+install_minimal(){
 	sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt) --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
 	}
+	
+install_base(){
+	sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt "$DIR"/deps/additional.txt) --needed --noconfirm
+	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
+	sudo pacman -U "$DIR"/deps/packages/additional/*.zst --needed --noconfirm
+	}
 
-minimal(){
+base_install(){
 	checkChaotic &&
-	installDependencies &&
+	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
 	changeTheme
+	}
+
+full_install(){
+	checkChaotic &&
+	install_base
+	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	install_zsh
 	install_sddm
 	install_grub
-	}
-
-base(){
-	minimal
-	sudo pacman -U "$DIR"/deps/packages/additional/*.zst --needed
+	moveConfigs
+	changeTheme
+	install_wpgtk
 	}
 
 moveConfigs(){
@@ -71,7 +81,7 @@ changeTheme(){
 
 	}
 
-wpgtk(){
+install_wpgtk(){
 	sh "$DIR"/bin/.local/bin/wpgtk run &&
 	if $Dialog --yesno "Do you want your Login Screen background to sync with your wallpaper? 
 			(This only works with the included SDDM theme)" 20 60 ;then
@@ -137,7 +147,7 @@ additionalPrograms(){
 
 update(){
 	## update dependencies and install new ones
-	installDependencies
+	install_minimal
 	progressBar "Updating... "
 	## backup weather info file
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
@@ -153,24 +163,39 @@ update(){
 	cp "$HOME"/.cache/info "$HOME"/.config/polybar/scripts/info
 	}
 
-install(){
-	installOptions=$($Dialog --radiolist  "Choose one of the following options:"  15 60 4\
-		base "Install with optional useful utilities" off\
-		minimal "Install only the essential dependencies" off\
-		wpgtk "Generate color-schemes from wallpapers" off\
-		2>&1 >/dev/tty)
-	"$installOptions"
+install_menu(){
+	local OPTIONS=(1 "Install essential programs and configs"
+				   2 "Install with optional utilities, and (zsh,sddm,grub) themes"
+				   3 "Exit")
+	local CHOICE=$($Dialog --clear \
+	                --title "Install Script" \
+	                --menu "Choose one of the following options:" \
+	                10 80 4 \
+	                "${OPTIONS[@]}" \
+	                2>&1 >/dev/tty)
+	case $CHOICE in
+		1)
+			base_install
+			;;
+		2)
+			full_install
+			;;
+		3)
+			clear
+			exit
+			;;
+	esac
 	}
 
 main(){
-	OPTIONS=(1 "Install"
+	local OPTIONS=(1 "Install"
 	         2 "Install Additional Packages"
 	         3 "Update"
 	         4 "Download Wallpapers"
 	         5 "Update Script"
 	         6 "Exit")
 	
-	CHOICE=$($Dialog --clear \
+	local CHOICE=$($Dialog --clear \
 	                --title "Install Script" \
 	                --menu "Choose one of the following options:" \
 	                15 40 4 \
@@ -180,7 +205,7 @@ main(){
 	
 	case $CHOICE in
 		1)
-			install &&
+			install_menu &&
 			main
 			;;
 		2)
