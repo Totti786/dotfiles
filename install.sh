@@ -26,8 +26,8 @@ checkYay(){
 	}
 
 installDependencies(){
-	sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt) --needed
-	sudo pacman -U "$DIR"/deps/packages/*.zst --needed
+	sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt) --needed --noconfirm
+	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
 	}
 
 minimal(){
