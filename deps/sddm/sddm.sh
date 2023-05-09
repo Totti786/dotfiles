@@ -29,12 +29,12 @@ if command -v sddm &> /dev/null; then
 		else
 			echo "theme conf file not found, creating and moving files" 
 			sudo mkdir /etc/sddm.conf.d/
-			sudo cp "./theme.conf" /etc/sddm.conf.d/ &&
+			sudo cp "$DIR"/theme.conf /etc/sddm.conf.d/ &&
 			sudo sed -i -e "s/Current=.*/Current=$theme/g" /etc/sddm.conf.d/theme.conf
-			cp "./.face" "$HOME"/.face
+			cp "$DIR"/.face "$HOME"/.face
 		fi
 	else 
-		sudo cp -r "./$theme" /usr/share/sddm/themes/ &&
+		sudo cp -r "$DIR/$theme" /usr/share/sddm/themes/ &&
 		installSDDM
 	fi
 else
