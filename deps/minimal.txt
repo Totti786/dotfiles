@@ -18,8 +18,8 @@ geany
 gpick
 grep
 htop
-i3-wm
 i3lock-color
+i3-wm
 imagemagick
 jgmenu
 light
@@ -47,6 +47,7 @@ qt5ct
 qt5-styleplugins
 ranger
 redshift
+rofi-lbonn-wayland-git
 stalonetray
 sxhkd
 sxiv
