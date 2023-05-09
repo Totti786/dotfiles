@@ -27,7 +27,7 @@ checkYay(){
 
 installDependencies(){
 		sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt) --needed
-		sudo pacman -U "$DIR"/deps/packages/* --needed
+		sudo pacman -U "$DIR"/deps/packages/essential/* --needed
 	}
 
 moveConfigs(){
@@ -131,7 +131,7 @@ wallpapers(){
 		cd ~/Pictures/Wallpapers/Wallpapers.git
 		git pull
 	else 
-		git clone https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers/Wallpapers.git
+		git clone --depth 1 https://github.com/Totti786/Wallpapers.git ~/Pictures/Wallpapers/Wallpapers.git
 
 	fi
 	}
