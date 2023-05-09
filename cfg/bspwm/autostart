@@ -52,9 +52,8 @@ copyq --start-server &
 #plank &
 
 # Conky
-if [ $conky == "On" ]; then 
+[[ "$conky" == "On" ]] &&
 	"$HOME"/.local/bin/conky.sh &
-fi
 
 # Fix Plank
 bspc subscribe node_add | while read -r _
