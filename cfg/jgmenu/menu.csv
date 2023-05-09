@@ -4,7 +4,7 @@ File Manager,thunar,system-file-manager
 Web Browser,firefox,firefox
 Text Editor,geany,geany
 Document Viewer,zathura,document-viewer
-Applications,^pipe(jgmenu_run ob --cmd="obmenu-generator" --tag="Applications")
+Applications,^pipe(jgmenu_run apps)
 
 Screenshot,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus//shots" --tag="Screenshot")
 Screen Recorder,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus//record" --tag="Screen Recorder")
