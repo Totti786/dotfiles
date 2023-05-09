@@ -68,10 +68,10 @@ xfce4-power-manager
 xfce4-settings
 xorg-xdpyinfo
 xorg-xkill
+xorg-xrandr
 xorg-xrdb
 xorg-xsetroot
 xorg-xwininfo
-xorg-xrandr
 zathura
 zathura-cb
 zathura-pdf-mupdf
