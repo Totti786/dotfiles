@@ -5,7 +5,6 @@ blanket
 copyq
 discord
 drawing
-evince
 flatpak
 gimp
 github-desktop
@@ -28,7 +27,6 @@ mkvtoolnix-cli
 obs-studio
 openboard
 polychromatic
-python-pip
 qbittorrent-enhanced-git
 scrcpy
 soundux
@@ -39,11 +37,8 @@ steam
 syncplay
 syncthing
 teamviewer
-touche
-touchegg
 trackma-git
 virtualbox
 visual-studio-code-bin
-wget
 wine
 winetricks
