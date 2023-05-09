@@ -70,6 +70,7 @@ xorg-xdpyinfo
 xorg-xkill
 xorg-xrdb
 xorg-xsetroot
+xwininfo
 zathura
 zathura-cb
 zathura-pdf-mupdf
