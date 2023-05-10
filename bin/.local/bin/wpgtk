@@ -379,7 +379,7 @@ run(){
 	else
 		echo "[!] 'wpgtk' is not installed."
 		echo "Installing from the AUR..." 
-		yay -S wpgtk-git
+		yay -S wpgtk-git --noconfirm
 		wpgConfig
 		# this command installs rofi, gtk, and openbox themes
 		wpg-install.sh -r -g -o
