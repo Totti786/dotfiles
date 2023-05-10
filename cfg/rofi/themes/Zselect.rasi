@@ -26,10 +26,16 @@ window {
 
 mainbox {
     background-color:               transparent;
-    children:                       [ listview ];
+    children:                       [ "inputbar", "listview" ];
     spacing:                       	10px;
     padding:                        10px;
 }
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     false;
+}
+
 
 listview {
     background-color:               transparent;
