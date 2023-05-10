@@ -269,18 +269,17 @@ check(){
 wall(){
 	if [ -z "$1" ]; then
 		echo "No image was selected"
-	elif [[ "$1" == "$(cat $HOME/.fehbg | cut -d "'" -f2  | tail -n1)" ]]; then
-		echo "This wallpaper is already set"
+	#elif [[ "$1" == "$(cat $HOME/.fehbg | cut -d "'" -f2  | tail -n1)" ]]; then
+		#echo "This wallpaper is already set"
 	else 
-	
-	if [[ $XDG_SESSION_TYPE == "x11" ]]; then
-		feh --no-fehbg --bg-fill "$1"
-	else
-		"$HOME"/.config/hypr/scripts/wall "$1"
-	fi
-	
-	wpg -A "$1" && wpg -s "$1"
-	rm "$1""_wal_sample.png"
+		if [[ $XDG_SESSION_TYPE == "x11" ]]; then
+			feh --no-fehbg --bg-fill "$1"
+		else
+			"$HOME"/.config/hypr/scripts/wall "$1"
+		fi
+		
+		wpg -A "$1" && wpg -s "$1"
+		rm "$1""_wal_sample.png"
 	fi
 }
 	
