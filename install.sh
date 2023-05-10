@@ -163,6 +163,7 @@ update(){
 	cp -r "$DIR"/bin/.local/ "$HOME"/
 	# restore weather info file
 	cp "$HOME"/.cache/info "$HOME"/.config/polybar/scripts/info
+	sh "$DIR/bin/.scripts/file-check"
 	}
 
 install_menu(){
