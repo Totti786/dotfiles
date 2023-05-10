@@ -41,6 +41,7 @@ base_install(){
 	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
+	sh "$DIR/.scripts/file-check"
 	changeTheme
 	}
 
@@ -52,6 +53,7 @@ full_install(){
 	install_sddm
 	install_grub
 	moveConfigs
+	sh "$DIR/.scripts/file-check"
 	changeTheme
 	install_wpgtk
 	}
