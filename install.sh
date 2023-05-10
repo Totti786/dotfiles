@@ -55,7 +55,7 @@ full_install(){
 	moveConfigs
 	sh "$DIR/bin/.scripts/file-check"
 	changeTheme
-	install_wpgtk
+	install_wpgtk &> /dev/null
 	}
 
 moveConfigs(){
