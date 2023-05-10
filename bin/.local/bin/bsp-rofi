@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else y="25" ;fi
-if [[ "$style" == "minimal" ]]; then  y="-250" ; else y="25" ;fi
+if [[ "$bar_style" == "minimal" ]]; then  y="-250" ; else y="25" ;fi
 
 tile=$(bsp-layout layouts | rofi -dmenu -monitor -3 -yoffset $y -width 50% -theme ~/.config/rofi/themes/layouts.rasi)
 bsp-layout set "$tile"
