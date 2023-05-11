@@ -58,13 +58,14 @@ full_install(){
 	checkChaotic &&
 	install_base
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
-	install_zsh
-	install_sddm
-	install_grub
 	moveConfigs
 	sh "$DIR/bin/.scripts/file-check"
 	changeTheme
 	install_wpgtk &> /dev/null
+	install_zsh
+	install_grub
+	install_sddm
+
 	}
 
 moveConfigs(){
@@ -136,7 +137,7 @@ install_sddm(){
 	  echo "SDDM is already installed"
 	else
 	  echo "SDDM is not installed. Installing..."
-	  sudo pacman -S sddm
+	  sudo pacman -S sddm plasma-framework --noconfirm 
 	fi
 	
 	# Move sddm theme files
