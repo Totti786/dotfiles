@@ -8,15 +8,24 @@ checkChaotic(){
 	chaotic="$(grep -i "chaotic" /etc/pacman.conf | head -n1)"
 	if [[ "$chaotic" == "[chaotic-aur]" ]]; then 
 		echo "The Chaotic AUR repo is already added"
-		checkYay
 	else
 		echo "Adding the Chaotic AUR repo"
-		sh "$DIR"/deps/chaotic-aur
-		checkYay
+		# Import and sign Chaotic AUR repository key
+		CHAOTIC_KEY="FBA220DFC880C036"
+		sudo pacman-key --recv-key "$CHAOTIC_KEY" --keyserver keyserver.ubuntu.com || exit 1
+		sudo pacman-key --lsign-key "$CHAOTIC_KEY" || exit 1
+		
+		# Add Chaotic AUR repository to pacman.conf
+		CHAOTIC_URL="https://cdn-mirror.chaotic.cx/chaotic-aur"
+		echo "[chaotic-aur]
+		Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf > /dev/null
+		sudo pacman -U "${CHAOTIC_URL}/chaotic-keyring.pkg.tar.zst" "${CHAOTIC_URL}/chaotic-mirrorlist.pkg.tar.zst" || exit 1
+		
+		# Configure pacman
+		sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
+		sudo sed -i -e "s/#Color/Color/g" /etc/pacman.conf
 	fi
-	}
 	
-checkYay(){
 	if ! pacman -Q yay &> /dev/null; then 
 		echo "Installing the AUR helper yay..."
 		sudo pacman -Sy yay --noconfirm
@@ -59,16 +68,16 @@ full_install(){
 	}
 
 moveConfigs(){
-	sudo cp -r "$DIR"/bin/usr/ / && echo "moved bin to /usr/local"
-	cp -r "$DIR"/bin/.scripts/ "$HOME"/ && echo "moved scripts home"
-	cp -r "$DIR"/cfg/* "$HOME"/.config/ && echo "moved config files"
+	#sudo cp -r "$DIR"/bin/usr/ / && echo "moved bin to /usr/local"
+	cp -r "$DIR"/bin/.scripts/ "$HOME" && echo "moved scripts home"
+	cp -r "$DIR"/cfg/* "$HOME"/.config && echo "moved config files"
 	cp -r "$DIR"/bin/.local/ "$HOME" && echo "moved bin"
-	cp -r "$DIR"/deps/.zprofile "$HOME"/
+	cp -r "$DIR"/deps/.zprofile "$HOME"
 	
     mkdir -p "$HOME/.local/share/icons"
     mkdir -p "$HOME/.local/share/fonts"
     
-    tar -xf "$DIR"/deps/Papirus-icons.tar.gz -C "$HOME/.local/share/icons"
+    #tar -xf "$DIR"/deps/Papirus-icons.tar.gz -C "$HOME/.local/share/icons"
 	tar -xf "$DIR"/deps/fonts.tar.gz -C "$HOME/.local/share/fonts"
 	}
 	
@@ -80,7 +89,12 @@ changeTheme(){
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
 	cat "$DIR/cfg/plank.conf" | dconf load /net/launchpad/plank/docks/
 	cp -r "$DIR"/bin/.icons "$HOME"/
-
+	
+	if [[ -d  /usr/share/icons/Papirus ]]; then 
+		sudo chgrp -R $(whoami) /usr/share/icons/Papirus
+		sudo chmod -R ug+rwX /usr/share/icons/Papirus
+		sudo ln -s /usr/share/icons/Papirus-Dark ~/.local/share/icons/Papirus
+	fi
 	}
 
 install_wpgtk(){
@@ -99,26 +113,95 @@ install_wpgtk(){
 #---- Additional configurations ----------
 
 install_zsh(){
-	sh "$DIR"/deps/zsh/zsh.sh
+	# Check and set Zsh as the default shell
+	[[ "$(awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd) " =~ "zsh " ]] || chsh -s $(which zsh)
+	
+	# Install Oh My Zsh
+	if [ ! -d "$HOME"/.oh-my-zsh/ ]; then
+	  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended 
+	else
+	  omz update
+	fi
+	
+	# Install Zsh plugins
+	[[ "${plugins[*]} " =~ "zsh-autosuggestions " ]] || git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	[[ "${plugins[*]} " =~ "zsh-syntax-highlighting " ]] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	
+	cp "$DIR"/deps/.zshrc "$HOME"
 	}
 	
 install_sddm(){
-	cd "$DIR"/deps/sddm && sh sddm.sh && cd "$DIR"
+	# Check if SDDM is installed and install if not
+	if pacman -Q sddm > /dev/null; then
+	  echo "SDDM is already installed"
+	else
+	  echo "SDDM is not installed. Installing..."
+	  sudo pacman -S sddm
+	fi
+	
+	# Move sddm theme files
+	if [ ! -d "/usr/share/sddm/themes/Chili" ]; then  
+		sudo cp -R "$DIR"/bin/Chili  /usr/share/sddm/themes/
+	fi
+	
+	cp "$DIR"/bin/.face "$HOME"
+	
+	# Create the directory for the sddm configuration files
+	sudo mkdir -p "/etc/sddm.conf.d/"
+	
+	# Write the sddm theme configuration to a file
+	# Redirect output to /dev/null to hide any console output
+	# Use a heredoc to specify the configuration text
+	sudo tee "/etc/sddm.conf.d/theme.conf" > /dev/null <<-EOF
+	[Theme]
+	Current=Chili
+	CursorTheme=Fluent-dark
+	DisableAvatarsThreshold=3
+	EnableAvatars=true
+	FacesDir=/usr/share/sddm/faces
+	Font="JetBrains"
+	ThemeDir=/usr/share/sddm/themes
+	EOF
+	
+	# Disable currently enabled display manager
+	if systemctl list-unit-files | grep enabled | grep -E 'gdm|lightdm|lxdm|lxdm-gtk3|sddm|slim|xdm'; then
+	  echo "Disabling currently enabled display manager"
+	  sudo systemctl disable --now $(systemctl list-unit-files | grep enabled | grep -E 'gdm|lightdm|lxdm|lxdm-gtk3|sddm|slim|xdm' | awk -F ' ' '{print $1}')
+	fi
+	
+	# Disable currently enabled display manager
+	if systemctl list-unit-files | grep enabled | grep -E 'gdm|lightdm|lxdm|lxdm-gtk3|sddm|slim|xdm'; then
+	  echo "Disabling currently enabled display manager"
+	  sudo systemctl disable --now $(systemctl list-unit-files | grep enabled | grep -E 'gdm|lightdm|lxdm|lxdm-gtk3|sddm|slim|xdm' | awk -F ' ' '{print $1}')
+	fi
+	
+	# Enable and start SDDM
+	echo "Enabling and starting SDDM"
+	sudo systemctl enable --now sddm
+
 	}
 	
 install_grub(){
 	cd "$DIR"/deps/grub && sudo sh grub.sh && cd "$DIR"
 	}
 
-wallpapers(){
-	if [[ -d "$HOME/Pictures/Wallpapers/Wallpapers.git" ]]; then
-		cd "$HOME"/Pictures/Wallpapers/Wallpapers.git
-		git pull
-	else 
-		mkdir -p "$HOME"/Pictures/Wallpapers
-		git clone --depth 1 https://github.com/Totti786/Wallpapers.git "$HOME"/Pictures/Wallpapers/Wallpapers.git
-	fi
-	}
+# Update or clone the wallpapers repository
+wallpapers() {
+    if [[ -d "$HOME/Pictures/Wallpapers/Wallpapers.git" ]]; then
+        cd "$HOME/Pictures/Wallpapers/Wallpapers.git" && git pull
+    else
+        mkdir -p "$HOME/Pictures/Wallpapers"
+        git clone --depth 1 https://github.com/Totti786/Wallpapers.git "$HOME/Pictures/Wallpapers/Wallpapers.git"
+    fi
+    
+    # Check if the operation was successful and report any errors
+    if [[ $? -eq 0 ]]; then
+        echo "Wallpapers updated successfully."
+    else
+        echo "Wallpapers update failed. Please check your internet connection and try again."
+    fi
+}
+
 
 #---- TUI functions  ---------------------
 
