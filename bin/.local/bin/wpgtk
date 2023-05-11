@@ -9,6 +9,10 @@
 ## wpg --sat $(wpg -c) 0.1 && wpg -s $(wpg -c)
 ## This gives you the 'light' version of the theme you're using.
 ## wpg -LA $(wpg -c) && wpg -s $(wpg -c)
+## 
+## sudo ln -s /usr/share/icons/Papirus-Dark ~/.local/share/icons/Papirus
+## sudo chgrp -R $(whoami) /usr/share/icons/Papirus
+## sudo chmod -R ug+rwX /usr/share/icons/Papirus
 
 # Color files
 config="$HOME/.config"
@@ -217,7 +221,7 @@ lockPerms(){
 		#echo "Can't find a compatible grub theme"
 	#fi
 	## give the user read and write permissions to the sddm directory
-	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
+	if [[ -d "/usr/share/sddm/themes/Chili" ]]; then
 		sudo chgrp -R $(whoami) /usr/share/sddm/
 		sudo chmod -R ug+rwX  /usr/share/sddm/
 	else
@@ -235,9 +239,9 @@ copyWal(){
 		#echo "Can't find a compatible grub theme"
 	#fi
 	# copy background to sddm theme
-	if [[ -d "/usr/share/sddm/themes/Arch" ]]; then
+	if [[ -d "/usr/share/sddm/themes/Chili" ]]; then
 		cp ~/.config/wpg/templates/wallpaper.jpg \
-		/usr/share/sddm/themes/Arch/components/artwork/background.jpg
+		/usr/share/sddm/themes/Chili/components/artwork/background.jpg
 	else
 		echo "Can't find a compatible sddm theme"
 	fi
@@ -339,6 +343,7 @@ main(){
 	copyWal
 	papirus-folder.sh --color ${red:1} &
 	check spicetify -q update &
+	check pywalfox update &
 	check razer-cli -a & exit
 }
 

@@ -1,0 +1,80 @@
+#!/bin/bash
+
+image="$HOME/.config/wpg/templates/wallpaper.jpg"
+font="JetBrainsMono Nerd Font"
+
+if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+	source "$HOME/.cache/wal/colors.sh"
+	FG=`printf "%s\n" "$foreground"`
+	red=`printf "%s\n" "$color1"`
+	blue=`printf "%s\n" "$color4"`
+	yellow=`printf "%s\n" "$color3"`
+	green=`printf "%s\n" "$color2"`
+	magenta=`printf "%s\n" "$color5"`
+else
+	FG="#FFFFFF"
+	red="#7ba5dd"
+	blue="#ee6a70"
+	yellow="#7ba5dd"
+	green="#7ba5dd"
+	magenta="#ee6a70"
+fi
+
+lock() {
+    i3lock -n -c 00000000 -t -e \
+		--pass-media-keys \
+		--pass-power-keys \
+		--pass-volume-keys \
+		--indicator \
+		--force-clock \
+        --radius 52 \
+        --modif-size=9 \
+        --modif-pos="w/2:h/2-15" \
+        --image "$image" \
+        --time-str="%H:%M" \
+        --time-pos="w/2:h/4" \
+        --time-color="$FG" \
+        --time-size=160 \
+        --time-font="$font" \
+        --date-str="%A, %B %d" \
+        --date-pos="w/2:h/4+40" \
+        --date-color="$FG" \
+        --date-size=35 \
+        --date-font="$font" \
+        --verif-text="" \
+        --verif-color=${green:1} \
+        --verif-size=10 \
+        --verif-font="$font" \
+        --wrong-text="" \
+        --wrong-color=${magenta:1} \
+        --wrong-size=10 \
+        --wrong-font="$font" \
+        --ring-color=00000000 \
+        --ringver-color=${green:1} \
+        --ringwrong-color=${magenta:1} \
+        --radius 180 \
+        --ring-width=5 \
+        --insidever-color=${green:1}80 \
+        --insidewrong-color=${red:1}80 \
+        --inside-color=${yellow:1}02 \
+        --noinput-text="" \
+        --line-uses-inside \
+        --keyhl-color=${red:1} \
+        --bshl-color=${blue:1} \
+        --separator-color=${yellow:1} \
+        --pointer=default
+}
+
+run() {
+	if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then 
+		gtklock -d -m playerctl-module -m powerbar-module -m userinfo-module -b $image -s "$HOME"/.config/gtklock/style.css
+    else 
+		lock
+	fi
+}
+
+status=$(playerctl -p %any status || true)
+if [ "$status" == "Playing" ]; then	playerctl pause ;fi
+pkill rofi
+run && 
+if [ "$status" == "Playing" ]; then playerctl play ;fi
