@@ -12,14 +12,13 @@ checkChaotic(){
 		echo "Adding the Chaotic AUR repo"
 		# Import and sign Chaotic AUR repository key
 		CHAOTIC_KEY="FBA220DFC880C036"
-		sudo pacman-key --recv-key "$CHAOTIC_KEY" --keyserver keyserver.ubuntu.com || exit 1
-		sudo pacman-key --lsign-key "$CHAOTIC_KEY" || exit 1
+		sudo pacman-key --recv-key "FBA220DFC880C036" --keyserver keyserver.ubuntu.com || exit 1
+		sudo pacman-key --lsign-key "FBA220DFC880C036" || exit 1
 		
 		# Add Chaotic AUR repository to pacman.conf
-		CHAOTIC_URL="https://cdn-mirror.chaotic.cx/chaotic-aur"
+		sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' || exit 1 &&
 		echo "[chaotic-aur]
 		Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf > /dev/null
-		sudo pacman -U "${CHAOTIC_URL}/chaotic-keyring.pkg.tar.zst" "${CHAOTIC_URL}/chaotic-mirrorlist.pkg.tar.zst" || exit 1
 		
 		# Configure pacman
 		sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
