@@ -126,7 +126,7 @@ install_zsh(){
 	[[ "${plugins[*]} " =~ "zsh-autosuggestions " ]] || git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 	[[ "${plugins[*]} " =~ "zsh-syntax-highlighting " ]] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 	
-	cp "$DIR"/deps/.zshrc "$HOME"
+	cp "$DIR"/bin/.zshrc "$HOME"
 	}
 	
 install_sddm(){
@@ -154,7 +154,7 @@ install_sddm(){
 	sudo tee "/etc/sddm.conf.d/theme.conf" > /dev/null <<-EOF
 	[Theme]
 	Current=Chili
-	CursorTheme=Fluent-dark
+	CursorTheme=Fluent-dark-cursors
 	DisableAvatarsThreshold=3
 	EnableAvatars=true
 	FacesDir=/usr/share/sddm/faces
