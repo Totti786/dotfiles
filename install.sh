@@ -71,7 +71,7 @@ moveConfigs(){
 	cp -r "$DIR"/bin/.scripts/ "$HOME" && echo "moved scripts home"
 	cp -r "$DIR"/cfg/* "$HOME"/.config && echo "moved config files"
 	cp -r "$DIR"/bin/.local/ "$HOME" && echo "moved bin"
-	cp -r "$DIR"/deps/.zprofile "$HOME"
+	cp -r "$DIR"/bin/.zprofile "$HOME"
 	
     mkdir -p "$HOME/.local/share/icons"
     mkdir -p "$HOME/.local/share/fonts"
