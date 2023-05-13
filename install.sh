@@ -61,11 +61,10 @@ full_install(){
 	moveConfigs
 	sh "$DIR/bin/.scripts/file-check"
 	changeTheme
-	install_wpgtk &> /dev/null
-	install_zsh
 	install_grub
 	install_sddm
-
+	install_wpgtk &> /dev/null
+	install_zsh
 	}
 
 moveConfigs(){
@@ -241,7 +240,7 @@ update(){
 	[ ! -f "$HOME/.zprofile" ] && 
 		"$DIR"/deps/.zprofile "$HOME"/
 	## move udpated scripts and configs
-	sudo cp -r "$DIR"/bin/usr/ /
+	#sudo cp -r "$DIR"/bin/usr/ /
 	cp -r "$DIR"/bin/.scripts/ "$HOME"/ 
 	cp -r "$DIR"/cfg/* "$HOME"/.config/
 	cp -r "$DIR"/bin/.local/ "$HOME"/
