@@ -230,6 +230,18 @@ additionalPrograms(){
 	fi
 	}
 
+tools(){
+	installOptions=$($Dialog --radiolist  "Choose one of the following options:"  15 60 4\
+		checkChaotic "Add Chaotic AUR repo" off\
+		install_zsh "Zsh Configuration" off\
+		install_sddm "SDDM Theme" off\
+		install_grub "Grub Theme" off\
+		install_wpgtk "Generate color-schemes from wallpapers" off\
+		2>&1 >/dev/tty)
+	$installOptions		
+	}
+
+
 update(){
 	## update dependencies and install new ones
 	install_minimal
@@ -279,7 +291,8 @@ main(){
 	         3 "Update"
 	         4 "Download Wallpapers"
 	         5 "Update Script"
-	         6 "Exit")
+	         6 "Tools"
+	         7 "Exit")
 	
 	local CHOICE=$($Dialog --clear \
 	                --title "Install Script" \
@@ -312,6 +325,9 @@ main(){
 			sh "$DIR"/install.sh
 			;;
 		6)
+			tools
+			;;
+		7)
 			exit
 			;;
 	esac
