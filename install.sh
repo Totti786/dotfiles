@@ -62,7 +62,7 @@ full_install(){
 	changeTheme
 	install_grub
 	install_sddm
-	install_wpgtk &> /dev/null
+	install_wpgtk
 	install_zsh
 	}
 
