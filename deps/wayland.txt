@@ -1,7 +1,0 @@
-swayidle
-wl-clipboard
-slurp
-ydotool
-hyprland
-waybar-hyprland-git
-grim
