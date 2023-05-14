@@ -67,7 +67,6 @@ full_install(){
 	}
 
 moveConfigs(){
-	#sudo cp -r "$DIR"/bin/usr/ / && echo "moved bin to /usr/local"
 	cp -r "$DIR"/bin/.scripts/ "$HOME" && echo "moved scripts home"
 	cp -r "$DIR"/cfg/* "$HOME"/.config && echo "moved config files"
 	cp -r "$DIR"/bin/.local/ "$HOME" && echo "moved bin"
@@ -86,7 +85,7 @@ changeTheme(){
 	fi
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
-	cat "$DIR/cfg/plank.conf" | dconf load /net/launchpad/plank/docks/
+	cat "$DIR/cfg/plank/plank.conf" | dconf load /net/launchpad/plank/docks/
 	cp -r "$DIR"/bin/.icons "$HOME"/
 	
 	if [[ -d  /usr/share/icons/Papirus ]]; then 
@@ -107,7 +106,6 @@ install_wpgtk(){
 		exit
 	fi
 	}
-
 
 #---- Additional configurations ----------
 
@@ -251,7 +249,6 @@ update(){
 	[ ! -f "$HOME/.zprofile" ] && 
 		"$DIR"/deps/.zprofile "$HOME"/
 	## move udpated scripts and configs
-	#sudo cp -r "$DIR"/bin/usr/ /
 	cp -r "$DIR"/bin/.scripts/ "$HOME"/ 
 	cp -r "$DIR"/cfg/* "$HOME"/.config/
 	cp -r "$DIR"/bin/.local/ "$HOME"/
