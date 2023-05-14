@@ -4,6 +4,7 @@ rofi_command="rofi -theme $HOME/.config/rofi/themes/layouts.rasi"
 dots="$HOME/.dotfiles"
 
 if [ ! -d "$HOME/.dotfiles" ]; then 
+	mkdir "$dots"
 	cd "$dots"
 	furminal --float -e bash -c 'git clone --depth 1 https://github.com/totti786/dotfiles.git'
 fi
