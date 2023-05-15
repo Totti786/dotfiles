@@ -1,13 +1,25 @@
 #!/bin/bash
 
 if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else  bar_style="base" ;fi
-[[ "$XDG_CURRENT_DESKTOP" == "i3" ]] && type="utility" || type="dock"
 
 hidden=/tmp/syshide.lock
 display_resolution="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)"
+polytray="$(pgrep -a polybar  | grep systray | cut -d ' ' -f1)"
 
 main(){
-if [[ "$(pidof stalonetray)" ]]; then
+if [[ "$polytray" ]]; then
+	if [[ ! -e "$hidden" ]]; then
+		polybar-msg action "#systray.hook.1"
+		xdo hide -p "$polytray" 
+		touch "$hidden"
+		killall -9 systray
+	else
+		polybar-msg action "#systray.hook.0"
+		xdo show -p "$polytray" 
+		rm "$hidden"
+		sleep 5 && main
+	fi
+elif [[ "$(pidof stalonetray)" ]]; then
 	if [[ ! -e "$hidden" ]]; then
 		polybar-msg action "#systray.hook.1"
 		xdo hide -n stalonetray
@@ -22,25 +34,33 @@ if [[ "$(pidof stalonetray)" ]]; then
 	fi
 else
 	if [[ "$bar_style" == "minimal" ]]; then
-		if [[ "$display_resolution" -gt "1920" ]]; then
-			new="$(( "$display_resolution" - 1920 + 94 ))"
-			stalonetray "$tray" --geometry 1x1-"$new"-34 --grow-gravity SW &
-			main			
-		elif [[ "$display_resolution" -lt "1920" ]]; then
-			stalonetray --window-type "$type" --geometry 1x1-66-34 --grow-gravity SW &
-			main
+		if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then 
+			polybar systray -c "$HOME/.config/polybar/minimal/config-minimal.ini"
 		else
-			stalonetray --window-type "$type" --geometry 1x1-94-34 --grow-gravity SW &
-			main
+			if [[ "$display_resolution" -gt "1920" ]]; then
+				new="$(( "$display_resolution" - 1920 + 94 ))"
+				stalonetray "$tray" --geometry 1x1-"$new"-34 --grow-gravity SW &
+				main			
+			elif [[ "$display_resolution" -lt "1920" ]]; then
+				stalonetray --geometry 1x1-66-34 --grow-gravity SW &
+				main
+			else
+				stalonetray --geometry 1x1-94-34 --grow-gravity SW &
+				main
+			fi
 		fi
 	elif [[ "$bar_style" == "base" ]]; then
-		if [[ "$display_resolution" -gt "1920" ]]; then
-			new="$(( "$display_resolution" - 1920 + 4 ))"
-			stalonetray --window-type "$type" --geometry 1x1-"$new"+27 &
-			main			
+		if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then 
+			polybar systray -c "$HOME/.config/polybar/config.ini"
 		else
-			stalonetray --window-type "$type" &
-			main
+			if [[ "$display_resolution" -gt "1920" ]]; then
+				new="$(( "$display_resolution" - 1920 + 4 ))"
+				stalonetray --geometry 1x1-"$new"+27 &
+				main			
+			else
+				stalonetray &
+				main
+			fi
 		fi
 	fi
 fi
