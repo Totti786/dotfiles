@@ -1,6 +1,7 @@
 [color]
 ;; main colors
 background = {color0}00
+background-alt = {color0}
 foreground = {color15}
 primary = {color15}
 red = {color9}
