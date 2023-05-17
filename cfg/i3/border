@@ -6,12 +6,12 @@
 # from the generated scheme.
 # NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
 # it fails to get colors from Xresources.
-set_from_resource $fg i3wm.color7 #FFFFFF
-set_from_resource $bg i3wm.color2 #f0f0f0
-set_from_resource $focused i3wm.color10 #f0f0f0
-set_from_resource $unfocused i3wm.color12 #f0f0f0
-set_from_resource $urgent i3wm.color8 #f0f0f0
-set_from_resource $indicator i3wm.color14 #98C379
+set_from_resource $fg i3wm.color15 #FFFFFF
+set_from_resource $bg i3wm.color8 #f0f0f0
+set_from_resource $focused i3wm.color2 #f0f0f0
+set_from_resource $unfocused i3wm.color4 #f0f0f0
+set_from_resource $urgent i3wm.color5 #f0f0f0
+set_from_resource $indicator i3wm.color6 #98C379
 
 # class                 border      backgr. 	text  indicator  child_border
 client.focused          $focused    $focused    $fg  $indicator  $focused
