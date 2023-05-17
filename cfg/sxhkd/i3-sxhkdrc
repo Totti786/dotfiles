@@ -162,8 +162,8 @@ super + space
     i3-msg floating toggle
 
 # Set the node flags
-super + shift + {z,x,c}
-	i3-msg {stacking,tabbed,toggle split}
+super + shift + {x,c}
+	i3-msg layout {tabbed,toggle split}
 
 # Move focused window
 super + shift + {j,k,l,semicolon}
@@ -175,6 +175,10 @@ super + shift + {Left,Down,Up,Right}
 # Resize focused window
 super + alt + {Left,Down,Up,Right}
 	i3-msg resize {shrink width,grow height,shrink height,grow width} 10 px or 10 ppt
+
+# Make window omnipresent
+alt + F8
+	i3-msg sticky toggle
 
 # Reload Keybinding
 ctrl + alt + Escape
