@@ -198,7 +198,7 @@ change_colors(){
 
 	# resize and move wallpaper for use by other programs
 	#cp "$wallpaper"  "$HOME"/.config/wpg/templates/wallpaper.jpg
-	convert -scale 50% -blur 0x4 -resize $(xdpyinfo | awk '/dimensions/{print $2}') "$wallpaper" "$HOME"/.config/wpg/templates/wallpaper.jpg
+	convert -scale 50% -blur 0x4 -resize $(xdpyinfo | awk '/dimensions/{print $2}') "$wallpaper" "$HOME"/.config/wpg/templates/wallpaper.jpg &
 	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers &> /dev/null
 }
 
