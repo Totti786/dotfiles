@@ -8,6 +8,11 @@ if [ ! -d "$HOME/.dotfiles" ]; then
 	furminal --float -e bash -c 'git clone --depth 1 https://github.com/totti786/dotfiles.git ~/.dotfiles'
 fi
 
+cd "$dots"
+if [[ "$(git rev-parse --is-inside-work-tree)" != "true" ]]; then 
+	rm -R "$dots" && notify-send -r 34 'Cloning Failed' 
+	exit 1
+fi
 
 # Variable passed to rofi
 options="Update System\nUpdate Configs\nUpdate Wallpapers\nExit"
