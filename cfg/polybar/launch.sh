@@ -45,28 +45,24 @@ fix_modules() {
 	# check if bspwm is the curren wm and changes the workspaces module 
 	case "$current_desktop" in
 	 "Openbox")
-		sed -i -e 's/title\b/titlex/g' \
-			"$config_file" "$minimal_config_file"
+		sed -i -e 's/title\b/titlex/g' "$config_file" "$minimal_config_file"
 		change_modules "workspaces" "openbox" "false" "~\/.config\/openbox\/ob-workspaces prev" "~\/.config\/openbox\/ob-workspaces next"
 	 	;;
 	 "bspwm")
 		bspc config -m focused top_padding "$top_padding"
 		bspc config -m focused bottom_padding "$bottom_padding"
-		sed -i -e 's/titlex\b/title/g' \
-			"$config_file" "$minimal_config_file"
+		sed -i -e 's/titlex\b/title/g' "$config_file" "$minimal_config_file"
 		change_modules "bspwm" "bspwm" "true" "bspc desktop -f prev.local" "bspc desktop -f next.local"
 		;;
 	 "i3")
 		i3-msg gaps top all set "$top_padding" &> /dev/null
 		i3-msg gaps bottom all set "$bottom_padding" &> /dev/null
-		sed -i -e 's/titlex\b/title/g' \
-			"$config_file" "$minimal_config_file"			
+		sed -i -e 's/titlex\b/title/g' "$config_file" "$minimal_config_file"			
 		change_modules "i3" "i3" "true" "~\/.config\/i3\/i3-workspaces prev" "~\/.config\/i3\/i3-workspaces next"
 		"$HOME"/.config/i3/i3-reload
 		;;
 	 "herbstluftwm")
-		sed -i -e 's/titlex\b/title/g' \
-			"$config_file" "$minimal_config_file"
+		sed -i -e 's/titlex\b/title/g' "$config_file" "$minimal_config_file"
 		change_modules "workspaces" "herbstluftwm" "false" " " " "
 		;;	
 	 *)	 	 
