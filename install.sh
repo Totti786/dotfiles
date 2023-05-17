@@ -4,7 +4,7 @@ DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 
 #---- Core functions ---------------------
 
-checkChaotic(){
+checkrepo(){
 	chaotic="$(grep -i "chaotic" /etc/pacman.conf | head -n1)"
 	if [[ "$chaotic" == "[chaotic-aur]" ]]; then 
 		echo "The Chaotic AUR repo is already added"
@@ -45,7 +45,7 @@ install_base(){
 	}
 
 base_install(){
-	checkChaotic &&
+	checkrepo &&
 	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
@@ -54,7 +54,7 @@ base_install(){
 	}
 
 full_install(){
-	checkChaotic &&
+	checkrepo &&
 	install_base
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
@@ -86,12 +86,12 @@ changeTheme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
 	cat "$DIR/cfg/plank/plank.conf" | dconf load /net/launchpad/plank/docks/
-	cp -r "$DIR"/bin/.icons "$HOME"/
+	cp -r "$DIR"/bin/.icons "$HOME"
 	
 	if [[ -d  /usr/share/icons/Papirus ]]; then 
 		sudo chgrp -R $(whoami) /usr/share/icons/Papirus
 		sudo chmod -R ug+rwX /usr/share/icons/Papirus
-		sudo ln -s /usr/share/icons/Papirus-Dark ~/.local/share/icons/Papirus
+		sudo ln -s /usr/share/icons/Papirus-Dark "$HOME"/.local/share/icons/Papirus
 	fi
 	}
 
@@ -103,7 +103,6 @@ install_wpgtk(){
 		sh "$DIR"/bin/.local/bin/wpgtk wall "$DIR"/deps/background.jpg 
 	else
 		sh "$DIR"/bin/.local/bin/wpgtk wall "$DIR"/deps/background.jpg
-		exit
 	fi
 	}
 
@@ -229,7 +228,7 @@ additionalPrograms(){
 
 tools(){
 	installOptions=$($Dialog --radiolist  "Choose one of the following options:"  15 60 4\
-		checkChaotic "Add Chaotic AUR repo" off\
+		checkrepo "Add Chaotic AUR repo" off\
 		install_zsh "Zsh Configuration" off\
 		install_sddm "SDDM Theme" off\
 		install_grub "Grub Theme" off\
@@ -318,7 +317,7 @@ main(){
 			;;
 		5)
 			git pull
-			sh "$DIR"/install.sh
+			"$DIR"/install.sh
 			;;
 		6)
 			tools
