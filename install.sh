@@ -246,8 +246,8 @@ update(){
 	## backup weather info file
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
 		cp "$HOME"/.config/polybar/scripts/info "$HOME"/.cache/info
-	[ ! -f "$HOME/.zprofile" ] && 
-		"$DIR"/deps/.zprofile "$HOME"/
+	#[ ! -f "$HOME/.zprofile" ] && 
+	cp	"$DIR"/deps/.zprofile "$HOME"/
 	## move udpated scripts and configs
 	cp -r "$DIR"/bin/.scripts/ "$HOME"/ 
 	cp -r "$DIR"/cfg/* "$HOME"/.config/
