@@ -106,7 +106,7 @@ XF86Audio{Next,Prev,Play,Pause,Stop}
 
 # Restart Polybar
 super + shift + m
-	~/.config/jgmenu/pipemenus/bar-pipe -r
+	~/.config/jgmenu/pipemenus/bar-pipe reload
 
 # Kill window
 super + Escape
