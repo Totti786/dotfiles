@@ -2,7 +2,9 @@
 
 CONFIG="$HOME/.config/alacritty/alacritty.yml"
 if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else bar_style="base" ;fi
-if [[ "$bar_style" == "minimal" ]]; then y="10" ; else y="33"  ;fi
+if [[ "$bar_style" == "minimal" ]]; then y="10"
+elif [[ "$bar_style" == "bionic" ]]; then y="45"
+else y="33" ;fi
 
 
 if [ "$1" == "--float" ]; then
