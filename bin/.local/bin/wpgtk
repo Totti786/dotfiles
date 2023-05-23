@@ -32,7 +32,7 @@ eww="$config/eww/colors.scss"
 waybar="$config/waybar/colors.css"
 hypr="$config/hypr/colors.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha="60"
+alpha='60'
 
 ## Change colors
 change_colors(){
@@ -43,7 +43,7 @@ change_colors(){
 		[color]
 		;; main colors
 		background = ${BG}$alpha
-		background-alt = ${BG}
+		background-alt = ${bg_light}
 		foreground = $FG
 		primary = $FG
 		red = $bright_red
@@ -59,7 +59,7 @@ change_colors(){
 	cat > "$rofi" <<- EOF
 	/* colors */
 	* {
-		background:       ${BG}$alpha; 
+		background:       ${bg_light}$alpha; 
 		background-alt:   ${BG};
 		foreground:       ${FG};
 		selected:         ${bright_red};
@@ -99,6 +99,11 @@ change_colors(){
 	    cyan:       '$bright_cyan'
 	    white:      '$bright_white'
 	EOF
+	if [[ "$alpha" == "FF" ]]; then 
+		sed -i "s/opacity: .*/opacity: 1.0/" "$config/alacritty/alacritty.yml"
+	else 
+		sed -i "s/opacity: .*/opacity: 0.7/" "$config/alacritty/alacritty.yml"
+	fi
 	
 	# geany
 	sed -i -e "s/bg=.*/bg=${BG}/g" \
@@ -122,7 +127,7 @@ change_colors(){
 	"$copyq"
 	
 	# dunst
-	sed -i -e "s/background = \"#.*\"/background = \"${BG}$alpha\"/g" \
+	sed -i -e "s/background = \"#.*\"/background = \"${bg_light}$alpha\"/g" \
 		-e "s/foreground = \"#.*\"/foreground = \"${FG}\"/g" \
 		-e "s/highlight = \"#.*\"/highlight = \"${FG}\"/g" \
 		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g" \
@@ -133,7 +138,8 @@ change_colors(){
 	"$systray"
 	
 	# jgmenu 
-	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${BG} $alpha/g" \
+	[[ "$alpha" == "FF" ]] && alpha2="100" || alpha2="$alpha"
+	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${BG} $alpha2/g" \
 		-e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
@@ -172,8 +178,10 @@ change_colors(){
 	"$cava"
 	
 	# eww
-	sed -i -e "s/\$background: #.*/\$background: ${BG};/g" \
-		-e "s/\$bg-alt: #.*/\$bg-alt: ${bg_light};/g" \
+	[[ "$alpha" == "FF" ]] &&  sed -i "s/\$alpha: 0.3/\$alpha: 1.0/" "$eww" \
+	|| sed -i "s/\$alpha: 1.0/\$alpha: 0.3/" "$eww" 
+	sed -i -e "s/\$background: #.*/\$background: ${bg_light};/g" \
+		-e "s/\$bg-alt: #.*/\$bg-alt: ${BG};/g" \
 		-e "s/\$fg: #.*/\$fg: ${FG};/g" \
 		-e "s/\$fg-alt: #.*/\$fg-alt: $white;/g" \
 		-e "s/\$red: #.*/\$red: $bright_red;/g" \
@@ -299,6 +307,7 @@ check(){
 wall(){
 	if [ -z "$1" ]; then
 		echo "No image was selected"
+		exit
 	#elif [[ "$1" == "$(cat $HOME/.fehbg | cut -d "'" -f2  | tail -n1)" ]]; then
 		#echo "This wallpaper is already set"
 	else 
@@ -347,12 +356,12 @@ dynamic(){
 	fi
 }
 	
-gui(){
+misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 		#[[ "$XDG_CURRENT_DESKTOP" == "i3" ]] && "$HOME"/.config/i3/i3-reload &
 		conky.sh restart &
-	else 
+	else
 		"$HOME"/.config/waybar/launch_waybar
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
@@ -360,18 +369,24 @@ gui(){
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor'
 	fi
 }
-	
-main(){
+
+partial(){
 	change_colors
-	gui
-	copyWal
-	"$HOME/.config/polybar/launch.sh" >/dev/null 2>&1 &
-	papirus-folder.sh --color ${red:1} &
+	"$HOME/.config/polybar/launch.sh" &
+	pkill dunst
+	misc
 	check spicetify -q update &
 	check pywalfox update >/dev/null 2>&1 &
 	check razer-cli -a &
+}
+main(){
+	partial
+	papirus-folder.sh --color ${red:1} &
 	restart copyq --start-server &
-	convert -scale 20% -blur 0x2 -resize $(xdpyinfo | awk '/dimensions/{print $2}') "$wallpaper" "$HOME"/.config/wpg/templates/wallpaper.jpg
+	copyWal
+	convert -scale 20% -blur 0x2 -resize \
+	$(xdpyinfo | awk '/dimensions/{print $2}') \
+	"$wallpaper" "$HOME/.config/wpg/templates/wallpaper.jpg"
 	exit
 }
 
@@ -407,7 +422,10 @@ run(){
 			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
 			bg_rgb="$(pastel format rgb ${background:1})"
 			## merging the Xresources files with the main one
-			xrdb -merge "$HOME"/.cache/wal/colors.Xresources		
+			xrdb -merge "$HOME"/.cache/wal/colors.Xresources
+		else
+			echo "[!] Theme file not found"
+			exit 1
 		fi 
 	else
 		echo "[!] 'wpgtk' is not installed."
