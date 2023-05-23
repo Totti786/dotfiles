@@ -30,4 +30,8 @@ elif [[ "$bar_style" == "minimal" ]];then
 	top_padding="0"
 	bottom_padding="25"
 	conky="Off"
+elif [[ "$bar_style" == "bionic" ]];then
+	top_padding="35"
+	bottom_padding="0"
+	conky="Off"
 fi
