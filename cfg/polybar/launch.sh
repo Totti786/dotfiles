@@ -13,7 +13,7 @@ current_desktop=$(wmctrl -m | head -n1 | cut -d " " -f2)
 config_file="$dir/$bar_style/config.ini"
 
 change_modules(){
-	sed -i -e "/^\[bar\/\(bottom\|main\)\]$/,/^\[/ s/modules-center = .*/modules-center = $1/" 	\
+	sed -i -e "s/\(workspaces\|bspwm\|i3\)/$1/g" 	\
 		-i -e "s/wm-name = .*/wm-name = $2/g" \
 		-i -e "s/wm-restack = .*/wm-restack = $2/g" \
 		-i -e "s/override-redirect = .*/override-redirect = $3/g" \
