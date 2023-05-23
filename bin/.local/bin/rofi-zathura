@@ -2,7 +2,7 @@
 
 cached="$HOME/.cache/zcache"
 history="$HOME/.local/share/zathura/history"
-rofi_command="-dmenu -p 'Zathura' -theme ~/.config/rofi/themes/Zselect.rasi"
+rofi_command="-dmenu -p 'Zathura' -theme rofi-zathura1"
 
 [[ ! -d "$HOME"/.cache/zcache ]] && mkdir $cached
 > "$cached"/zlist
@@ -44,7 +44,7 @@ done
 #[[ ! -z $book ]] &&
 	#zathura "$(grep "$book" "$HOME/.cache/zcache/zlist" | tr -d "'")" &
 	
- rofi -show drun -filter Books -theme "$HOME"/.config/rofi/themes/Zselect1.rasi
+rofi -show drun -filter Books -theme rofi-zathura
 }
 
 if [[ $(grep -i "home" "$history") ]]; then 

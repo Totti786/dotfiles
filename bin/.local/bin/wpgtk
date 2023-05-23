@@ -32,15 +32,34 @@ eww="$config/eww/colors.scss"
 waybar="$config/waybar/colors.css"
 hypr="$config/hypr/colors.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
+alpha="60"
 
 ## Change colors
 change_colors(){
 	run &&
+	
+	# polybar	
+	cat > $polybar <<- EOF
+		[color]
+		;; main colors
+		background = ${BG}$alpha
+		background-alt = ${BG}
+		foreground = $FG
+		primary = $FG
+		red = $bright_red
+		green = $bright_green
+		yellow = $bright_yellow
+		blue = $bright_blue
+		magenta = $bright_magenta
+		cyan = $bright_cyan
+		white = $white
+		EOF
+	
 	# rofi
 	cat > "$rofi" <<- EOF
 	/* colors */
 	* {
-		background:       ${BG}90; 
+		background:       ${BG}$alpha; 
 		background-alt:   ${BG};
 		foreground:       ${FG};
 		selected:         ${bright_red};
@@ -91,30 +110,35 @@ change_colors(){
 		-e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g" \
 		-e "s/margin_fg_grey=.*/margin_fg_grey=${black}/g" \
 		-e "s/error_red=.*/error_red=${bright_magenta}/g" \
-		-e "s/selection_blue=.*/selection_blue=${white}/g" "$geany"
+		-e "s/selection_blue=.*/selection_blue=${white}/g" \
+	"$geany"
 	
 	# copyq 
 	sed -i -e "s/bg=#.*/bg=${BG}/g" \
 		-e "s/alt_bg=#.*/alt_bg=$bright_black/g" \
 		-e "s/fg=#.*/fg=${FG}/g" \
 		-e "s/sel_bg=#.*/sel_bg=$cyan/g" \
-		-e "s/sel_fg=#.*/sel_fg${FG}/g" "$copyq"
+		-e "s/sel_fg=#.*/sel_fg${FG}/g" \
+	"$copyq"
 	
 	# dunst
-	sed -i -e "s/background = \"#.*\"/background = \"${BG}80\"/g" \
+	sed -i -e "s/background = \"#.*\"/background = \"${BG}$alpha\"/g" \
 		-e "s/foreground = \"#.*\"/foreground = \"${FG}\"/g" \
 		-e "s/highlight = \"#.*\"/highlight = \"${FG}\"/g" \
-		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g" "$dunst"
+		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g" \
+	"$dunst"
 
 	# stalonetray 
-	sed -i -e "s/background \"#.*\"/background \"$BG\"/g" $systray
+	sed -i -e "s/background \"#.*\"/background \"$BG\"/g" \
+	"$systray"
 	
 	# jgmenu 
-	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${BG} 60/g" \
+	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${BG} $alpha/g" \
 		-e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
-		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g" "$jgmenu"
+		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g" \
+	"$jgmenu"
 	
 	# zathura (courtesy of @GideonWolfe)
 	"$gzathura" > "$zathura"
@@ -131,26 +155,21 @@ change_colors(){
 		-e "s/--button-destructive: .*/--button-destructive: ${bright_yellow};/g" \
 		-e "s/--button-background-hover: .*/--button-background-hover: ${bright_red};/g" \
 		-e "s/--tab-selected: .*/--tab-selected: ${bright_blue};/g" \
-		-e "s/--text-muted: .*/--text-muted: ${FG};/g" "$discord"
+		-e "s/--text-muted: .*/--text-muted: ${FG};/g" \
+	"$discord"
 	fi 
 
 	# spotify
 	# Spotify can be themed using the xrdb backend i.e. ${xrdb:color0:#222}
-	
-	# conky
-	#sed -i -e "s/own_window_colour = '#.*',/own_window_colour = '${BG}',/g" \
-		#-i -e "s/color0 = '#.*',/color0 = '${bright_red}',/g" \
-		#-i -e "s/color1 = '#.*',/color1 = '${FG}',/g" \
-		#-i -e "s/color2 = '#.*',/color2 = '${bright_blue}',/g" \
-		#-i -e "s/color3 = '#.*',/color3 = '${bright_yellow}',/g" "$conky1" "$conky2"
-	
+		
 	# cava 
 	sed -i -e "s/gradient_color_1 = '.*'/gradient_color_1 = '${bright_red}'/g" \
 		-e "s/gradient_color_2 = '.*'/gradient_color_2 = '${bright_green}'/g" \
 		-e "s/gradient_color_3 = '.*'/gradient_color_3 = '${bright_blue}'/g" \
 		-e "s/gradient_color_4 = '.*'/gradient_color_4 = '${bright_yellow}'/g" \
 		-e "s/gradient_color_5 = '.*'/gradient_color_5 = '${bright_magenta}'/g" \
-		-e "s/gradient_color_6 = '.*'/gradient_color_6 = '${bright_cyan}'/g"	"$cava"
+		-e "s/gradient_color_6 = '.*'/gradient_color_6 = '${bright_cyan}'/g" \
+	"$cava"
 	
 	# eww
 	sed -i -e "s/\$background: #.*/\$background: ${BG};/g" \
@@ -164,7 +183,8 @@ change_colors(){
 		-e "s/\$purple: #.*/\$purple: $bright_magenta;/g" \
 		-e "s/\$cyan: #.*/\$cyan: $bright_cyan;/g" \
 		-e "s/\$gray: #.*/\$gray: $bright_black;/g" \
-		-e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" "$eww"
+		-e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" \
+	"$eww"
 	
 	# waybar
 	cat > "$waybar" <<- EOF
@@ -198,16 +218,23 @@ change_colors(){
 
 	# resize and move wallpaper for use by other programs
 	#cp "$wallpaper"  "$HOME"/.config/wpg/templates/wallpaper.jpg
-	convert -scale 50% -blur 0x4 -resize $(xdpyinfo | awk '/dimensions/{print $2}') "$wallpaper" "$HOME"/.config/wpg/templates/wallpaper.jpg &
 	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers &> /dev/null
 }
 
 # change the wpg config file so this script can run whenever wpg is invoked 
 wpgConfig(){
 	sed -i -e 's/execute_cmd = false/execute_cmd = true/g' \
-		-i -e 's/reload = .*/reload = true/g' \
-		-i -e 's/auto_adjust = false/auto_adjust = true/g' \
-		-i -e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" "$HOME/.config/wpg/wpg.conf"
+		-e 's/reload = .*/reload = true/g' \
+		-e 's/auto_adjust = false/auto_adjust = true/g' \
+		-e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" \
+	"$HOME/.config/wpg/wpg.conf"
+	version=$(python --version | grep -oE '[0-9]+\.[0-9]+')
+	a=("polybar()" "reload.i3()")
+	for i in "${a[@]}"; do
+		line_number=$(grep -n "$i" "/usr/lib/python$version/site-packages/wpgtk/data/reload.py" | tail -n 1 | awk -F ':' '{print $1}')
+		sudo sed -i "${line_number}s|^|#|" "/usr/lib/python$version/site-packages/wpgtk/data/reload.py"
+	done
+	
 }
 
 # this functions should only be used if you have a system with a seperate home partition 
@@ -240,8 +267,7 @@ copyWal(){
 	#fi
 	# copy background to sddm theme
 	if [[ -d "/usr/share/sddm/themes/Chili" ]]; then
-		cp ~/.config/wpg/templates/wallpaper.jpg \
-		/usr/share/sddm/themes/Chili/components/artwork/background.jpg
+		cp "$wallpaper" "/usr/share/sddm/themes/Chili/components/artwork/background.jpg"
 	else
 		echo "Can't find a compatible sddm theme"
 	fi
@@ -252,7 +278,7 @@ restart(){
 	local cmd="$1"
     shift
 	if [[ "$(pidof $cmd)" ]]; then
-		killall "$cmd" &&
+		killall "$cmd" && sleep 0.5
         "$cmd" "$@" & disown
 	else 
         "$cmd" "$@" & disown
@@ -323,8 +349,8 @@ dynamic(){
 	
 gui(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
-		[[ $(wmctrl -m | grep -i name | cut -d ' ' -f2) == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
-		[[ "$XDG_CURRENT_DESKTOP" == "i3" ]] && "$HOME"/.config/i3/i3-reload &
+		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
+		#[[ "$XDG_CURRENT_DESKTOP" == "i3" ]] && "$HOME"/.config/i3/i3-reload &
 		conky.sh restart &
 	else 
 		"$HOME"/.config/waybar/launch_waybar
@@ -338,13 +364,15 @@ gui(){
 main(){
 	change_colors
 	gui
-	restart dunst 
-	restart copyq --start-server
 	copyWal
+	"$HOME/.config/polybar/launch.sh" >/dev/null 2>&1 &
 	papirus-folder.sh --color ${red:1} &
 	check spicetify -q update &
-	check pywalfox update &
-	check razer-cli -a & exit
+	check pywalfox update >/dev/null 2>&1 &
+	check razer-cli -a &
+	restart copyq --start-server &
+	convert -scale 20% -blur 0x2 -resize $(xdpyinfo | awk '/dimensions/{print $2}') "$wallpaper" "$HOME"/.config/wpg/templates/wallpaper.jpg
+	exit
 }
 
 ## Check if wpg is installed and get colors
