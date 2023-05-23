@@ -51,6 +51,7 @@ base_install(){
 	moveConfigs
 	sh "$DIR/bin/.scripts/file-check"
 	changeTheme
+	install_wpgtk
 	}
 
 full_install(){
@@ -70,7 +71,7 @@ moveConfigs(){
 	cp -r "$DIR"/bin/.scripts/ "$HOME" && echo "moved scripts home"
 	cp -r "$DIR"/cfg/* "$HOME"/.config && echo "moved config files"
 	cp -r "$DIR"/bin/.local/ "$HOME" && echo "moved bin"
-	cp -r "$DIR"/bin/.zprofile "$HOME"
+	cp -r "$DIR"/deps/.zprofile "$HOME"
 	
     mkdir -p "$HOME/.local/share/icons"
     mkdir -p "$HOME/.local/share/fonts"
@@ -123,7 +124,7 @@ install_zsh(){
 	[[ "${plugins[*]} " =~ "zsh-autosuggestions " ]] || git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 	[[ "${plugins[*]} " =~ "zsh-syntax-highlighting " ]] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 	
-	cp "$DIR"/bin/.zshrc "$HOME"
+	cp "$DIR"/deps/.zshrc "$HOME"
 	}
 	
 install_sddm(){
@@ -137,10 +138,10 @@ install_sddm(){
 	
 	# Move sddm theme files
 	if [ ! -d "/usr/share/sddm/themes/Chili" ]; then  
-		sudo cp -R "$DIR"/bin/Chili  /usr/share/sddm/themes/
+		sudo cp -R "$DIR"/deps/Chili  /usr/share/sddm/themes/
 	fi
 	
-	cp "$DIR"/bin/.face "$HOME"
+	cp "$DIR"/deps/.face "$HOME"
 	
 	# Create the directory for the sddm configuration files
 	sudo mkdir -p "/etc/sddm.conf.d/"
