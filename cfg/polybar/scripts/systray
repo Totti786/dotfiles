@@ -1,7 +1,7 @@
 #!/bin/bash
 
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
-[[ "$bar_style" == "minimal" ]] || bar_style="base"
+#[[ "$bar_style" == "minimal" ]] || bar_style="base"
 
 hidden=/tmp/syshide.lock
 display_resolution="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)"
@@ -34,37 +34,34 @@ elif [[ "$(pidof stalonetray)" ]]; then
 		sleep 5 && main
 	fi
 else
+	if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then 
+		polybar systray -q -c "$HOME/.config/polybar/$bar_style/config.ini" &
+		main
+	fi
 	if [[ "$bar_style" == "minimal" ]]; then
-		if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then 
-			polybar systray -q -c "$HOME/.config/polybar/minimal/config.ini" &
+		if [[ "$display_resolution" -gt "1920" ]]; then
+			new="$(( "$display_resolution" - 1920 + 94 ))"
+			stalonetray --geometry 1x1-"$new"-34 --grow-gravity SW &
+			main			
+		elif [[ "$display_resolution" -lt "1920" ]]; then
+			stalonetray --geometry 1x1-66-34 --grow-gravity SW &
 			main
 		else
-			if [[ "$display_resolution" -gt "1920" ]]; then
-				new="$(( "$display_resolution" - 1920 + 94 ))"
-				stalonetray "$tray" --geometry 1x1-"$new"-34 --grow-gravity SW &
-				main			
-			elif [[ "$display_resolution" -lt "1920" ]]; then
-				stalonetray --geometry 1x1-66-34 --grow-gravity SW &
-				main
-			else
-				stalonetray --geometry 1x1-94-34 --grow-gravity SW &
-				main
-			fi
+			stalonetray --geometry 1x1-94-34 --grow-gravity SW &
+			main
 		fi
 	elif [[ "$bar_style" == "base" ]]; then
-		if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then 
-			polybar systray -q -c "$HOME/.config/polybar/base/config.ini" &
-			main
+		if [[ "$display_resolution" -gt "1920" ]]; then
+			new="$(( "$display_resolution" - 1920 + 4 ))"
+			stalonetray --geometry 1x1-"$new"+27 &
+			main			
 		else
-			if [[ "$display_resolution" -gt "1920" ]]; then
-				new="$(( "$display_resolution" - 1920 + 4 ))"
-				stalonetray --geometry 1x1-"$new"+27 &
-				main			
-			else
-				stalonetray &
-				main
-			fi
+			stalonetray &
+			main
 		fi
+	elif [[ "$bar_style" == "bionic" ]]; then
+		stalonetray --geometry 1x1-95+45 &
+		main
 	fi
 fi
 }
