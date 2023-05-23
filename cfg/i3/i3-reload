@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else top_padding="23" bottom_padding="23" ;fi
-if [[ "$bar_style" == "base" ]]; then PARENT_BAR="bottom" ; else PARENT_BAR="main" ;fi
 
 sed -i -e "s/gaps top .*/gaps top $top_padding/" "$HOME/.config/i3/config"
 sed -i -e "s/gaps bottom .*/gaps bottom $bottom_padding/" "$HOME/.config/i3/config"
