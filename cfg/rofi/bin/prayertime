@@ -55,9 +55,10 @@ remaining(){
 	
 	# Calculate the remaining time to the next prayer
 	if [[ -n "$next_prayer" ]]; then
-	    remaining_time=$(( next_prayer_time - current_time ))
-	    echo "$next_prayer in $(date -u -d @${remaining_time} +%H:%M)"
-	    notify-send  -r 34 -a Prayer "$next_prayer in" "$(date -u -d @${remaining_time} +%H:%M)"
+	    remaining_time_unix=$(( next_prayer_time - current_time ))
+	    remaining_time=$(date -u -d @${remaining_time_unix} +%H:%M:%S)
+	    echo "$next_prayer in $remaining_time"
+	    notify-send  -r 34 -a Prayer "$next_prayer in" "$remaining_time"
 	else
 	    echo "No upcoming prayers"
 	fi
