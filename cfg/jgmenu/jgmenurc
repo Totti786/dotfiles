@@ -22,10 +22,10 @@ item_border          = 0
 sep_height           = 5
 font                 = JetBrains Mono Bold 12px
 icon_size            = 0
-color_menu_bg        = #0F2630 60
-color_norm_fg        = #ebffff 100
-color_sel_bg         = #1a4456 40
-color_sel_fg         = #4cd2d4 100
-color_sep_fg         = #30a9b5 40
+color_menu_bg        = #101017 60
+color_norm_fg        = #fff2ff 100
+color_sel_bg         = #242434 40
+color_sel_fg         = #d474ce 100
+color_sep_fg         = #d6a0fa 40
 csv_cmd              = cat ~/.config/jgmenu/menu.csv
 
