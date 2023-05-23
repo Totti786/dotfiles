@@ -15,9 +15,9 @@ cp -r $DIR/copyq/copyq.conf $BackupDir/cfg/copyq/copyq.conf
 rm -R $BackupDir/bin/.local/bin/ && cp -r $HOME/.local/bin $BackupDir/bin/.local
 rm -R $BackupDir/bin/.scripts && cp -r $HOME/.scripts $BackupDir/bin
 
-#cp -r "$wallpaper" "$BackupDir/deps/background.jpg"
+cp -r "$wallpaper" "$BackupDir/deps/background.jpg"
 
-#cp -r $wallpaper $BackupDir/deps/Chili/components/artwork/background.jpg
+cp -r $wallpaper $BackupDir/deps/Chili/components/artwork/background.jpg
 
-#cp -r ~/.config/wpg/templates/wallpaper.jpg \
-	#$BackupDir/deps/grub/Arch/background.jpg
+cp -r ~/.config/wpg/templates/wallpaper.jpg \
+	$BackupDir/deps/grub/Arch/background.jpg
