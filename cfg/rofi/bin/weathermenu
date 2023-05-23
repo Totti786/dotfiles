@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 
-DIR="$HOME/.config"
 cache="$HOME/.cache/weather/weather-rofi"
-
-cat $cache | rofi -dmenu -p "Weather" -theme "$DIR"/rofi/themes/weather.rasi
+cat "$cache" | rofi -dmenu -p "Weather" -theme weather

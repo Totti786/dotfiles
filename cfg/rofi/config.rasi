@@ -5,7 +5,6 @@ configuration {
 	cycle:               		false;
 	hide-scrollbar:   		    false;
 	disable-history: 		    false;
-	show-icons:                 true;
 	display-drun:               "";
 	display-run:                "";
 	display-filebrowser:        "";

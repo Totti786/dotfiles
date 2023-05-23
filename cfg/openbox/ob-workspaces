@@ -14,10 +14,10 @@ next(){
 
 # Function to switch to the previous workspace.
 prev(){
-	if [[ "$current" -gt -1 ]]; then
-		wmctrl -s $(( $current - 1)) || echo "Error: Failed to switch to previous workspace."
+	if [[ "$current" -eq 0 ]]; then
+		wmctrl -s 7 || echo "Error: Failed to switch to previous workspace."
 	else
-		wmctrl -s 7 || echo "Error: Failed to switch to workspace 8."
+		wmctrl -s $(( $current - 1)) || echo "Error: Failed to switch to previous workspace."
 	fi
 }
 

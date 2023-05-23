@@ -5,7 +5,7 @@
 
 DIR="$HOME/.config/rofi/bin"
 
-rofi_command="rofi -theme $HOME/.config/rofi/themes/asroot.rasi"
+rofi_command="rofi -theme asroot"
 
 # Apps
 terminal=" Alacritty"

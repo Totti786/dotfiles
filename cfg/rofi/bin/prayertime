@@ -7,7 +7,6 @@
 ## Get city and country from a differnt file
 source "$HOME"/.config/polybar/scripts/info
 
-DIR="$HOME/.config"
 DAY="$(( 10#$(date '+%d') - 1 ))"
 MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"
@@ -79,4 +78,4 @@ if [ -f "$prayer_cache" ]; then
 	fi
 fi
 
-[ -z "$1" ] && < "$prayer_rofi" rofi -dmenu -p "Prayer Times" -theme "$DIR"/rofi/themes/prayer.rasi || remaining
+[ -z "$1" ] && < "$prayer_rofi" rofi -dmenu -p "Prayer Times" -theme prayer || remaining

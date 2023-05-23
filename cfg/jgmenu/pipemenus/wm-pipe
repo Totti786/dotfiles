@@ -32,6 +32,7 @@ if  [[ "$1" = "--border" ]]; then
 else
 	if [[ "$wm" == "bspwm" ]]; then 
 		menuStart
+			menuSeparator 'bspwm'
 			menuItem 'Edit Autostart' "exo-open $HOME/.config/bspwm/autostart"
 			menuItem 'Edit config' "exo-open $HOME/.config/bspwm/bspwmrc"
 			menuItem 'Edit keybinds' "exo-open $HOME/.config/sxhkd/sxhkdrc"
@@ -41,6 +42,7 @@ else
 		menuEnd
 	elif [[ "$wm" == "i3" ]]; then 
 		menuStart
+			menuSeparator 'i3'
 			menuItem 'Edit Autostart' "exo-open $HOME/.config/i3/autostart"
 			menuItem 'Edit config' "exo-open $HOME/.config/i3/config"
 			menuItem 'Edit keybinds' "exo-open $HOME/.config/sxhkd/i3-sxhkdrc"
@@ -51,6 +53,7 @@ else
 		menuEnd
 	elif [[ "$wm" == "Openbox" ]]; then 
 		menuStart
+			menuSeparator 'Openbox'
 			menuItem 'Settings' "obconf"
 			menuItem 'Edit Autostart' "exo-open $HOME/.config/openbox/autostart"
 			menuItem 'Edit Keybinds' "exo-open $HOME/.config/openbox/rc.xml"

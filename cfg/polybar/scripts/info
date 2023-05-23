@@ -6,8 +6,8 @@ KEY="9db8910d883726866ecc1dac1216708d"  # put your Opeanweather API key here
 
 # you also need to sign up on https://www.weatherbit.io/account/create  
 # in order to use all the features of this script you need to sign up for an API key
-WBKEY=""  # put your WeatherBit API key here 
+WBKEY="738403d68f69400f8872711b7a70fb7c"  # put your WeatherBit API key here 
 
 UNIT="metric"	# Available options : 'metric' or 'imperial'
-COUNTRY="" # put your country name here 
-CITY="" # put your city name here
+COUNTRY="Syria" # put your country name here 
+CITY="Idlib" # put your city name here

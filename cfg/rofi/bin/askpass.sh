@@ -8,4 +8,4 @@ rofi -dmenu\
      -i\
      -no-fixed-num-lines\
      -p "User Password: "\
-     -theme ~/.config/rofi/themes/askpass.rasi &
+     -theme askpass &

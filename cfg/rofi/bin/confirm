@@ -3,7 +3,7 @@
 options="Yes\nNo"
 
 echo -e $options | rofi -dmenu\
-     -i\
-     -no-fixed-num-lines\
-     -p "Are You Sure? : "\
-     -theme ~/.config/rofi/themes/confirm.rasi
+     -i \
+     -no-fixed-num-lines \
+     -p "Are You Sure? : " \
+     -theme confirm

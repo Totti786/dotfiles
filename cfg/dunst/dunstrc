@@ -15,7 +15,7 @@
     progress_bar_min_width = 150
     progress_bar_max_width = 300
     indicate_hidden = yes
-    transparency = 1
+    transparency = 0
     corner_radius = 12
     separator_height = 5
     padding = 15
@@ -43,14 +43,14 @@
 	max_icon_size = 100
 	
     always_run_script = true
-    dmenu = dmenu -i 
+    dmenu = /usr/bin/dmenu -p dunst:
     mouse_left_click = do_action, close_current  
     mouse_middle_click = do_action, close_current
     mouse_right_click = close_all
     browser = /usr/bin/firefox -new-tab
     
     frame_width = 3
-    frame_color = "#438566CF"
+    frame_color = "#398A8FCF"
     
 [logger]
   summary = "*"
@@ -59,20 +59,20 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#01111180"
-    foreground = "#ffffc9"
+    background = "#0F263060"
+    foreground = "#ebffff"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#01111180"
-    foreground = "#ffffc9"
+    background = "#0F263060"
+    foreground = "#ebffff"
     highlight  = "#b6beca"
     timeout = 20
 
 [urgency_critical]
-    background = "#01111180"
-    foreground = "#ffffc9"
+    background = "#0F263060"
+    foreground = "#ebffff"
     highlight  = "#b6beca"
     timeout = 60
     

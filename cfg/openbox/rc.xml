@@ -283,7 +283,7 @@
       <action name="Unmaximize"/>
       <action name="MoveResizeTo">
         <x>0%</x>
-        <y>4%</y>
+        <y>3%</y>
         <height>97%</height>
         <width>33%</width>
       </action>
@@ -291,8 +291,8 @@
     <keybind key="A-x">
       <action name="Unmaximize"/>
       <action name="MoveResizeTo">
-        <x>636</x>
-        <y>31</y>
+        <x>637</x>
+        <y>3%</y>
         <height>97%</height>
         <width>33%</width>
       </action>
@@ -300,8 +300,8 @@
     <keybind key="A-c">
       <action name="Unmaximize"/>
       <action name="MoveResizeTo">
-        <x>-0.5</x>
-        <y>31</y>
+        <x>-0.1</x>
+        <y>3%</y>
         <height>97%</height>
         <width>33%</width>
       </action>
@@ -429,11 +429,22 @@
       </action>
     </keybind>
     <!-- Send Application to next/prev desktop -->
-    <keybind key="W-C-Left">
+    <keybind key="S-C-Left">
       <action name="SendToDesktopLeft"/>
     </keybind>
-    <keybind key="W-C-Right">
+    <keybind key="S-C-Right">
       <action name="SendToDesktopRight"/>
+    </keybind>
+    <!-- Move to next/prev desktop -->
+    <keybind key="W-C-Left">
+      <action name="Execute">
+        <command>~/.config/openbox/ob-workspaces prev</command>
+      </action>    
+    </keybind>
+    <keybind key="W-C-Right">
+      <action name="Execute">
+        <command>~/.config/openbox/ob-workspaces next</command>
+      </action>    
     </keybind>
     <!-- Media Controls-->
     <keybind key="XF86AudioRaiseVolume">
@@ -527,6 +538,11 @@
     <!-- ################################ Launch Applications ################################ -->
     <!-- Apps -->
     <keybind key="W-Return">
+      <action name="Execute">
+        <command>alacritty</command>
+      </action>
+    </keybind>
+    <keybind key="W-S-Return">
       <action name="Execute">
         <command>alacritty</command>
       </action>
@@ -645,18 +661,6 @@
       </action>
     </keybind>
     <!-- CLI Apps -->
-    <!-- Anime Rofi -->
-    <keybind key="W-a">
-      <action name="Execute">
-        <command>aniwrapper</command>
-      </action>
-    </keybind>
-    <!-- Youtube -->
-    <keybind key="W-y">
-      <action name="Execute">
-        <command>ytfzf -fD</command>
-      </action>
-    </keybind>
     <!-- Zathura -->
     <keybind key="W-g">
       <action name="Execute">
@@ -678,7 +682,7 @@
     <!-- Copyq -->
     <keybind key="W-v">
       <action name="Execute">
-        <command>copyq show</command>
+        <command>copyq toggle</command>
       </action>
     </keybind>
     <!-- Bluetooth Rofi -->
@@ -702,7 +706,7 @@
     <!-- Polbar Restart -->
     <keybind key="W-S-m">
       <action name="Execute">
-        <command>~/.config/polybar/launch.sh</command>
+        <command>~/.config/jgmenu/pipemenus/bar-pipe -r</command>
       </action>
     </keybind>
     <!-- Change Wallpaper-->
@@ -767,17 +771,12 @@
       <action name="Move"/>
     </keybind>
     <!-- Launch Openbox Menu -->
-    <keybind key="W-space">
+    <keybind key="A-space">
       <action name="Execute">
         <command>jgmenu_run</command>
       </action>
     </keybind>
-    <keybind key="C-A-space">
-      <action name="ShowMenu">
-        <menu>app-menu</menu>
-      </action>
-    </keybind>
-    <keybind key="A-space">
+    <keybind key="W-space">
       <action name="ShowMenu">
         <menu>client-menu</menu>
       </action>
@@ -810,6 +809,16 @@
       </mousebind>
       <mousebind action="Drag" button="A-Right">
         <action name="Resize"/>
+      </mousebind>
+      <mousebind action="Press" button="W-Up">
+      <action name="Execute">
+        <command>~/.config/openbox/ob-workspaces prev</command>
+      </action> 
+      </mousebind>
+      <mousebind action="Press" button="W-Down">
+      <action name="Execute">
+        <command>~/.config/openbox/ob-workspaces next</command>
+      </action> 
       </mousebind>
     </context>
     <context name="Titlebar">
@@ -1022,8 +1031,19 @@
           <to>next</to>
         </action>
       </mousebind>
+      <mousebind action="Press" button="W-Up">
+      <action name="Execute">
+        <command>~/.config/openbox/ob-workspaces prev</command>
+      </action> 
+      </mousebind>
+      <mousebind action="Press" button="W-Down">
+      <action name="Execute">
+        <command>~/.config/openbox/ob-workspaces next</command>
+      </action> 
+      </mousebind>
     </context>
     <context name="Root">
+	  
       <mousebind action="Press" button="Middle">
         <action name="Execute">
           <command>windowswitch window "-monitor -3"</command>

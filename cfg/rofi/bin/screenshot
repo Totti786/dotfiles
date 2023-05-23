@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-DIR="$HOME/.config"
-rofi_command="rofi -theme $DIR/rofi/themes/power-screen.rasi"
+rofi_command="rofi -theme power-screen"
 # Buttons
 screen=""
 area=""

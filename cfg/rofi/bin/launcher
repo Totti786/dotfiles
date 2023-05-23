@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-DIR="$HOME/.config/rofi/themes"
-
 if [ -n "$(rofi -h | grep 'calc')" ]; then 
 	mode="drun,filebrowser,calc"
 else 
@@ -13,4 +11,4 @@ rofi \
 	-show drun \
 	-modi "$mode" \
 	-drun-display-format "{name}" \
-	-theme "$DIR"/launcher.rasi
+	-theme launcher

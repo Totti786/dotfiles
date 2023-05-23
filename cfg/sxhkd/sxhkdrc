@@ -38,17 +38,17 @@ alt + space
 
 # Rofi App Launcher
 alt + F1
-	sh ~/.config/rofi/bin/launcher
+	~/.config/rofi/bin/launcher
 
 # Rofi Menus/Applets
-super + {m,x,r,s}
-	sh ~/.config/rofi/bin/{media,powermenu,asroot,screenshot}
+super + {x,s,r}
+	~/.config/rofi/bin/{powermenu,screenshot,asroot}
 
 ##------ Applications -------##
 
 # Launch Apps
 super + {e,f,w,o,g,b,y,a,v,p}
-	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq show,color-picker}
+	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq toggle,color-picker}
 
 super + z
 	discord --enable-gpu-rasterization
@@ -62,7 +62,7 @@ ctrl + alt + {v,r,h}
 
 # Reset Wallpaper
 ctrl + alt + b
-	sh ~/.fehbg
+	~/.fehbg
 
 # Lockscreen
 ctrl + alt + l
@@ -70,7 +70,7 @@ ctrl + alt + l
 
 # Random Wallpaper
 ctrl + alt + w
-   wpgtk random
+  wpgtk random
 
 ##------- System Keys -------##
 
@@ -106,7 +106,7 @@ XF86Audio{Next,Prev,Play,Pause,Stop}
 
 # Restart Polybar
 super + shift + m
-	sh ~/.config/polybar/launch.sh
+	~/.config/jgmenu/pipemenus/bar-pipe -r
 
 # Kill window
 super + Escape

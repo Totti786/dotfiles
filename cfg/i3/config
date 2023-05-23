@@ -15,12 +15,14 @@ font pango:JetBrains Mono Medium 10
 # Gaps (Outer gaps are added to the inner gaps)
 gaps inner 10
 gaps outer 0
+gaps top 0
+gaps bottom 25
 
 # Only enable gaps on a workspace when there is at least one container
 #smart_gaps on
 
 # Uncomment this to enable title bars
-#for_window [class=".*"] border normal 0
+for_window [class=".*"] border normal 0
 
 # Title bar text alignment
 title_align center

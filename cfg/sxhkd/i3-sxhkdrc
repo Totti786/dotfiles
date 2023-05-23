@@ -41,14 +41,14 @@ alt + F1
 	~/.config/rofi/bin/launcher
 
 # Rofi Menus/Applets
-super + {m,x,r,s}
-	~/.config/rofi/bin/{media,powermenu,asroot,screenshot}
-
+super + {x,s,r}
+	~/.config/rofi/bin/{powermenu,screenshot,asroot}
+	
 ##------ Applications -------##
 
 # Launch Apps
 super + {e,f,w,o,g,b,y,a,v,p}
-	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq show,color-picker}
+	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq toggle,color-picker}
 
 super + z
 	discord --enable-gpu-rasterization
@@ -106,7 +106,7 @@ XF86Audio{Next,Prev,Play,Pause,Stop}
 
 # Restart Polybar
 super + shift + m
-	~/.config/polybar/launch.sh
+	~/.config/jgmenu/pipemenus/bar-pipe -r
 
 # Kill window
 super + Escape
