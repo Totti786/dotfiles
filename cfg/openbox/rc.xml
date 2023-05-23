@@ -588,11 +588,6 @@
         <command>~/.config/rofi/bin/network_menu</command>
       </action>
     </keybind>
-    <keybind key="W-m">
-      <action name="Execute">
-        <command>~/.config/rofi/bin/media</command>
-      </action>
-    </keybind>
     <keybind key="W-x">
       <action name="Execute">
         <command>~/.config/rofi/bin/powermenu</command>
@@ -601,11 +596,6 @@
     <keybind key="W-s">
       <action name="Execute">
         <command>~/.config/rofi/bin/screenshot</command>
-      </action>
-    </keybind>
-    <keybind key="W-i">
-      <action name="Execute">
-        <command>~/.config/rofi/bin/network</command>
       </action>
     </keybind>
     <keybind key="W-r">
@@ -706,7 +696,7 @@
     <!-- Polbar Restart -->
     <keybind key="W-S-m">
       <action name="Execute">
-        <command>~/.config/jgmenu/pipemenus/bar-pipe -r</command>
+        <command>~/.config/jgmenu/pipemenus/bar-pipe reload</command>
       </action>
     </keybind>
     <!-- Change Wallpaper-->
