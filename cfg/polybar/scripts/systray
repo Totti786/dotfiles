@@ -1,12 +1,13 @@
 #!/bin/bash
 
-if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else  bar_style="base" ;fi
+[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ "$bar_style" == "minimal" ]] || bar_style="base"
 
 hidden=/tmp/syshide.lock
 display_resolution="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)"
-polytray="$(pgrep -a polybar  | grep systray | cut -d ' ' -f1)"
 
 main(){
+polytray="$(pgrep -a polybar  | grep systray | cut -d ' ' -f1)"
 if [[ "$polytray" ]]; then
 	if [[ ! -e "$hidden" ]]; then
 		polybar-msg action "#systray.hook.1"
@@ -35,7 +36,8 @@ elif [[ "$(pidof stalonetray)" ]]; then
 else
 	if [[ "$bar_style" == "minimal" ]]; then
 		if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then 
-			polybar systray -c "$HOME/.config/polybar/minimal/config-minimal.ini"
+			polybar systray -q -c "$HOME/.config/polybar/minimal/config.ini" &
+			main
 		else
 			if [[ "$display_resolution" -gt "1920" ]]; then
 				new="$(( "$display_resolution" - 1920 + 94 ))"
@@ -51,7 +53,8 @@ else
 		fi
 	elif [[ "$bar_style" == "base" ]]; then
 		if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then 
-			polybar systray -c "$HOME/.config/polybar/config.ini"
+			polybar systray -q -c "$HOME/.config/polybar/base/config.ini" &
+			main
 		else
 			if [[ "$display_resolution" -gt "1920" ]]; then
 				new="$(( "$display_resolution" - 1920 + 4 ))"
