@@ -2,6 +2,12 @@
 
 DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 
+# Check if script is run as root
+if [[ "$(id -u)" -eq 0 ]]; then
+  echo "This script must not be run as root"
+  exit 1
+fi
+
 #---- Core functions ---------------------
 
 checkrepo(){
@@ -11,7 +17,6 @@ checkrepo(){
 	else
 		echo "Adding the Chaotic AUR repo"
 		# Import and sign Chaotic AUR repository key
-		CHAOTIC_KEY="FBA220DFC880C036"
 		sudo pacman-key --recv-key "FBA220DFC880C036" --keyserver keyserver.ubuntu.com || exit 1
 		sudo pacman-key --lsign-key "FBA220DFC880C036" || exit 1
 		
@@ -61,8 +66,8 @@ full_install(){
 	moveConfigs
 	sh "$DIR/bin/.scripts/file-check"
 	changeTheme
-	install_grub
 	install_sddm
+	install_grub
 	install_zsh
 	install_wpgtk
 	}
