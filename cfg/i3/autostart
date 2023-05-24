@@ -2,7 +2,7 @@
 
 ## Autostart Programs ----------------------------------------#
 
-if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else conky="On" ;fi
+[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
 
 ## XDG Autostart 
 [[ ! $(pgrep xfce-polkit) ]] && xdg-autostart &
