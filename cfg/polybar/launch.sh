@@ -2,7 +2,8 @@
 
 # Launchs Polybar from multiple window managers
 
-if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ;else bar_style="base" top_padding="23" bottom_padding="23" ;fi
+[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -z "$bar_style" ]] && bar_style="base" top_padding="23" bottom_padding="23"
 
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 graphics_card="$(ls -1 /sys/class/backlight/)"
