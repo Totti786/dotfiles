@@ -1,13 +1,13 @@
 #!/bin/bash
 
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
-#[[ "$bar_style" == "minimal" ]] || bar_style="base"
+[[ -z "$bar_style" ]] && bar_style="base"
 
 hidden=/tmp/syshide.lock
 display_resolution="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)"
 
 main(){
-polytray="$(pgrep -a polybar  | grep systray | cut -d ' ' -f1)"
+polytray="$(pgrep -a polybar | grep systray | cut -d ' ' -f1)"
 if [[ "$polytray" ]]; then
 	if [[ ! -e "$hidden" ]]; then
 		polybar-msg action "#systray.hook.1"
