@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # The name of polybar bar which houses the main spotify module and the control modules.
-if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else  bar_style="base" ;fi
-if [[ "$bar_style" == "base" ]]; then PARENT_BAR="bottom" ; else PARENT_BAR="main" ;fi
+[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -z "$bar_style" ]] && bar_style="base"
+[[ "$bar_style" == "base" ]] && PARENT_BAR="bottom" || PARENT_BAR="main"
 
 PARENT_BAR_PID=$(pgrep -a "polybar" | grep "$PARENT_BAR" | cut -d" " -f1)
 
