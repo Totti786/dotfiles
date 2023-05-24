@@ -19,7 +19,7 @@ export BROWSER="firefox"
 export QT_STYLE_OVERRIDE="qt5ct"
 
 # Polybar and bspwm style settings
-bar_style=minimal
+bar_style=bionic
 window_border="3"
 
 if [[ "$bar_style" == "base" ]];then
@@ -33,5 +33,5 @@ elif [[ "$bar_style" == "minimal" ]];then
 elif [[ "$bar_style" == "bionic" ]];then
 	top_padding="35"
 	bottom_padding="0"
-	conky="Off"
+	conky="On"
 fi
