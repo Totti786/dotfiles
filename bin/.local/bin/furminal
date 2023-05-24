@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
-CONFIG="$HOME/.config/alacritty/alacritty.yml"
-if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else bar_style="base" ;fi
-if [[ "$bar_style" == "minimal" ]]; then y="10"
-elif [[ "$bar_style" == "bionic" ]]; then y="45"
-else y="33" ;fi
+[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -z "$bar_style" ]] && top_padding="23"
 
+CONFIG="$HOME/.config/alacritty/alacritty.yml"
 
 if [ "$1" == "--float" ]; then
 	alacritty --class 'alacritty-float,alacritty-float' --config-file "$CONFIG" "${@:2}"
@@ -14,7 +12,7 @@ elif [ "$1" == "--full" ]; then
 	-o window.startup_mode=fullscreen window.padding.x=30 window.padding.y=30 \
 	window.opacity=0.6 font.size=12 "${@:2}"
 elif [ "$1" == "--drop" ]; then 
-	tdrop -a -w 70% -h 50% -y "$y" -x 15% alacritty --class 'alacritty-drop,alacritty-drop' --config-file "$CONFIG" "${@:2}"
+	tdrop -a -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'alacritty-drop,alacritty-drop' --config-file "$CONFIG" "${@:2}"
 else
 	echo "Usage: $(basename $0) [options] [--]	
 	Options:
