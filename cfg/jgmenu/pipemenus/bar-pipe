@@ -9,7 +9,8 @@ if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
 	exit 1
 fi
 
-if [[ -f "$HOME/.zprofile" ]]; then source "$HOME"/.zprofile ;else bar_style="base" ;fi
+[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -z "$bar_style" ]] && bar_style="base"
 
 toggle_transparency(){
 	picom_conf="$HOME/.config/picom/picom.conf"
@@ -27,16 +28,16 @@ toggle_transparency(){
 }
 
 reload(){
-	polytray="$(pgrep -a polybar  | grep systray | cut -d ' ' -f1)"
 	wpgtk partial
 	[[ $(pgrep stalonetray) ]]
 		pkill stalonetray && "$HOME"/.config/polybar/scripts/systray &> /dev/null
-	#[[ "$polytray" ]] && "$HOME"/.config/polybar/scripts/systray &> /dev/null
+	polytray="$(pgrep -a polybar  | grep systray | cut -d ' ' -f1)"
+	[[ "$polytray" ]] && "$HOME"/.config/polybar/scripts/systray &> /dev/null &
 }
 
 base(){
 	sed -i 's/^bar_style=.*/bar_style=base/' "$HOME"/.zprofile
-	toggle_transparency
+	toggle_transparency base
 	conky.sh	
 	reload
 }
