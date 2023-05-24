@@ -15,8 +15,8 @@ font pango:JetBrains Mono Medium 10
 # Gaps (Outer gaps are added to the inner gaps)
 gaps inner 10
 gaps outer 0
-gaps top 0
-gaps bottom 25
+gaps top 35
+gaps bottom 0
 
 # Only enable gaps on a workspace when there is at least one container
 #smart_gaps on
