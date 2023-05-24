@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else conky="On" ;fi
+## Autostart Programs ----------------------------------------#
+
+[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
 
 ## xfce4-settings daemon
 xfsettingsd &
