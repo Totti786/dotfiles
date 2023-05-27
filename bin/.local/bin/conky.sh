@@ -22,7 +22,7 @@ fixconfig(){
 			-i -e "s/font1 = 'JetBrains Mono:Bold:size=.*',/font1 = 'JetBrains Mono:Bold:size=11',/g" \
 			-i -e "s/font2 = 'JetBrains Mono:bold:size=.*',/font2 = 'JetBrains Mono:bold:size=20',/g" "$conkyConfig"
 	fi
-	sed -i -e "s/own_window_colour = '#.*',/own_window_colour = '${background}',/g" \
+	sed -i -e "s/own_window_colour = '#.*',/own_window_colour = '$(pastel mix -f 0.6 $color8 $color0 | pastel format hex)',/g" \
 		-i -e "s/color0 = '#.*',/color0 = '${color9}',/g" \
 		-i -e "s/color1 = '#.*',/color1 = '${foreground}',/g" \
 		-i -e "s/color2 = '#.*',/color2 = '${color12}',/g" \
@@ -36,7 +36,7 @@ toggle(){
 	if [ -z "$(pgrep conky)" ]; then 
 		fixconfig
 		conky -c $conkyConfig &> /dev/null
-		[[ "$wm" == "bspwm" ]] && xdo lower -N Conky
+		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && xdo lower -N Conky
 	else
 		pkill conky
 	fi
