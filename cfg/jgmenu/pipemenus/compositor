@@ -51,6 +51,7 @@ check_shadow=$(cat $PICOM_DIR/picom.conf | grep 'shadow =' | head -n1 | cut -d'=
 check_fading=$(cat $PICOM_DIR/picom.conf | grep 'fading =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
 check_blur=$(cat $PICOM_DIR/picom.conf | grep 'method =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
 check_animations=$(cat $PICOM_DIR/picom.conf | grep 'animations = ' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
+check_opacity=$(cat $PICOM_DIR/picom.conf | grep '^#.*opacity-rule')
 
 ## Kill picom
 forcekill_picom() {
@@ -65,7 +66,7 @@ forcekill_picom() {
 ##-- Edit config ---------------------
 if [[ $1 = '--edit' ]]; then # Edit picom settings
     if ! [ -e "$HOME/.config/picom/picom.conf" ]; then
-        cp '~/.config/openbox/picom.conf' "$HOME/.config/picom.conf"
+        notify-send -a picom  -r 92 "picom warnning" "config file not found\!"
     fi
     if hash exo-open &>/dev/null; then
         exo-open "$HOME/.config/picom/picom.conf"
@@ -149,10 +150,10 @@ elif [[ $1 = '--enable-shadows' ]]; then
     sed -i -e "s/shadow = .*/shadow = true;/g" "$PICOM_DIR/picom.conf"	
 
 elif [[ $1 = '--reset-shadows' ]]; then
-	sed -i -e "s/shadow-radius = .*/shadow-radius = 14;/g" "$PICOM_DIR/picom.conf"
-	sed -i -e "s/shadow-opacity = .*/shadow-opacity = 0.30;/g" "$PICOM_DIR/picom.conf"
-	sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = -12;/g" "$PICOM_DIR/picom.conf"
-	sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = -12;/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/shadow-radius = .*/shadow-radius = 15;/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/shadow-opacity = .*/shadow-opacity = 0.75;/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = -15;/g" "$PICOM_DIR/picom.conf"
+	sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = -15;/g" "$PICOM_DIR/picom.conf"
 
 ##-- fading ---------------------
 
@@ -189,8 +190,16 @@ elif [[ $1 = '--disable-blur' ]]; then
 	sed -i -e "s/method = .*/method = \"none\";/g" "$PICOM_DIR/picom.conf"
 	sed -i -e "s/strength = .*/strength = 0;/g" "$PICOM_DIR/picom.conf"
 
+elif [[ $1 = '--enable-opacity' ]]; then
+	[[ -n "$(grep '^#.*opacity-rule' "$PICOM_DIR/picom.conf")" ]] &&
+		sed -i "/opacity-rule = \[/,/\];/ s/^#//" "$PICOM_DIR/picom.conf"
+	
+elif [[ $1 = '--disable-opacity' ]]; then
+	[[ -z "$(grep '^#.*opacity-rule' "$PICOM_DIR/picom.conf")" ]] &&
+		sed -i "/opacity-rule = \[/,/\];/ s/^/#/" "$PICOM_DIR/picom.conf"
+
 elif [[ $1 = '--update-blur' ]]; then
-	bstrength=$(zenity --text='Blur Strength' --scale --value=7 --min-value=1 --max-value=20)
+	bstrength=$(zenity --text='Blur Strength' --scale --value=4 --min-value=1 --max-value=20)
 	if [[ "$bstrength" ]]; then
 		sed -i -e "s/strength = .*/strength = $bstrength;/g" "$PICOM_DIR/picom.conf"
 	fi
@@ -253,6 +262,12 @@ else
 			menuItem 'Set Blur Strength' "$0 --update-blur"
 			menuItem 'Disable Blur Effect' "$0 --disable-blur"
 		fi
+		if [[ "$check_opacity" ]]; then 
+			menuItem 'Enable Opcaity' "$0 --enable-opacity"
+		else
+			menuItem 'Disable Opacity' "$0 --disable-opacity"
+		fi
+		
 		menuSeparator 'Animations'
 		if [[ "$check_animations" == "true" ]]; then 
 			menuItem 'Disable Animations' "$0 --disable-animations"
