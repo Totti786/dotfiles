@@ -9,7 +9,7 @@
 ## wpg --sat $(wpg -c) 0.1 && wpg -s $(wpg -c)
 ## This gives you the 'light' version of the theme you're using.
 ## wpg -LA $(wpg -c) && wpg -s $(wpg -c)
-## 
+##
 ## sudo ln -s /usr/share/icons/Papirus-Dark ~/.local/share/icons/Papirus
 ## sudo chgrp -R $(whoami) /usr/share/icons/Papirus
 ## sudo chmod -R ug+rwX /usr/share/icons/Papirus
@@ -32,7 +32,7 @@ eww="$config/eww/colors.scss"
 waybar="$config/waybar/colors.css"
 hypr="$config/hypr/colors.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='60'
+alpha='FF'
 
 ## Change colors
 change_colors(){
@@ -43,7 +43,7 @@ change_colors(){
 		[color]
 		;; main colors
 		background = ${BG}$alpha
-		background-alt = ${bg_light}
+		background-alt = ${bg_mix}
 		foreground = $FG
 		primary = $FG
 		red = $bright_red
@@ -59,7 +59,7 @@ change_colors(){
 	cat > "$rofi" <<- EOF
 	/* colors */
 	* {
-		background:       ${bg_light}$alpha; 
+		background:       ${bg_mix}$alpha; 
 		background-alt:   ${BG};
 		foreground:       ${FG};
 		selected:         ${bright_red};
@@ -75,7 +75,7 @@ change_colors(){
 	#Colors 
 	colors:
 	  primary:
-	    background: '$BG'
+	    background: '$bg_mix'
 	    foreground: '$FG'
 	  cursor:
 	    text:       '$black'
@@ -134,12 +134,12 @@ change_colors(){
 	"$dunst"
 
 	# stalonetray 
-	sed -i -e "s/background \"#.*\"/background \"$BG\"/g" \
+	sed -i -e "s/background \"#.*\"/background \"$bg_mix\"/g" \
 	"$systray"
 	
 	# jgmenu 
 	[[ "$alpha" == "FF" ]] && alpha2="100" || alpha2="$alpha"
-	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${BG} $alpha2/g" \
+	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $alpha2/g" \
 		-e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
@@ -153,7 +153,7 @@ change_colors(){
 	if [[ -f "$discord" ]]; then 
 	sed -i -e "s/--accent-color: .*/--accent-color: ${FG};/g" \
 		-e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" \
-		-e "s/--background-1: .*/--background-1: ${bg_light};/g" \
+		-e "s/--background-1: .*/--background-1: ${bg_mix};/g" \
 		-e "s/--background-2: .*/--background-2: ${BG};/g" \
 		-e "s/--border-color: .*/--border-color: $bright_black;/g" \
 		-e "s/--background-modifier-hover: .*/--background-modifier-hover: ${bright_magenta};/g" \
@@ -359,8 +359,7 @@ dynamic(){
 misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
-		#[[ "$XDG_CURRENT_DESKTOP" == "i3" ]] && "$HOME"/.config/i3/i3-reload &
-		conky.sh restart &
+		conky.sh restart
 	else
 		"$HOME"/.config/waybar/launch_waybar
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
@@ -418,6 +417,7 @@ run(){
 			bright_cyan="$(printf "%s\n" "$color14")"
 			bright_white="$(printf "%s\n" "$color15")"
 			# Additional colors
+			bg_mix="$(pastel mix -f 0.6 $bright_black $black | pastel format hex)"
 			bg_light="$(pastel lighten 0.04 ${background:1} | pastel format hex)"
 			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
 			bg_rgb="$(pastel format rgb ${background:1})"
