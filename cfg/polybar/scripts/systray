@@ -60,8 +60,13 @@ else
 			main
 		fi
 	elif [[ "$bar_style" == "bionic" ]]; then
-		stalonetray --geometry 1x1-95+45 &
-		main
+		if [[ "$display_resolution" -lt "1920" ]]; then
+			stalonetray --geometry 1x1-66+45 &
+			main
+		else
+			stalonetray --geometry 1x1-95+45 &
+			main
+		fi
 	fi
 fi
 }
