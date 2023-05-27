@@ -11,24 +11,28 @@ if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
 fi
 
 borderWidth(){
-    if command -v "zenity" >/dev/null 2>&1; then
-		width="$(zenity --scale --max-value 5  --text "Select Border Width:")"
-		if [[ "$?" == 0 ]]; then
-			if [[ "$wm" == "i3" ]]; then 
-				sed -i -e "s/pixel .*/pixel $width/g" "$HOME"/.config/i3/config &&
-				"$HOME"/.config/i3/i3-reload
-			else
-				sed -i -e "s/window_border=.*/window_border=\"$width\"/g" "$HOME"/.zprofile
-				"$HOME"/.config/bspwm/bsp-border
-			fi
-		fi
+	if [[ "$1" ]]; then 
+		width="$1"
 	else
-		notify-send "Error: zenity is not installed!"
+	    if command -v "zenity" >/dev/null 2>&1; then
+			width="$(zenity --scale --max-value 5  --text "Select Border Width:")"
+		else
+			notify-send "Error: zenity is not installed!"
+		fi
 	fi
-}
+	if [[ "$?" == 0 ]]; then
+		if [[ "$wm" == "i3" ]]; then 
+			sed -i -e "s/pixel .*/pixel $width/g" "$HOME"/.config/i3/config &&
+			"$HOME"/.config/i3/i3-reload
+		elif [[ "$wm" == "i3" ]]; then 
+			sed -i -e "s/window_border=.*/window_border=\"$width\"/g" "$HOME"/.zprofile
+			"$HOME"/.config/bspwm/bsp-border
+		fi
+	fi
+	}
 
 if  [[ "$1" = "--border" ]]; then
-	borderWidth
+	borderWidth "$2"
 else
 	if [[ "$wm" == "bspwm" ]]; then 
 		menuStart
