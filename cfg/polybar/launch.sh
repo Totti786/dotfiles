@@ -20,7 +20,7 @@ change_modules(){
 		-i -e "s/override-redirect = .*/override-redirect = $3/g" \
 		-i -e "s/scroll-up = .*/scroll-up = $4/g" \
 		-i -e "s/scroll-down = .*/scroll-down = $5/g" \
-		"$config_file"
+	"$config_file"
 }
 
 # Fix backlight and network modules
