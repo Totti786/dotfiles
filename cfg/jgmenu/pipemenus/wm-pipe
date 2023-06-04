@@ -11,20 +11,20 @@ if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
 fi
 
 borderWidth(){
-	if [[ "$1" ]]; then 
+	if [[ "$1" ]]; then
 		width="$1"
 	else
 	    if command -v "zenity" >/dev/null 2>&1; then
-			width="$(zenity --scale --max-value 5  --text "Select Border Width:")"
+			width="$(zenity --scale --max-value 5 --text "Select Border Width:")"
 		else
 			notify-send "Error: zenity is not installed!"
 		fi
 	fi
 	if [[ "$?" == 0 ]]; then
-		if [[ "$wm" == "i3" ]]; then 
+		if [[ "$wm" == "i3" ]]; then
 			sed -i -e "s/pixel .*/pixel $width/g" "$HOME"/.config/i3/config &&
 			"$HOME"/.config/i3/i3-reload
-		elif [[ "$wm" == "i3" ]]; then 
+		elif [[ "$wm" == "i3" ]]; then
 			sed -i -e "s/window_border=.*/window_border=\"$width\"/g" "$HOME"/.zprofile
 			"$HOME"/.config/bspwm/bsp-border
 		fi
@@ -34,7 +34,7 @@ borderWidth(){
 if  [[ "$1" = "--border" ]]; then
 	borderWidth "$2"
 else
-	if [[ "$wm" == "bspwm" ]]; then 
+	if [[ "$wm" == "bspwm" ]]; then
 		menuStart
 			menuSeparator 'bspwm'
 			menuItem 'Edit Autostart' "exo-open $HOME/.config/bspwm/autostart"
@@ -44,7 +44,7 @@ else
 			menuItem 'Restart bspwm' "bspc wm -r "
 			menuItem 'Restart sxhkd' "pkill -USR1 -x sxhkd"
 		menuEnd
-	elif [[ "$wm" == "i3" ]]; then 
+	elif [[ "$wm" == "i3" ]]; then
 		menuStart
 			menuSeparator 'i3'
 			menuItem 'Edit Autostart' "exo-open $HOME/.config/i3/autostart"
@@ -55,7 +55,7 @@ else
 			menuItem 'Restart i3' "i3-msg restart"
 			menuItem 'Restart sxhkd' "pkill -USR1 -x sxhkd"
 		menuEnd
-	elif [[ "$wm" == "Openbox" ]]; then 
+	elif [[ "$wm" == "Openbox" ]]; then
 		menuStart
 			menuSeparator 'Openbox'
 			menuItem 'Settings' "obconf"
