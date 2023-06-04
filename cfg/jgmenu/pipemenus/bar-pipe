@@ -17,6 +17,7 @@ toggle_transparency(){
 	alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
 	wpgtk_dir="$HOME/.local/bin/wpgtk"
 	pipe_dir="$HOME/.config/jgmenu/pipemenus/"
+	dunst_dir="$HOME/.config/dunst/dunstrc"
 	
 	if [[ "$1" == "bionic" ]]; then 
 		"$pipe_dir"/compositor --disable-opacity
@@ -24,22 +25,21 @@ toggle_transparency(){
 		"$pipe_dir"/wm-pipe --border 0
 		sed -i "s/opacity: .*/opacity: 1.0/" "$alacritty_conf"
 		sed -i "s/alpha=.*/alpha='FF'/" "$wpgtk_dir"
+		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst_dir"
 	elif [[ "$1" != "bionic" ]]; then
 		"$pipe_dir"/compositor --enable-opacity
 		"$pipe_dir"/compositor --disable-shadows
 		"$pipe_dir"/wm-pipe --border "$window_border"
 		sed -i "s/opacity: .*/opacity: 0.7/" "$alacritty_conf"
 		sed -i "s/alpha=.*/alpha='60'/" "$wpgtk_dir"
+		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst_dir"
 	fi	
 }
 
 reload(){
-	wpgtk partial
-	[[ $(pgrep stalonetray) ]]
-		pkill stalonetray && "$POLYCONF"/scripts/systray &> /dev/null
-	polytray="$(pgrep -a polybar  | grep systray | cut -d ' ' -f1)"
-	[[ "$polytray" ]] && "$POLYCONF"/scripts/systray
-	exit
+	wpgtk partial &&
+	[[ $(pgrep stalonetray) ]] && pkill stalonetray && "$POLYCONF"/scripts/systray
+	"$POLYCONF"/scripts/systray
 }
 
 base(){
@@ -51,7 +51,7 @@ base(){
 minimal(){
 	sed -i 's/^bar_style=.*/bar_style=minimal/' "$HOME"/.zprofile
 	toggle_transparency
-	reload
+	reload	
 }
 
 bionic(){
