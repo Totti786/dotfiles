@@ -1,73 +1,67 @@
 #!/bin/bash
 
+[[ -f "$HOME/.cache/wal/colors.sh" ]] && source "$HOME/.cache/wal/colors.sh"
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
-[[ -z "$bar_style" ]] && bar_style="base"
+[[ -z "$bar_style" ]] && bar_style="base" top_padding="23"
 
 hidden=/tmp/syshide.lock
-display_resolution="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)"
 
-main(){
-polytray="$(pgrep -a polybar | grep systray | cut -d ' ' -f1)"
-if [[ "$polytray" ]]; then
-	if [[ ! -e "$hidden" ]]; then
-		polybar-msg action "#systray.hook.1"
-		xdo hide -p "$polytray" 
-		touch "$hidden"
-		killall -9 systray
+tray(){
+	[[ "$top_padding" == 0 ]] && gravity="SW" || gravity="NE"
+	width="$(xrandr --current | awk '/Screen/ {printf("%.0f\n", $8 * 0.05)}')"
+	color="$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)"
+	
+	if [[ "$bar_style" == "base" ]]; then 
+		geometry="1x1-5+28"
+	elif [[ "$bar_style" == "minimal" ]]; then 
+		geometry="1x1-$width-35"
+	elif [[ "$bar_style" == "bionic" ]]; then 
+		geometry="1x1-$width+45"
+	fi
+	
+	config="--background $color --geometry $geometry --grow-gravity $gravity --icon-gravity NE --vertical true --slot-size 32 --kludges force_icons_size"
+	
+	if [[ "$(pidof stalonetray)" ]]; then
+		if [[ ! -e "$hidden" ]]; then
+			polybar-msg action "#systray.hook.1"
+			xdo hide -n stalonetray
+			touch "$hidden"
+			killall -9 systray
+		else
+			polybar-msg action "#systray.hook.0"
+			xdo show -n stalonetray
+			xdo raise -n stalonetray
+			rm "$hidden"
+			sleep 5 && tray
+		fi
 	else
-		polybar-msg action "#systray.hook.0"
-		xdo show -p "$polytray" 
-		rm "$hidden"
-		sleep 5 && main
+		stalonetray $(echo $config) &
+		tray
 	fi
-elif [[ "$(pidof stalonetray)" ]]; then
-	if [[ ! -e "$hidden" ]]; then
-		polybar-msg action "#systray.hook.1"
-		xdo hide -n stalonetray
-		touch "$hidden"
-		killall -9 systray
-	else
-		polybar-msg action "#systray.hook.0"
-		xdo show -n stalonetray
-		xdo raise -n stalonetray
-		rm "$hidden"
-		sleep 5 && main
-	fi
-else
-	if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then 
-		polybar systray -q -c "$HOME/.config/polybar/$bar_style/config.ini" &
-		main
-	fi
-	if [[ "$bar_style" == "minimal" ]]; then
-		if [[ "$display_resolution" -gt "1920" ]]; then
-			new="$(( "$display_resolution" - 1920 + 94 ))"
-			stalonetray --geometry 1x1-"$new"-34 --grow-gravity SW &
-			main			
-		elif [[ "$display_resolution" -lt "1920" ]]; then
-			stalonetray --geometry 1x1-66-34 --grow-gravity SW &
-			main
-		else
-			stalonetray --geometry 1x1-94-34 --grow-gravity SW &
-			main
-		fi
-	elif [[ "$bar_style" == "base" ]]; then
-		if [[ "$display_resolution" -gt "1920" ]]; then
-			new="$(( "$display_resolution" - 1920 + 4 ))"
-			stalonetray --geometry 1x1-"$new"+27 &
-			main			
-		else
-			stalonetray &
-			main
-		fi
-	elif [[ "$bar_style" == "bionic" ]]; then
-		if [[ "$display_resolution" -lt "1920" ]]; then
-			stalonetray --geometry 1x1-66+45 &
-			main
-		else
-			stalonetray --geometry 1x1-95+45 &
-			main
-		fi
-	fi
-fi
 }
-main 
+
+i3_tray(){
+	polytray="$(pgrep -a polybar | grep systray | cut -d ' ' -f1)"
+	if [[ "$polytray" ]]; then
+		if [[ ! -e "$hidden" ]]; then
+			polybar-msg action "#systray.hook.1"
+			xdo hide -p "$polytray"
+			touch "$hidden"
+			killall -9 systray
+		else
+			polybar-msg action "#systray.hook.0"
+			xdo show -p "$polytray" 
+			rm "$hidden"
+			sleep 5 && i3_tray
+		fi
+	else
+		polybar systray -q -c "$HOME/.config/polybar/$bar_style/config.ini" & disown
+		i3_tray
+	fi
+}
+
+if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then 
+	i3_tray
+else
+	tray
+fi
