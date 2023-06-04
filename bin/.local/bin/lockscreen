@@ -21,7 +21,7 @@ else
 fi
 
 lock() {
-    i3lock -n -c 00000000 -t -e \
+    i3lock -n -c 00000000 -F -e \
 		--pass-media-keys \
 		--pass-power-keys \
 		--pass-volume-keys \
@@ -74,7 +74,18 @@ run() {
 }
 
 status=$(playerctl -p %any status || true)
-if [ "$status" == "Playing" ]; then	playerctl pause ;fi
-pkill rofi
-run && 
-if [ "$status" == "Playing" ]; then playerctl play ;fi
+
+pauselock(){
+	if [ "$status" == "Playing" ]; then	playerctl pause ;fi
+	pkill rofi
+	run &&
+	if [ "$status" == "Playing" ]; then playerctl play ;fi
+}
+
+
+locksusupend(){
+	if [ "$status" == "Playing" ]; then	playerctl pause ;fi
+	run &
+}
+
+if [[ "$1" ]];then locksusupend ;else pauselock ;fi
