@@ -124,10 +124,14 @@ device_connected() {
 # Toggles device connection
 toggle_connection() {
 	name="$(echo $device | cut -d ' ' -f3-)"
-    if device_connected $1; then
+	
+	if $(bluetoothctl show | grep -q "Powered: no"); then
+		bluetoothctl power on
+	fi
+	
+    if device_connected "$1"; then
         bluetoothctl disconnect $1 &&
         notify-send -r 98 -u low --app-name=Bluetooth "$name" "Disconnected"
-        #device_menu "$device"
     else
         bluetoothctl connect $1 &&
 		notify-send -r 98 -u low --app-name=Bluetooth "$name" "Connected"
