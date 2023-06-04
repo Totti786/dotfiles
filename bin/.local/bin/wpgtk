@@ -24,8 +24,6 @@ dunst="$config/dunst/dunstrc"
 geany="$config/geany/colorschemes/Pywal.conf"
 zathura="$config/zathura/zathurarc"
 gzathura="$config/zathura/genzathurarc"
-systray="$config/stalonetrayrc"
-cava="$config/cava/config"
 copyq="$config/copyq/copyq.conf"
 jgmenu="$config/jgmenu/jgmenurc"
 eww="$config/eww/colors.scss"
@@ -75,7 +73,7 @@ change_colors(){
 	#Colors 
 	colors:
 	  primary:
-	    background: '$bg_mix'
+	    background: '$BG'
 	    foreground: '$FG'
 	  cursor:
 	    text:       '$black'
@@ -99,6 +97,7 @@ change_colors(){
 	    cyan:       '$bright_cyan'
 	    white:      '$bright_white'
 	EOF
+	
 	if [[ "$alpha" == "FF" ]]; then 
 		sed -i "s/opacity: .*/opacity: 1.0/" "$config/alacritty/alacritty.yml"
 	else 
@@ -110,7 +109,7 @@ change_colors(){
 		-e "s/fg=.*/fg=${FG}/g" \
 		-e "s/tag_yellow=.*/tag_yellow=${bright_cyan}/g" \
 		-e "s/fold_bg_grey=.*/fold_bg_grey=${BG}/g" \
-		-e "s/keyword_orange=.*/keyword_orange=${bright_magenta}/g" \
+		-e "s/keyword_orange=.*/keyword_orange=${bright_red}/g" \
 		-e "s/string_green=.*/string_green=${bright_green}/g" \
 		-e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g" \
 		-e "s/margin_fg_grey=.*/margin_fg_grey=${black}/g" \
@@ -133,10 +132,6 @@ change_colors(){
 		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g" \
 	"$dunst"
 
-	# stalonetray 
-	sed -i -e "s/background \"#.*\"/background \"$bg_mix\"/g" \
-	"$systray"
-	
 	# jgmenu 
 	[[ "$alpha" == "FF" ]] && alpha2="100" || alpha2="$alpha"
 	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $alpha2/g" \
@@ -168,15 +163,6 @@ change_colors(){
 	# spotify
 	# Spotify can be themed using the xrdb backend i.e. ${xrdb:color0:#222}
 		
-	# cava 
-	sed -i -e "s/gradient_color_1 = '.*'/gradient_color_1 = '${bright_red}'/g" \
-		-e "s/gradient_color_2 = '.*'/gradient_color_2 = '${bright_green}'/g" \
-		-e "s/gradient_color_3 = '.*'/gradient_color_3 = '${bright_blue}'/g" \
-		-e "s/gradient_color_4 = '.*'/gradient_color_4 = '${bright_yellow}'/g" \
-		-e "s/gradient_color_5 = '.*'/gradient_color_5 = '${bright_magenta}'/g" \
-		-e "s/gradient_color_6 = '.*'/gradient_color_6 = '${bright_cyan}'/g" \
-	"$cava"
-	
 	# eww
 	[[ "$alpha" == "FF" ]] &&  sed -i "s/\$alpha: 0.3/\$alpha: 1.0/" "$eww" \
 	|| sed -i "s/\$alpha: 1.0/\$alpha: 0.3/" "$eww" 
@@ -417,7 +403,7 @@ run(){
 			bright_cyan="$(printf "%s\n" "$color14")"
 			bright_white="$(printf "%s\n" "$color15")"
 			# Additional colors
-			bg_mix="$(pastel mix -f 0.6 $bright_black $black | pastel format hex)"
+			bg_mix="$(pastel mix -f 0.4 $bright_black $black | pastel format hex)"
 			bg_light="$(pastel lighten 0.04 ${background:1} | pastel format hex)"
 			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
 			bg_rgb="$(pastel format rgb ${background:1})"
@@ -433,7 +419,7 @@ run(){
 		yay -S wpgtk-git --noconfirm
 		wpgConfig
 		# this command installs rofi, gtk, and openbox themes
-		wpg-install.sh -r -g -o
+		wpg-install.sh -g -o
 	fi
 }
 
