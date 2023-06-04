@@ -1,8 +1,8 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 . "$HOME/.cache/wal/colors.sh"
 
-apps=(polybar openbox zathura dunst alacritty picom stalonetrayrc rofi bspwm sxhkd jgmenu conky i3) 
+apps=(polybar openbox zathura dunst alacritty picom rofi bspwm sxhkd jgmenu conky i3) 
 DIR="$HOME/.config/"
 BackupDir="$HOME/.dotfiles/"
 
