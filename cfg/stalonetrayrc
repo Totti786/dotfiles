@@ -1,9 +1,0 @@
-# vim:filetype=config:tw=80:et
-
-background "#041115"
-vertical true 
-geometry 1x1-4+27
-grow_gravity NE 
-icon_gravity NE
-slot_size 32
-kludges force_icons_size
