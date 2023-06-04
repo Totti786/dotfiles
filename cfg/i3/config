@@ -8,7 +8,7 @@ exec_always --no-startup-id 	~/.config/i3/autostart
 
 ##-- Fonts (Global) ----------------------
 
-font pango:JetBrains Mono Medium 10
+font pango:JetBrains Mono Medium 9
 
 ##-- Gaps --------------------------------
 
@@ -17,9 +17,6 @@ gaps inner 10
 gaps outer 0
 gaps top 35
 gaps bottom 0
-
-# Only enable gaps on a workspace when there is at least one container
-#smart_gaps on
 
 # Uncomment this to enable title bars
 for_window [class=".*"] border normal 0
@@ -40,6 +37,7 @@ floating_modifier Mod4
 
 ##-- Window Rules ------------------------
 
+#for_window [floating] sticky enable
 for_window [title="AudioRelay|Library"] floating enable
 for_window [title="Picture-in-Picture"] floating enable sticky enable
 for_window [class="alacritty-drop"] floating enable sticky enable
