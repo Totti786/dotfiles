@@ -62,7 +62,7 @@
     </font>
   </theme>
   <desktops>
-    <number>8</number>
+    <number>6</number>
     <firstdesk>0</firstdesk>
     <names>
       <name>1</name>
@@ -439,12 +439,12 @@
     <keybind key="W-C-Left">
       <action name="Execute">
         <command>~/.config/openbox/ob-workspaces prev</command>
-      </action>    
+      </action>
     </keybind>
     <keybind key="W-C-Right">
       <action name="Execute">
         <command>~/.config/openbox/ob-workspaces next</command>
-      </action>    
+      </action>
     </keybind>
     <!-- Media Controls-->
     <keybind key="XF86AudioRaiseVolume">
@@ -801,14 +801,14 @@
         <action name="Resize"/>
       </mousebind>
       <mousebind action="Press" button="W-Up">
-      <action name="Execute">
-        <command>~/.config/openbox/ob-workspaces prev</command>
-      </action> 
+        <action name="Execute">
+          <command>~/.config/openbox/ob-workspaces prev</command>
+        </action>
       </mousebind>
       <mousebind action="Press" button="W-Down">
-      <action name="Execute">
-        <command>~/.config/openbox/ob-workspaces next</command>
-      </action> 
+        <action name="Execute">
+          <command>~/.config/openbox/ob-workspaces next</command>
+        </action>
       </mousebind>
     </context>
     <context name="Titlebar">
@@ -1022,18 +1022,17 @@
         </action>
       </mousebind>
       <mousebind action="Press" button="W-Up">
-      <action name="Execute">
-        <command>~/.config/openbox/ob-workspaces prev</command>
-      </action> 
+        <action name="Execute">
+          <command>~/.config/openbox/ob-workspaces prev</command>
+        </action>
       </mousebind>
       <mousebind action="Press" button="W-Down">
-      <action name="Execute">
-        <command>~/.config/openbox/ob-workspaces next</command>
-      </action> 
+        <action name="Execute">
+          <command>~/.config/openbox/ob-workspaces next</command>
+        </action>
       </mousebind>
     </context>
     <context name="Root">
-	  
       <mousebind action="Press" button="Middle">
         <action name="Execute">
           <command>windowswitch window "-monitor -3"</command>
