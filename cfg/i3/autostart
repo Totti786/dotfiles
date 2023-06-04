@@ -44,6 +44,9 @@ wal -Re &
 ## Picom 
 picom -b &
 
+# Thunar 
+thunar --daemon &
+
 ## CopyQ
 copyq --start-server &
 
