@@ -37,27 +37,28 @@ toggle_transparency(){
 }
 
 reload(){
-	wpgtk partial &&
-	[[ $(pgrep stalonetray) ]] && pkill stalonetray && "$POLYCONF"/scripts/systray
-	"$POLYCONF"/scripts/systray
+	wpgtk partial
 }
 
 base(){
 	sed -i 's/^bar_style=.*/bar_style=base/' "$HOME"/.zprofile
 	toggle_transparency
 	reload
+	conky.sh
 }
 
 minimal(){
 	sed -i 's/^bar_style=.*/bar_style=minimal/' "$HOME"/.zprofile
 	toggle_transparency
-	reload	
+	reload
+	[[ $(pgrep conky) ]] && pkill conky
 }
 
 bionic(){
 	sed -i 's/^bar_style=.*/bar_style=bionic/' "$HOME"/.zprofile
 	toggle_transparency bionic
 	reload
+	[[ $(pgrep conky) ]] && conky.sh restart
 }
 
 if  [[ "$1" ]]; then
