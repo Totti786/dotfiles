@@ -80,6 +80,11 @@ set_values() {
 		sed -i -e "s/network_interface = .*/network_interface = $network_interface/g" 	"$dir/system.ini"
 }
 
+tray_reload(){
+	[[ $(pgrep stalonetray) ]] && pkill stalonetray && "$dir"/scripts/systray
+	"$dir"/scripts/systray
+	}
+
 # Launch the bar
 launch_bar() {
 	# Terminate already running bar instances
@@ -96,4 +101,5 @@ launch_bar() {
 
 set_values
 fix_modules
-launch_bar
+launch_bar &&
+tray_reload
