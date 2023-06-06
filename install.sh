@@ -134,11 +134,11 @@ install_zsh(){
 	
 install_sddm(){
 	# Check if SDDM is installed and install if not
-	if pacman -Q sddm > /dev/null; then
+	if pacman -Q sddm > /dev/null && pacman -Q plasma-framework > /dev/null; then
 	  echo "SDDM is already installed"
 	else
-	  echo "SDDM is not installed. Installing..."
-	  sudo pacman -S sddm plasma-framework --noconfirm 
+	  echo "Making sure that SDDM is installed"
+	  sudo pacman -S sddm plasma-framework --needed --noconfirm 
 	fi
 	
 	# Move sddm theme files
