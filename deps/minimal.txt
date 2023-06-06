@@ -50,7 +50,7 @@ qt5ct
 qt5-styleplugins
 ranger
 redshift
-rofi-lbonn-wayland-git
+rofi
 stalonetray
 sxhkd
 sxiv
