@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # pacman git migrate
-sudo pacman -Sy pacman && 
+sudo pacman -Sy pacman --noconfirm && 
 if [[ -f "/etc/pacman.conf" ]]; then
 	sudo rm /etc/pacman.conf
 	sudo mv /etc/pacman.conf.pacnew /etc/pacman.conf
