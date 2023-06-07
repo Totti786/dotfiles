@@ -7,12 +7,10 @@ if [[ -f "/etc/pacman.conf" ]]; then
 	sudo mv /etc/pacman.conf.pacnew /etc/pacman.conf
 fi
 
-sudo pacman -R $(pacman -Q | grep archcraft | cut -d " " -f1)
-sudo pacman -Rcns gstreamer betterlockscreen
+sudo pacman -Syy
 
-sudo pacman -Syyu
-
-sudo rm -R ~/.config/*
+sudo pacman -R $(pacman -Q | grep archcraft | cut -d " " -f1) --noconfirm 
+sudo pacman -Rcns gstreamer betterlockscreen picom lsb-release --noconfirm
 
 sudo bash -c 'cat > /etc/os-release <<- EOF
 NAME="Arch Linux"
@@ -28,5 +26,9 @@ PRIVACY_POLICY_URL="https://terms.archlinux.org/docs/privacy-policy/"
 LOGO=archlinux-logo
 EOF'
 
-sudo pacman -Rcns lsb-release
-sudo pacman -S lsb-release
+sudo pacman -S lsb-release --noconfirm 
+
+sudo sed -i 's/GRUB_DISTRIBUTOR= .*/GRUB_DISTRIBUTOR="Arch"/g' /etc/default/grub
+
+sudo rm -R ~/.config/*
+sudo rm -R ~/.oh-my-zsh/
