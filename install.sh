@@ -225,6 +225,7 @@ additionalPrograms(){
 tools(){
 	installOptions=$($Dialog --radiolist  "Choose one of the following options:"  15 60 4\
 		checkrepo "Add Chaotic AUR repo" off\
+		install_full "Install Dependencies" off\
 		install_zsh "Zsh Configuration" off\
 		install_sddm "SDDM Theme" off\
 		install_grub "Grub Theme" off\
