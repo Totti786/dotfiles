@@ -39,17 +39,17 @@ checkrepo(){
 	}
 
 install_minimal(){
-	sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt) --needed --noconfirm
+	sudo pacman -Syu $(cat "$DIR"/deps/minimal.txt) --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
 	}
 	
-install_base(){
-	sudo pacman -Sy $(cat "$DIR"/deps/minimal.txt "$DIR"/deps/additional.txt) --needed --noconfirm
+install_full(){
+	sudo pacman -Syu $(cat "$DIR"/deps/minimal.txt "$DIR"/deps/additional.txt) --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/additional/*.zst --needed --noconfirm
 	}
 
-base_install(){
+minimal_install(){
 	checkrepo &&
 	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
@@ -61,7 +61,7 @@ base_install(){
 
 full_install(){
 	checkrepo &&
-	install_base
+	install_full
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
 	sh "$DIR/bin/.scripts/file-check"
@@ -134,12 +134,8 @@ install_zsh(){
 	
 install_sddm(){
 	# Check if SDDM is installed and install if not
-	if pacman -Q sddm > /dev/null && pacman -Q plasma-framework > /dev/null; then
-	  echo "SDDM is already installed"
-	else
-	  echo "Making sure that SDDM is installed"
-	  sudo pacman -S sddm plasma-framework --needed --noconfirm 
-	fi
+	echo "Making sure that SDDM is installed"
+	sudo pacman -S sddm plasma-framework --needed --noconfirm
 	
 	# Move sddm theme files
 	if [ ! -d "/usr/share/sddm/themes/Chili" ]; then  
@@ -172,7 +168,7 @@ install_sddm(){
 	fi
 	
 	# Enable and start SDDM
-	echo "Enabling and starting SDDM"
+	echo "Enabling SDDM"
 	sudo systemctl enable sddm
 
 	}
@@ -268,7 +264,7 @@ install_menu(){
 	                2>&1 >/dev/tty)
 	case $CHOICE in
 		1)
-			base_install
+			minimal_install
 			;;
 		2)
 			full_install
