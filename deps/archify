@@ -12,7 +12,7 @@ sudo pacman -Syy
 sudo pacman -S archlinux-keyring --noconfirm 
 
 sudo pacman -R $(pacman -Q | grep archcraft | cut -d " " -f1) --noconfirm 
-sudo pacman -Rcns gstreamer betterlockscreen picom lsb-release --noconfirm
+sudo pacman -Rcns gstreamer betterlockscreen picom lsb-release sddm-git --noconfirm
 
 sudo bash -c 'cat > /etc/os-release <<- EOF
 NAME="Arch Linux"
