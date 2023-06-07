@@ -9,6 +9,8 @@ fi
 
 sudo pacman -Syy
 
+sudo pacman -S archlinux-keyring --noconfirm 
+
 sudo pacman -R $(pacman -Q | grep archcraft | cut -d " " -f1) --noconfirm 
 sudo pacman -Rcns gstreamer betterlockscreen picom lsb-release --noconfirm
 
