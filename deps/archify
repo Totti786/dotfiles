@@ -30,7 +30,7 @@ EOF'
 
 sudo pacman -S lsb-release --noconfirm 
 
-sudo sed -i 's/GRUB_DISTRIBUTOR= .*/GRUB_DISTRIBUTOR="Arch"/g' /etc/default/grub
+sudo sed -i 's/GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="Arch"/g' /etc/default/grub
 
 sudo rm -R ~/.config/*
 sudo rm -R ~/.oh-my-zsh/
