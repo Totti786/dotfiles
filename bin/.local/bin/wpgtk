@@ -1,19 +1,5 @@
 #!/usr/bin/env bash
 
-## TODO
-## wpg -z wallpaper.jpg # shuffles the positions of the colors in your colorscheme
-## wpg --sat wallpaper.jpg 0.1 # increases the saturation of all colors by 0.1
-## wpg --brt wallpaper.jpg 100 # increases the brightness of all colors by 100
-## wpg -A wallpaper.jpg # gives you a distinct foreground and background
-## This adds 0.1 saturation to your colorscheme and then it gets re-applied
-## wpg --sat $(wpg -c) 0.1 && wpg -s $(wpg -c)
-## This gives you the 'light' version of the theme you're using.
-## wpg -LA $(wpg -c) && wpg -s $(wpg -c)
-##
-## sudo ln -s /usr/share/icons/Papirus-Dark ~/.local/share/icons/Papirus
-## sudo chgrp -R $(whoami) /usr/share/icons/Papirus
-## sudo chmod -R ug+rwX /usr/share/icons/Papirus
-
 # Color files
 config="$HOME/.config"
 alacritty="$config/alacritty/colors.yml"
@@ -37,7 +23,7 @@ change_colors(){
 	run &&
 	
 	# polybar	
-	cat > $polybar <<- EOF
+	cat > "$polybar" <<- EOF
 		[color]
 		;; main colors
 		background = ${BG}$alpha
@@ -54,10 +40,11 @@ change_colors(){
 		EOF
 	
 	# rofi
+	[[ "$alpha" != "FF" ]] && rofi_alpha="90" || rofi_alpha="$alpha"
 	cat > "$rofi" <<- EOF
 	/* colors */
 	* {
-		background:       ${bg_mix}$alpha; 
+		background:       ${bg_mix}$rofi_alpha;
 		background-alt:   ${BG};
 		foreground:       ${FG};
 		selected:         ${bright_red};
@@ -105,7 +92,8 @@ change_colors(){
 	fi
 	
 	# geany
-	sed -i -e "s/bg=.*/bg=${BG}/g" \
+	sed -i "$geany" \
+		-e "s/bg=.*/bg=${BG}/g" \
 		-e "s/fg=.*/fg=${FG}/g" \
 		-e "s/tag_yellow=.*/tag_yellow=${bright_cyan}/g" \
 		-e "s/fold_bg_grey=.*/fold_bg_grey=${BG}/g" \
@@ -114,39 +102,39 @@ change_colors(){
 		-e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g" \
 		-e "s/margin_fg_grey=.*/margin_fg_grey=${black}/g" \
 		-e "s/error_red=.*/error_red=${bright_magenta}/g" \
-		-e "s/selection_blue=.*/selection_blue=${white}/g" \
-	"$geany"
-	
+		-e "s/selection_blue=.*/selection_blue=${white}/g"
+		
 	# copyq 
-	sed -i -e "s/bg=#.*/bg=${BG}/g" \
+	sed -i "$copyq" \
+		-e "s/bg=#.*/bg=${BG}/g" \
 		-e "s/alt_bg=#.*/alt_bg=$bright_black/g" \
 		-e "s/fg=#.*/fg=${FG}/g" \
 		-e "s/sel_bg=#.*/sel_bg=$cyan/g" \
-		-e "s/sel_fg=#.*/sel_fg${FG}/g" \
-	"$copyq"
-	
+		-e "s/sel_fg=#.*/sel_fg${FG}/g"
+		
 	# dunst
-	sed -i -e "s/background = \"#.*\"/background = \"${bg_light}$alpha\"/g" \
+	sed -i "$dunst" \
+		-e "s/background = \"#.*\"/background = \"${bg_light}$alpha\"/g" \
 		-e "s/foreground = \"#.*\"/foreground = \"${FG}\"/g" \
 		-e "s/highlight = \"#.*\"/highlight = \"${FG}\"/g" \
-		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g" \
-	"$dunst"
+		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g"
 
 	# jgmenu 
-	[[ "$alpha" == "FF" ]] && alpha2="100" || alpha2="$alpha"
-	sed -i -e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $alpha2/g" \
+	[[ "$alpha" == "FF" ]] && jg_alpha="100" || jg_alpha="$alpha"
+	sed -i "$jgmenu" \
+		-e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $jg_alpha/g" \
 		-e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
-		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g" \
-	"$jgmenu"
-	
+		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"
+		
 	# zathura (courtesy of @GideonWolfe)
 	"$gzathura" > "$zathura"
 	
 	# discord
 	if [[ -f "$discord" ]]; then 
-	sed -i -e "s/--accent-color: .*/--accent-color: ${FG};/g" \
+	sed -i "$discord" \
+		-e "s/--accent-color: .*/--accent-color: ${FG};/g" \
 		-e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" \
 		-e "s/--background-1: .*/--background-1: ${bg_mix};/g" \
 		-e "s/--background-2: .*/--background-2: ${BG};/g" \
@@ -156,8 +144,8 @@ change_colors(){
 		-e "s/--button-destructive: .*/--button-destructive: ${bright_yellow};/g" \
 		-e "s/--button-background-hover: .*/--button-background-hover: ${bright_red};/g" \
 		-e "s/--tab-selected: .*/--tab-selected: ${bright_blue};/g" \
-		-e "s/--text-muted: .*/--text-muted: ${FG};/g" \
-	"$discord"
+		-e "s/--text-muted: .*/--text-muted: ${FG};/g"
+	
 	fi 
 
 	# spotify
@@ -181,13 +169,14 @@ change_colors(){
 	"$eww"
 	
 	# waybar
+	if [[ -f "$waybar" ]]; then 
 	cat > "$waybar" <<- EOF
 	/*
 	* Pywal Generated Palette
 	*/
 	
 	@define-color foreground ${FG};
-	@define-color background rgba(${bg_rgb:4:-1},0.2);
+	@define-color background rgba(${bg_mix_rgb:4:-1},0.2);
 	@define-color surface3 #394161;
 	@define-color red $bright_red;
 	@define-color green $bright_green;
@@ -197,7 +186,9 @@ change_colors(){
 	@define-color cyan $bright_cyan;
 
 	EOF
+	fi
 	
+	if [[ -f "$hypr" ]]; then 
 	# hypr
 	cat > "$hypr" <<- EOF 
 		\$black		= ${bright_black:1}ff
@@ -209,7 +200,8 @@ change_colors(){
 		\$cyan 		= ${bright_cyan:1}ff
 		\$white 	= ${bright_white:1}ff
 		EOF
-
+	fi
+	
 	# resize and move wallpaper for use by other programs
 	#cp "$wallpaper"  "$HOME"/.config/wpg/templates/wallpaper.jpg
 	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers &> /dev/null
@@ -217,11 +209,12 @@ change_colors(){
 
 # change the wpg config file so this script can run whenever wpg is invoked 
 wpgConfig(){
-	sed -i -e 's/execute_cmd = false/execute_cmd = true/g' \
+	sed -i "$HOME/.config/wpg/wpg.conf" \
+		-e 's/execute_cmd = false/execute_cmd = true/g' \
 		-e 's/reload = .*/reload = true/g' \
 		-e 's/auto_adjust = false/auto_adjust = true/g' \
-		-e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g" \
-	"$HOME/.config/wpg/wpg.conf"
+		-e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g"
+	
 	version=$(python --version | grep -oE '[0-9]+\.[0-9]+')
 	a=("polybar()" "reload.i3()")
 	for i in "${a[@]}"; do
@@ -307,7 +300,7 @@ wall(){
 		rm "$1""_wal_sample.png"
 	fi
 }
-	
+
 random(){
 	cd $Wallpapers/Wallpapers.git/ &&
 	image=$(find -type f -not -path "./.git/*" | shuf -n 1)
@@ -344,6 +337,7 @@ dynamic(){
 	
 misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
+		"$HOME/.config/polybar/launch.sh" &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 		conky.sh restart
 	else
@@ -357,9 +351,8 @@ misc(){
 
 partial(){
 	change_colors
-	"$HOME/.config/polybar/launch.sh" &
-	pkill dunst
 	misc
+	pkill dunst
 	check spicetify -q update &
 	check pywalfox update >/dev/null 2>&1 &
 	check razer-cli -a &
@@ -407,6 +400,7 @@ run(){
 			bg_light="$(pastel lighten 0.04 ${background:1} | pastel format hex)"
 			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
 			bg_rgb="$(pastel format rgb ${background:1})"
+			bg_mix_rgb="$(pastel format rgb ${bg_mix:1})"
 			## merging the Xresources files with the main one
 			xrdb -merge "$HOME"/.cache/wal/colors.Xresources
 		else
