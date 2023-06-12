@@ -2,54 +2,41 @@
 
 cached="$HOME/.cache/zcache"
 history="$HOME/.local/share/zathura/history"
-rofi_command="-dmenu -p 'Zathura' -theme rofi-zathura1"
-
-[[ ! -d "$HOME"/.cache/zcache ]] && mkdir $cached
-> "$cached"/zlist
+mkdir -p "$cached"
+mkdir -p "$HOME/.local/share/applications/Books"
 
 main() {
-grep -i "home" $history | tr -d "[]" | while read -r line ; do
-	type=$(file -b "$line" | cut -d ' ' -f1)
-	[[ -f "$line" ]] && name="$(basename "$line" | sed 's/\.[^.]*$//')"
-	if [ "$type" == "PDF" ] || [ "$type" == "EPUB" ]; then 
-		if [ "$type" == "PDF" ]; then
-			if ! [[ -f "$cached/$name.png" ]]; then
-				evince-thumbnailer -s 370 "$line" $cached/"$name".png &> /dev/null;
-			fi
-			echo "'$(dirname "$line")'/'$(basename -s .pdf "$line")''.pdf'" >> "$cached/zlist"
-		elif [ "$type" == "EPUB" ]; then
-			if ! [[ -f "$cached/$name.png" ]]; then
-				gnome-epub-thumbnailer "$line" $cached/"$name".png &> /dev/null;
-			fi
-			echo "'$(dirname "$line")'/'$(basename -s .epub "$line")''.epub'" >> "$cached/zlist"
+	readarray -t lines < <(grep -i "home" "$history" | tr -d "[]")
+	for line in "${lines[@]}"; do
+		[[ -f "$line" ]] && name1="${line##*/}" name="${name1%.*}"
+		type=${line##*.}
+		if [[ "$type" == "pdf" ]] && ! [[ -f "$cached/$name.png" ]]; then
+			evince-thumbnailer -s 370 "$line" "$cached/$name.png" &> /dev/null;
+		elif [[ "$type" == "cbz" ]] && ! [[ -f "$cached/$name.png" ]]; then
+			evince-thumbnailer -s 370 "$line" "$cached/$name.png" &> /dev/null;
+		elif [[ "$type" == "epub" ]] && ! [[ -f "$cached/$name.png" ]]; then
+			gnome-epub-thumbnailer "$line" "$cached/$name.png" &> /dev/null;
 		fi
-	fi
-	mkdir -p "$HOME/.local/share/applications/Books"
-	desktop="$HOME/.local/share/applications/Books/$name.desktop"
-	if [[ ! -f "$desktop" ]]; then
-		cat > "$desktop" <<- EOF
-		[Desktop Entry]
-		Name=$name
-		Comment=Rofi Zathura
-		Exec=zathura '$line'
-		Icon=~/.cache/zcache/$name.png
-		Terminal=false
-		Type=Application
-		Categories=Books;
-		EOF
-	fi
-done
+		
+		desktop="$HOME/.local/share/applications/Books/$name.desktop"
+		if [[ ! -f "$desktop" ]]; then
+			cat > "$desktop" <<- EOF
+			[Desktop Entry]
+			Name=$name
+			Exec=zathura '$line'
+			Icon=~/.cache/zcache/$name.png
+			Type=Application
+			Categories=Books;
+			EOF
+		fi
+	done
 
-#book=$(tac $HOME/.cache/zcache/zlist | grep -o "/'.*'" | tr -d "'" | tr -d "/" | sed "s/\..*//g" | rofi $rofi_command)
-#[[ ! -z $book ]] &&
-	#zathura "$(grep "$book" "$HOME/.cache/zcache/zlist" | tr -d "'")" &
-	
-rofi -show drun -filter Books -theme rofi-zathura
+	rofi -show drun -drun-categories Books -theme rofi-zathura
 }
 
 if [[ $(grep -i "home" "$history") ]]; then 
-	main
+	main && rm "$HOME"/.local/share/applications/Books/*
 else
-	echo "No Documents Were Found" | rofi "$rofi_command"
+	notify-send -r 41 "Rofi-Zathura" "No Documents Were Found"
 fi
 
