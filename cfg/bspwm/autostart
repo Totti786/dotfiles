@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Autostart Programs ----------------------------------------#
+# Autostart Programs ----------------------------------------#
 
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
 
@@ -9,7 +9,7 @@
 
 # Keybinds
 killall -9 sxhkd
-exec sxhkd &
+sxhkd &
 
 # Enable Super Keys For Menu
 killall -9 xcape
@@ -25,6 +25,9 @@ xsetroot -cursor_name left_ptr &
 # xfce4-settings daemon
 xfsettingsd &
 
+# Picom 
+picom -b &
+
 # Dunst
 dunst &
 
@@ -38,9 +41,6 @@ wal -Re &
 # Launch System Tray
 "$HOME"/.config/polybar/scripts/systray &
 
-# Picom 
-picom -b &
-
 # CopyQ
 copyq --start-server &
 
@@ -48,8 +48,8 @@ copyq --start-server &
 #thunar --daemon &
 
 # Plank
-#killall -9 plank
-#plank &
+killall -9 plank
+plank &
 
 # Conky
 [[ "$conky" == "On" ]] &&
