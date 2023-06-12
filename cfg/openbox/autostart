@@ -1,42 +1,42 @@
 #!/usr/bin/env bash
 
-## Autostart Programs ----------------------------------------#
+# Autostart Programs ----------------------------------------#
 
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
 
-## xfce4-settings daemon
+# xfce4-settings daemon
 xfsettingsd &
 
-## Enable power management
-xfce4-power-manager --daemon &
-
-## Dunst (Notifications Daemon)
-dunst &
-
-## Picom (Compositor)	
-picom -b &
-
-## Restore Wallpaper
-wal -Re &
-"$HOME"/.local/bin/wpgtk run &
-
-## Enable Super Keys For Menu
-killall -9 xcape
+# Enable Super Keys For Menu
+killall -q -9 xcape
 xcape -e 'Super_L=Alt_L|F1' &
 xcape -e 'Super_R=Alt_L|F1' &
 
-## Launch Polybar
+# Enable power management
+xfce4-power-manager --daemon &
+
+# Dunst (Notifications Daemon)
+dunst &
+
+# Picom (Compositor)	
+picom -b &
+
+# Restore Wallpaper
+wal -Re &
+"$HOME"/.local/bin/wpgtk run &
+
+# Launch Polybar
 "$HOME"/.config/polybar/launch.sh &
 
 ## Launch System Tray
 "$HOME"/.config/polybar/scripts/systray &
 
-## CopyQ (Clipboard Daemon)
+# CopyQ (Clipboard Daemon)
 copyq --start-server &
 
-## Plank (Dock)
+# Plank (Dock)
 plank &
 
-## Conky
+# Conky
 [[ $conky == "On" ]] &&
 	"$HOME"/.local/bin/conky.sh &
