@@ -5,7 +5,7 @@
  
 configuration {
 	click-to-exit: 		true;
-	fixed-num-lines:	false;
+	fixed-num-lines:	true;
 	hover-select: 		true;
 	me-select-entry:	"";
 	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
