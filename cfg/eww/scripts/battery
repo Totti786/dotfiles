@@ -86,19 +86,11 @@ toggle(){
 		rm $lock &&
 		picom -b
 		brightnessctl set 100%
-		sed -i "s/opacity: .*/opacity: 0.7/g" ~/.config/alacritty/alacritty.yml
-		sed -i -e "s/background = .*/background = ${cc}00/g" ~/.config/polybar/colors.ini
-		sed -i -e "s/background: .*/background: ${cc}90;/g" ~/.config/rofi/themes/colors.rasi
-		~/.config/polybar/launch.sh
 		eww reload
 	else
 		touch $lock &&
 		pkill picom 
 		brightnessctl set 25%
-		sed -i "s/opacity: .*/opacity: 1.0/g" ~/.config/alacritty/alacritty.yml
-		sed -i -e "s/background = .*/background = ${cc}/g" ~/.config/polybar/colors.ini
-		sed -i -e "s/background: .*/background: ${cc};/g" ~/.config/rofi/themes/colors.rasi		
-		~/.config/polybar/launch.sh
 	fi
 }
 	
