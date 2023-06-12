@@ -1,59 +1,59 @@
 #!/usr/bin/env bash
 
-## Autostart Programs ----------------------------------------#
+# Autostart Programs ----------------------------------------#
 
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
 
-## XDG Autostart 
+# XDG Autostart 
 [[ ! $(pgrep xfce-polkit) ]] && xdg-autostart &
 
-## Keybinds
+# Keybinds
 killall -q -9 sxhkd
 sxhkd -c ~/.config/sxhkd/i3-sxhkdrc &
 
-## Enable Super Keys For Menu
+# Enable Super Keys For Menu
 killall -q -9 xcape
 xcape -e 'Super_L=Alt_L|F1' &
 xcape -e 'Super_R=Alt_L|F1' &
 
-## Polkit agent
+# Polkit agent
 #if [[ ! $(pidof xfce-polkit) ]]; then /usr/lib/xfce-polkit/xfce-polkit & ;fi 
 
-## Fix cursor
+# Fix cursor
 xsetroot -cursor_name left_ptr &
 
-## xfce4-settings daemon
+# xfce4-settings daemon
 xfsettingsd &
 
-## Autotiling for i3
+# Picom 
+picom -b &
+
+# Autotiling for i3
 autotiling &
 
-## Dunst
+# Dunst
 dunst &
 
-## Restore Wallpaper
+# Restore Wallpaper
 wal -Re &
 "$HOME"/.local/bin/wpgtk run &
 
-## Fix the i3 colors
+# Fix the i3 colors
 "$HOME"/.config/i3/i3-reload
 
-## Launch Polybar
+# Launch Polybar
 "$HOME"/.config/polybar/launch.sh &
-
-## Picom 
-picom -b &
 
 # Thunar 
 thunar --daemon &
 
-## CopyQ
+# CopyQ
 copyq --start-server &
 
-## Thunar 
-#thunar --daemon &
+# Thunar 
+[[ $(pgrep thunar) ]] && killall -9 thunar
+thunar --daemon &
 
-## Conky
-if [ $conky == "On" ]; then 
+# Conky
+[[ $conky == "On" ]] &&
 	"$HOME"/.local/bin/conky.sh &
-fi
