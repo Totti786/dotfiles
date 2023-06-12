@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# Variables and functions
+MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+
+dots="$HOME/.dotfiles"
+
+if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
+	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
+	exit 1
+fi
+
+if [[ "$1" == "--clone" ]]; then
+	if [ ! -d "$HOME/.dotfiles" ]; then 
+		mkdir "$dots"
+		furminal --float -e bash -c 'git clone --depth 1 https://github.com/totti786/dotfiles.git ~/.dotfiles'
+	fi
+	
+	cd "$dots"
+	if [[ "$(git rev-parse --is-inside-work-tree)" != "true" ]]; then 
+		rm -R "$dots" && notify-send -r 34 'Cloning Failed' 
+		exit 1
+	fi
+elif [[ "$1" == "--sys" ]]; then
+	furminal --float -e bash -c 'sudo pacman -Syu && notify-send -a pacman "Updated Successfully" && cat > ~/.cache/pacman-updates'
+elif [[ "$1" == "--dots" ]]; then
+	cd "$dots"
+	furminal --float -e sh "$dots"/install.sh --update &&
+	## remove already existing json file for background color scheme
+	wpg -R "$dots"/deps/background.jpg
+	## change wallpaper and update color scheme
+	"$dots"/bin/.local/bin/wpgtk wall "$dots"/deps/background.jpg
+elif [[ "$1" == "--wall" ]]; then
+	cd "$dots"
+	furminal --float -e sh "$dots"/install.sh --wallpapers
+elif [[ ! -d "$HOME/.dotfiles" ]]; then 
+	menuStart
+		menuItem 'Clone Repo' "$0 --clone"
+	menuEnd
+else
+    menuStart
+        menuItem 'Update System' "$0 --sys"
+        menuItem 'Update Configs' "$0 --dots"
+        menuItem 'Update Wallpapers' "$0 --wall"
+    menuEnd
+fi
+
+exit 0
