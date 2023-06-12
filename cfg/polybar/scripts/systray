@@ -8,13 +8,13 @@ hidden=/tmp/syshide.lock
 
 tray(){
 	[[ "$top_padding" == 0 ]] && gravity="SW" || gravity="NE"
-	width="$(xrandr --current | awk '/Screen/ {printf("%.0f\n", $8 * 0.05)}')"
+	width="$(xrandr --current | awk '/Screen/ {printf("%.0f\n", $8 * 0.049)}')"
 	color="$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)"
 	
 	if [[ "$bar_style" == "base" ]]; then 
 		geometry="1x1-5+28"
 	elif [[ "$bar_style" == "minimal" ]]; then 
-		geometry="1x1-$width-35"
+		geometry="1x1-$width-34"
 	elif [[ "$bar_style" == "bionic" ]]; then 
 		geometry="1x1-$width+45"
 	fi
