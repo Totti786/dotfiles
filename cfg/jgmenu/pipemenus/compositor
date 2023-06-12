@@ -193,10 +193,12 @@ elif [[ $1 = '--disable-blur' ]]; then
 elif [[ $1 = '--enable-opacity' ]]; then
 	[[ -n "$(grep '^#.*opacity-rule' "$PICOM_DIR/picom.conf")" ]] &&
 		sed -i "/opacity-rule = \[/,/\];/ s/^#//" "$PICOM_DIR/picom.conf"
-	
+		sed -i "s/opacity=1.0/opacity=0.9/g" "$PICOM_DIR/picom.conf"
+		
 elif [[ $1 = '--disable-opacity' ]]; then
 	[[ -z "$(grep '^#.*opacity-rule' "$PICOM_DIR/picom.conf")" ]] &&
 		sed -i "/opacity-rule = \[/,/\];/ s/^/#/" "$PICOM_DIR/picom.conf"
+		sed -i "s/opacity=0.9/opacity=1.0/g" "$PICOM_DIR/picom.conf"
 
 elif [[ $1 = '--update-blur' ]]; then
 	bstrength=$(zenity --text='Blur Strength' --scale --value=4 --min-value=1 --max-value=20)
