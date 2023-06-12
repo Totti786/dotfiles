@@ -48,14 +48,13 @@ for i in "${color_scheme[@]}"; do
     submenu+=("^sep(<tt>Color <small>$i</small> <span bgcolor='$i'>    </span></tt>)")
     submenu+=("Set as Folder Color,papirus-folder.sh --color '${i}'")
     submenu+=("Chnage Color,$0 change_color \"$i\" \"$(( $n - 1 ))\" ")
-
 done
 
 # Add set random wallpaper section
 menu+=("^sep(Set Random Wallpaper)")
 userwallp="$(shopt -s globstar nullglob ; files=($WALLPAPERS_DIR/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}) ; echo "${#files[@]}")"
 menu+=("  Wallpapers (<small>${userwallp}</small>),wpgtk random")
-menu+=("^sep(Current Wallpaper $(basename $CURRENT_WALL))")
+menu+=("^sep($(basename $CURRENT_WALL))")
 
 # Define main function to output results
 main() {
