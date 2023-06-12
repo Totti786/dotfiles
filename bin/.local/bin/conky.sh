@@ -44,7 +44,7 @@ toggle(){
 	}
 
 restart(){
-	if [ ! -z "$(pgrep conky)" ]; then 
+	if [ -n "$(pgrep conky)" ]; then 
 		pkill conky &&
 		fixconfig
 		conky -c "$conkyConfig" &> /dev/null
