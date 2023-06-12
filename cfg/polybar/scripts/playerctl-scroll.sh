@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # see man zscroll for documentation of the following parameters
 
 zscroll -l 50 \
