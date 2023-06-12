@@ -22,7 +22,7 @@ Color Scheme,^pipe(~/.config/jgmenu/pipemenus/jg-color)
 ^sep()
 Change Font,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus//change-fonts" --tag="Change Font")
 ^sep()
-Update Configs, ~/.scripts/dots-update.sh
+Update,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus//update-pipe" --tag="Change Font")
 ^sep()
 Change Wallpaper,sh ~/.local/bin/wpgtk pick
 Appearance Settings,xfce4-appearance-settings
