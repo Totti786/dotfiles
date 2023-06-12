@@ -1,11 +1,11 @@
 /* colors */
 * {
-background:       #071f26FF; 
-background-alt:   #041115;
-foreground:       #eeffff;
-selected:         #2ed4dd;
-highlight:        #5aeae8;
-urgent:           #22a6b9;
-on:               #31c4ca;
-off:              #0a3340;
+background:       #131820FF;
+background-alt:   #0B0E14;
+foreground:       #fefffe;
+selected:         #be9b80;
+highlight:        #e9d67e;
+urgent:           #8eb79a;
+on:               #a7d0b4;
+off:              #1c2434;
 }

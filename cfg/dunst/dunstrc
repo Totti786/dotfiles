@@ -11,7 +11,7 @@
     notification_limit = 0
     progress_bar = true
     progress_bar_height = 10
-    progress_bar_frame_width = 1
+    progress_bar_frame_width = 0
     progress_bar_min_width = 150
     progress_bar_max_width = 300
     indicate_hidden = yes
@@ -49,8 +49,8 @@
     mouse_right_click = close_all
     browser = /usr/bin/firefox -new-tab
     
-    frame_width = 3
-    frame_color = "#49867BCF"
+    frame_width = 0
+    frame_color = "#6C7371CF"
     
 [logger]
   summary = "*"
@@ -59,20 +59,20 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#071f26FF"
-    foreground = "#eeffff"
+    background = "#121721FF"
+    foreground = "#fefffe"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#071f26FF"
-    foreground = "#eeffff"
+    background = "#121721FF"
+    foreground = "#fefffe"
     highlight  = "#b6beca"
     timeout = 20
 
 [urgency_critical]
-    background = "#071f26FF"
-    foreground = "#eeffff"
+    background = "#121721FF"
+    foreground = "#fefffe"
     highlight  = "#b6beca"
     timeout = 60
     
