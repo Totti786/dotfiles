@@ -16,7 +16,7 @@ eww="$config/eww/colors.scss"
 waybar="$config/waybar/colors.css"
 hypr="$config/hypr/colors.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='FF'
+alpha='60'
 
 ## Change colors
 change_colors(){
@@ -40,11 +40,11 @@ change_colors(){
 		EOF
 	
 	# rofi
-	[[ "$alpha" != "FF" ]] && rofi_alpha="90" || rofi_alpha="$alpha"
+	[[ "$alpha" != "FF" ]] && alpha_rofi="90" || alpha_rofi="$alpha"
 	cat > "$rofi" <<- EOF
 	/* colors */
 	* {
-		background:       ${bg_mix}$rofi_alpha;
+		background:       ${bg_mix}$alpha_rofi;
 		background-alt:   ${BG};
 		foreground:       ${FG};
 		selected:         ${bright_red};
@@ -120,9 +120,9 @@ change_colors(){
 		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g"
 
 	# jgmenu 
-	[[ "$alpha" == "FF" ]] && jg_alpha="100" || jg_alpha="$alpha"
+	[[ "$alpha" == "FF" ]] && alpha_jg="100" || alpha_jg="$alpha"
 	sed -i "$jgmenu" \
-		-e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $jg_alpha/g" \
+		-e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $alpha_jg/g" \
 		-e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
