@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-cached="$HOME/.cache/zcache"
+cached="$HOME/.cache/rofi-zathura"
 history="$HOME/.local/share/zathura/history"
-mkdir -p "$cached"
 mkdir -p "$HOME/.local/share/applications/Books"
+mkdir -p "$cached"
 
 main() {
 	readarray -t lines < <(grep -i "home" "$history" | tr -d "[]")
@@ -11,32 +11,33 @@ main() {
 		[[ -f "$line" ]] && name1="${line##*/}" name="${name1%.*}"
 		type=${line##*.}
 		if [[ "$type" == "pdf" ]] && ! [[ -f "$cached/$name.png" ]]; then
-			evince-thumbnailer -s 370 "$line" "$cached/$name.png" &> /dev/null;
-		elif [[ "$type" == "cbz" ]] && ! [[ -f "$cached/$name.png" ]]; then
-			evince-thumbnailer -s 370 "$line" "$cached/$name.png" &> /dev/null;
+			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
 		elif [[ "$type" == "epub" ]] && ! [[ -f "$cached/$name.png" ]]; then
-			gnome-epub-thumbnailer "$line" "$cached/$name.png" &> /dev/null;
-		fi
+			gnome-epub-thumbnailer -s 200 "$line" "$cached/$name.png"
+		elif [[ "$type" == "cbz" ]] && ! [[ -f "$cached/$name.png" ]]; then
+			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
+		fi &> /dev/null
 		
-		desktop="$HOME/.local/share/applications/Books/$name.desktop"
-		if [[ ! -f "$desktop" ]]; then
-			cat > "$desktop" <<- EOF
+		book="$HOME/.local/share/applications/Books/$name.desktop"
+		if [[ ! -f "$book" ]]; then
+			cat > "$book" <<- EOF
 			[Desktop Entry]
 			Name=$name
 			Exec=zathura '$line'
-			Icon=~/.cache/zcache/$name.png
+			Icon=$cached/$name.png
 			Type=Application
 			Categories=Books;
 			EOF
 		fi
 	done
-
+	
 	rofi -show drun -drun-categories Books -theme rofi-zathura
 }
 
 if [[ $(grep -i "home" "$history") ]]; then 
+	[[ -z "$(ls -A $cached)" ]] && notify-send -t 2000 -r 40 "Rofi-Zathura" "Generating Thumbnails..."
 	main && rm "$HOME"/.local/share/applications/Books/*
 else
-	notify-send -r 41 "Rofi-Zathura" "No Documents Were Found"
+	notify-send -t 1000 -r 41 "Rofi-Zathura" "No Documents Were Found"
 fi
 
