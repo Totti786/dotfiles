@@ -24,10 +24,10 @@ fixconfig(){
 		"$conkyConfig"
 	fi
 	sed -i -e "s/own_window_colour = '#.*',/own_window_colour = '$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)',/g" \
-		-i -e "s/color0 = '#.*',/color0 = '${color9}',/g" \
+		-i -e "s/color0 = '#.*',/color0 = '${color10}',/g" \
 		-i -e "s/color1 = '#.*',/color1 = '${foreground}',/g" \
-		-i -e "s/color2 = '#.*',/color2 = '${color12}',/g" \
-		-i -e "s/color3 = '#.*',/color3 = '${color11}',/g" \
+		-i -e "s/color2 = '#.*',/color2 = '${color13}',/g" \
+		-i -e "s/color3 = '#.*',/color3 = '${color14}',/g" \
 		-i -e "s/own_window_argb_value = .*/own_window_argb_value = $alpha,/g" \
 	"$conkyConfig"	
 	}
