@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-path="$HOME/.config/rofi/themes/window.rasi"
-
 window(){
 	options="\
 	   -kb-cancel "Super+Escape,Escape" \
@@ -10,9 +8,9 @@ window(){
        -kb-row-up "Super+Shift+Tab,Super+h,Super+n""
 
 	if [[ $(wmctrl -l | grep -v -- "-1") ]]; then 
-		rofi $1 -theme $path $options -modi "window" -show &
+		rofi $1 -theme window $options -modi "window" -show &
 	else
-		echo "          Doesn't look like anything to me" | rofi -theme $path -dmenu
+		echo "          Doesn't look like anything to me" | rofi -theme window -dmenu
 	fi
 }
 
@@ -24,9 +22,9 @@ windowcd(){
        -kb-row-up "Alt+Shift+Tab,Alt+h,Alt+n""
 
 	if [[ $(wmctrl -l | cut -d ' ' -f3 | grep "$( wmctrl -d | grep "*" | cut -d " " -f1)") ]]; then 
-		rofi -theme $path $options -modi "windowcd" -window-format " {c} · {t}" -show &
+		rofi -theme window $options -modi "windowcd" -window-format " {c} · {t}" -show &
 	else
-		echo "                Workspace is Empty" | rofi -theme $path -dmenu
+		echo "                Workspace is Empty" | rofi -theme window -dmenu
 	fi
 }
 
