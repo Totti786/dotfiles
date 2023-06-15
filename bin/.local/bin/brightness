@@ -33,21 +33,25 @@ get_icon() {
 	fi
 }
 
+notify(){
+	notify-send -u low -t 1000 -r 69 -i "$icon" "Brightness : $(get_backlight)"
+}
+
 # Increase brightness
 inc_backlight() {
 	if [[ "$card" == *"intel_"* ]]; then
-		brightnessctl s 10%+ && get_icon && notify-send -u low -r 69 -i "$icon" "Brightness : $(get_backlight)"
+		brightnessctl s 10%+ && get_icon && notify
 	else
-		light -A 5 && get_icon && notify-send -u low -r 69 -i "$icon" "Brightness : $(get_backlight)"
+		light -A 5 && get_icon && notify
 	fi
 }
 
 # Decrease brightness
 dec_backlight() {
 	if [[ "$card" == *"intel_"* ]]; then
-		brightnessctl s 10%- && get_icon && notify-send -u low -r 69 -i "$icon" "Brightness : $(get_backlight)"
+		brightnessctl s 10%- && get_icon && notify
 	else
-		light -U 5 && get_icon && notify-send -u low -r 69 -i "$icon" "Brightness : $(get_backlight)"
+		light -U 5 && get_icon && notify
 	fi
 }
 
