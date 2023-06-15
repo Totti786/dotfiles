@@ -27,23 +27,27 @@ get_icon() {
 	fi
 }
 
+notify(){
+	notify-send -t 500 -u low -r 69 -i "$icon" "$1"
+}
+
 # Increase Volume
 inc_volume() {
-	pamixer -u -i 5 && get_icon && notify-send -u low -r 69 -i "$icon" "Volume : $(get_volume)"
+	pamixer -u -i 5 && get_icon && notify "Volume : $(get_volume)"
 }
 
 # Decrease Volume
 dec_volume() {
-	pamixer -u -d 5 && get_icon && notify-send -u low -r 69 -i "$icon" "Volume : $(get_volume)"
+	pamixer -u -d 5 && get_icon && notify "Volume : $(get_volume)"
 }
 
 # Toggle Mute
 toggle_mute() {
 	status=`pamixer --get-mute`
 	if [[ "$status" == "false" ]]; then
-		pamixer -t && get_icon && notify-send -u low -r 69 -i "$icon" "Mute"
+		pamixer -t && get_icon && notify "Mute"
 	else
-		pamixer -t && get_icon && notify-send -u low -r 69 -i "$icon" "Unmute"
+		pamixer -t && get_icon && notify "Unmute"
 	fi
 }
 
