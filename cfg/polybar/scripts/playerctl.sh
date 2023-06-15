@@ -63,4 +63,14 @@ case "$1" in
             player
         fi
         ;;
+    "--scroll")
+		zscroll -l 50 \
+	        --delay 0.7 \
+	        --scroll-padding " " \
+	        --match-command "$0 --status" \
+	        --match-text "Playing" "--scroll 1" \
+	        --match-text "Paused" "--scroll 0" \
+	        --update-check true "$0 --name" &
+		wait
+        ;;
 esac
