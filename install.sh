@@ -44,6 +44,8 @@ install_minimal(){
 	}
 	
 install_full(){
+	sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
+	sudo sed -i -e "s/#Color/Color/g" /etc/pacman.conf
 	sudo pacman -Syu $(cat "$DIR"/deps/minimal.txt) --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/additional/*.zst --needed --noconfirm
