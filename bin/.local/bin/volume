@@ -28,7 +28,7 @@ get_icon() {
 }
 
 notify(){
-	notify-send -t 500 -u low -r 69 -i "$icon" "$1"
+	notify-send -t 500 -u low -r 69 -i "$icon" "$1" --app-name=Volume
 }
 
 # Increase Volume
