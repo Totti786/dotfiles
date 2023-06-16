@@ -44,9 +44,10 @@ install_minimal(){
 	}
 	
 install_full(){
-	sudo pacman -Syu $(cat "$DIR"/deps/minimal.txt "$DIR"/deps/additional.txt) --needed --noconfirm
+	sudo pacman -Syu $(cat "$DIR"/deps/minimal.txt) --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/additional/*.zst --needed --noconfirm
+	#yay -S $(cat additional.txt) --needed --noconfirm
 	}
 
 minimal_install(){
