@@ -30,11 +30,11 @@ change_color(){
 
 change_color_here(){
     if [ "$1" = "0" ]; then
-        jq --arg value "$2" '.colors.color0 = $value | .special.background = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+        sed -i -E -e "s/(\"color0\"|\"background\"): \".*\"/\1: \"$2\"/g" "$CURRENT_THEME"        
     elif [ "$1" = "15" ]; then
-        jq --arg value "$2" '.colors.color15 = $value | .special.foreground = $value | .special.cursor = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+        sed -i -E -e "s/(\"color15\"|\"foreground\"): \".*\"/\1: \"$2\"/g" "$CURRENT_THEME"
     else
-        jq --arg key "color$1" --arg value "$2" '.colors[$key] = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+        sed -i -e "s/\"color$1\": \".*\"/\"color$1\": \"$2\"/g" "$CURRENT_THEME"
     fi
     cat "$CURRENT_THEME" > "$COLORS_FILE"
 }
@@ -73,9 +73,11 @@ submenu+=("Export Colors, mkdir -p $SAVED_THEMES && cp $COLORS_FILE $SAVED_THEME
 submenu+=("Import Color Scheme,^checkout(import)")
 submenu1+=("^tag(import)")
 
-for file in "$SAVED_THEMES"/* ;do 
-	submenu1+=("Import $(basename $file),$0 change_scheme $file")
-done
+if [[ "$(ls -A $SAVED_THEMES)" ]]; then 
+	for file in "$SAVED_THEMES"/* ;do 
+		submenu1+=("Import $(basename $file),$0 change_scheme $file")
+	done
+fi
 
 submenu1+=("Select File,$0 add_scheme")
 
