@@ -3,17 +3,18 @@
 WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
 CACHE_DIR="$HOME/.cache/wal"
 WPG_DIR="$HOME/.config/wpg/schemes"
+SAVED_THEMES="$HOME/.themes/saved"
 COLORS_FILE="$CACHE_DIR/colors.json"
 CURRENT_THEME="$WPG_DIR/$(sed 'y/\/./__/' $HOME/.fehbg | tail -n1 | cut -d "'" -f2)_dark_wal__1.1.0.json"
 
-# Read color scheme from JSON file
-color_scheme=($(jq -r '.colors[]' "$COLORS_FILE"))
 # Get the current wallpaper
 CURRENT_WALL="$(cat $HOME/.fehbg | cut -d "'" -f2 | tail -n1)"
-#CURRENT_WALL="$(basename $(jq -r '.wallpaper' "$COLORS_FILE"))"
+# Read color scheme from JSON file
+color_scheme=($(jq -r '.colors[]' "$CURRENT_THEME"))
 # Define output arrays
 menu=()
 submenu=()
+submenu1=()
 
 change_color(){
     new_color="$(zenity --title="Choose a color" --color-selection --color=$1 | pastel format hex)"
@@ -25,6 +26,34 @@ change_color(){
         jq --arg key "color$2" --arg value "$new_color" '.colors[$key] = $value' "$COLORS_FILE" > "$CURRENT_THEME"
     fi
     cat "$CURRENT_THEME" > "$COLORS_FILE"
+}
+
+change_color_here(){
+    if [ "$1" = "0" ]; then
+        jq --arg value "$2" '.colors.color0 = $value | .special.background = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+    elif [ "$1" = "15" ]; then
+        jq --arg value "$2" '.colors.color15 = $value | .special.foreground = $value | .special.cursor = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+    else
+        jq --arg key "color$1" --arg value "$2" '.colors[$key] = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+    fi
+    cat "$CURRENT_THEME" > "$COLORS_FILE"
+}
+
+change_scheme(){
+	if grep -q "colors" "$1"; then
+		colors=($(jq -r '.colors[]' "$1"))
+	elif grep -q "color" "$1"; then
+		colors=($(jq -r '.color[]' "$1"))
+	fi
+	# Replace the colors in the first file
+	for ((i=0; i<${#colors[@]}; i++)); do
+		change_color_here "$i" "${colors[i]}"
+	done
+}
+
+add_scheme(){
+	file="$(zenity --file-selection --file-filter='JSON files (*.json) | *.json' --file-filter='Text files (*.txt) | *.txt')"
+	[[ -n "$file" ]] && cp "$file" "$SAVED_THEMES"
 }
 
 # Add wallpaper colors section
@@ -40,6 +69,15 @@ submenu+=("Increase Brightness,wpg --brt $CURRENT_WALL 10 && wpg -s $CURRENT_WAL
 submenu+=("Decrease Brightness,wpg --brt $CURRENT_WALL -10 && wpg -s $CURRENT_WALL")
 submenu+=("Apply Colors,wpg -s $CURRENT_WALL")
 submenu+=("Reset Colors,wpg -R $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu+=("Export Colors, mkdir -p $SAVED_THEMES && cp $COLORS_FILE $SAVED_THEMES/$(basename $CURRENT_WALL).json")
+submenu+=("Import Color Scheme,^checkout(import)")
+submenu1+=("^tag(import)")
+
+for file in "$SAVED_THEMES"/* ;do 
+	submenu1+=("Import $(basename $file),$0 change_scheme $file")
+done
+
+submenu1+=("Select File,$0 add_scheme")
 
 # Add colors from the color scheme
 for i in "${color_scheme[@]}"; do
@@ -56,11 +94,17 @@ userwallp="$(shopt -s globstar nullglob ; files=($WALLPAPERS_DIR/**/*.{jpg,JPG,j
 menu+=("  Wallpapers (<small>${userwallp}</small>),wpgtk random")
 menu+=("^sep($(basename $CURRENT_WALL))")
 
+alone() {
+# Output combined entries to Jgmenu
+printf '%s\n' "${menu[@]}" "${submenu[@]}" "${submenu1[@]}" | jgmenu --simple
+}
+
 # Define main function to output results
 main() {
     printf '%s\n' "${menu[@]}"
     printf '%s\n' "${submenu[@]}"
+    printf '%s\n' "${submenu1[@]}"
 }
 
 # Write results to output file
-[[ "$1" ]] && "$@" || main
+if [[ "$1" ]]; then "$@" ;else main ;fi
