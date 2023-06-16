@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
+sudo pacman -Sy archlinux-keyring --noconfirm 
+
+# pacman git migrate
+sudo pacman -Sy pacman --noconfirm && 
+if [[ -f "/etc/pacman.conf" ]] && [[ -f "/etc/pacman.conf.pacnew" ]]; then
+	sudo rm /etc/pacman.conf
+	sudo mv /etc/pacman.conf.pacnew /etc/pacman.conf
+fi
+
 sudo pacman -Syy
 
-sudo pacman -S archlinux-keyring --noconfirm 
-
 sudo pacman -R $(pacman -Q | grep archcraft | cut -d " " -f1) --noconfirm 
-sudo pacman -Rcns gstreamer betterlockscreen picom lsb-release sddm-git --noconfirm
+sudo pacman -Rc gstreamer betterlockscreen picom lsb-release sddm-git --noconfirm
 
 sudo bash -c 'cat > /etc/os-release <<- EOF
 NAME="Arch Linux"
@@ -25,5 +32,5 @@ sudo pacman -S lsb-release --noconfirm
 
 sudo sed -i 's/GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="Arch"/g' /etc/default/grub
 
-sudo rm -R ~/.config/*
-sudo rm -R ~/.oh-my-zsh/
+sudo rm -Rf ~/.config/*
+sudo rm -Rf ~/.oh-my-zsh/
