@@ -51,7 +51,7 @@ install_full(){
 	}
 
 minimal_install(){
-	#checkrepo &&
+	checkrepo &&
 	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
@@ -61,7 +61,7 @@ minimal_install(){
 	}
 
 full_install(){
-	checkrepo &&
+	#checkrepo &&
 	install_full
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
