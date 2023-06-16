@@ -139,11 +139,11 @@ change_colors(){
 		-e "s/--background-1: .*/--background-1: ${bg_mix};/g" \
 		-e "s/--background-2: .*/--background-2: ${BG};/g" \
 		-e "s/--border-color: .*/--border-color: $bright_black;/g" \
-		-e "s/--background-modifier-hover: .*/--background-modifier-hover: ${bright_magenta};/g" \
+		-e "s/--background-modifier-hover: .*/--background-modifier-hover: ${magenta};/g" \
 		-e "s/--background-accent: .*/--background-accent: ${BG};/g" \
-		-e "s/--button-destructive: .*/--button-destructive: ${bright_yellow};/g" \
-		-e "s/--button-background-hover: .*/--button-background-hover: ${bright_red};/g" \
-		-e "s/--tab-selected: .*/--tab-selected: ${bright_blue};/g" \
+		-e "s/--button-destructive: .*/--button-destructive: ${yellow};/g" \
+		-e "s/--button-background-hover: .*/--button-background-hover: ${red};/g" \
+		-e "s/--tab-selected: .*/--tab-selected: ${blue};/g" \
 		-e "s/--text-muted: .*/--text-muted: ${FG};/g"
 	
 	fi 
@@ -152,6 +152,7 @@ change_colors(){
 	# Spotify can be themed using the xrdb backend i.e. ${xrdb:color0:#222}
 		
 	# eww
+	if [[ -f "$eww" ]]; then 
 	[[ "$alpha" == "FF" ]] &&  sed -i "s/\$alpha: 0.3/\$alpha: 1.0/" "$eww" \
 	|| sed -i "s/\$alpha: 1.0/\$alpha: 0.3/" "$eww" 
 	sed -i -e "s/\$background: #.*/\$background: ${bg_light};/g" \
@@ -167,6 +168,7 @@ change_colors(){
 		-e "s/\$gray: #.*/\$gray: $bright_black;/g" \
 		-e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" \
 	"$eww"
+	fi
 	
 	# waybar
 	if [[ -f "$waybar" ]]; then 
@@ -236,7 +238,7 @@ lockPerms(){
 	#fi
 	## give the user read and write permissions to the sddm directory
 	if [[ -d "/usr/share/sddm/themes/Chili" ]]; then
-		sudo chgrp -R $(whoami) /usr/share/sddm/
+		sudo chgrp -R "$(whoami)" /usr/share/sddm/
 		sudo chmod -R ug+rwX  /usr/share/sddm/
 	else
 		echo "Can't find a compatible sddm theme"
@@ -284,15 +286,15 @@ check(){
 }
 
 wall(){
-	if [ -z "$1" ]; then
+	if [[ -z "$1" ]]; then
 		echo "No image was selected"
 		exit
-	#elif [[ "$1" == "$(cat $HOME/.fehbg | cut -d "'" -f2  | tail -n1)" ]]; then
-		#echo "This wallpaper is already set"
+	elif [[ "$1" == "$(cat $HOME/.fehbg | cut -d "'" -f2  | tail -n1)" ]]; then
+		echo "This wallpaper is already set"
 	else 
-		if [[ $XDG_SESSION_TYPE == "x11" ]]; then
+		if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
 			feh --no-fehbg --bg-fill "$1"
-		else
+		elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
 			"$HOME"/.config/hypr/scripts/wall "$1"
 		fi
 		
@@ -302,16 +304,23 @@ wall(){
 }
 
 random(){
-	cd $Wallpapers/Wallpapers.git/ &&
-	image=$(find -type f -not -path "./.git/*" | shuf -n 1)
-	wall $Wallpapers/Wallpapers.git/${image:2}
+	if [[ "$(ls -A $Wallpapers)" ]]; then 
+		image="$(find $Wallpapers -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | shuf -n 1)"
+		wall "$image"
+	else
+		notify-send -u low -r 43 "No Wallpapers Were Found in:" "~/Pictures/Wallpapers"
+	fi
 }
 
 # this function uses implements a sxiv to create a wallpaper selector for wpg 
 # to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
 pick(){
-	wal=$(sxiv -torb $Wallpapers)
-	wall "$wal"
+	if [[ "$(ls -A $Wallpapers)" ]]; then 
+		wal=$(sxiv -torb $Wallpapers)
+		wall "$wal"
+	else
+		notify-send -u low -r 43 "No Wallpapers Were Found In:" "~/Pictures/Wallpapers"
+	fi
 }	
 
 dynamic(){
@@ -337,10 +346,10 @@ dynamic(){
 	
 misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
-		"$HOME/.config/polybar/launch.sh" &
+		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 		conky.sh restart
-	else
+	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
 		"$HOME"/.config/waybar/launch_waybar
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
@@ -363,7 +372,7 @@ main(){
 	restart copyq --start-server &
 	copyWal
 	convert -scale 20% -blur 0x2 -resize \
-	$(xdpyinfo | awk '/dimensions/{print $2}') \
+	"$(xdpyinfo | awk '/dimensions/{print $2}')" \
 	"$wallpaper" "$HOME/.config/wpg/templates/wallpaper.jpg"
 	exit
 }
@@ -377,7 +386,6 @@ run(){
 			# Normal colors
 			BG="$(printf "%s\n" "$background")"
 			FG="$(printf "%s\n" "$foreground")"
-			FGA="$(printf "%s\n" "$foreground")"
 			black="$(printf "%s\n" "$color0")"
 			red="$(printf "%s\n" "$color1")"
 			green="$(printf "%s\n" "$color2")"
