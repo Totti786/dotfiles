@@ -30,8 +30,30 @@ mainbox {
     padding:                        10px;
 }
 
+/*****----- Inputbar -----*****/
 inputbar {
-    enabled:                     false;
+    enabled:                     true;
+    spacing:                     10px;
+    padding:                     15px;
+    horizontal-align:               0.5;
+    border-radius:               10px;
+    background-color:            @background;
+    text-color:                  @foreground;
+    children:                    [ "textbox-prompt-colon", "entry" ];
+}
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "";
+    background-color:            transparent;
+    text-color:                  @foreground;
+}
+entry {
+    enabled:                     true;
+    background-color:            transparent;
+    text-color:                  inherit;
+    placeholder:                 "Search";
+    placeholder-color:           inherit;
 }
 
 listview {
