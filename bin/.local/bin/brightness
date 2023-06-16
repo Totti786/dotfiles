@@ -34,7 +34,7 @@ get_icon() {
 }
 
 notify(){
-	notify-send -u low -t 1000 -r 69 -i "$icon" "Brightness : $(get_backlight)"
+	notify-send -u low -t 1000 -r 69 -i "$icon" "Brightness : $(get_backlight)" --app-name=Brightness
 }
 
 # Increase brightness
