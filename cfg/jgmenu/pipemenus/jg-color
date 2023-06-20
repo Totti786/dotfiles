@@ -1,59 +1,72 @@
 #!/usr/bin/env bash
 
-WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
-CACHE_DIR="$HOME/.cache/wal"
-WPG_DIR="$HOME/.config/wpg/schemes"
-SAVED_THEMES="$HOME/.themes/saved"
-COLORS_FILE="$CACHE_DIR/colors.json"
-CURRENT_THEME="$WPG_DIR/$(sed 'y/\/./__/' $HOME/.fehbg | tail -n1 | cut -d "'" -f2)_dark_wal__1.1.0.json"
+# Set directory paths
+WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"             # Directory for wallpapers
+CACHE_DIR="$HOME/.cache/wal"                            # Cache directory
+WPG_DIR="$HOME/.config/wpg/schemes"                     # Directory for wpg schemes
+SAVED_THEMES="$HOME/.themes/saved"                      # Directory for saved themes
+COLORS_FILE="$CACHE_DIR/colors.json"                    # File path for colors.json
+CURRENT_THEME="$WPG_DIR/$(sed 'y/\/./__/' $HOME/.fehbg | tail -n1 | cut -d "'" -f2)_dark_wal__1.1.0.json"  # Current theme file path
 
 # Get the current wallpaper
 CURRENT_WALL="$(cat $HOME/.fehbg | cut -d "'" -f2 | tail -n1)"
+
 # Read color scheme from JSON file
 color_scheme=($(jq -r '.colors[]' "$CURRENT_THEME"))
+
 # Define output arrays
 menu=()
 submenu=()
 submenu1=()
 
 change_color(){
+    # Prompt user to choose a color
     new_color="$(zenity --title="Choose a color" --color-selection --color=$1 | pastel format hex)"
+    
+    # Update the color values in the JSON file based on the selected color
     if [ "$2" = "0" ]; then
-        jq --arg value "$new_color" '.colors.color0 = $value | .special.background = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+        sed -i -E -e "s/(\"color0\"|\"background\"): \".*\"/\1: \"$new_color\"/g" "$CURRENT_THEME"
     elif [ "$2" = "15" ]; then
-        jq --arg value "$new_color" '.colors.color15 = $value | .special.foreground = $value | .special.cursor = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+        sed -i -E -e "s/(\"color15\"|\"foreground\"): \".*\"/\1: \"$new_color\"/g" "$CURRENT_THEME"
     else
-        jq --arg key "color$2" --arg value "$new_color" '.colors[$key] = $value' "$COLORS_FILE" > "$CURRENT_THEME"
+        sed -i -e "s/\"color$1\": \".*\"/\"color$1\": \"$new_color\"/g" "$CURRENT_THEME"
     fi
+    
+    # Copy the updated theme file to the colors.json file
     cat "$CURRENT_THEME" > "$COLORS_FILE"
 }
 
 change_color_here(){
+    # Change the color values directly in the theme file using sed
     if [ "$1" = "0" ]; then
-        sed -i -E -e "s/(\"color0\"|\"background\"): \".*\"/\1: \"$2\"/g" "$CURRENT_THEME"        
+        sed -i -E -e "s/(\"color0\"|\"background\"): \".*\"/\1: \"$2\"/g" "$CURRENT_THEME"
     elif [ "$1" = "15" ]; then
         sed -i -E -e "s/(\"color15\"|\"foreground\"): \".*\"/\1: \"$2\"/g" "$CURRENT_THEME"
     else
         sed -i -e "s/\"color$1\": \".*\"/\"color$1\": \"$2\"/g" "$CURRENT_THEME"
     fi
+    
+    # Copy the updated theme file to the colors.json file
     cat "$CURRENT_THEME" > "$COLORS_FILE"
 }
 
 change_scheme(){
-	if grep -q "colors" "$1"; then
-		colors=($(jq -r '.colors[]' "$1"))
-	elif grep -q "color" "$1"; then
-		colors=($(jq -r '.color[]' "$1"))
-	fi
-	# Replace the colors in the first file
-	for ((i=0; i<${#colors[@]}; i++)); do
-		change_color_here "$i" "${colors[i]}"
-	done
+    if grep -q "colors" "$1"; then
+        colors=($(jq -r '.colors[]' "$1"))
+    elif grep -q "color" "$1"; then
+        colors=($(jq -r '.color[]' "$1"))
+    fi
+    
+    # Replace the colors in the first file
+    for ((i=0; i<${#colors[@]}; i++)); do
+        change_color_here "$i" "${colors[i]}"
+    done
 }
 
 add_scheme(){
-	file="$(zenity --file-selection --file-filter='JSON files (*.json) | *.json' --file-filter='Text files (*.txt) | *.txt')"
-	[[ -n "$file" ]] && cp "$file" "$SAVED_THEMES"
+    # Prompt user to select a JSON file and copy it to the saved themes directory
+    file="$(zenity --file-selection --file-filter='JSON files (*.json) | *.json' --file-filter='Text files (*.txt) | *.txt')"
+    [[ -n "$file" ]] && cp "$file" "$SAVED_THEMES"
 }
 
 # Add wallpaper colors section
@@ -63,10 +76,10 @@ submenu+=("^tag(regen)")
 submenu+=("^sep(Regenerate)")
 submenu+=("Manage Color Schemes,wpg")
 submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-#submenu+=("Increase Saturation,wpg --sat $CURRENT_WALL 0.1")
-#submenu+=("Decrease Saturation,wpg --sat $CURRENT_WALL -0.1")
-submenu+=("Increase Brightness,wpg --brt $CURRENT_WALL 10 && wpg -s $CURRENT_WALL")
-submenu+=("Decrease Brightness,wpg --brt $CURRENT_WALL -10 && wpg -s $CURRENT_WALL")
+submenu+=("Increase Saturation,wpg --sat $CURRENT_WALL 0.1 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu+=("Decrease Saturation,wpg --sat $CURRENT_WALL -0.1 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu+=("Increase Brightness,wpg --brt $CURRENT_WALL 10 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu+=("Decrease Brightness,wpg --brt $CURRENT_WALL -10 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
 submenu+=("Apply Colors,wpg -s $CURRENT_WALL")
 submenu+=("Reset Colors,wpg -R $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
 submenu+=("Export Colors, mkdir -p $SAVED_THEMES && cp $COLORS_FILE $SAVED_THEMES/$(basename $CURRENT_WALL).json")
@@ -74,9 +87,9 @@ submenu+=("Import Color Scheme,^checkout(import)")
 submenu1+=("^tag(import)")
 
 if [[ "$(ls -A $SAVED_THEMES)" ]]; then 
-	for file in "$SAVED_THEMES"/* ;do 
-		submenu1+=("Import $(basename $file),$0 change_scheme $file")
-	done
+    for file in "$SAVED_THEMES"/* ;do 
+        submenu1+=("Import $(basename $file),$0 change_scheme $file")
+    done
 fi
 
 submenu1+=("Select File,$0 add_scheme")
@@ -97,8 +110,8 @@ menu+=("  Wallpapers (<small>${userwallp}</small>),wpgtk random")
 menu+=("^sep($(basename $CURRENT_WALL))")
 
 alone() {
-# Output combined entries to Jgmenu
-printf '%s\n' "${menu[@]}" "${submenu[@]}" "${submenu1[@]}" | jgmenu --simple
+    # Output combined entries to Jgmenu
+    printf '%s\n' "${menu[@]}" "${submenu[@]}" "${submenu1[@]}" | jgmenu --simple
 }
 
 # Define main function to output results
@@ -108,5 +121,4 @@ main() {
     printf '%s\n' "${submenu1[@]}"
 }
 
-# Write results to output file
 if [[ "$1" ]]; then "$@" ;else main ;fi
