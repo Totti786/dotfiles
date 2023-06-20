@@ -157,6 +157,7 @@ change_colors(){
 		-e "s/--background-tertiary: .*/--background-tertiary: ${bg_mix};/g" \
 		-e "s/--background-mobile-primary: .*/--background-mobile-primary: ${bg_mix};/g" \
 		-e "s/--background-mobile-secondary: .*/--background-mobile-secondary: ${bg_light};/g" \
+		-e "s/--modal-background: .*/--modal-background: ${bg_light};/g" \
 		-e "s/--activity-card-background: .*/--activity-card-background: ${bg_light};/g" \
 		-e "s/--background-floating: .*/--background-floating: ${bg_light};/g" \
 		-e "s/--background-accent: .*/--background-accent: ${red};/g" \
@@ -307,8 +308,6 @@ wall(){
 	if [[ -z "$1" ]]; then
 		echo "No image was selected"
 		exit
-	elif [[ "$1" == "$(cat $HOME/.fehbg | cut -d "'" -f2  | tail -n1)" ]]; then
-		echo "This wallpaper is already set"
 	else 
 		if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
 			feh --no-fehbg --bg-fill "$1"
