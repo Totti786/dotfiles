@@ -6,7 +6,7 @@
 [[ -z "$bar_style" ]] && bar_style="base" top_padding="23" bottom_padding="23"
 
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-graphics_card="$(ls -1 /sys/class/backlight/)"
+graphics_card="$(ls /sys/class/backlight/ | tail -n1)"
 network_interface="$(ip link | awk '/state UP/ {print $2}' | tr -d :)"
 battery_name=$(ls -1 /sys/class/power_supply/ | grep BA)
 adapter_name=$(ls -1 /sys/class/power_supply/ | grep AC)
