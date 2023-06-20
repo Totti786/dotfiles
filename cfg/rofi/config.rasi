@@ -15,4 +15,4 @@ configuration {
 	window-format:              "{w} · {c} · {t}";
 }
 
-@theme "~/.config/rofi/themes/launcher.rasi"
+@theme "./themes/launcher.rasi"
