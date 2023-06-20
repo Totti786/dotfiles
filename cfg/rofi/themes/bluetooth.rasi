@@ -3,12 +3,10 @@
 
 configuration {
     show-icons:                     false;
-    display-drun: 					"";
-    drun-display-format:            "{icon} {name}";
-    disable-history:                false;
+    transparency:                   "real";
 	click-to-exit: 					true;
-	monitor: 						-3;
     hover-select:					true;
+   	monitor: 						-3;
 	me-select-entry: "";
 	me-accept-entry: [ MousePrimary, MouseSecondary, MouseDPrimary ];
 }
@@ -17,29 +15,36 @@ configuration {
 @import "fonts.rasi"
 
 window {
-    transparency:                   "real";
     background-color:               @background;
     text-color:                     @foreground;
-    border:                  		0px;
     border-color:                  	@selected;
-    border-radius:                  12px;
     width:                          200px;
     height:                         330px;
-    location:                       northwest;
-    anchor:                         west;
-    x-offset:                       0;
-    y-offset:                       190;
+    y-offset:                       25;
+    border-color:                  	@selected;
+    border-radius:					12px;
+}
+
+mainbox {
+    background-color:               transparent;
+    children:                       [ inputbar, listview ];
+    spacing:                       	10px;
+    padding:                        15px;
+}
+
+inputbar {
+	children: 						[textbox-prompt-colon, prompt];
+    background-color:               transparent;
+    text-color:                     @foreground;
 }
 
 prompt {
     enabled: 						true;
+    background-color: 				transparent;
+	text-color: 					@foreground;
 	margin: 						0px 0px 0px 8px;
     padding:    					6px 0px 6px 0px;
-	background-color: 				transparent;
-	text-color: 					@foreground;
-    border:                  		0px 0px 0px 0px;
-    border-color:                  	@selected;
-    border-radius:                  0px;
+	
 }
 
 textbox-prompt-colon {
@@ -51,42 +56,11 @@ textbox-prompt-colon {
     padding:    					6px 10px 6px 10px;
 }
 
-inputbar {
-	children: 						[textbox-prompt-colon, prompt];
-    spacing:                        0;
-    background-color:               transparent;
-    text-color:                     @foreground;
-    border:                  		0px;
-    border-radius:                  0px;
-    border-color:                  	@selected;
-    expand:                         false;
-    margin:                         0px 0px 0px 0px;
-    padding:                        0px;
-    position:                       center;
-}
-
-case-indicator {
-    background-color:               @background;
-    text-color:                     @foreground;
-    spacing:                        0;
-}
-
-
 listview {
     background-color:               transparent;
-    columns:                        1;
-    lines:							8;
     spacing:                        4px;
     cycle:                          true;
-    dynamic:                        true;
     layout:                         vertical;
-}
-
-mainbox {
-    background-color:               transparent;
-    children:                       [ inputbar, listview ];
-    spacing:                       	10px;
-    padding:                        20px;
 }
 
 element {
@@ -97,28 +71,16 @@ element {
     padding:                        5px;
 }
 
-element-icon {
-    background-color: 				inherit;
-    text-color:       				inherit;
-    horizontal-align:               0.5;
-    vertical-align:                 0.5;
-    size:                           0px;
-    border:                         0px;
-}
-
 element-text {
     background-color: 				inherit;
     text-color:       				inherit;
-    expand:                         true;
-    horizontal-align:               0;
     vertical-align:                 0.5;
-    margin:                         2px 0px 2px 2px;
+    margin:                         2px;
 }
 
 element selected {
     background-color:               @selected;
     text-color:                     @background-alt;
-    border:                  		0px;
     border-radius:                  10px;
     border-color:                  	@selected;
 }
