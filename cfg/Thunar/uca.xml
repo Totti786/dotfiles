@@ -67,8 +67,8 @@
 	<name>Set as wallpaper</name>
 	<submenu></submenu>
 	<unique-id>1622798756568291-1</unique-id>
-	<command>~/.local/bin/wpgtk wall %f</command>
-	<description>Set wallpaper with nitrogen in openbox</description>
+	<command>wpgtk wall %f</command>
+	<description>Set wallpaper and change color scheme</description>
 	<range></range>
 	<patterns>*</patterns>
 	<image-files/>
@@ -78,10 +78,21 @@
 	<name>Convert to Jpg</name>
 	<submenu></submenu>
 	<unique-id>1669732092996674-1</unique-id>
-	<command>convert %f -quality 80  &quot;$(basename %f .png).jpg&quot;</command>
+	<command>convert %f -quality 90  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jpg&quot;</command>
 	<description>Convert to Jpg</description>
 	<range></range>
 	<patterns>*</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>image-straighten</icon>
+	<name>Convert to PNG</name>
+	<submenu></submenu>
+	<unique-id>1686859468146406-1</unique-id>
+	<command>convert %f -quality 90  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).png&quot;</command>
+	<description>Convert to PNG</description>
+	<range></range>
+	<patterns>*.webp</patterns>
 	<image-files/>
 </action>
 </actions>
