@@ -16,7 +16,7 @@ eww="$config/eww/colors.scss"
 waybar="$config/waybar/colors.css"
 hypr="$config/hypr/colors.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='60'
+alpha='FF'
 
 ## Change colors
 change_colors(){
@@ -30,12 +30,12 @@ change_colors(){
 		background-alt = ${bg_mix}
 		foreground = $FG
 		primary = $FG
-		red = $bright_red
-		green = $bright_green
-		yellow = $bright_yellow
-		blue = $bright_blue
-		magenta = $bright_magenta
-		cyan = $bright_cyan
+		red = $red
+		green = $green
+		yellow = $yellow
+		blue = $blue
+		magenta = $magenta
+		cyan = $cyan
 		white = $white
 		EOF
 	
@@ -47,11 +47,11 @@ change_colors(){
 		background:       ${bg_mix}$alpha_rofi;
 		background-alt:   ${BG};
 		foreground:       ${FG};
-		selected:         ${bright_red};
-		highlight:        ${bright_yellow};
-		urgent:           ${bright_blue};
-		on:               ${bright_magenta};
-		off:              ${bright_black};
+		selected:         ${red};
+		highlight:        ${yellow};
+		urgent:           ${blue};
+		on:               ${magenta};
+		off:              ${black};
 	}
 		EOF
 	
@@ -95,19 +95,19 @@ change_colors(){
 	sed -i "$geany" \
 		-e "s/bg=.*/bg=${BG}/g" \
 		-e "s/fg=.*/fg=${FG}/g" \
-		-e "s/tag_yellow=.*/tag_yellow=${bright_cyan}/g" \
+		-e "s/tag_yellow=.*/tag_yellow=${cyan}/g" \
 		-e "s/fold_bg_grey=.*/fold_bg_grey=${BG}/g" \
-		-e "s/keyword_orange=.*/keyword_orange=${bright_red}/g" \
-		-e "s/string_green=.*/string_green=${bright_green}/g" \
+		-e "s/keyword_orange=.*/keyword_orange=${red}/g" \
+		-e "s/string_green=.*/string_green=${green}/g" \
 		-e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g" \
 		-e "s/margin_fg_grey=.*/margin_fg_grey=${black}/g" \
-		-e "s/error_red=.*/error_red=${bright_magenta}/g" \
+		-e "s/error_red=.*/error_red=${magenta}/g" \
 		-e "s/selection_blue=.*/selection_blue=${white}/g"
 		
 	# copyq 
 	sed -i "$copyq" \
 		-e "s/bg=#.*/bg=${BG}/g" \
-		-e "s/alt_bg=#.*/alt_bg=$bright_black/g" \
+		-e "s/alt_bg=#.*/alt_bg=$bg_mix/g" \
 		-e "s/fg=#.*/fg=${FG}/g" \
 		-e "s/sel_bg=#.*/sel_bg=$cyan/g" \
 		-e "s/sel_fg=#.*/sel_fg${FG}/g"
@@ -125,27 +125,45 @@ change_colors(){
 		-e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $alpha_jg/g" \
 		-e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
-		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
-		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"
+		-e "s/color_sel_fg         = .*/color_sel_fg         = ${red} 100/g" \
+		-e "s/color_sep_fg         = .*/color_sep_fg         = ${blue} 40/g"
 		
 	# zathura (courtesy of @GideonWolfe)
 	"$gzathura" > "$zathura"
 	
+	## discord
+	#if [[ -f "$discord" ]]; then 
+	#sed -i "$discord" \
+		#-e "s/--accent-color: .*/--accent-color: ${FG};/g" \
+		#-e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" \
+		#-e "s/--background-1: .*/--background-1: ${bg_mix};/g" \
+		#-e "s/--background-2: .*/--background-2: ${BG};/g" \
+		#-e "s/--border-color: .*/--border-color: $bright_black;/g" \
+		#-e "s/--background-modifier-hover: .*/--background-modifier-hover: ${magenta};/g" \
+		#-e "s/--background-accent: .*/--background-accent: ${BG};/g" \
+		#-e "s/--button-destructive: .*/--button-destructive: ${yellow};/g" \
+		#-e "s/--button-background-hover: .*/--button-background-hover: ${red};/g" \
+		#-e "s/--tab-selected: .*/--tab-selected: ${blue};/g" \
+		#-e "s/--text-muted: .*/--text-muted: ${FG};/g"
+	
+	#fi
 	# discord
 	if [[ -f "$discord" ]]; then 
 	sed -i "$discord" \
-		-e "s/--accent-color: .*/--accent-color: ${FG};/g" \
-		-e "s/--settings-icon-color: #.*/--settings-icon-color: ${FG};/g" \
-		-e "s/--background-1: .*/--background-1: ${bg_mix};/g" \
-		-e "s/--background-2: .*/--background-2: ${BG};/g" \
-		-e "s/--border-color: .*/--border-color: $bright_black;/g" \
-		-e "s/--background-modifier-hover: .*/--background-modifier-hover: ${magenta};/g" \
-		-e "s/--background-accent: .*/--background-accent: ${BG};/g" \
-		-e "s/--button-destructive: .*/--button-destructive: ${yellow};/g" \
-		-e "s/--button-background-hover: .*/--button-background-hover: ${red};/g" \
-		-e "s/--tab-selected: .*/--tab-selected: ${blue};/g" \
-		-e "s/--text-muted: .*/--text-muted: ${FG};/g"
-	
+		-e "s/--text-normal: .*/--text-normal: ${FG};/g" \
+		-e "s/--background-primary: .*/--background-primary: ${bg_mix};/g" \
+		-e "s/--background-secondary: .*/--background-secondary: ${bg_light};/g" \
+		-e "s/--background-secondary-alt: .*/--background-secondary-alt: ${bg_mix};/g" \
+		-e "s/--background-tertiary: .*/--background-tertiary: ${bg_mix};/g" \
+		-e "s/--background-mobile-primary: .*/--background-mobile-primary: ${bg_mix};/g" \
+		-e "s/--background-mobile-secondary: .*/--background-mobile-secondary: ${bg_light};/g" \
+		-e "s/--activity-card-background: .*/--activity-card-background: ${bg_light};/g" \
+		-e "s/--background-floating: .*/--background-floating: ${bg_light};/g" \
+		-e "s/--background-accent: .*/--background-accent: ${red};/g" \
+		-e "s/--unread-color: .*/--unread-color: ${cyan};/g" \
+		-e "s/--input-background: .*/--input-background: ${bg_light};/g" \
+		-e "s/ --channeltextarea-background: .*/ --channeltextarea-background: ${bg_light};/g" \
+		-e "s/--user-buttons-color: .*/--user-buttons-color: ${white};/g"
 	fi 
 
 	# spotify
@@ -155,7 +173,8 @@ change_colors(){
 	if [[ -f "$eww" ]]; then 
 	[[ "$alpha" == "FF" ]] &&  sed -i "s/\$alpha: 0.3/\$alpha: 1.0/" "$eww" \
 	|| sed -i "s/\$alpha: 1.0/\$alpha: 0.3/" "$eww" 
-	sed -i -e "s/\$background: #.*/\$background: ${bg_light};/g" \
+	sed -i 	"$eww" \
+		-e "s/\$background: #.*/\$background: ${bg_light};/g" \
 		-e "s/\$bg-alt: #.*/\$bg-alt: ${BG};/g" \
 		-e "s/\$fg: #.*/\$fg: ${FG};/g" \
 		-e "s/\$fg-alt: #.*/\$fg-alt: $white;/g" \
@@ -166,8 +185,7 @@ change_colors(){
 		-e "s/\$purple: #.*/\$purple: $bright_magenta;/g" \
 		-e "s/\$cyan: #.*/\$cyan: $bright_cyan;/g" \
 		-e "s/\$gray: #.*/\$gray: $bright_black;/g" \
-		-e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g" \
-	"$eww"
+		-e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g"
 	fi
 	
 	# waybar
@@ -405,7 +423,7 @@ run(){
 			bright_white="$(printf "%s\n" "$color15")"
 			# Additional colors
 			bg_mix="$(pastel mix -f 0.4 $bright_black $black | pastel format hex)"
-			bg_light="$(pastel lighten 0.04 ${background:1} | pastel format hex)"
+			bg_light="$(pastel mix -f 0.2 $bright_black $black | pastel format hex)"
 			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
 			bg_rgb="$(pastel format rgb ${background:1})"
 			bg_mix_rgb="$(pastel format rgb ${bg_mix:1})"
