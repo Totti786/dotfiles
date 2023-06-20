@@ -49,11 +49,11 @@ install_full(){
 	sudo pacman -Syu $(cat "$DIR"/deps/minimal.txt) --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
 	sudo pacman -U "$DIR"/deps/packages/additional/*.zst --needed --noconfirm
-	#yay -S $(cat additional.txt) --needed --noconfirm
+	yay -S $(cat additional.txt) --needed --noconfirm
 	}
 
 minimal_install(){
-	checkrepo &&
+	#checkrepo &&
 	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
@@ -63,7 +63,7 @@ minimal_install(){
 	}
 
 full_install(){
-	#checkrepo &&
+	checkrepo &&
 	install_full
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
@@ -84,7 +84,6 @@ moveConfigs(){
     mkdir -p "$HOME/.local/share/icons"
     mkdir -p "$HOME/.local/share/fonts"
     
-    #tar -xf "$DIR"/deps/Papirus-icons.tar.gz -C "$HOME/.local/share/icons"
 	tar -xf "$DIR"/deps/fonts.tar.gz -C "$HOME/.local/share/fonts"
 	}
 	
