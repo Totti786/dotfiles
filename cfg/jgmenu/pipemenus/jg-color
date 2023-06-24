@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Set directory paths
-WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"             # Directory for wallpapers
+WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"              # Directory for wallpapers
 CACHE_DIR="$HOME/.cache/wal"                            # Cache directory
 WPG_DIR="$HOME/.config/wpg/schemes"                     # Directory for wpg schemes
 SAVED_THEMES="$HOME/.themes/saved"                      # Directory for saved themes
@@ -12,12 +12,7 @@ CURRENT_THEME="$WPG_DIR/$(sed 'y/\/./__/' $HOME/.fehbg | tail -n1 | cut -d "'" -
 CURRENT_WALL="$(cat $HOME/.fehbg | cut -d "'" -f2 | tail -n1)"
 
 # Read color scheme from JSON file
-color_scheme=($(jq -r '.colors[]' "$CURRENT_THEME"))
-
-# Define output arrays
-menu=()
-submenu=()
-submenu1=()
+color_scheme=($(grep -oE '"color[0-9]+": "#[^"]+"' "$CURRENT_THEME" | awk -F'"' '{print $4}'))
 
 change_color(){
     # Prompt user to choose a color
@@ -51,10 +46,11 @@ change_color_here(){
 }
 
 change_scheme(){
-    if grep -q "colors" "$1"; then
-        colors=($(jq -r '.colors[]' "$1"))
-    elif grep -q "color" "$1"; then
-        colors=($(jq -r '.color[]' "$1"))
+	echo $1
+    if grep -qw "color" "$1"; then
+		colors=($(grep -o '"#.*"' "$1" | head -n -2 | cut -d '"' -f 2))
+    elif grep -qw "colors" "$1"; then
+		colors=($(grep -oE '"color[0-9]+": "#[^"]+"' "$1" | awk -F'"' '{print $4}'))
     fi
     
     # Replace the colors in the first file
@@ -75,20 +71,33 @@ menu+=("ReGenerate Colors,^checkout(regen)")
 submenu+=("^tag(regen)")
 submenu+=("^sep(Regenerate)")
 submenu+=("Manage Color Schemes,wpg")
-submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu+=("Increase Saturation,wpg --sat $CURRENT_WALL 0.1 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu+=("Decrease Saturation,wpg --sat $CURRENT_WALL -0.1 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu+=("Increase Brightness,wpg --brt $CURRENT_WALL 10 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu+=("Decrease Brightness,wpg --brt $CURRENT_WALL -10 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu+=("Apply Colors,wpg -s $CURRENT_WALL")
-submenu+=("Reset Colors,wpg -R $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu+=("Export Colors, mkdir -p $SAVED_THEMES && cp $COLORS_FILE $SAVED_THEMES/$(basename $CURRENT_WALL).json")
 submenu+=("Import Color Scheme,^checkout(import)")
+submenu+=("Manage Colors,^checkout(manage)")
+submenu1+=("^tag(manage)")
+submenu1+=("Increase Saturation,wpg --sat $CURRENT_WALL 0.1 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu1+=("Decrease Saturation,wpg --sat $CURRENT_WALL -0.1 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu1+=("Increase Brightness,wpg --brt $CURRENT_WALL 10 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu1+=("Decrease Brightness,wpg --brt $CURRENT_WALL -10 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu+=("Apply Colors,wpg -s $CURRENT_WALL")
+submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu+=("Reset Colors,wpg -R $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
+submenu+=("Export Colors, mkdir -p $SAVED_THEMES && cp $COLORS_FILE $SAVED_THEMES/${CURRENT_WALL##*/}.json")
 submenu1+=("^tag(import)")
 
-if [[ "$(ls -A $SAVED_THEMES)" ]]; then 
-    for file in "$SAVED_THEMES"/* ;do 
-        submenu1+=("Import $(basename $file),$0 change_scheme $file")
+if [[ "$(ls -A $SAVED_THEMES)" ]]; then
+    for file in "$SAVED_THEMES"/* ;do
+		if grep -qw "color" "$file"; then
+			scheme=($(awk -F'"' '/"#[^"]+"/ {print $2}' "$file" | head -n -2))
+		elif grep -qw "colors" "$file"; then
+			scheme=($(awk -F'"' '/"color[0-9]+": "#[^"]+"/ {print $4}' "$file"))
+		fi
+        submenu1+=("${file##*/},^checkout($file)")
+   		submenu2+=("^tag($file)")
+   		submenu2+=("Change Colors,$0 change_scheme $file")
+        for i in "${scheme[@]}"; do
+            submenu2+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>")
+		done
+        submenu2+=("^sep(${file##*/})")
     done
 fi
 
@@ -107,11 +116,11 @@ done
 menu+=("^sep(Set Random Wallpaper)")
 userwallp="$(shopt -s globstar nullglob ; files=($WALLPAPERS_DIR/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}) ; echo "${#files[@]}")"
 menu+=("  Wallpapers (<small>${userwallp}</small>),wpgtk random")
-menu+=("^sep($(basename $CURRENT_WALL))")
+menu+=("^sep(${CURRENT_WALL##*/})")
 
 alone() {
     # Output combined entries to Jgmenu
-    printf '%s\n' "${menu[@]}" "${submenu[@]}" "${submenu1[@]}" | jgmenu --simple
+    printf '%s\n' "${menu[@]}" "${submenu[@]}" "${submenu1[@]}" "${submenu2[@]}" | jgmenu --simple
 }
 
 # Define main function to output results
@@ -119,6 +128,7 @@ main() {
     printf '%s\n' "${menu[@]}"
     printf '%s\n' "${submenu[@]}"
     printf '%s\n' "${submenu1[@]}"
+    printf '%s\n' "${submenu2[@]}"
 }
 
 if [[ "$1" ]]; then "$@" ;else main ;fi
