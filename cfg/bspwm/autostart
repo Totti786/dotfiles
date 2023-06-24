@@ -38,9 +38,6 @@ wal -Re &
 # Launch Polybar
 "$HOME"/.config/polybar/launch.sh &
 
-# Launch System Tray
-"$HOME"/.config/polybar/scripts/systray &
-
 # CopyQ
 copyq --start-server &
 
