@@ -1,12 +1,11 @@
 #!/bin/sh
 
-source ~/.local/bin/env.sh 
-
-envFile=~/.local/bin/env.sh 
+REDSHIFT=off
+REDSHIFT_TEMP=4200
 changeValue=200
 
 changeMode() {
-  sed -i "s/REDSHIFT=$1/REDSHIFT=$2/g" $envFile 
+  sed -i "s/REDSHIFT=$1/REDSHIFT=$2/g" $0 
   REDSHIFT=$2
   echo $REDSHIFT
 }
@@ -14,7 +13,7 @@ changeMode() {
 changeTemp() {
   if [ "$2" -gt 1000 ] && [ "$2" -lt 25000 ]
   then
-    sed -i "s/REDSHIFT_TEMP=$1/REDSHIFT_TEMP=$2/g" $envFile 
+    sed -i "s/REDSHIFT_TEMP=$1/REDSHIFT_TEMP=$2/g" $0 
     redshift -P -O $((REDSHIFT_TEMP+changeValue))
   fi
 }
