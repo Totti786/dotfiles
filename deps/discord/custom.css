@@ -1,106 +1,158 @@
 /**
- * @name Zelkdis
- * @version 1.2.2
- * @description a smooth theme inspired by zorin
- * @author schnensch
- * @authorId 652801938374656013
- * @source https://github.com/schnensch0/zelk
- * @invite tMEcBhsNqA
- */
-/*         ▀▀█ █▀▀ █   █ █
-           ▄▀  █▀▀ █   █▀▄
-           ▀▀▀ ▀▀▀ ▀▀▀ ▀ ▀           */
- /*--------------IMPORTS------------- */
+* @name Comfy
+* @author Nyria#3863
+* @description Stay comfy while talking to your friends
+* @invite rtBQX5D3bD
+* @version 2.4
+* @donate https://ko-fi.com/nyria
+*/
 
-@import url(https://schnensch0.github.io/zelk/main.css);
-@import url(gtk.css);
+@import "https://comfy-themes.github.io/Discord/betterdiscord/main.css";
 
-/*-------------VARIABLES-------------*/
+/* ═══════『 ・Important tips 』═══════
+*
+*   ➥ To comment or uncomment a line you need to put those "/" and "*" characters as you can see at the beginning and ending of my comments.
+*      (You don't need to put a * at each line like I do, it's just for readability). See more here : https://developer.mozilla.org/en-US/docs/Web/CSS/Comments
+*
+*   ➥ You can play with the values and see how it goes, don't delete "px" after the value if you don't have knowledge of CSS.
+*
+*   ➥ To change the colors, replace the HEX code with the one you picked here : https://htmlcolorcodes.com
+*/
+
+/* ═══════『 ・ No scrollbars 』- Comment the line below if you want the scrollbar back */
+@import "https://comfy-themes.github.io/Discord/betterdiscord/no-scrollbar.css";
+
+/* ═══════『 ・ Better SpotifyControls seek bar 』- Comment the line below if you want the scrollbar back */
+/*@import "https://comfy-themes.github.io/Discord/betterdiscord/better-spotify.css"; */
+
 :root {
-  /* set to 'unset' to show */
-  --scrollbars: none;
-  /* user notes */
-  --notes: show;
-  /* direct message box */
-  --message: show;
-  /* set to '4px solid' to show */
-  --embed-color: none;
-  /* set to 'Inter', sans-serif !important to use Inter font*/
-  --font-primary: Whitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-display: Whitney, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  --border-radius-1: 10px;
-  --border-radius-2: 8px;
-}
-/*-----------CUSTOM COLORS-----------*/
-/*-------------DARK MODE-------------*/
-/*---------------BASIC---------------*/
-.theme-dark {
-  --accent-color: #ffe7f0;
-  --background-1: #0e0b09;
-  --background-2: #090706;
-  --background-accent: #090706;
-  --border-color: #271e19;
+  /* ═══════『 ・ Animations 』- If you don't want a high CPU usage, comment the line below */
+  --disable-animations: 2s channel-unread infinite;
+
+/* ═══════『 ・ User button 』═══════
+*
+*   ➥ A higher value means more space between the icons and a lower ...
+*
+*    : If you want to revert those to the old area, join the support server and check #css-snippets
+*
+*/
+
+  /* Spacing - Default value : 8px */
+  --user-buttons-spacing: 8px;
+
+  /* Color - Default value : #096DC0 */
+  --user-buttons-color: #afefff;
+
+  /* ═══════『 Roundness settings 』═══════
+*
+*    ➥ A higher value means more rounded corners and a lower ...
+*       0 ➜ Square
+*       25 ➜ Circle
+*/
+
+  /* Avatars - Default value : 5px */
+  --avatar-radius: 25px;
+
+  /* Status - Default value : 3px */
+  --status-radius: 25px;
+
+  /* Servers - Default value : 8px */
+  --server-radius: 25px;
+
+  /* ═══════『 Colored emoji picker 』═══════
+*   Change the value to "100%" if you want the default one */
+
+  --colored-emoji: grayscale(100%);
+
+  /* ═══════『 Server/channel list 』═══════ */
+
+  /* Mention - Default value : #F04747 */
+  --mention-color: #f04747;
+
+  /* Unread - Default value : #7289DA */
+  --unread-color: #259ad8;
+
+  /*  『Mention colors in chat 』 */
+
+  /* Bar on the right - Default value : #C66262 */
+  --mention-color-bar: #c66262;
+
+  /* Background - Default value : #C662621F */
+  --mention-color-background: #c662621f;
+
+  /* On hover - Default value : #C6626226 */
+  --mention-color-hover: #c6626226;
+
+  /* ═══════『 Chat buttons 』═══════ */
+
+  /* Default value : #7289DA */
+  --chat-buttons: #7289da;
+
+  /* ═══════『 SpotifyControls seek bar 』═══════
+*   If you don't have the plugin : https://betterdiscord.app/plugin/SpotifyControls */
+
+  /* Default value : #1EDC62 */
+  --spotify-color: #1edc62;
+
+  /* ═══════『 Status 』═══════ */
+
+  /* Online - Default value : #43B581 */
+  --online: #43b581;
+
+  /* Idle - Default value : #FAA61A */
+  --iddle: #faa61a;
+
+  /* Do Not Disturb - Default value : #F04747 */
+  --dnd: #f04747;
+
+  /* Offline - Default value : #747F8D */
+  --offline: #747f8d;
+
+  /* Streaming - Default value : #593695 */
+  --streaming: #593695;
+
+  /* ═══════『 User popout 』═══════ */
+
+  /* Playing wave color */
+  --playing: #7289da;
+
+  /* Listening wave color */
+  --listening: #1db653;
+
+  /* Role circle - Default value : 5px */
+  --role-circle: 5px;
+
+  /* ═══════『 Discord logo 』═══════
+*   Set it to "block" if you still want it */
+
+  --discord-logo: block;
 }
 
-/*-------------ADVANCED--------------*/
 .theme-dark {
-  /* background */
-  --background-primary: var(--background-1);
-  --background-primary-alt: var(--background-1);
-  --background-secondary: var(--background-1);
-  --background-secondary-alt: var(--background-1);
-  --background-tertiary: var(--background-2);
-  --background-accent-gradient: var(--background-2);
-  --background-floating: var(--background-1);
-  --background-mentioned: #bde6fb10;
-  --background-mentioned-hover: #bde6fb15;
-  /* modifiers */
-  --background-modifier-hover: #f186b6;
-  --background-modifier-active: #495a63;
-  --background-modifier-selected: var(--accent-color);
-  --background-modifier-accent: transparent;
+  --background-primary: #161c32;
+  --background-secondary: #13182b;
+  --background-secondary-alt: #161c32;
+  --background-tertiary: #161c32;
+  --background-accent: #64cfff;
+
+  --modal-background: #13182b;
+  --background-mobile-primary: #161c32;
+  --background-mobile-secondary: #13182b;
+  --channeltextarea-background: #13182b;
   --background-message-hover: transparent;
-  /* text */
-  --text-normal: var(--accent-color);
-  --text-positive: var(--text-normal);
-  --text-muted: #ffe7f0;
-  --text-link: #edf8fe;
-  --interactive-selected: var(--background-primary);
-  --interactive-active: var(--text-normal);
-  --interactive-normal: var(--text-normal);
-  --interactive-muted: var(--button-background-active);
-  --channels-default: var(--text-muted);
-  --header-primary: var(--text-normal);
-  --header-secondary: var(--text-muted);
-  /* more */
-  --settings-icon-color: #ffe7f0;
-  --control-brand-foreground: var(--accent-color);
-  --info-warning-foreground: var(--accent-color);
-  --tab-selected: #788ad0;
-  --switch: #3d4c53;
-  --activity-card-background: var(--background-1);
-  --brand-experiment: var(--accent-color) !important;
-  /* buttons */
-  --button-background: #2a3439;
-  --button-background-hover: #ff6c7a;
-  --button-background-active: #4d5f68;
-  --button-accent: var(--accent-color);
-  --button-accent-hover: #d2f3ff;
-  --button-accent-active: #8dd4f8;
-  --button-destructive: #ffa485;
-  --button-destructive-hover: #ff929b;
-  --button-destructive-active: #fa4a4a;
-}
-
-/*-----------DON'T CHANGE------------*/
-:root {
-  --outdated-122: none !important;
-}
-/*  usrbg | snippet by _david_#0218  */
-.userPopout-2j1gM4[style*="--user-background"] .banner-1YaD3N, .root-8LYsGj[style*="--user-background"] .banner-1YaD3N {
-  height: 120px;
-  background: var(--background-tertiary) var(--user-background) var(--user-popout-position, center) center / cover !important;
-}
-.root-8LYsGj[style*="--user-background"] .banner-1YaD3N {
-  height: 240px;
+  --background-modifier-hover: #00000010;
+  --background-modifier-active: #0000001a;
+  --background-modifier-selected: #0000001f;
+  --deprecated-card-bg: #12141f63;
+  --background-floating: #13182b;
+  --deprecated-quickswitcher-input-background: #101320;
+  --elevation-low: none;
+  --scrollbar-auto-thumb: #121722;
+  --scrollbar-auto-track: #191f2e;
+  --scrollbar-thin-thumb: #141925;
+  --activity-card-background: #13182b;
+  --input-background: #13182b;
+  --header-primary: #fff;
+  --header-secondary: #b1b5b9;
+  --text-normal: #ccffff;
 }
