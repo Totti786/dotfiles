@@ -2,13 +2,13 @@
 
 cached="$HOME/.cache/rofi-zathura"
 history="$HOME/.local/share/zathura/history"
-mkdir -p "$HOME/.local/share/applications/Books"
+mkdir -p "$HOME/.local/share/applications/books"
 mkdir -p "$cached"
 
 main() {
 	readarray -t lines < <(grep -i "home" "$history" | tr -d "[]")
 	for line in "${lines[@]}"; do
-		[[ -f "$line" ]] && name1="${line##*/}" name="${name1%.*}"
+		[[ -f "$line" ]] && name="${line##*/}" name="${name%.*}"
 		type=${line##*.}
 		if [[ "$type" == "pdf" ]] && ! [[ -f "$cached/$name.png" ]]; then
 			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
@@ -18,7 +18,7 @@ main() {
 			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
 		fi &> /dev/null
 		
-		book="$HOME/.local/share/applications/Books/$name.desktop"
+		book="$HOME/.local/share/applications/books/$name.desktop"
 		if [[ ! -f "$book" ]]; then
 			cat > "$book" <<- EOF
 			[Desktop Entry]
@@ -36,8 +36,8 @@ main() {
 
 if [[ $(grep -i "home" "$history") ]]; then 
 	[[ -z "$(ls -A $cached)" ]] && notify-send -t 2000 -r 40 "Rofi-Zathura" "Generating Thumbnails..."
-	main && rm "$HOME"/.local/share/applications/Books/*
+	main && rm "$HOME"/.local/share/applications/books/*
 else
-	notify-send -t 1000 -r 41 "Rofi-Zathura" "No Documents Were Found"
+	notify-send -t 2000 -r 41 "Rofi-Zathura" "No Documents Were Found"
 fi
 
