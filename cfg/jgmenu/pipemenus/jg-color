@@ -46,7 +46,6 @@ change_color_here(){
 }
 
 change_scheme(){
-	echo $1
     if grep -qw "color" "$1"; then
 		colors=($(grep -o '"#.*"' "$1" | head -n -2 | cut -d '"' -f 2))
     elif grep -qw "colors" "$1"; then
@@ -62,7 +61,13 @@ change_scheme(){
 add_scheme(){
     # Prompt user to select a JSON file and copy it to the saved themes directory
     file="$(zenity --file-selection --file-filter='JSON files (*.json) | *.json' --file-filter='Text files (*.txt) | *.txt')"
-    [[ -n "$file" ]] && cp "$file" "$SAVED_THEMES"
+    if [[ -n "$file" ]]; then 
+		if [[ $(cat $file | wc -l) < 2 ]]; then 
+			cat "$file" | jq > "$SAVED_THEMES"/${file##*/}
+		else
+			cp "$file" "$SAVED_THEMES"
+		fi
+    fi
 }
 
 # Add wallpaper colors section
@@ -71,17 +76,17 @@ menu+=("ReGenerate Colors,^checkout(regen)")
 submenu+=("^tag(regen)")
 submenu+=("^sep(Regenerate)")
 submenu+=("Manage Color Schemes,wpg")
-submenu+=("Import Color Scheme,^checkout(import)")
-submenu+=("Manage Colors,^checkout(manage)")
-submenu1+=("^tag(manage)")
-submenu1+=("Increase Saturation,wpg --sat $CURRENT_WALL 0.1 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu1+=("Decrease Saturation,wpg --sat $CURRENT_WALL -0.1 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu1+=("Increase Brightness,wpg --brt $CURRENT_WALL 10 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu1+=("Decrease Brightness,wpg --brt $CURRENT_WALL -10 && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu+=("Apply Colors,wpg -s $CURRENT_WALL")
-submenu+=("Shuffle Colors,wpg -z $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu+=("Reset Colors,wpg -R $CURRENT_WALL && wpg -s $CURRENT_WALL && rm $CURRENT_WALL'_wal_sample.png'")
-submenu+=("Export Colors, mkdir -p $SAVED_THEMES && cp $COLORS_FILE $SAVED_THEMES/${CURRENT_WALL##*/}.json")
+submenu+=("Saved Color Schemes,^checkout(import)")
+submenu+=("Modify Colors,^checkout(modify)")
+submenu1+=("^tag(modify)")
+submenu1+=("Increase Saturation,wpg --sat \"$CURRENT_WALL\" 0.1 && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
+submenu1+=("Decrease Saturation,wpg --sat \"$CURRENT_WALL\" -0.1 && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
+submenu1+=("Increase Brightness,wpg --brt \"$CURRENT_WALL\" 10 && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
+submenu1+=("Decrease Brightness,wpg --brt \"$CURRENT_WALL\" -10 && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
+submenu+=("Apply Colors,wpg -s \"$CURRENT_WALL\"")
+submenu+=("Shuffle Colors,wpg -z \"$CURRENT_WALL\" && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
+submenu+=("Reset Colors,wpg -R \"$CURRENT_WALL\" && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
+submenu+=("Export Colors, mkdir -p $SAVED_THEMES && cp $COLORS_FILE \"$SAVED_THEMES/${CURRENT_WALL##*/}.json\"")
 submenu1+=("^tag(import)")
 
 if [[ "$(ls -A $SAVED_THEMES)" ]]; then
@@ -93,7 +98,8 @@ if [[ "$(ls -A $SAVED_THEMES)" ]]; then
 		fi
         submenu1+=("${file##*/},^checkout($file)")
    		submenu2+=("^tag($file)")
-   		submenu2+=("Change Colors,$0 change_scheme $file")
+   		submenu2+=("Import Scheme,$0 change_scheme \"$file\"")
+   		submenu2+=("Delete Scheme,rm \"$file\"")
         for i in "${scheme[@]}"; do
             submenu2+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>")
 		done
@@ -108,7 +114,7 @@ for i in "${color_scheme[@]}"; do
     menu+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>,^checkout(${i:1}$((++n)))")
     submenu+=("^tag(${i:1}$n)")
     submenu+=("^sep(<tt>Color <small>$i</small> <span bgcolor='$i'>    </span></tt>)")
-    submenu+=("Set as Folder Color,papirus-folder.sh --color '${i}'")
+    submenu+=("Set as Folder Color,papirus-folder.sh '${i}'")
     submenu+=("Chnage Color,$0 change_color \"$i\" \"$(( $n - 1 ))\" ")
 done
 
