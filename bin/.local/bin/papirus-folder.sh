@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# This script takes an optional command line argument -c/--color to specify the color to use for icons.
-# If no argument is provided, the script falls back to a default color.
-
 # Dependencies: `xfconf-query` `sed`
 
 # This function takes a hexadecimal color value and a light delta, and returns a darker color value.
@@ -36,21 +33,17 @@ darker() {
 
 # This function reloads the icon theme by resetting it to "Papirus-Dark1" and then to "Papirus".
 reload(){
-	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark1" &&
+	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus1" &&
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"
 }
 
 # Parse command line arguments.
-while [[ $# -gt 0 ]]
-do
-	case "$1" in
-		-c|--color)
-			ICONS_COLOR=${2#\#}  # remove leading hash symbol
-			shift
-			;;
-	esac
-	shift
-done
+if [[ -n "$1" ]] && [[ "$1" =~ ^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$ ]]; then # checks if the provided color is a valid hex value
+	ICONS_COLOR=${1:1} # remove leading hash symbol
+else
+	echo "No valid color was provided"
+	exit
+fi
 
 # Set default values for icon colors.
 dir="$HOME/.local/share/icons/"
@@ -78,9 +71,9 @@ for size in 24x24 32x32 48x48 64x64; do
 		[ -L "$icon_path" ] && continue
 
 		# Construct the new icon name and symlink path by replacing the "-custom" suffix with "-oomox"
-		new_icon_path="${icon_path/-custom/-oomox}"
+		new_icon_path="${icon_path/-custom/-pywal}"
 		icon_name="${new_icon_path##*/}"
-		symlink_path="${new_icon_path/-oomox/}"  # remove color suffix
+		symlink_path="${new_icon_path/-pywal/}"  # remove color suffix
 
 		# Replace the accent colors in the SVG file using sed and save it to the new icon path
 		sed -e "s/value_light/$ICONS_LIGHT_FOLDER/g" \
