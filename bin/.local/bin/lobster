@@ -1,6 +1,6 @@
 #!/bin/sh
 
-LOBSTER_VERSION="4.0.3"
+LOBSTER_VERSION="4.0.6"
 
 config_file="$HOME/.config/lobster/lobster_config.txt"
 lobster_editor=${VISUAL:-${EDITOR}}
@@ -11,6 +11,21 @@ if [ "$1" = "--edit" ] || [ "$1" = "-e" ]; then
         . "${config_file}"
         [ -z "$lobster_editor" ] && lobster_editor="vim"
         "$lobster_editor" "$config_file"
+    else
+        printf "No configuration file found. Would you like to generate a default one? [y/N] " && read -r generate
+        case "$generate" in
+            "Yes" | "yes" | "y" | "Y")
+                [ ! -d "$HOME/.config/lobster" ] && mkdir -p "$HOME/.config/lobster"
+                printf "Getting the latest example config from github...\n"
+                curl -s "https://raw.githubusercontent.com/justchokingaround/lobster/main/examples/lobster_config.txt" -o "$config_file"
+                printf "New config generated!\n"
+                #shellcheck disable=1090
+                . "${config_file}"
+                [ -z "$lobster_editor" ] && lobster_editor="vim"
+                "$lobster_editor" "$config_file"
+                ;;
+            *) exit 0 ;;
+        esac
     fi
     exit 0
 fi
@@ -38,10 +53,8 @@ if [ "$1" = "--clear-history" ] || [ "$1" = "--delete-history" ]; then
 fi
 
 cleanup() {
-    if ! pgrep ueberzugpp >/dev/null; then
-        [ "$debug" != 1 ] && rm -rf /tmp/lobster/ 2>/dev/null
-        [ "$remove_tmp_lobster" = 1 ] && rm -rf /tmp/lobster/ 2>/dev/null
-    fi
+    [ "$debug" != 1 ] && rm -rf /tmp/lobster/ 2>/dev/null
+    [ "$remove_tmp_lobster" = 1 ] && rm -rf /tmp/lobster/ 2>/dev/null
     if [ "$image_preview" = "1" ] && [ "$use_external_menu" = "0" ]; then
         killall ueberzugpp 2>/dev/null
         rm /tmp/ueberzugpp-* 2>/dev/null
@@ -55,13 +68,12 @@ trap cleanup EXIT INT TERM
     images_cache_dir="/tmp/lobster/lobster-images"
     tmp_position="/tmp/lobster_position"
     case "$(uname -s)" in
-        MINGW* | *Msys) separator=';' && path_thing='' ;;
+        MINGW* | *Msys) separator=';' && path_thing='' && sed="sed" ;;
         *arwin) sed="gsed" ;;
         *) separator=':' && path_thing="\\" && sed="sed" ;;
     esac
 
     command -v notify-send >/dev/null 2>&1 && notify="true" || notify="false"
-    command -v socat >/dev/null 2>&1 && socat_exists="true" || socat_exists="false"
     send_notification() {
         [ "$json_output" = "1" ] && return
         if [ "$use_external_menu" = "0" ] || [ "$use_external_menu" = "" ]; then
@@ -74,14 +86,18 @@ trap cleanup EXIT INT TERM
             [ -n "$3" ] && notify-send "$1" "$4" -t "$timeout" -i "$3" -h string:x-dunst-stack-tag:vol
         fi
     }
-    command -v "hxunent" >/dev/null || send_notification "Please install html-xml-utils\n"
+    if command -v "hxunent" >/dev/null; then
+        hxunent="hxunent"
+    else
+        hxunent="tee /dev/null"
+    fi
     dep_ch() {
         for dep; do
             command -v "$dep" >/dev/null || send_notification "Program \"$dep\" not found. Please install it."
             command -v "$dep" >/dev/null || exit 1
         done
     }
-    dep_ch "grep" "$sed" "curl" "fzf" "mpv" "socat" || true
+    dep_ch "grep" "$sed" "curl" "fzf" "mpv" || true
     if [ "$use_external_menu" = "1" ]; then
         dep_ch "rofi" || true
     fi
@@ -142,15 +158,15 @@ EOF
         [ -z "$stdin" ] && return 1
         prompt="$1"
         [ $# -ne 1 ] && shift
-        line=$(printf "%s" "$stdin" | $sed -nE "s@^(.*)\t[0-9:]*\t[0-9]*\t(tv|movie)(.*)@\1 (\2)\t\3@p" | cut -f1-3,6,7 --output-delimiter "|" | launcher "$prompt" | cut -d "|" -f 1)
+        line=$(printf "%s" "$stdin" | $sed -nE "s@^(.*)\t[0-9:]*\t[0-9]*\t(tv|movie)(.*)@\1 (\2)\t\3@p" | cut -f1-3,6,7 | tr '\t' '|' | launcher "$prompt" | cut -d "|" -f 1)
         [ -n "$line" ] && printf "%s" "$stdin" | $sed -nE "s@^$line\t(.*)@\1@p" || exit 1
     }
 
     prompt_to_continue() {
         if [ "$media_type" = "tv" ]; then
-            continue_choice=$(printf "Yes\nExit\nSearch" | launcher "Continue? ")
+            continue_choice=$(printf "Next episode\nReplay episode\nExit\nSearch" | launcher "Select: ")
         else
-            continue_choice=$(printf "Exit\nSearch" | launcher "Continue? ")
+            continue_choice=$(printf "Exit\nSearch" | launcher "Select: ")
         fi
     }
 
@@ -236,7 +252,7 @@ EOF
     }
 
     image_preview_fzf() {
-        UB_PID_FILE="/tmp/.$(uuidgen)"
+        UB_PID_FILE="/tmp/lobster/.$(uuidgen)"
         if [ -z "$ueberzug_output" ]; then
             ueberzugpp layer --no-stdin --silent --use-escape-codes --pid-file "$UB_PID_FILE"
         else
@@ -263,10 +279,13 @@ EOF
     }
 
     search() {
-        [ "$image_preview" = "1" ] && response=$(curl -s "https://${base}/search/$query" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
-            $sed -nE "s@.*img data-src=\"([^\"]*)\".*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\1\t\3\t\2\t\4 [\5]@p" | hxunent)
-        [ "$image_preview" = "0" ] && response=$(curl -s "https://${base}/search/$query" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
-            $sed -nE "s@.*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\3 (\1) [\4]\t\2@p" | hxunent)
+        if [ "$image_preview" = "1" ]; then
+            response=$(curl -s "https://${base}/search/$query" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
+                $sed -nE "s@.*img data-src=\"([^\"]*)\".*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\1\t\3\t\2\t\4 [\5]@p")
+        else
+            response=$(curl -s "https://${base}/search/$query" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
+                $sed -nE "s@.*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\3 (\1) [\4]\t\2@p" | $hxunent)
+        fi
         [ -z "$response" ] && send_notification "Error" "1000" "" "No results found" && exit 1
     }
 
@@ -277,7 +296,7 @@ EOF
             season_title=$(printf "%s" "$tmp_season_id" | cut -f1)
             season_id=$(printf "%s" "$tmp_season_id" | cut -f2)
             tmp_ep_id=$(curl -s "https://${base}/ajax/v2/season/episodes/${season_id}" | $sed ':a;N;$!ba;s/\n//g;s/class="nav-item"/\n/g' |
-                $sed -nE "s@.*data-id=\"([0-9]*)\".*title=\"([^\"]*)\">.*@\2\t\1@p" | hxunent | launcher "Select an episode: " "1")
+                $sed -nE "s@.*data-id=\"([0-9]*)\".*title=\"([^\"]*)\">.*@\2\t\1@p" | $hxunent | launcher "Select an episode: " "1")
             [ -z "$tmp_ep_id" ] && exit 1
         fi
         [ -z "$episode_title" ] && episode_title=$(printf "%s" "$tmp_ep_id" | cut -f1)
@@ -386,35 +405,22 @@ EOF
                 if [ "$history" = 1 ]; then
                     if [ -n "$subs_links" ]; then
                         if [ -n "$resume_from" ]; then
-                            nohup mpv --start="$resume_from" "$subs_arg"="$subs_links" --force-media-title="$displayed_title" --input-ipc-server=/tmp/mpvsocket "$video_link" >/dev/null 2>&1 &
+                            mpv --start="$resume_from" "$subs_arg"="$subs_links" --force-media-title="$displayed_title" "$video_link" 2>&1 | tee "$tmp_position"
                         else
-                            nohup mpv --sub-file="$subs_links" --force-media-title="$displayed_title" --input-ipc-server=/tmp/mpvsocket "$video_link" >/dev/null 2>&1 &
+                            mpv --sub-file="$subs_links" --force-media-title="$displayed_title" "$video_link" 2>&1 | tee "$tmp_position"
                         fi
                     else
                         if [ -n "$resume_from" ]; then
-                            nohup mpv --start="$resume_from" --force-media-title="$displayed_title" --input-ipc-server=/tmp/mpvsocket "$video_link" >/dev/null 2>&1 &
+                            mpv --start="$resume_from" --force-media-title="$displayed_title" "$video_link" 2>&1 | tee "$tmp_position"
                         else
-                            nohup mpv --force-media-title="$displayed_title" --input-ipc-server=/tmp/mpvsocket "$video_link" >/dev/null 2>&1 &
+                            mpv --force-media-title="$displayed_title" "$video_link" 2>&1 | tee "$tmp_position"
                         fi
                     fi
-                    if [ "$socat_exists" = "true" ]; then
-                        PID=$!
-                        while ! ps -p "$PID" >/dev/null; do
-                            sleep 0.1
-                        done
-                        sleep 2
 
-                        while ps -p "$PID" >/dev/null; do
-                            position=$(echo '{ "command": ["get_property", "time-pos"] }' | socat - /tmp/mpvsocket | $sed -nE "s@.*\"data\":([0-9\.]*),.*@\1@p")
-                            [ "$position" != "" ] && printf "%s\n" "$position" >>"$tmp_position"
-                            progress=$(echo '{ "command": ["get_property", "percent-pos"] }' | socat - /tmp/mpvsocket | $sed -nE "s@.*\"data\":([0-9\.]*),.*@\1@p")
-                            sleep 1
-                        done
-                        last_line=$($sed '/^$/d' "$tmp_position" | tail -1)
-                        position=$(date -u -d "@$(printf "%.0f" "$last_line")" "+%H:%M:%S")
-                        progress=$(printf "%.0f" "$progress")
-                        [ -n "$position" ] && send_notification "Stopped at" "5000" "$images_cache_dir/  $title ($media_type)  $media_id.jpg" "$position"
-                    fi
+                    position=$($sed -nE "s@.*AV: ([0-9:]*) / ([0-9:]*) \(([0-9]*)%\).*@\1@p" "$tmp_position" | tail -1)
+                    progress=$($sed -nE "s@.*AV: ([0-9:]*) / ([0-9:]*) \(([0-9]*)%\).*@\3@p" "$tmp_position" | tail -1)
+                    [ -n "$position" ] && send_notification "Stopped at" "5000" "$images_cache_dir/  $title ($media_type)  $media_id.jpg" "$position"
+
                 else
                     if [ -n "$subs_links" ]; then
                         if [ "$quiet_output" = 1 ]; then
@@ -442,7 +448,7 @@ EOF
 
     next_episode_exists() {
         episodes_list=$(curl -s "https://${base}/ajax/v2/season/episodes/${season_id}" | $sed ':a;N;$!ba;s/\n//g;s/class="nav-item"/\n/g' |
-            $sed -nE "s@.*data-id=\"([0-9]*)\".*title=\"([^\"]*)\">.*@\2\t\1@p" | hxunent)
+            $sed -nE "s@.*data-id=\"([0-9]*)\".*title=\"([^\"]*)\">.*@\2\t\1@p" | $hxunent)
         next_episode=$(printf "%s" "$episodes_list" | $sed -n "/$data_id/{n;p;}")
         [ -n "$next_episode" ] && return
         tmp_season_id=$(curl -s "https://${base}/ajax/v2/tv/seasons/${media_id}" | $sed -n "/href=\".*-$season_id/{n;n;n;n;p;}" | $sed -nE "s@.*href=\".*-([0-9]*)\">(.*)</a>@\2\t\1@p")
@@ -450,7 +456,7 @@ EOF
         season_title=$(printf "%s" "$tmp_season_id" | cut -f1)
         season_id=$(printf "%s" "$tmp_season_id" | cut -f2)
         next_episode=$(curl -s "https://${base}/ajax/v2/season/episodes/${season_id}" | $sed ':a;N;$!ba;s/\n//g;s/class="nav-item"/\n/g' |
-            $sed -nE "s@.*data-id=\"([0-9]*)\".*title=\"([^\"]*)\">.*@\2\t\1@p" | hxunent | head -1)
+            $sed -nE "s@.*data-id=\"([0-9]*)\".*title=\"([^\"]*)\">.*@\2\t\1@p" | $hxunent | head -1)
         [ -n "$next_episode" ] && return
     }
 
@@ -526,20 +532,22 @@ EOF
             [ "$history" = 1 ] && save_history
             prompt_to_continue
             case "$continue_choice" in
-                "Yes")
+                "Next episode")
                     resume_from=""
-                    if [ "$history" = 0 ]; then
-                        next_episode_exists
-                        if [ -n "$next_episode" ]; then
-                            episode_title=$(printf "%s" "$next_episode" | cut -f1)
-                            data_id=$(printf "%s" "$next_episode" | cut -f2)
-                            episode_id=$(curl -s "https://${base}/ajax/v2/episode/servers/${data_id}" | $sed ':a;N;$!ba;s/\n//g;s/class="nav-item"/\n/g' | $sed -nE "s@.*data-id=\"([0-9]*)\".*title=\"([^\"]*)\".*@\1\t\2@p" | grep "$provider" | cut -f1)
-                            send_notification "Watching the next episode" "5000" "" "$episode_title"
-                        else
-                            send_notification "No more episodes" "5000" "" "$title"
-                            exit 0
-                        fi
+                    next_episode_exists
+                    if [ -n "$next_episode" ]; then
+                        episode_title=$(printf "%s" "$next_episode" | cut -f1)
+                        data_id=$(printf "%s" "$next_episode" | cut -f2)
+                        episode_id=$(curl -s "https://${base}/ajax/v2/episode/servers/${data_id}" | $sed ':a;N;$!ba;s/\n//g;s/class="nav-item"/\n/g' | $sed -nE "s@.*data-id=\"([0-9]*)\".*title=\"([^\"]*)\".*@\1\t\2@p" | grep "$provider" | cut -f1)
+                        send_notification "Watching the next episode" "5000" "" "$episode_title"
+                    else
+                        send_notification "No more episodes" "5000" "" "$title"
+                        exit 0
                     fi
+                    continue
+                    ;;
+                "Replay episode")
+                    resume_from=""
                     continue
                     ;;
                 "Search")
@@ -588,7 +596,7 @@ EOF
         [ ! -f "$histfile" ] && send_notification "No history file found" "5000" "" && exit 1
         [ "$watched_history" = 1 ] && exit 0
         watched_history=1
-        choice=$(tac "$histfile" | nl -w 1 | nth "Choose an entry:")
+        choice=$($sed -n "1h;1!{x;H;};\${g;p;}" "$histfile" | nl -w 1 | nth "Choose an entry:")
         [ -z "$choice" ] && exit 1
         media_type=$(printf "%s" "$choice" | cut -f4)
         title=$(printf "%s" "$choice" | cut -f1)
@@ -607,26 +615,35 @@ EOF
 
     # TODO: remove code duplication
     choose_from_trending() {
-        [ "$image_preview" = "1" ] && response=$(curl -s "https://${base}/home" | $sed -n '/id="trending-movies"/,/class="block_area block_area_home section-id-02"/p' | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
-            $sed -nE "s@.*img data-src=\"([^\"]*)\".*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\1\t\3\t\2\t\4 [\5]@p" | hxunent)
-        [ "$image_preview" = "0" ] && response=$(curl -s "https://${base}/home" | $sed -n '/id="trending-movies"/,/id="trending-tv"/p' | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
-            $sed -nE "s@.*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\3 (\1) [\4]\t\2@p" | hxunent)
+        if [ "$image_preview" = "1" ]; then
+            response=$(curl -s "https://${base}/home" | $sed -n '/id="trending-movies"/,/class="block_area block_area_home section-id-02"/p' | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
+                $sed -nE "s@.*img data-src=\"([^\"]*)\".*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\1\t\3\t\2\t\4 [\5]@p" | $hxunent)
+        else
+            response=$(curl -s "https://${base}/home" | $sed -n '/id="trending-movies"/,/id="trending-tv"/p' | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
+                $sed -nE "s@.*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\3 (\1) [\4]\t\2@p" | $hxunent)
+        fi
         main
     }
 
     choose_from_recent_movie() {
-        [ "$image_preview" = "1" ] && response=$(curl -s "https://${base}/movie" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
-            $sed -nE "s@.*img data-src=\"([^\"]*)\".*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\1\t\3\t\2\t\4 [\5]@p" | hxunent)
-        [ "$image_preview" = "0" ] && response=$(curl -s "https://${base}/movie" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
-            $sed -nE "s@.*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\3 (\1) [\4]\t\2@p" | hxunent)
+        if [ "$image_preview" = "1" ]; then
+            response=$(curl -s "https://${base}/movie" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
+                $sed -nE "s@.*img data-src=\"([^\"]*)\".*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\1\t\3\t\2\t\4 [\5]@p" | $hxunent)
+        else
+            response=$(curl -s "https://${base}/movie" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
+                $sed -nE "s@.*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\3 (\1) [\4]\t\2@p" | $hxunent)
+        fi
         main
     }
 
     choose_from_recent_tv() {
-        [ "$image_preview" = "1" ] && response=$(curl -s "https://${base}/tv-show" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
-            $sed -nE "s@.*img data-src=\"([^\"]*)\".*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\1\t\3\t\2\t\4 [\5]@p" | hxunent)
-        [ "$image_preview" = "0" ] && response=$(curl -s "https://${base}/tv-show" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
-            $sed -nE "s@.*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\3 (\1) [\4]\t\2@p" | hxunent)
+        if [ "$image_preview" = "1" ]; then
+            response=$(curl -s "https://${base}/tv-show" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
+                $sed -nE "s@.*img data-src=\"([^\"]*)\".*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\1\t\3\t\2\t\4 [\5]@p" | $hxunent)
+        else
+            response=$(curl -s "https://${base}/tv-show" | $sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' |
+                $sed -nE "s@.*<a href=\".*/(tv|movie)/watch-.*-([0-9]*)\".*title=\"([^\"]*)\".*class=\"fdi-item\">([^<]*)</span>.*@\3 (\1) [\4]\t\2@p" | $hxunent)
+        fi
         main
     }
 
@@ -634,7 +651,7 @@ EOF
         which_lobster="$(command -v lobster)"
         [ -z "$which_lobster" ] && send_notification "Can't find lobster in PATH"
         [ -z "$which_lobster" ] && exit 1
-        update=$(curl -s "https://raw.githubusercontent.com/justchokingaround/lobster/master/lobster.sh" || exit 1)
+        update=$(curl -s "https://raw.githubusercontent.com/justchokingaround/lobster/main/lobster.sh" || exit 1)
         update="$(printf '%s\n' "$update" | diff -u "$which_lobster" -)"
         if [ -z "$update" ]; then
             send_notification "Script is up to date :)"
@@ -785,7 +802,7 @@ EOF
                 ;;
         esac
     done
-    query="$(printf "%s" "$query" | tr ' ' '-')"
+    query="$(printf "%s" "$query" | tr ' ' '-' | $sed "s/^-//g")"
     if [ "$image_preview" = 1 ]; then
         test -d "$images_cache_dir" || mkdir -p "$images_cache_dir"
         if [ "$use_external_menu" = 1 ]; then
