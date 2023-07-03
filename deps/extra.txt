@@ -38,6 +38,7 @@ syncplay
 syncthing
 teamviewer
 trackma-git
+video-trimmer
 virtualbox
 visual-studio-code-bin
 wine
