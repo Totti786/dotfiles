@@ -41,7 +41,7 @@ change_colors(){
 		EOF
 	
 	# rofi
-	[[ "$alpha" != "FF" ]] && alpha_rofi="90" 13272b|| alpha_rofi="$alpha"
+	[[ "$alpha" != "FF" ]] && alpha_rofi="90" || alpha_rofi="$alpha"
 	cat > "$rofi" <<- EOF
 	/* colors */
 	* {
@@ -374,9 +374,9 @@ dynamic(){
 	
 misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
+		conky.sh restart &
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
-		conky.sh restart &> /dev/null
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
 		"$HOME"/.config/waybar/launch_waybar
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
