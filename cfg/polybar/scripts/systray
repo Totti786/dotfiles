@@ -19,7 +19,7 @@ tray(){
 		geometry="1x1-$width+45"
 	fi
 	
-	config="--background $color --geometry $geometry --grow-gravity $gravity --icon-gravity NE --vertical true --slot-size 32 --kludges force_icons_size"
+	config="--background $color --geometry $geometry --grow-gravity $gravity --icon-gravity NE --vertical false --slot-size 32 --kludges force_icons_size"
 	
 	if [[ "$(pidof stalonetray)" ]]; then
 		if [[ ! -e "$hidden" ]]; then
