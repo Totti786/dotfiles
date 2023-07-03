@@ -5,8 +5,6 @@ i3lock-color
 libinput-gestures
 linux-wifi-hotspot
 mugshot
-qbittorrent-enhanced-git
-qt5-styleplugins
+qbittorrent
 timeshift
-video-trimmer
 xdg-autostart
