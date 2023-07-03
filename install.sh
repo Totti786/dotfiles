@@ -88,9 +88,6 @@ moveConfigs(){
 	}
 	
 changeTheme(){
-	if ! [[ "$(grep -i "qt5ct" /etc/environment | head -n1)" == "QT_QPA_PLATFORMTHEME=\"qt5ct\"" ]]; then
-		echo "QT_QPA_PLATFORMTHEME=\"qt5ct\"" | sudo tee -a /etc/environment > /dev/null
-	fi
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
 	cat "$DIR/cfg/plank/plank.conf" | dconf load /net/launchpad/plank/docks/
