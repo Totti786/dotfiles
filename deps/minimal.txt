@@ -18,6 +18,7 @@ fd
 feh
 firefox
 flameshot
+font-manager
 fzf
 geany
 gnome-calculator
