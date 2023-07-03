@@ -16,10 +16,10 @@ fi
 # Set default mime types
 export TERMINAL="alacritty"
 export BROWSER="firefox"
-export QT_STYLE_OVERRIDE="qt5ct"
+export QT_QPA_PLATFORMTHEME="qt5gtk2"
 
 # Polybar and bspwm style settings
-bar_style=bionic
+bar_style=base
 window_border="3"
 
 if [[ "$bar_style" == "base" ]];then
