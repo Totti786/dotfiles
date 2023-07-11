@@ -35,25 +35,27 @@ inputbar {
     enabled:                     true;
     spacing:                     10px;
     padding:                     15px;
-    horizontal-align:               0.5;
     border-radius:               10px;
     background-color:            @background;
     text-color:                  @foreground;
     children:                    [ "textbox-prompt-colon", "entry" ];
 }
+
 textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
-    str:                         "";
     background-color:            transparent;
     text-color:                  @foreground;
+    str:                         "";    
 }
+
 entry {
     enabled:                     true;
     background-color:            transparent;
     text-color:                  inherit;
-    placeholder:                 "Search";
+    horizontal-align:            0;
     placeholder-color:           inherit;
+    placeholder:                 "Search";
 }
 
 listview {
