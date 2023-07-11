@@ -38,5 +38,4 @@ copyq --start-server &
 plank &
 
 # Conky
-[[ $conky == "On" ]] &&
-	"$HOME"/.local/bin/conky.sh &
+[[ $conky == "On" ]] &&	"$HOME"/.local/bin/conky.sh &
