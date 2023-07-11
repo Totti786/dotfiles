@@ -19,14 +19,14 @@ toggle_transparency(){
 	pipe_dir="$HOME/.config/jgmenu/pipemenus/"
 	dunst_dir="$HOME/.config/dunst/dunstrc"
 	
-	if [[ "$1" == "bionic" ]]; then 
+	if [[ "$1" == "off" ]]; then 
 		"$pipe_dir"/compositor --disable-opacity
 		"$pipe_dir"/compositor --enable-shadows
 		"$pipe_dir"/wm-pipe --border 0
 		sed -i "s/opacity: .*/opacity: 1.0/" "$alacritty_conf"
 		sed -i "s/alpha=.*/alpha='FF'/" "$wpgtk_dir"
 		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst_dir"
-	elif [[ "$1" != "bionic" ]]; then
+	elif [[ "$1" == "on" ]]; then
 		"$pipe_dir"/compositor --enable-opacity
 		"$pipe_dir"/compositor --disable-shadows
 		"$pipe_dir"/wm-pipe --border "$window_border"
@@ -42,23 +42,23 @@ reload(){
 
 base(){
 	sed -i 's/^bar_style=.*/bar_style=base/' "$HOME"/.zprofile
-	toggle_transparency
+	toggle_transparency on
 	reload
-	conky.sh
+	[[ $(pgrep conky) ]] && conky.sh restart || conky.sh
 }
 
 minimal(){
 	sed -i 's/^bar_style=.*/bar_style=minimal/' "$HOME"/.zprofile
-	toggle_transparency
+	toggle_transparency on
 	reload
 	[[ $(pgrep conky) ]] && pkill conky
 }
 
 bionic(){
 	sed -i 's/^bar_style=.*/bar_style=bionic/' "$HOME"/.zprofile
-	toggle_transparency bionic
+	toggle_transparency off
 	reload
-	[[ $(pgrep conky) ]] && conky.sh restart
+	[[ $(pgrep conky) ]] && conky.sh restart || conky.sh
 }
 
 if  [[ "$1" ]]; then
