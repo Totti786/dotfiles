@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the directory to search in
-declare -a directory=(bspwm openbox i3 polybar rofi eww zathura)
+declare -a directory=(bspwm openbox i3 polybar jgmenu rofi eww zathura)
 
 getfiles(){
 	for i in "${directory[@]}"; do
