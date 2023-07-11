@@ -43,6 +43,7 @@ network-manager-applet
 networkmanager-openvpn
 noto-fonts
 noto-fonts-emoji
+nsxiv
 nvtop
 obconf
 openbox
@@ -67,7 +68,6 @@ rtorrent
 scrot
 stalonetray
 sxhkd
-sxiv
 termdown
 thunar
 thunar-archive-plugin
