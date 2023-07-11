@@ -28,7 +28,7 @@ checkFile(){
 # checks if the video directory exists and if not it creates one then excutes 
 main(){
 if [ -d "$VDIR" ]; then
-   # Take action if $DIR exists. #
+   # Take action if $DIR exists 
    createVideo &&
    checkFile
   else 

@@ -1038,9 +1038,9 @@
           <command>windowswitch window "-monitor -3"</command>
         </action>
       </mousebind>
-      <mousebind action="Press" button="A-Right">
+      <mousebind action="Press" button="W-Right">
         <action name="ShowMenu">
-          <menu>windowswitch windowcd</menu>
+          <command>jgmenu_run</command>
         </action>
       </mousebind>
       <mousebind action="Press" button="Right">

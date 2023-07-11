@@ -1,50 +1,48 @@
-#!/bin/sh
+#!/bin/bash
 
 REDSHIFT=off
-REDSHIFT_TEMP=4200
-changeValue=200
+REDSHIFT_TEMP=4600
+CHANGE_VALUE=200
 
 changeMode() {
-  sed -i "s/REDSHIFT=$1/REDSHIFT=$2/g" $0 
+  sed -i "s/REDSHIFT=$1/REDSHIFT=$2/g" "$0"
   REDSHIFT=$2
-  echo $REDSHIFT
+  echo "$REDSHIFT"
 }
 
 changeTemp() {
-  if [ "$2" -gt 1000 ] && [ "$2" -lt 25000 ]
-  then
-    sed -i "s/REDSHIFT_TEMP=$1/REDSHIFT_TEMP=$2/g" $0 
-    redshift -P -O $((REDSHIFT_TEMP+changeValue))
+  if (( "$2" > 1000 )) && (( "$2" < 25000 )); then
+    sed -i "s/REDSHIFT_TEMP=$1/REDSHIFT_TEMP=$2/g" "$0"
+    redshift -P -O $((REDSHIFT_TEMP + CHANGE_VALUE))
   fi
 }
 
-case $1 in 
-  toggle) 
-    if [ "$REDSHIFT" = on ];
-    then
-      changeMode "$REDSHIFT" off
+case $1 in
+  toggle)
+    if [ "$REDSHIFT" = "on" ]; then
+      changeMode "$REDSHIFT" "off"
       redshift -x
     else
-      changeMode "$REDSHIFT" on
+      changeMode "$REDSHIFT" "on"
       redshift -O "$REDSHIFT_TEMP"
     fi
     ;;
   state)
-	if [ "$REDSHIFT" = on ]; then
-		echo "on"
-	else 
-		echo "off"
+    if [ "$REDSHIFT" = "on" ]; then
+      echo "on"
+    else
+      echo "off"
     fi
     ;;
   increase)
-	if [ "$REDSHIFT" = on ]; then
-		changeTemp $((REDSHIFT_TEMP)) $((REDSHIFT_TEMP+changeValue))
+    if [ "$REDSHIFT" = "on" ]; then
+      changeTemp "$REDSHIFT_TEMP" $((REDSHIFT_TEMP + CHANGE_VALUE))
     fi
     ;;
   decrease)
-  	if [ "$REDSHIFT" = on ]; then
-		changeTemp $((REDSHIFT_TEMP)) $((REDSHIFT_TEMP-changeValue));
-	fi
+    if [ "$REDSHIFT" = "on" ]; then
+      changeTemp "$REDSHIFT_TEMP" $((REDSHIFT_TEMP - CHANGE_VALUE))
+    fi
     ;;
   *)
     case $REDSHIFT in

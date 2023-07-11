@@ -41,7 +41,7 @@ floating_modifier Mod4
 for_window [title="AudioRelay|Library"] floating enable
 for_window [title="Picture-in-Picture"] floating enable sticky enable
 for_window [class="alacritty-drop"] floating enable sticky enable
-for_window [class="Xfce4-.*|org.gnome.Weather|copyq|Sxiv|Music"] floating enable
+for_window [class="Xfce4-.*|org.gnome.Weather|copyq|Nsxiv|Music"] floating enable
 for_window [class="Viewnior|Gpicview|Gimp|MPlayer|TelegramDesktop"] floating enable
 for_window [class="Kvantum Manager|qt5ct|Nm-connection-editor|Anki"] floating enable
 for_window [class="Lxappearance|Nitrogen|loupe|Yad|alacritty-float"] floating enable
