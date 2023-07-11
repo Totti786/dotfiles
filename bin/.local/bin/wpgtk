@@ -31,12 +31,12 @@ change_colors(){
 		background-alt = ${bg_mix}
 		foreground = $FG
 		primary = $FG
-		red = $red
-		green = $green
-		yellow = $yellow
-		blue = $blue
-		magenta = $magenta
-		cyan = $cyan
+		red = $bright_red
+		green = $bright_green
+		yellow = $bright_yellow
+		blue = $bright_blue
+		magenta = $bright_magenta
+		cyan = $bright_cyan
 		white = $white
 		EOF
 	
@@ -126,8 +126,8 @@ change_colors(){
 		-e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $alpha_jg/g" \
 		-e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
-		-e "s/color_sel_fg         = .*/color_sel_fg         = ${red} 100/g" \
-		-e "s/color_sep_fg         = .*/color_sep_fg         = ${blue} 40/g"
+		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
+		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"
 		
 	# zathura (courtesy of @GideonWolfe)
 	"$gzathura" > "$zathura"
@@ -147,6 +147,8 @@ change_colors(){
 		-e "s/--background-floating: .*/--background-floating: ${bg_light};/g" \
 		-e "s/--background-accent: .*/--background-accent: ${red};/g" \
 		-e "s/--unread-color: .*/--unread-color: ${cyan};/g" \
+		-e "s/--brand-experiment: .*/--brand-experiment: ${green};/g" \
+		-e "s/ --brand-experiment-560: .*/ --brand-experiment-560: ${yellow};/g" \
 		-e "s/--input-background: .*/--input-background: ${bg_light};/g" \
 		-e "s/ --channeltextarea-background: .*/ --channeltextarea-background: ${bg_light};/g" \
 		-e "s/--user-buttons-color: .*/--user-buttons-color: ${white};/g"
@@ -331,6 +333,13 @@ wall(){
 	fi
 }
 
+setup(){
+	images=($(find $Wallpapers -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \)))
+    for ((i=0; i<${#images[@]}; i++)); do
+		wpg -A "${images[i]}" && rm "${images[i]}""_wal_sample.png"
+	done
+}
+
 random(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
 		image="$(find $Wallpapers -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | shuf -n 1)"
@@ -344,7 +353,7 @@ random(){
 # to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
 pick(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
-		wal=$(sxiv -torb $Wallpapers)
+		wal=$(nsxiv -torb $Wallpapers)
 		wall "$wal"
 	else
 		notify-send -u low -r 43 "No Wallpapers Were Found In:" "~/Pictures/Wallpapers"
