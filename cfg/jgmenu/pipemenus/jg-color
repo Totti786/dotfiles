@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # Set directory paths
-WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"              # Directory for wallpapers
-CACHE_DIR="$HOME/.cache/wal"                            # Cache directory
-WPG_DIR="$HOME/.config/wpg/schemes"                     # Directory for wpg schemes
-SAVED_THEMES="$HOME/.themes/saved"                      # Directory for saved themes
-COLORS_FILE="$CACHE_DIR/colors.json"                    # File path for colors.json
-CURRENT_THEME="$WPG_DIR/$(sed 'y/\/./__/' $HOME/.fehbg | tail -n1 | cut -d "'" -f2)_dark_wal__1.1.0.json"  # Current theme file path
+WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
+CACHE_DIR="$HOME/.cache/wal"
+WPG_DIR="$HOME/.config/wpg/schemes"
+SAVED_THEMES="$HOME/.themes/saved"
+COLORS_FILE="$CACHE_DIR/colors.json"
+CURRENT_THEME="$WPG_DIR/$(sed 'y/\/./__/' $HOME/.fehbg | tail -n1 | cut -d "'" -f2)_dark_wal__1.1.0.json"
 
 # Get the current wallpaper
 CURRENT_WALL="$(cat $HOME/.fehbg | cut -d "'" -f2 | tail -n1)"
@@ -108,12 +108,14 @@ if [[ "$(ls -A $SAVED_THEMES)" ]]; then
 fi
 
 submenu1+=("Select File,$0 add_scheme")
+submenu1+=("Open Files Location,exo-open ~/.themes/saved")
 
 # Add colors from the color scheme
 for i in "${color_scheme[@]}"; do
     menu+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>,^checkout(${i:1}$((++n)))")
     submenu+=("^tag(${i:1}$n)")
     submenu+=("^sep(<tt>Color <small>$i</small> <span bgcolor='$i'>    </span></tt>)")
+    submenu+=("Copy Color,echo '${i}' | tr -d '\n' | xclip -selection clipboard ")
     submenu+=("Set as Folder Color,papirus-folder.sh '${i}'")
     submenu+=("Chnage Color,$0 change_color \"$i\" \"$(( $n - 1 ))\" ")
 done
