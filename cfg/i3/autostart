@@ -55,4 +55,4 @@ copyq --start-server &
 thunar --daemon &
 
 # Conky
-[[ $conky == "On" ]] && "$HOME"/.local/bin/conky.sh &
+[[ "$conky" == "On" ]] && "$HOME"/.local/bin/conky.sh &
