@@ -33,7 +33,7 @@ declare -a floating=(alacritty-float Lxappearance obs
 	feh Nm-connection-editor stalonetray Pavucontrol
 	copyq '*:*:Library' Trackma-gtk Blueman-manager
 	Xfce4-appearance-settings Xfce4-mouse-settings
-	Xfce4-settings-manager Sxiv Trackma-gtk steam
+	Xfce4-settings-manager Nsxiv Trackma-gtk steam
 	org.gnome.Weather Xfce4-display-settings Anki
 	TelegramDesktop KotatogramDesktop gnome-calculator
 	Xfce4-power-manager-settings '*:*:AudioRelay')
