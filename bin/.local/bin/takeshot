@@ -8,11 +8,11 @@ file="$dir/Screenshot_${time}_${geometry}.png"
 [ ! -d $dir ] && mkdir -p $dir
 
 notify_user() {
-	notify-send -a Clipboard -i $clipboard_icon -u low -r 699 "Clipboard" "Screenshot saved on clipboard"
+	notify-send -a Clipboard -i $clipboard_icon -u low -r 83 "Clipboard" "Screenshot saved on clipboard"
 	if [[ -e $file ]]; then
-		notify-send -a Screenshot -u low -i $file "Screenshot Saved"
+		notify-send -a Screenshot -r 83 -u low -i $file "Screenshot Saved"
 	else
-		notify-send -a Screenshot -u low "Screenshot Deleted"
+		notify-send -a Screenshot -r 83 -u low "Screenshot Deleted"
 	fi
 }
 
