@@ -53,11 +53,11 @@ if [ "$1" = "--clear-history" ] || [ "$1" = "--delete-history" ]; then
 fi
 
 cleanup() {
-    [ "$debug" != 1 ] && rm -rf /tmp/lobster/ 2>/dev/null
-    [ "$remove_tmp_lobster" = 1 ] && rm -rf /tmp/lobster/ 2>/dev/null
+    [ "$debug" != 1 ] && rm -rf /tmp/lobster/
+    [ "$remove_tmp_lobster" = 1 ] && rm -rf /tmp/lobster/
     if [ "$image_preview" = "1" ] && [ "$use_external_menu" = "0" ]; then
         killall ueberzugpp 2>/dev/null
-        rm /tmp/ueberzugpp-* 2>/dev/null
+        rm -f /tmp/ueberzugpp-*
     fi
     set +x && exec 2>&-
 }
@@ -341,6 +341,7 @@ EOF
         case "$json_key" in
             file) subs_links=$(printf "%s" "$json_data" | tr "{}" "\n" | $sed -nE "s@\"${json_key}\":\"([^\"]*)\",\"label\":\"(.$subs_language)[,\"\ ].*@\1@p") ;;
             sources) subs_links=$(printf "%s" "$json_data" | tr "{}" "\n" | $sed -nE "s@.*\"file\":\"([^\"]*)\",\"label\":\"(.$subs_language)[,\"\ ].*@\1@p") ;;
+            *) subs_links="" ;;
         esac
         subs_arg="--sub-file"
         num_subs=$(printf "%s" "$subs_links" | wc -l)
@@ -557,8 +558,8 @@ EOF
                     continue
                     ;;
                 "Search")
-                    rm "$images_cache_dir"/*
-                    rm "$tmp_position" 2>/dev/null
+                    rm -f "$images_cache_dir"/*
+                    rm -f "$tmp_position"
                     query=""
                     response=""
                     season_id=""
