@@ -28,7 +28,7 @@ fix_modules() {
 	# check the graphics card and adjust the backlight module accordingly
 	if [[ -z "$graphics_card" ]]; then
 		sed -i -e 's/\(backlight\|brightness\)/bna/g' 			"$config_file"
-	elif [[ "$graphics_card" != *"intel_"* ]]; then
+	elif [[ "$graphics_card" == *"intel_"* ]]; then
 		sed -i -e 's/\(backlight\|bna\)/brightness/g' 			"$config_file"
 	else
 		sed -i -e 's/\(bna\|brightness\)/backlight/g' 			"$config_file"
