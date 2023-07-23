@@ -9,8 +9,8 @@ file="$dir/Screenshot_${time}_${geometry}.png"
 
 notify_user() {
 	notify-send -a Clipboard -i $clipboard_icon -u low -r 83 "Clipboard" "Screenshot saved on clipboard"
-	if [[ -e $file ]]; then
-		notify-send -a Screenshot -r 83 -u low -i $file "Screenshot Saved"
+	if [[ -e "$file" ]]; then
+		notify-send -a Screenshot -r 83 -u low -i "$file" "Screenshot Saved"
 	else
 		notify-send -a Screenshot -r 83 -u low "Screenshot Deleted"
 	fi
@@ -24,41 +24,41 @@ countdown() {
 }
 
 magic() {
-	convert $file +antialias \
+	convert "$file" +antialias \
 	\( +clone  -alpha extract \
     -draw 'fill black polygon 0,0 0,20 20,0 fill white circle 20,20 20,0' \
     \( +clone -flip \) -compose Multiply -composite \
     \( +clone -flop \) -compose Multiply -composite \
-  	\) -alpha off -compose CopyOpacity -composite $file
+  	\) -alpha off -compose CopyOpacity -composite "$file"
 
-	convert $file \
+	convert "$file" \
 	\( +clone -background black -shadow 69x20+0+10 \) \
-	+swap -background none -layers merge +repage $file
+	+swap -background none -layers merge +repage "$file"
 }
 
 shot() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
-		grim $file && wl-copy < $file
+		grim "$file" && wl-copy < "$file"
 	else
-		maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
+		maim -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
 	fi
 	notify_user
 }
 
 shot_window() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
-		grim $file && wl-copy < $file
+		grim "$file" && wl-copy < "$file"
 	else
-		maim -u -f png -i `xdotool getactivewindow` $file && xclip -selection clipboard -t image/png -i $file
+		maim -u -f png -i `xdotool getactivewindow` "$file" && xclip -selection clipboard -t image/png -i "$file"
 	fi	
 	notify_user	
 }
 
 shot_area() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		grim -g "$(slurp -c cba6f788 -b 00000055)" $file && wl-copy < $file
+		grim -g "$(slurp -c cba6f788 -b 00000055)" "$file" && wl-copy < "$file"
 	else
-		maim -u -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l $file && xclip -selection clipboard -t image/png -i $file
+		maim -u -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l "$file" && xclip -selection clipboard -t image/png -i "$file"
 	fi
 	notify_user
 }
@@ -66,9 +66,9 @@ shot_area() {
 shot_5() {
 	countdown '5'
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
-		grim $file && wl-copy < $file
+		grim "$file" && wl-copy < "$file"
 	else
-		maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
+		maim -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
 	fi
 	notify_user
 }
@@ -76,9 +76,9 @@ shot_5() {
 shot_10() {
 	countdown '10'
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
-		grim $file && wl-copy < $file
+		grim "$file" && wl-copy < "$file"
 	else
-		maim -u -f png $file && xclip -selection clipboard -t image/png -i $file
+		maim -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
 	fi	
 	notify_user
 }
