@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+# Define cache and file paths
+directory="$HOME/Videos/Movies"
+cached="$HOME/.cache/rofi-movies"
+shortcuts="$HOME/.local/share/applications/movies"
+
+# Create necessary directories if they don't exist
+mkdir -p "$shortcuts"
+mkdir -p "$cached"
+
+get_poster(){
+	# Replace 'YOUR_API_KEY' with your actual OMDB API key
+	API_KEY="497fd34e"
+	
+	# Check if a movie title and directory path are provided as arguments
+	if [ -z "$1" ] || [ -z "$2" ]; then
+		echo "Usage: $0 <movie_title> <directory_path>"
+		exit 1
+	fi
+	
+	# Prepare the movie title argument for the API request
+	movie_title="$1"
+	encoded_title=$(echo "$movie_title" | tr ' ' '+')
+	
+	# Fetch movie data from OMDB API
+	response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&apikey=$API_KEY")
+	
+	# Check if the response contains an error message
+	error_message=$(echo "$response" | jq -r '.Error')
+	if [ "$error_message" != "null" ]; then
+		echo "Error: $error_message"
+		exit 1
+	fi
+	
+	# Parse the JSON response using jq
+	poster_url=$(echo "$response" | jq -r '.Poster')
+	
+	# Check if the poster URL is available
+	if [ "$poster_url" == "N/A" ]; then
+	  echo "No poster available for '$movie_title'"
+	else
+	  # Extract the directory path provided as an argument
+	  directory_path="$2"
+	  
+	  # Check if the directory exists; if not, create it
+	  if [ ! -d "$directory_path" ]; then
+	    mkdir -p "$directory_path"
+	  fi
+	
+	  # Use 'wget' to download the poster image
+	  wget "$poster_url" -O "$directory_path/$movie_title.jpg"
+	  echo "Poster downloaded as '$directory_path/$movie_title.jpg'"
+	fi
+}
+
+# Function to generate thumbnails and create shortcut desktop entries
+main() {
+	# Read the 'history' file and store the lines containing "home" in the 'lines' array
+	readarray -t lines < <(find "$directory" \( -type l -o -type f \))
+	
+	# Loop through each line in 'lines'
+	for line in "${lines[@]}"; do
+		# Extract the file name and remove the extension to use as the shortcut name
+		[[ -f "$line" ]] && name="${line##*/}" name="${name%.*}"
+
+		if ! [[ -f "$cached/$name.jpg" ]]; then
+			get_poster "$name" "$cached"
+		fi
+
+		# Define the shortcut desktop entry file path
+		movie="$shortcuts/$name.desktop"
+		
+		# If the shortcut desktop entry doesn't exist, create it with appropriate details
+		if [[ ! -f "$movie" ]]; then
+			cat > "$movie" <<- EOF
+			[Desktop Entry]
+			Name=$name
+			Exec=mpv '$line'
+			Icon=$cached/$name.jpg
+			Type=Application
+			Categories=Movies;
+			EOF
+		fi
+	done
+
+	# Show the rofi application launcher with the 'Movies' category
+	rofi -show drun -drun-categories Movies -theme rofi-media
+}
+
+# Check if the directory has any movies
+if [[ "$(find "$directory" \( -type l -o -type f \))" ]] ; then 
+	# If the cache directory is empty, notify the user and generate thumbnails and shortcuts
+	[[ -z "$(ls -A $cached)" ]] && notify-send -a Rofi-Movies -t 2000 -r 40 "Rofi-Movies" "Generating Thumbnails..."
+	main && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
+else
+	# If no matching documents were found, notify the user
+	notify-send -t 2000 -r 41 "Rofi-Movies" "No Movies Were Found"
+fi
