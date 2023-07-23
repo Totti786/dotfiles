@@ -36,7 +36,7 @@ inputbar {
     spacing:                     10px;
     padding:                     15px;
     border-radius:               10px;
-    background-color:            @background;
+    background-color:            @background-blur;
     text-color:                  @foreground;
     children:                    [ "textbox-prompt-colon", "entry" ];
 }
