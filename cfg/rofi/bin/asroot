@@ -3,8 +3,6 @@
 ## Copyright (C) 2020-2022 Aditya Shakya <adi1090x@gmail.com>
 ## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
 
-DIR="$HOME/.config/rofi/bin"
-
 rofi_command="rofi -theme asroot"
 
 # Apps
@@ -14,6 +12,14 @@ editor=" Geany"
 clifm=" Ranger"
 vim=" Vim"
 
+get_root(){
+	## rofi sudo askpass helper
+	export SUDO_ASKPASS=~/.config/rofi/bin/askpass.sh
+	
+	## execute the application
+	sudo -A $1
+}
+
 # Variable passed to rofi
 options="$terminal\n$files\n$editor\n$clifm\n$vim"
 
@@ -22,18 +28,18 @@ options="$terminal\n$files\n$editor\n$clifm\n$vim"
 chosen="$(echo -e "$options" | $rofi_command -p "Run as root" -dmenu -selected-row 0)"
 case $chosen in
     $terminal)
-        "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float'
+        get_root 'alacritty --class alacritty-float,alacritty-float'
         ;;
     $files)
-        "$DIR"/apps_as_root.sh 'dbus-run-session thunar'
+        get_root 'dbus-run-session thunar'
         ;;
     $editor)
-        "$DIR"/apps_as_root.sh geany
+        get_root geany
         ;;
     $clifm)
-        "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float -e ranger'
+        get_root 'alacritty --class alacritty-float,alacritty-float -e ranger'
         ;;
     $vim)
-        "$DIR"/apps_as_root.sh 'alacritty --class alacritty-float,alacritty-float -e vim'
+        get_root 'alacritty --class alacritty-float,alacritty-float -e vim'
         ;;
 esac
