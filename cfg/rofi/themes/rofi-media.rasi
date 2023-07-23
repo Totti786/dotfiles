@@ -1,0 +1,106 @@
+/**
+ * Author : Tarek 
+ * Github : @Totti786
+**/
+ 
+configuration {
+	click-to-exit: 		true;
+	fixed-num-lines:	true;
+	hover-select: 		true;
+	me-select-entry:	"";
+	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
+}
+
+@import "colors.rasi"
+@import "fonts.rasi"
+
+
+* {
+    background-color:               transparent;
+    text-color:                     @foreground;
+    fullscreen:                     true;
+}
+
+mainbox {
+    children:                       [inputbar-box, listview];
+}
+
+listview {
+    spacing:                        20px;
+    dynamic:                        true;
+    cycle:                          true;
+    columns:                        6;
+    scrollbar:                      false;
+}
+
+inputbar-box {
+    children:                       [dummy, inputbar, dummy];
+    orientation:                    horizontal;
+    expand:                         true;
+}
+
+inputbar {
+    margin:                         10px 0px 0px 5%;
+    background-color:               transparent;
+    text-color:                     @foreground;
+    expand:                         true;
+    children:                       [ entry-wrapper ];
+}
+
+entry {
+    text-color:                     @foreground;
+    expand:                         true;
+    vertical-align:                 0.5;
+    blink:                          false;
+    placeholder:                 	"Search";
+}
+
+button {
+    str:                            "";
+    expand:                         false;
+    text-color:                     @foreground;
+    vertical-align:                 0.5;
+    horizontal-align:               0.5;
+}
+
+
+entry-wrapper {
+    orientation:                    horizontal;
+    spacing:                        24px;
+    vertical-align:                 0.5;
+    children:                       [ button, entry ];
+}
+
+
+element {
+    children:                       [element-box];
+    orientation:                    vertical;
+    border:                         0px 5px solid 0px 5px;
+    border-color:                   transparent;
+    border-radius:                  12;
+}
+
+element selected {
+    border-color:                   @on;
+}
+
+element-box {
+    children:                       [element-icon, element-text];
+    orientation:                    vertical;
+    background-color:               transparent;
+}
+
+element-icon {
+    padding:                        10px;
+    size:                           40%;
+}
+
+element-text {
+    padding:                        10px;
+    horizontal-align:               0.5;
+    highlight:                      @highlight;
+}
+
+element-text selected {
+    text-color:                     @urgent;
+}
