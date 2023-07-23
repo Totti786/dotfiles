@@ -56,8 +56,8 @@ super + {e,f,w,o,g,b,y,a,v,p}
 super + z
 	discord --enable-gpu-rasterization
 
-super + shift + {s,w,r,d,g}
-	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura}
+super + shift + {s,w,r,d,g,h}
+	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura,lobster}
 
 # Terminal Apps
 ctrl + alt + {v,r,h}
