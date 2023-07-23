@@ -47,6 +47,7 @@ change_colors(){
 	* {
 		background:       ${bg_mix}$alpha_rofi;
 		background-alt:   ${BG};
+		background-blur:  ${BG}60;
 		foreground:       ${FG};
 		selected:         ${red};
 		highlight:        ${yellow};
@@ -103,6 +104,7 @@ change_colors(){
 		-e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g" \
 		-e "s/margin_fg_grey=.*/margin_fg_grey=${black}/g" \
 		-e "s/error_red=.*/error_red=${magenta}/g" \
+		-e "s/current_line_grey=.*/current_line_grey=${bg_lighter}/g" \
 		-e "s/selection_blue=.*/selection_blue=${white}/g"
 		
 	# copyq 
@@ -443,6 +445,7 @@ run(){
 			# Additional colors
 			bg_mix="$(pastel mix -f 0.4 $bright_black $black | pastel format hex)"
 			bg_light="$(pastel mix -f 0.2 $bright_black $black | pastel format hex)"
+			bg_lighter="$(pastel lighten 0.08 $black | pastel format hex)"
 			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
 			bg_rgb="$(pastel format rgb ${background:1})"
 			bg_mix_rgb="$(pastel format rgb ${bg_mix:1})"
