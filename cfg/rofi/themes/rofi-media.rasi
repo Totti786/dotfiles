@@ -23,6 +23,7 @@ configuration {
 
 mainbox {
     children:                       [inputbar-box, listview];
+    background-color:               @background-blur;
 }
 
 listview {
@@ -41,7 +42,6 @@ inputbar-box {
 
 inputbar {
     margin:                         10px 0px 0px 5%;
-    background-color:               transparent;
     text-color:                     @foreground;
     expand:                         true;
     children:                       [ entry-wrapper ];
@@ -102,5 +102,5 @@ element-text {
 }
 
 element-text selected {
-    text-color:                     @urgent;
+    text-color:                     @white;
 }
