@@ -17,7 +17,7 @@ eww="$config/eww/colors.scss"
 waybar="$config/waybar/colors.css"
 hypr="$config/hypr/colors.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='FF'
+alpha='60'
 
 ## Change colors
 change_colors(){
@@ -54,6 +54,13 @@ change_colors(){
 		urgent:           ${blue};
 		on:               ${magenta};
 		off:              ${black};
+		red:			  ${bright_red};
+		green:			  ${bright_green};
+		yellow:			  ${bright_yellow};
+		blue:			  ${bright_blue};
+		magenta:		  ${bright_magenta};
+		cyan:			  ${bright_cyan};
+		white:			  ${bright_white};
 	}
 		EOF
 	
