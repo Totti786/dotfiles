@@ -1,24 +1,51 @@
 #!/usr/bin/env bash
 
+# Rofi-Zathura is a bash script that generates thumbnails and creates 
+# shortcut desktop entries for documents in the Zathura document viewer,
+# providing a convenient way to access and read PDF, EPUB, and CBZ files.
+
+# Dependencies: evince-thumbnailer (for PDF and CBZ thumbnails)
+#				gnome-epub-thumbnailer (for EPUB thumbnails)
+#				zathura (document viewer)
+#				rofi (application launcher)
+
+# Define cache and history file paths
 cached="$HOME/.cache/rofi-zathura"
 history="$HOME/.local/share/zathura/history"
-mkdir -p "$HOME/.local/share/applications/books"
+shortcuts="$HOME/.local/share/applications/books"
+
+# Create necessary directories if they don't exist
+mkdir -p "$shortcuts"
 mkdir -p "$cached"
 
+# Function to generate thumbnails and create shortcut desktop entries
 main() {
+	# Read the 'history' file and store the lines containing "home" in the 'lines' array
 	readarray -t lines < <(grep -i "home" "$history" | tr -d "[]")
+	
+	# Loop through each line in 'lines'
 	for line in "${lines[@]}"; do
+		# Extract the file name and remove the extension to use as the shortcut name
 		[[ -f "$line" ]] && name="${line##*/}" name="${name%.*}"
-		type=${line##*.}
-		if [[ "$type" == "pdf" ]] && ! [[ -f "$cached/$name.png" ]]; then
-			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
-		elif [[ "$type" == "epub" ]] && ! [[ -f "$cached/$name.png" ]]; then
-			gnome-epub-thumbnailer -s 200 "$line" "$cached/$name.png"
-		elif [[ "$type" == "cbz" ]] && ! [[ -f "$cached/$name.png" ]]; then
-			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
-		fi &> /dev/null
 		
-		book="$HOME/.local/share/applications/books/$name.desktop"
+		# Determine the type of the file based on the extension
+		type=${line##*.}
+		
+		# If the file is a PDF and its thumbnail doesn't exist, generate the thumbnail using 'evince-thumbnailer'
+		if [ "$type" == "pdf" ] && ! [ -f "$cached/$name.png" ]; then
+			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
+		# If the file is an EPUB and its thumbnail doesn't exist, generate the thumbnail using 'gnome-epub-thumbnailer'
+		elif [ "$type" == "epub" ] && ! [ -f "$cached/$name.png" ]; then
+			gnome-epub-thumbnailer -s 200 "$line" "$cached/$name.png"
+		# If the file is a CBZ (Comic Book Archive) and its thumbnail doesn't exist, generate the thumbnail using 'evince-thumbnailer'
+		elif [ "$type" == "cbz" ]] && ! [ -f "$cached/$name.png" ]; then
+			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
+		fi &> /dev/null  # Redirect output (stdout and stderr) to /dev/null to suppress any messages
+		
+		# Define the shortcut desktop entry file path
+		book="$shortcuts/$name.desktop"
+		
+		# If the shortcut desktop entry doesn't exist, create it with appropriate details
 		if [[ ! -f "$book" ]]; then
 			cat > "$book" <<- EOF
 			[Desktop Entry]
@@ -31,13 +58,18 @@ main() {
 		fi
 	done
 	
+	# Show the rofi application launcher with the 'Books' category
 	rofi -show drun -drun-categories Books -theme rofi-zathura
 }
 
-if [[ $(grep -i "home" "$history") ]]; then 
-	[[ -z "$(ls -A $cached)" ]] && notify-send -t 2000 -r 40 "Rofi-Zathura" "Generating Thumbnails..."
-	main && rm "$HOME"/.local/share/applications/books/*
+# Check if the 'history' file contains any lines with "home"
+if grep -qi "home" "$history"; then 
+	# If the cache directory is empty, notify the user and generate thumbnails and shortcuts
+	[ -z "$(ls -A $cached)" ] && notify-send -a Rofi-Zathura -t 2000 -r 40 "Rofi-Zathura" "Generating Thumbnails..."
+	main && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
 else
+	# If no matching documents were found, notify the user
 	notify-send -t 2000 -r 41 "Rofi-Zathura" "No Documents Were Found"
 fi
+
 
