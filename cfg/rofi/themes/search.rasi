@@ -1,0 +1,96 @@
+/**
+ * Author : Tarek 
+ * Github : @Totti786
+**/
+
+configuration {
+	click-to-exit: 		true;
+	fixed-num-lines:	true;
+	hover-select: 		true;
+	me-select-entry:	"";
+	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
+	kb-cancel: 			"Escape,Alt+F1";
+
+}
+
+
+@import "colors.rasi"
+@import "fonts.rasi"
+
+* {
+    background-color:   transparent;
+    text-color:         @foreground;
+}
+
+window {
+    background-color:   @background;
+    anchor:       	center;
+    width:          640;
+    y-offset:		-100px;
+    border-radius:  12;
+}
+
+inputbar {
+    padding:    25px;
+    spacing:    12px;
+    children:   [ icon-search, entry ];
+}
+
+icon-search {
+    expand:     false;
+    filename:   "search";
+    size: 16px;
+}
+
+icon-search, entry, element-icon, element-text {
+    vertical-align: 0.5;
+}
+
+entry {
+    font:   inherit;
+
+    placeholder         : "Search";
+    placeholder-color   : @foreground;
+}
+
+message {
+    border:             2px 0 0;
+    border-color:       @background-blur;
+    background-color:   @background-blur;
+}
+
+textbox {
+    padding:    8px 24px;
+}
+
+listview {
+    lines:      10;
+    columns:    1;
+
+    fixed-height:   false;
+    
+    border-color:   @background-blur;
+}
+
+element {
+    padding:            8px 16px;
+    spacing:            16px;
+    background-color:   transparent;
+}
+
+element normal active {
+    text-color: @on;
+}
+
+element selected normal, element selected active {
+    background-color:   @on;
+    text-color:         @foreground;
+}
+
+element-icon {
+    size:   1em;
+}
+
+element-text {
+    text-color: inherit;
+}
