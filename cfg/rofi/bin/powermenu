@@ -10,8 +10,17 @@ shutdown=""
 reboot=""
 lock=""
 suspend=""
+hibernate="󰜗"
 logout=""
-confirm="Yes"
+confirm=""
+
+confirm(){
+	local options="\n"
+	echo -e "$options" | rofi -dmenu -i \
+	     -no-fixed-num-lines \
+	     -p "Are You Sure? : " \
+	     -theme confirm	     
+}
 
 # Variable passed to rofi
 options="$shutdown\n$reboot\n$lock\n$suspend\n$logout"
@@ -19,24 +28,23 @@ options="$shutdown\n$reboot\n$lock\n$suspend\n$logout"
 chosen="$(echo -e "$options" | $rofi_command -p "UP - $uptime" -dmenu -selected-row 2)"
 case "$chosen" in
     "$shutdown")
-		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ "$ans" == "$confirm" ]]; then systemctl poweroff ;fi
+		[[ "$(confirm)" == "$confirm" ]] && systemctl poweroff
         ;;
     "$reboot")
-		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ "$ans" == "$confirm" ]]; then	systemctl reboot ;fi
+		[[ "$(confirm)" == "$confirm" ]] && systemctl reboot
         ;;
     "$lock")
 		lockscreen
     	;;
     "$suspend")
-		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ "$ans" == "$confirm" ]]; then systemctl suspend && lockscreen ;fi
+		[[ "$(confirm)" == "$confirm" ]] && systemctl suspend && lockscreen
+        ;;
+    "$hibernate")
+		[[ "$(confirm)" == "$confirm" ]] && systemctl hibernate && lockscreen
         ;;
     "$logout")
 		current_desktop=$(wmctrl -m | head -n1 | cut -d " " -f2) 
-		ans=$($HOME/.config/rofi/bin/confirm &)
-		if [[ "$ans" == "$confirm" ]]; then
+		if [[ "$(confirm)" == "$confirm" ]]; then
 			if [[ "$current_desktop" == "Openbox" ]]; then
 				openbox --exit
 			elif [[ "$current_desktop" == "i3" ]]; then
