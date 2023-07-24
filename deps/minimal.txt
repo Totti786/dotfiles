@@ -94,6 +94,7 @@ xorg-xrdb
 xorg-xsetroot
 xorg-xwininfo
 yad
+ytfzf
 zathura
 zathura-cb
 zathura-pdf-mupdf
