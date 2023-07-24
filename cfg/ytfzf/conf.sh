@@ -2,5 +2,5 @@
 
 external_menu () {
     #use rofi instead of dmenu
-    rofi -dmenu -p "$1"
+    rofi -dmenu -p 'YouTube' -mesg "Search Youtube"
 }
