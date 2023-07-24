@@ -50,8 +50,8 @@ super + {x,s,r}
 ##------ Applications -------##
 
 # Launch Apps
-super + {e,f,w,o,g,b,y,a,v,p}
-	{thunar,firefox,geany,obs,zathura,rofi-bluetooth,ytfzf -fD,aniwrapper,copyq toggle,color-picker}
+super + {e,f,w,o,b,y,v,p,l,m,j}
+	{thunar,firefox,geany,obs,rofi-bluetooth,ytfzf -fD,copyq toggle,color-picker,lobster,rofi-movies,jerry}
 
 super + z
 	discord --enable-gpu-rasterization
