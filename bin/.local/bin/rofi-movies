@@ -91,7 +91,7 @@ main() {
 # Check if the directory has any movies
 if [[ "$(find "$directory" \( -type l -o -type f \))" ]] ; then 
 	# If the cache directory is empty, notify the user and generate thumbnails and shortcuts
-	[[ -z "$(ls -A $cached)" ]] && notify-send -a Rofi-Movies -t 2000 -r 40 "Rofi-Movies" "Generating Thumbnails..."
+	[[ -z "$(ls -A $cached)" ]] && notify-send -a Rofi-Movies -t 2000 -r 40 "Rofi-Movies" "Getting Covers..."
 	main && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
 else
 	# If no matching documents were found, notify the user
