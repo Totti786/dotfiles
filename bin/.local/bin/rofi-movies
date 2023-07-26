@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # Define cache and file paths
-directory="$HOME/Videos/Movies"
+movies_directory="$HOME/Videos/Movies"
+#shows_directory="$HOME/Videos/TV-Shows"
 cached="$HOME/.cache/rofi-movies"
 shortcuts="$HOME/.local/share/applications/movies"
 
@@ -12,6 +13,13 @@ mkdir -p "$cached"
 get_poster(){
 	# Replace 'YOUR_API_KEY' with your actual OMDB API key
 	API_KEY="497fd34e"
+	
+	# Check if gojq is installed and if not use jq
+	if command -v "gojq" >/dev/null 2>&1; then 
+		_jq="gojq"
+	else 
+		_jq=jq
+	fi
 	
 	# Check if a movie title and directory path are provided as arguments
 	if [ -z "$1" ] || [ -z "$2" ]; then
@@ -27,14 +35,14 @@ get_poster(){
 	response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&apikey=$API_KEY")
 	
 	# Check if the response contains an error message
-	error_message=$(echo "$response" | jq -r '.Error')
+	error_message=$(echo "$response" | $_jq -r '.Error')
 	if [ "$error_message" != "null" ]; then
 		echo "Error: $error_message"
 		exit 1
 	fi
 	
 	# Parse the JSON response using jq
-	poster_url=$(echo "$response" | jq -r '.Poster')
+	poster_url=$(echo "$response" | $_jq -r '.Poster')
 	
 	# Check if the poster URL is available
 	if [ "$poster_url" == "N/A" ]; then
@@ -49,21 +57,40 @@ get_poster(){
 	  fi
 	
 	  # Use 'wget' to download the poster image
-	  wget "$poster_url" -O "$directory_path/$movie_title.jpg"
+	  wget -q "$poster_url" -O "$directory_path/$movie_title.jpg"
 	  echo "Poster downloaded as '$directory_path/$movie_title.jpg'"
 	fi
 }
 
-# Function to generate thumbnails and create shortcut desktop entries
-main() {
-	# Read the 'history' file and store the lines containing "home" in the 'lines' array
-	readarray -t lines < <(find "$directory" \( -type l -o -type f \))
+#get_show(){
+	#name=$(echo $1 | tr ' ' '-')
+	#url=$(curl -s "https://flixhq.to/search/$name" | sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' | sed -nE 's@.*img data-src="([^"]*)".*@\1@p' | tail -n1)
+	#wget "$url" -O "$cached/$1"
+#}
+
+
+#shows(){
+	#readarray -t lines < <(find "$shows_directory" -mindepth 1 \( -type l -o -type d \))
 	
+	#for line in "${lines[@]}"; do
+		#[[ -d "$line" ]] && name="$(echo ${line##*/} | awk -F' -' '{print $1}' | tr ' ' '-')"
+		#if ! [[ -f "$cached/$name.jpg" ]]; then
+			#get_show "$name" "$cached"
+		#fi		
+	#done
+#}
+
+# Function to generate thumbnails and create shortcut desktop entries
+movies(){
+	# List the movies in the directory
+	readarray -t lines < <(find "$movies_directory" \( -type l -o -type f \) -name "*.mp4" -o -name "*.mkv")
+
 	# Loop through each line in 'lines'
 	for line in "${lines[@]}"; do
 		# Extract the file name and remove the extension to use as the shortcut name
 		[[ -f "$line" ]] && name="${line##*/}" name="${name%.*}"
-
+		
+		# Check if the poster exists in the cache directory and if not download it
 		if ! [[ -f "$cached/$name.jpg" ]]; then
 			get_poster "$name" "$cached"
 		fi
@@ -89,11 +116,12 @@ main() {
 }
 
 # Check if the directory has any movies
-if [[ "$(find "$directory" \( -type l -o -type f \))" ]] ; then 
+if [[ "$(ls "$movies_directory" | grep -e "\.mp4$" -e "\.mkv$")" ]] ; then 
 	# If the cache directory is empty, notify the user and generate thumbnails and shortcuts
 	[[ -z "$(ls -A $cached)" ]] && notify-send -a Rofi-Movies -t 2000 -r 40 "Rofi-Movies" "Getting Covers..."
-	main && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
+	movies && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
 else
 	# If no matching documents were found, notify the user
 	notify-send -t 2000 -r 41 "Rofi-Movies" "No Movies Were Found"
 fi
+
