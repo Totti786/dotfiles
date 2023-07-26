@@ -50,14 +50,14 @@ super + {x,s,r}
 ##------ Applications -------##
 
 # Launch Apps
-super + {e,f,w,o,b,y,v,p,l,m,j}
-	{thunar,firefox,geany,obs,rofi-bluetooth,ytfzf -fD,copyq toggle,color-picker,lobster,rofi-movies,jerry}
+super + {e,f,w,o,b,y,v,p,g,l,m,j}
+	{thunar,firefox,geany,obs,rofi-bluetooth,ytfzf -fD,copyq toggle,color-picker,rofi-zathura,lobster,rofi-movies,jerry}
 
 super + z
 	discord --enable-gpu-rasterization
 
-super + shift + {s,w,r,d,g}
-	{spotify,wpgtk pick,rhythmbox,dmenu.sh,rofi-zathura}
+super + shift + {s,w,r,d,l}
+	{spotify,wpgtk pick,rhythmbox,dmenu.sh,lobster -c}
 
 # Terminal Apps
 ctrl + alt + {v,r,h}
