@@ -1,0 +1,12 @@
+use_external_menu=1
+image_preview=1
+image_config_path=~/.config/rofi/themes/rofi-media.rasi
+quality=720
+history=1
+provider="Vidcloud"
+ueberzug_max_width=10
+ueberzug_max_height=10
+
+download_video() {
+  ffmpeg -loglevel error -stats -i "$1" -c copy "$3/$2".mp4
+}
