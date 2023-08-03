@@ -598,11 +598,6 @@
         <command>~/.config/rofi/bin/screenshot</command>
       </action>
     </keybind>
-    <keybind key="W-r">
-      <action name="Execute">
-        <command>~/.config/rofi/bin/asroot</command>
-      </action>
-    </keybind>
     <keybind key="W-p">
       <action name="Execute">
         <command>color-picker</command>
@@ -657,10 +652,34 @@
         <command>zathura</command>
       </action>
     </keybind>
-    <!-- Zathura Menu -->
-    <keybind key="W-S-g">
+    <!-- ytfzf -->
+    <keybind key="W-y">
+      <action name="Execute">
+        <command>ytfzf -fD</command>
+      </action>
+    </keybind>
+    <!-- Rofi-zathura -->
+    <keybind key="W-r">
       <action name="Execute">
         <command>rofi-zathura</command>
+      </action>
+    </keybind>
+    <!-- Rofi-movies -->
+    <keybind key="W-m">
+      <action name="Execute">
+        <command>rofi-movies</command>
+      </action>
+    </keybind>
+    <!-- lobster -->
+    <keybind key="W-l">
+      <action name="Execute">
+        <command>lobster</command>
+      </action>
+    </keybind>
+    <!-- jerry -->
+    <keybind key="W-j">
+      <action name="Execute">
+        <command>jerry</command>
       </action>
     </keybind>
     <!-- Discord -->
@@ -679,12 +698,6 @@
     <keybind key="W-b">
       <action name="Execute">
         <command>rofi-bluetooth</command>
-      </action>
-    </keybind>
-    <!-- Youtube-cli -->
-    <keybind key="W-S-y">
-      <action name="Execute">
-        <command>alacritty -e ytfzf -tf</command>
       </action>
     </keybind>
     <!-- Dmenu -->
