@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# TODO
+# Add support for live wallpapers for both wayland and xorg
+# using xwinwrap and mpvpaper 
+# ffmpeg -i input_video.mp4 -vframes 1 first_frame.png
+# xwinwrap -ni -ov -fs -- mpv -wid WID --loop=inf -quiet input_video.mp4
+# mpvpaper '*' ./Downloads/mylivewallpapers.com-Eren-Titan.mp4
+
 # Color files
 config="$HOME/.config"
 alacritty="$config/alacritty/colors.yml"
@@ -17,7 +24,7 @@ eww="$config/eww/colors.scss"
 waybar="$config/waybar/colors.css"
 hypr="$config/hypr/colors.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='60'
+alpha='FF'
 
 ## Change colors
 change_colors(){
@@ -326,20 +333,37 @@ check(){
     fi
 }
 
-wall(){
-	if [[ -z "$1" ]]; then
-		echo "No image was selected"
-		exit
-	else 
-		if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
-			feh --no-fehbg --bg-fill "$1"
-		elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-			"$HOME"/.config/hypr/scripts/wall "$1"
-		fi
-		
-		wpg -A "$1" && wpg -s "$1"
-		rm "$1""_wal_sample.png"
-	fi
+wall() {
+    if [[ -z "$1" ]]; then
+        echo "No image was selected"
+        exit
+    fi
+
+    local wallpaper="$1"
+    local type="${wallpaper##*.}"
+
+    if [[ "$type" == "mp4" || "$type" == "gif" ]]; then
+        local wall="$HOME/.cache/wall/${wallpaper##*/}.png"
+        [[ ! -f "$wall" ]] && ffmpeg -y -i "$wallpaper" -vframes 1 "$wall" &> /dev/null
+        if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+			[[ "$(pgrep xwinwrap)" ]] && pkill xwinwrap
+            xwinwrap -ni -ovr -- mpv -wid WID --loop=inf -quiet "$wallpaper" &
+        elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+			[[ "$(pgrep mpvpaper)" ]] && pkill mpvpaper
+            mpvpaper -o "no-audio --loop-playlist"  '*' "$wallpaper" &
+        fi
+    else
+        local wall="$wallpaper"
+        if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+            feh --no-fehbg --bg-fill "$wallpaper"
+        elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+            "$HOME"/.config/hypr/scripts/wall "$wallpaper"
+        fi
+    fi
+
+    wpg -A "$wall" && wpg -s "$wall"
+    rm "${wall}_wal_sample.png"
+    exit
 }
 
 setup(){
