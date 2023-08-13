@@ -15,7 +15,7 @@ get_poster(){
 	API_KEY="497fd34e"
 	
 	# Check if gojq is installed and if not use jq
-	if command -v "gojq" >/dev/null 2>&1; then 
+	if command -v "gojq" &>/dev/null; then 
 		_jq="gojq"
 	else 
 		_jq=jq
