@@ -7,8 +7,13 @@
 hidden=/tmp/syshide.lock
 
 tray(){
-	[[ "$top_padding" == 0 ]] && gravity="SW" || gravity="NE"
-	width="$(xrandr --current | awk '/Screen/ {printf("%.0f\n", $8 * 0.049)}')"
+	gravity="NE"
+	res="$(xrandr --current | awk '/Screen/ {printf("%.0f\n", $8)}')"
+	if [[ "$res" > 1920 ]]; then 
+		width="$(echo $res | awk '{printf("%.0f\n", $1 / 2 * 0.049 + 1920)}')"
+	else
+		width="$(echo $res | awk '{printf("%.0f\n", $1 * 0.049)}')"
+	fi
 	color="$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)"
 	
 	if [[ "$bar_style" == "base" ]]; then 
@@ -19,7 +24,7 @@ tray(){
 		geometry="1x1-$width+45"
 	fi
 	
-	config="--background $color --geometry $geometry --grow-gravity $gravity --icon-gravity NE --vertical false --slot-size 32 --kludges force_icons_size"
+	config="--background $color --geometry $geometry --grow-gravity $gravity --icon-gravity $gravity --vertical false --slot-size 32 --kludges force_icons_size"
 	
 	if [[ "$(pidof stalonetray)" ]]; then
 		if [[ ! -e "$hidden" ]]; then
