@@ -31,7 +31,7 @@ toggle_transparency(){
 		"$pipe_dir"/compositor --disable-shadows
 		"$pipe_dir"/wm-pipe --border "$window_border"
 		sed -i "s/opacity: .*/opacity: 0.8/" "$alacritty_conf"
-		sed -i "s/alpha=.*/alpha='60'/" "$wpgtk_dir"
+		sed -i "s/alpha=.*/alpha='70'/" "$wpgtk_dir"
 		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst_dir"
 	fi	
 }
