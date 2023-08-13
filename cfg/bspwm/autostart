@@ -9,7 +9,7 @@
 
 # Keybinds
 killall -9 sxhkd
-sxhkd &
+sxhkd -c ~/.config/sxhkd/sxhkdrc ~/.config/sxhkd/bspwm-sxhkdrc &
 
 # Enable Super Keys For Menu
 killall -9 xcape
@@ -46,8 +46,7 @@ killall -9 plank
 plank &
 
 # Conky
-[[ "$conky" == "On" ]] &&
-	"$HOME"/.local/bin/conky.sh &
+[[ "$conky" == "On" ]] && "$HOME"/.local/bin/conky.sh &
 
 # Fix Plank
 bspc subscribe node_add | while read -r _
