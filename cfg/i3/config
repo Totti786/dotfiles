@@ -15,11 +15,11 @@ font pango:JetBrains Mono Medium 9
 # Gaps (Outer gaps are added to the inner gaps)
 gaps inner 10
 gaps outer 0
-gaps top 35
-gaps bottom 0
+gaps top 23
+gaps bottom 23
 
 # Uncomment this to enable title bars
-for_window [class=".*"] border normal 0
+#for_window [class=".*"] border normal 0
 
 # Title bar text alignment
 title_align center
