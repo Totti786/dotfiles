@@ -5,29 +5,11 @@
 # /____/_/|_/_/ /_/_/|_|\__,_/
 #
 
-##------- Keybindings -------##
-
-# Terminal (alacritty)
-super + Return
-	alacritty
-
-# Drop-down Terminal
-alt + Return
-	furminal --drop
-
-# Floating Terminal
-super + shift + Return
-	furminal --float
-
-# Fullscreen Terminal
-super + t
-	furminal --full
-
-##------ Rofi & Menus -------##
+##------ Menus -------##
 
 # Right click menu
 ~button3
-	xqp 0 $(xdo id -N seat0 -n root) && jgmenu_run 
+	xqp 0 $(xdo id -N seat0 -n root) && jgmenu_run
 
 alt + space
 	jgmenu_run
@@ -38,90 +20,6 @@ alt + space
 
 super + ~button3
 	xqp 0 $(xdo id -N seat0 -n root) && ~/.config/jgmenu/pipemenus/jg-color alone
-	
-# Rofi App Launcher
-alt + F1
-	~/.config/rofi/bin/launcher
-
-# Rofi Menus/Applets
-super + {x,s,r}
-	~/.config/rofi/bin/{powermenu,screenshot,asroot}
-	
-##------ Applications -------##
-
-# Launch Apps
-super + {e,f,w,o,b,y,v,p,g,l,m,j}
-	{thunar,firefox,geany,obs,rofi-bluetooth,ytfzf -fD,copyq toggle,color-picker,rofi-zathura,lobster,rofi-movies,jerry}
-
-super + z
-	discord --enable-gpu-rasterization
-
-super + shift + {s,w,r,d,l}
-	{spotify,wpgtk pick,rhythmbox,dmenu.sh,lobster -c}
-
-# Terminal Apps
-ctrl + alt + {v,r,h}
-	alacritty -e {vim,ranger,htop}
-
-# Reset Wallpaper
-ctrl + alt + b
-	~/.fehbg
-
-# Lockscreen
-ctrl + alt + l
-   lockscreen
-
-# Random Wallpaper
-ctrl + alt + w
-   wpgtk random
-
-##------- System Keys -------##
-
-# Take a screenshot
-Print
-	takeshot --now
-
-# Take screenshot using flameshot
-alt + Print
-	flameshot gui
-
-# Take screenshot of an area
-shift + Print
-	takeshot --area
-
-# Take screenshot of active window
-ctrl + Print
-	takeshot --win
-
-# Brighness control
-XF86MonBrightness{Up,Down}
-	brightness{ --inc, --dec}
-
-# Volume control
-XF86Audio{RaiseVolume,LowerVolume,Mute}
-	volume{ --inc, --dec, --toggle}
-
-# Media control
-XF86Audio{Next,Prev,Play,Pause,Stop}
-	playerctl {next,previous,play-pause,play-pause,stop}
-
-##---------- Misc. ----------##
-
-# Restart Polybar
-super + shift + m
-	~/.config/jgmenu/pipemenus/bar-pipe reload
-
-# Kill window
-super + Escape
-	xkill
-
-# Switch window
-alt + Tab
-	windowswitch windowcd
-
-# Switch window (across worksapces)
-super + Tab
-	windowswitch window
 
 ##----------- i3 ------------##
 
