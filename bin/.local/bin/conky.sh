@@ -3,7 +3,7 @@
 config="$HOME/.config/conky/conky-$XDG_CURRENT_DESKTOP.conf"
 
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
-[[ "$bar_style" == "bionic" ]] && alpha="255" || alpha="190"
+[[ "$bar_style" == "bionic" ]] && alpha="255" || alpha="150"
 
 if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
 	source "$HOME/.cache/wal/colors.sh"
@@ -24,11 +24,11 @@ fi
 	#-i -e "s/font2 = 'JetBrains Mono:bold:size=.*',/font2 = 'JetBrains Mono:bold:size=25',/g" \
 #"$conkyConfig"
 
-sed -i -e "s/own_window_colour = '#.*',/own_window_colour = '$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)',/g" \
-	-i -e "s/color0 = '#.*',/color0 = '${color10}',/g" \
-	-i -e "s/color1 = '#.*',/color1 = '${foreground}',/g" \
-	-i -e "s/color2 = '#.*',/color2 = '${color13}',/g" \
-	-i -e "s/color3 = '#.*',/color3 = '${color14}',/g" \
+sed -i -e "s/own_window_colour = '.*',/own_window_colour = '$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)',/g" \
+	-i -e "s/color0 = '.*',/color0 = '${color10}',/g" \
+	-i -e "s/color1 = '.*',/color1 = '${foreground}',/g" \
+	-i -e "s/color2 = '.*',/color2 = '${color13}',/g" \
+	-i -e "s/color3 = '.*',/color3 = '${color14}',/g" \
 	-i -e "s/own_window_argb_value = .*/own_window_argb_value = $alpha,/g" \
 "$config"	
 
