@@ -12,7 +12,7 @@ elif [ "$1" == "--full" ]; then
 	-o window.startup_mode=fullscreen window.padding.x=30 window.padding.y=30 \
 	window.opacity=0.6 font.size=12 "${@:2}"
 elif [ "$1" == "--drop" ]; then 
-	tdrop -a -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'alacritty-drop,alacritty-drop' --config-file "$CONFIG" "${@:2}"
+	tdrop -t -a -m -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'alacritty-drop,alacritty-drop' --config-file "$CONFIG" "${@:2}"
 else
 	echo "Usage: $(basename $0) [options] [--]	
 	Options:
