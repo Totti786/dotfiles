@@ -45,17 +45,18 @@ case "$chosen" in
     "$logout")
 		current_desktop=$(wmctrl -m | head -n1 | cut -d " " -f2) 
 		if [[ "$(confirm)" == "$confirm" ]]; then
-			if [[ "$current_desktop" == "Openbox" ]]; then
-				openbox --exit
-			elif [[ "$current_desktop" == "i3" ]]; then
-				i3 exit
-			elif [[ "$current_desktop" == "bspwm" ]]; then
-				bspc quit
-			elif [[ "$current_desktop" == "herbstluftwm" ]]; then
-				herbstclient quit
-			elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-				hyprctl dispatch exit
-			fi
-        fi
+			loginctl kill-user $(whoami)
+			#if [[ "$current_desktop" == "Openbox" ]]; then
+				#openbox --exit
+			#elif [[ "$current_desktop" == "i3" ]]; then
+				#i3 exit
+			#elif [[ "$current_desktop" == "bspwm" ]]; then
+				#bspc quit
+			#elif [[ "$current_desktop" == "herbstluftwm" ]]; then
+				#herbstclient quit
+			#elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+				#hyprctl dispatch exit
+			#fi
+		fi
         ;;
 esac
