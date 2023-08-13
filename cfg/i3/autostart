@@ -9,7 +9,7 @@
 
 # Keybinds
 killall -q -9 sxhkd
-sxhkd -c ~/.config/sxhkd/i3-sxhkdrc &
+sxhkd -c ~/.config/sxhkd/sxhkdrc ~/.config/sxhkd/i3-sxhkdrc &
 
 # Enable Super Keys For Menu
 killall -q -9 xcape
@@ -36,7 +36,7 @@ dunst &
 
 # Restore Wallpaper
 wal -Re &
-"$HOME"/.local/bin/wpgtk run &
+"$HOME"/.local/bin/wpgtk run
 
 # Fix the i3 colors
 "$HOME"/.config/i3/i3-reload
