@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Commands Executed By Openbox Powermenu
+## Commands Executed By jgmenu Powermenu
 
 # Variables and functions
 MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
@@ -29,7 +29,7 @@ elif  [[ "$1" = "--suspend" ]]; then
 elif  [[ "$1" = "--hibernate" ]]; then
 	systemctl hibernate && lockscreen
 elif  [[ "$1" = "--reboot" ]]; then
-	systemctl reboot 
+	systemctl reboot
 elif  [[ "$1" = "--shutdown" ]]; then
 	systemctl poweroff
 	else
