@@ -62,8 +62,9 @@ usage() {
     --dub
       Allows user to watch anime in dub
     -e, --edit
-      Edit config file using an editor defined with jerry_editor in the config (\$EDITOR by default)
-      If a config file does not exist, creates one with a default configuration
+      Edit config file using an editor defined with jerry_editor in the config (\$EDITOR by default). If a config file does not exist, creates one with a default configuration
+		-d, --discord
+      Display currently watching anime in Discord Rich Presence (jerrydiscordpresence.py is required for this, check the readme for instructions on how to install it)
     -h, --help
       Show this help message and exit
     -i, --image-preview
@@ -125,9 +126,12 @@ configuration() {
     [ -z "$ueberzug_max_height" ] && ueberzug_max_height=$(($(tput lines) / 2))
     [ -z "$json_output" ] && json_output=0
     [ -z "$dub" ] && dub="false"
+    [ -z "$score_on_completion" ] && score_on_completion="false"
     if [ "$no_anilist" = 0 ] || [ "$no_anilist" = "false" ]; then
         no_anilist=""
     fi
+    [ -z "$discord_presence" ] && discord_presence="false"
+    [ -z "$presence_script_path" ] && presence_script_path="jerrydiscordpresence.py"
 }
 
 check_credentials() {
@@ -192,6 +196,75 @@ update_script() {
     exit 0
 }
 
+check_update() {
+    update=$(curl -s "https://raw.githubusercontent.com/justchokingaround/jerry/main/jerry.sh")
+    update="$(printf '%s\n' "$update" | diff -u "$(command -v jerry)" -)"
+    if [ -n "$update" ]; then
+        if [ "$use_external_menu" = 0 ] || [ "$use_external_menu" = "false" ]; then
+            printf "%s" "$1" && read -r answer
+        else
+            answer=$(printf "Yes\nNo" | launcher "$1")
+        fi
+        case "$answer" in
+            "Yes" | "yes" | "y" | "Y") update_script ;;
+        esac
+    fi
+
+    if [ "$discord_presence" = "true" ]; then
+        if [ ! -f "$(command -v "$presence_script_path")" ]; then
+            if [ "$use_external_menu" = 0 ] || [ "$use_external_menu" = "false" ]; then
+                printf "No presence script found in path, would you like to download the default one?" && read -r answer
+            else
+                answer=$(printf "Yes\nNo" | launcher "No presence script found in path, would you like to download the default one?")
+            fi
+            case "$answer" in
+                "Yes" | "yes" | "y" | "Y")
+                    case "$(uname -a)" in
+                        *Darwin*)
+                            curl -sL github.com/justchokingaround/jerry/raw/main/jerrydiscordpresence.py -o "$(brew --prefix)"/bin/jerrydiscordpresence.py
+                            chmod +x "$(brew --prefix)"/bin/jerrydiscordpresence.py
+                            ;;
+                        *MINGW*)
+                            curl -sL github.com/justchokingaround/jerry/raw/main/jerrydiscordpresence.py -o /usr/bin/jerrydiscordpresence.py
+                            chmod +x /usr/bin/jerrydiscordpresence.py
+                            ;;
+                        *)
+                            sudo curl -sL github.com/justchokingaround/jerry/raw/main/jerrydiscordpresence.py -o /usr/local/bin/jerrydiscordpresence.py
+                            sudo chmod +x /usr/local/bin/jerrydiscordpresence.py
+                            ;;
+                    esac
+                    ;;
+                *) exit 0 ;;
+            esac
+        else
+            update=$(curl -s "https://raw.githubusercontent.com/justchokingaround/jerry/main/jerrydiscordpresence.py" || return)
+            update="$(printf '%s\n' "$update" | diff -u "$(command -v "$presence_script_path")" -)"
+            if [ -n "$update" ]; then
+                if [ "$use_external_menu" = 0 ] || [ "$use_external_menu" = "false" ]; then
+                    printf "%s" "$2" && read -r answer
+                else
+                    answer=$(printf "Yes\nNo" | launcher "$2")
+                fi
+                case "$answer" in
+                    "Yes" | "yes" | "y" | "Y")
+                        case "$(uname -a)" in
+                            *Darwin* | *MINGW*) sucess=$(printf '%s\n' "$update" | patch "$(command -v "$presence_script_path")" -) ;;
+                            *) sucess=$(printf '%s\n' "$update" | sudo patch "$(command -v "$presence_script_path")" -) ;;
+                        esac
+                        if $sucess; then
+                            send_notification "Script has been updated!"
+                        else
+                            send_notification "Can't update for some reason!"
+                        fi
+                        ;;
+                    *) exit 0 ;;
+                esac
+            fi
+        fi
+    fi
+
+}
+
 get_input() {
     if [ "$use_external_menu" = "0" ]; then
         printf "%s" "$1" && read -r query
@@ -239,6 +312,11 @@ nth() {
 
 nine_anime_helper() {
     curl -s "$base_helper_url/$1?query=$2&apikey=jerry" | $sed -nE "s@.*\"$3\":\"([^\"]*)\".*@\1@p"
+}
+
+nine_anime_extractor() {
+    futoken=$(curl -s "vidstream.pro/futoken")
+    curl -s "$base_helper_url/$1?query=$2&apikey=jerry" -d "query=${2}&futoken=${futoken}" | sed -nE "s@.*\"$3\":\"([^\"]*)\".*@\1@p"
 }
 
 download_images() {
@@ -308,9 +386,9 @@ get_anime_from_list() {
                 media_id=$(printf "%s" "$choice" | cut -d\  -f1)
                 title=$(printf "%s" "$choice" | $sed -nE "s@$media_id (.*) [0-9?|]* episodes.*@\1@p")
                 [ -z "$progress" ] && progress=$(printf "%s" "$choice" | $sed -nE "s@.* ([0-9]*)\|[0-9?]* episodes.*@\1@p")
-                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes@\1@p")
+                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes.*@\1@p")
                 [ -z "$episodes_total" ] && episodes_total=9999
-                score=$(printf "%s" "$choice" | $sed -nE "s@.* episodes \[([0-9]*)\]@\1@p")
+                score=$(printf "%s" "$choice" | $sed -nE "s@.* episodes \[([0-9]*)\].*@\1@p")
                 ;;
             *)
                 tmp_anime_list=$(printf "%s" "$anime_list" | $sed -nE "s@(.*\.[jpneg]*)[[:space:]]*([0-9]*)[[:space:]]*(.*)@\3\t\2\t\1@p")
@@ -319,9 +397,9 @@ get_anime_from_list() {
                 media_id=$(printf "%s" "$choice" | cut -f2)
                 title=$(printf "%s" "$choice" | $sed -nE "s@(.*) [0-9?|]* episodes.*@\1@p")
                 [ -z "$progress" ] && progress=$(printf "%s" "$choice" | $sed -nE "s@.* ([0-9]*)\|[0-9?]* episodes.*@\1@p")
-                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes@\1@p")
+                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes.*@\1@p")
                 [ -z "$episodes_total" ] && episodes_total=9999
-                score=$(printf "%s" "$choice" | $sed -nE "s@.* episodes \[([0-9]*)\]@\1@p")
+                score=$(printf "%s" "$choice" | $sed -nE "s@.* episodes \[([0-9]*)\].*@\1@p")
                 ;;
         esac
     else
@@ -333,9 +411,9 @@ get_anime_from_list() {
                 media_id=$(printf "%s" "$choice" | $sed -nE "s@.* ([0-9]*)\.jpg@\1@p")
                 title=$(printf "%s" "$choice" | $sed -nE "s@[[:space:]]*(.*) [0-9?|]* episodes.*@\1@p")
                 [ -z "$progress" ] && progress=$(printf "%s" "$choice" | $sed -nE "s@.* ([0-9]*)\|[0-9?]* episodes.*@\1@p")
-                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes@\1@p")
+                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes.*@\1@p")
                 [ -z "$episodes_total" ] && episodes_total=9999
-                score=$(printf "%s" "$choice" | $sed -nE "s@.* episodes \[([0-9]*)\]@\1@p")
+                score=$(printf "%s" "$choice" | $sed -nE "s@.* episodes \[([0-9]*)\].*@\1@p")
                 ;;
             *)
                 choice=$(printf "%s" "$anime_list" | launcher "Choose anime: " "3")
@@ -343,9 +421,9 @@ get_anime_from_list() {
                 media_id=$(printf "%s" "$choice" | cut -f2)
                 title=$(printf "%s" "$choice" | $sed -nE "s@.*$media_id\t(.*) [0-9?|]* episodes.*@\1@p")
                 [ -z "$progress" ] && progress=$(printf "%s" "$choice" | $sed -nE "s@.* ([0-9]*)\|[0-9?]* episodes.*@\1@p")
-                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes@\1@p")
+                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes.*@\1@p")
                 [ -z "$episodes_total" ] && episodes_total=9999
-                score=$(printf "%s" "$choice" | $sed -nE "s@.* episodes \[([0-9]*)\]@\1@p")
+                score=$(printf "%s" "$choice" | $sed -nE "s@.* episodes \[([0-9]*)\].*@\1@p")
                 ;;
         esac
     fi
@@ -365,7 +443,7 @@ search_anime_anilist() {
                 [ -z "$choice" ] && exit 1
                 media_id=$(printf "%s" "$choice" | cut -d\  -f1)
                 title=$(printf "%s" "$choice" | $sed -nE "s@$media_id (.*) [0-9?]* episodes@\1@p")
-                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes@\1@p")
+                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes.*@\1@p")
                 [ -z "$episodes_total" ] && episodes_total=9999
                 ;;
             *)
@@ -374,7 +452,7 @@ search_anime_anilist() {
                 media_id=$(printf "%s" "$choice" | cut -f2)
                 title=$(printf "%s" "$choice" | $sed -nE "s@(.*) [0-9?|]* episodes.*@\1@p")
                 [ -z "$progress" ] && progress=$(printf "%s" "$choice" | $sed -nE "s@.* ([0-9]*)\|[0-9?]* episodes.*@\1@p")
-                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes@\1@p")
+                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes.*@\1@p")
                 [ -z "$episodes_total" ] && episodes_total=9999
                 ;;
         esac
@@ -386,7 +464,7 @@ search_anime_anilist() {
                 [ -z "$choice" ] && exit 0
                 media_id=$(printf "%s" "$choice" | $sed -nE "s@.* ([0-9]*)\.jpg@\1@p")
                 title=$(printf "%s" "$choice" | $sed -nE "s@[[:space:]]*(.*) [0-9?|]* episodes.*@\1@p")
-                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes@\1@p")
+                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes.*@\1@p")
                 [ -z "$episodes_total" ] && episodes_total=9999
                 ;;
             *)
@@ -394,7 +472,7 @@ search_anime_anilist() {
                 media_id=$(printf "%s" "$choice" | cut -f2)
                 title=$(printf "%s" "$choice" | $sed -nE "s@.*$media_id\t(.*) [0-9?|]* episodes@\1@p")
                 [ -z "$progress" ] && progress=$(printf "%s" "$choice" | $sed -nE "s@.* ([0-9]*)\|[0-9?]* episodes@\1@p")
-                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes@\1@p")
+                episodes_total=$(printf "%s" "$choice" | $sed -nE "s@.*[\| ]([0-9?]*) episodes.*@\1@p")
                 [ -z "$episodes_total" ] && episodes_total=9999
                 ;;
         esac
@@ -627,11 +705,17 @@ update_status() {
 }
 
 update_score() {
-    status_choice=$(printf "CURRENT\nCOMPLETED\nPAUSED\nDROPPED\nPLANNING" | launcher "Filter by status: ")
-    case "$1" in
-        "ANIME") get_anime_from_list "$status_choice" ;;
-        "MANGA") get_manga_from_list "$status_choice" ;;
-    esac
+    if [ "$2" = "immediate" ]; then
+        [ "$1" = "ANIME" ] && total="$episodes_total"
+        [ "$1" = "MANGA" ] && total="$chapters_total"
+        [ $((progress + 1)) != "$total" ] && return
+    else
+        status_choice=$(printf "CURRENT\nCOMPLETED\nPAUSED\nDROPPED\nPLANNING" | launcher "Filter by status: ")
+        case "$1" in
+            "ANIME") get_anime_from_list "$status_choice" ;;
+            "MANGA") get_manga_from_list "$status_choice" ;;
+        esac
+    fi
     send_notification "Enter new score for: \"$title\"" "5000"
     send_notification "Current score: $score" "5000"
     if [ "$use_external_menu" = "0" ]; then
@@ -684,14 +768,15 @@ get_anilist_info() {
 
 #### ANIME SCRAPING FUNCTIONS ####
 get_episode_info() {
-    mal_id=$(curl -s "https://api.ani.zip/mappings?anilist_id=${media_id}" | sed -nE "s@.*\"mal_id\":([0-9]*).*@\1@p")
     case "$provider" in
         aniwatch)
-            aniwatch_id=$(curl -s "https://api.malsync.moe/mal/anime/${mal_id}" | tr '}' '\n' | sed -nE "s@.*\"Zoro\".*\"url\":\".*-([0-9]*)\".*@\1@p")
+            aniwatch_id=$(curl -s "https://raw.githubusercontent.com/bal-mackup/mal-backup/master/anilist/anime/${media_id}.json" |
+                tr -d '\n ' | tr '}' '\n' | sed -nE "s@.*\"Zoro\".*\"url\":\".*-([0-9]*)\".*@\1@p")
             episode_info=$(curl -s "https://aniwatch.to/ajax/v2/episode/list/${aniwatch_id}" | $sed -e "s/</\n/g" -e "s/\\\\//g" | $sed -nE "s_.*a title=\"([^\"]*)\".*data-id=\"([0-9]*)\".*_\2\t\1_p" | $sed -n "$((progress + 1))p")
             ;;
         yugen)
-            href=$(curl -s "https://api.malsync.moe/mal/anime/51009" | tr '}' '\n' | sed -nE "s@.*\"YugenAnime\".*\"url\":\"([^\"]*)\".*@\1@p")
+            href=$(curl -s "https://raw.githubusercontent.com/bal-mackup/mal-backup/master/anilist/anime/${media_id}.json" |
+                tr -d '\n' | tr '}' '\n' | sed -nE 's@.*"YugenAnime".*"url": *"([^"]*)".*@\1@p')
             tmp_episode_info=$(curl -s "${href}watch/" | $sed -nE "s@.*href=\"/([^\"]*)\" title=\"([^\"]*)\".*@\1\t\2@p" | $sed -n "$((progress + 1))p")
             tmp_href=$(printf "%s" "$tmp_episode_info" | cut -f1)
             ep_title=$(printf "%s" "$tmp_episode_info" | cut -f2)
@@ -702,13 +787,14 @@ get_episode_info() {
             episode_info=$(printf "%s\t%s" "$yugen_id" "$ep_title")
             ;;
         9anime)
-            nineanime_href=$(curl -s "https://api.malsync.moe/mal/anime/${mal_id}" | tr '}' '\n' | sed -nE "s@.*\"9anime\".*\"url\":\"([^\"]*)\".*@\1@p")
+            nineanime_href=$(curl -s "https://raw.githubusercontent.com/bal-mackup/mal-backup/master/anilist/anime/${media_id}.json" |
+                tr -d '\n ' | tr '}' '\n' | sed -nE "s@.*\"9anime\".*\"url\":\"([^\"]*)\".*@\1@p" | head -1 | sed "s/9anime\.../aniwave.to/")
             data_id=$(curl -s "$nineanime_href" | $sed -nE "s@.*data-id=\"([0-9]*)\" data-url.*@\1@p")
 
             ep_list_vrf=$(nine_anime_helper "vrf" "$data_id" "url")
-            episode_info=$(curl -sL "https://9anime.pl/ajax/episode/list/$data_id?vrf=$ep_list_vrf" | $sed 's/<li/\n/g;s/\\//g' |
+            episode_info=$(curl -sL "https://aniwave.to/ajax/episode/list/$data_id?vrf=$ep_list_vrf" | $sed 's/<li/\n/g;s/\\//g' |
                 $sed -nE "s@.*data-ids=\"([^\"]*)\".*data-jp=\"[^\"]*\">([^<]*)<.*@\1\t\2@p" | $sed -n "$((progress + 1))p")
-            [ -z "$episode_info" ] && episode_info=$(curl -sL "https://9anime.pl/ajax/episode/list/$data_id?vrf=$ep_list_vrf" | $sed 's/<li/\n/g;s/\\//g' |
+            [ -z "$episode_info" ] && episode_info=$(curl -sL "https://aniwave.to/ajax/episode/list/$data_id?vrf=$ep_list_vrf" | $sed 's/<li/\n/g;s/\\//g' |
                 $sed -nE "s@.*data-ids=\"([^\"]*)\".*@\1@p" | $sed -n "$((progress + 1))p")
             ;;
     esac
@@ -805,10 +891,14 @@ get_json() {
         aniwatch)
 
             if [ "$dub" = true ]; then
-                source_id=$(curl -s "https://aniwatch.to/ajax/v2/episode/servers?episodeId=$episode_id" | $sed "s/</\n/g;s/\\\//g" | $sed -nE "s@.*data-type=\"dub\" data-id=\"([0-9]*)\".*@\1@p" | head -1)
+                source_id=$(curl -s "https://aniwatch.to/ajax/v2/episode/servers?episodeId=$episode_id" |
+                    $sed "s/</\n/g;s/\\\//g" | $sed -nE "s@.*data-type=\"dub\" data-id=\"([0-9]*)\".*@\1@p" | head -1)
             else
-                source_id=$(curl -s "https://aniwatch.to/ajax/v2/episode/servers?episodeId=$episode_id" | $sed "s/</\n/g;s/\\\//g" | $sed -nE "s@.*data-type=\"sub\" data-id=\"([0-9]*)\".*@\1@p" | head -1)
+                source_id=$(curl -s "https://aniwatch.to/ajax/v2/episode/servers?episodeId=$episode_id" |
+                    $sed "s/</\n/g;s/\\\//g" | $sed -nE "s@.*data-type=\"sub\" data-id=\"([0-9]*)\".*@\1@p" | head -1)
             fi
+            [ -z "$source_id" ] && source_id=$(curl -s "https://aniwatch.to/ajax/v2/episode/servers?episodeId=$episode_id" |
+                $sed "s/</\n/g;s/\\\//g" | $sed -nE "s@.*data-type=\"raw\" data-id=\"([0-9]*)\".*@\1@p" | head -1)
             embed_link=$(curl -s "https://aniwatch.to/ajax/v2/episode/sources?id=$source_id" | $sed -nE "s_.*\"link\":\"([^\"]*)\".*_\1_p")
 
             # get the juicy links
@@ -827,24 +917,24 @@ get_json() {
             server_list_vrf=$(nine_anime_helper "vrf" "$episode_id" "url")
 
             if [ "$dub" = true ]; then
-                provider_id=$(curl -sL "https://9anime.pl/ajax/server/list/$episode_id?vrf=$server_list_vrf" | $sed "s/</\n/g;s/\\\//g" | $sed -nE "s@.*data-link-id=\"([^\"]*)\">$video_provider.*@\1@p" | tail -1)
+                provider_id=$(curl -sL "https://aniwave.to/ajax/server/list/$episode_id?vrf=$server_list_vrf" | $sed "s/</\n/g;s/\\\//g" | $sed -nE "s@.*data-link-id=\"([^\"]*)\">$video_provider.*@\1@p" | tail -1)
                 provider_vrf=$(nine_anime_helper "vrf" "$provider_id" "url")
             else
-                provider_id=$(curl -sL "https://9anime.pl/ajax/server/list/$episode_id?vrf=$server_list_vrf" | $sed "s/</\n/g;s/\\\//g" | $sed -nE "s@.*data-link-id=\"([^\"]*)\">$video_provider.*@\1@p" | head -1)
+                provider_id=$(curl -sL "https://aniwave.to/ajax/server/list/$episode_id?vrf=$server_list_vrf" | $sed "s/</\n/g;s/\\\//g" | $sed -nE "s@.*data-link-id=\"([^\"]*)\">$video_provider.*@\1@p" | head -1)
                 provider_vrf=$(nine_anime_helper "vrf" "$provider_id" "url")
             fi
 
-            encrypted_provider_url=$(curl -sL "https://9anime.pl/ajax/server/$provider_id?vrf=$provider_vrf" | $sed "s/\\\//g" | $sed -nE "s@.*\{\"url\":\"([^\"]*)\".*@\1@p")
+            encrypted_provider_url=$(curl -sL "https://aniwave.to/ajax/server/$provider_id?vrf=$provider_vrf" | $sed "s/\\\//g" | $sed -nE "s@.*\{\"url\":\"([^\"]*)\".*@\1@p")
             provider_embed=$(nine_anime_helper "decrypt" "$encrypted_provider_url" "url")
             provider_query=$(printf "%s" "$provider_embed" | $sed -nE "s@.*/e/(.*)@\1@p")
 
             case "$video_provider" in
                 "Vidstream")
-                    raw_url=$(nine_anime_helper "rawvizcloud" "$provider_query" "rawURL")
+                    raw_url=$(nine_anime_extractor "rawvizcloud" "$provider_query" "rawURL")
                     json_data=$(curl -s "$raw_url" -e "$provider_embed" | $sed "s/\\\//g")
                     ;;
                 "MyCloud")
-                    raw_url=$(nine_anime_helper "rawmcloud" "$provider_query" "rawURL")
+                    raw_url=$(nine_anime_extractor "rawmcloud" "$provider_query" "rawURL")
                     json_data=$(curl -s "$raw_url" -e "$provider_embed" | $sed "s/\\\//g")
                     ;;
                     # "Mp4upload")
@@ -959,10 +1049,18 @@ play_video() {
             fi
             if [ -n "$subs_links" ]; then
                 send_notification "$title" "4000" "$images_cache_dir/  $title $progress|$episodes_total episodes $media_id.jpg" "$displayed_episode_title"
-                mpv "$video_link" "$opts" "$subs_arg" "$subs_links" --force-media-title="$displayed_title" --msg-level=ffmpeg/demuxer=error 2>&1 | tee $tmp_position
+                if [ "$discord_presence" = "true" ]; then
+                    eval "$presence_script_path" \"mpv\" \"${title}\" \"$((progress + 1))\" \"${video_link}\" \"${subs_links}\" \"${opts}\" 2>&1 | tee $tmp_position
+                else
+                    mpv "$video_link" "$opts" "$subs_arg" "$subs_links" --force-media-title="$displayed_title" --msg-level=ffmpeg/demuxer=error 2>&1 | tee $tmp_position
+                fi
             else
                 send_notification "$title" "4000" "$images_cache_dir/  $title $progress|$episodes_total episodes $media_id.jpg" "$displayed_episode_title"
-                mpv "$video_link" "$opts" --force-media-title="$displayed_title" --msg-level=ffmpeg/demuxer=error 2>&1 | tee $tmp_position
+                if [ "$discord_presence" = "true" ]; then
+                    eval "$presence_script_path" \"mpv\" \"${title}\" \"$((progress + 1))\" \"${video_link}\" \"\" \"${opts}\" 2>&1 | tee $tmp_position
+                else
+                    mpv "$video_link" "$opts" --force-media-title="$displayed_title" --msg-level=ffmpeg/demuxer=error 2>&1 | tee $tmp_position
+                fi
             fi
             stopped_at=$($sed -nE "s@.*AV: ([0-9:]*) / ([0-9:]*) \(([0-9]*)%\).*@\1@p" "$tmp_position" | tail -1)
             percentage_progress=$($sed -nE "s@.*AV: ([0-9:]*) / ([0-9:]*) \(([0-9]*)%\).*@\3@p" "$tmp_position" | tail -1)
@@ -1052,6 +1150,7 @@ watch_anime_choice() {
     fi
     send_notification "Loading" "3000" "$images_cache_dir/  $title $progress|$episodes_total episodes $media_id.jpg" "$title"
     watch_anime
+    [ "$score_on_completion" = true ] && update_score "ANIME" "immediate"
 }
 
 read_manga_choice() {
@@ -1063,6 +1162,7 @@ read_manga_choice() {
     fi
     send_notification "Loading" "" "$images_cache_dir/  $title $progress|$chapters_total chapters [$score] $media_id.jpg" "$title"
     read_manga
+    [ "$score_on_completion" = true ] && update_score "MANGA" "immediate"
 }
 
 main() {
@@ -1165,7 +1265,6 @@ main() {
 
 configuration
 query=""
-# TODO: implement discord presence
 # TODO: add an argument for video_providers
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -1196,6 +1295,7 @@ while [ $# -gt 0 ]; do
             done
             shift
             ;;
+        -d | --discord) discord_presence=true && shift ;;
         --dub) dub="true" && shift ;;
         -e | --edit) edit_configuration ;;
         -h | --help)
@@ -1284,10 +1384,12 @@ while [ $# -gt 0 ]; do
             ;;
     esac
 done
+# check for update
+check_update "A new update is out. Would you like to update jerry? [Y/n] " "A new update for the presence script is out. Would you like to update jerrydiscordpresence.py? [Y/n] "
 query="$(printf "%s" "$query" | tr ' ' '-' | $sed "s/^-//g")"
 case "$provider" in
-    zoro | kaido) provider="aniwatch" ;;
-    9anime | nineanime) provider="9anime" ;;
+    zoro | kaido | aniwatch) provider="aniwatch" ;;
+    9anime | nineanime | aniwave) provider="9anime" ;;
     yugen | yugenanime) provider="yugen" ;;
     *) send_notification "Invalid provider" && exit 1 ;;
 esac
