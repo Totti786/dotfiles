@@ -39,7 +39,7 @@ else
 			menuSeparator 'bspwm'
 			menuItem 'Edit Autostart' "exo-open $HOME/.config/bspwm/autostart"
 			menuItem 'Edit config' "exo-open $HOME/.config/bspwm/bspwmrc"
-			menuItem 'Edit keybinds' "exo-open $HOME/.config/sxhkd/sxhkdrc"
+			menuItem 'Edit keybinds' "exo-open $HOME/.config/sxhkd/bspwm-sxhkdrc"
 			menuItem 'Edit Border Width' "$0 --border"
 			menuItem 'Restart bspwm' "bspc wm -r "
 			menuItem 'Restart sxhkd' "pkill -USR1 -x sxhkd"
