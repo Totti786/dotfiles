@@ -98,7 +98,7 @@ get_weather_data() {
 
 	else
 		wttr=$(curl wttr.in/"$CITY"?format="%t+%C\n")
-		if [[ -n $wttr ]]; then
+		if [[ -n "$wttr" ]]; then
 			echo "$wttr" > "${cache_weather_stat}"
 		else 
 			echo "Weather Unavailable" > "${cache_weather_stat}"
@@ -120,4 +120,6 @@ elif [[ "$1" == "--stat" ]]; then
 elif [[ "$1" == "--full" ]]; then
 	get_weather_data &> /dev/null
 	cat "${cache_weather_icon}" "${cache_weather_degree}" "${cache_weather_stat}" | tr -d '\n'
+elif [[ "$1" == "--rofi" ]]; then
+	cat "$cache_weather_rofi" | rofi -dmenu -p "Weather" -theme weather
 fi
