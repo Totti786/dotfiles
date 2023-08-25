@@ -17,7 +17,7 @@
 	<name>Open as root</name>
 	<submenu></submenu>
 	<unique-id>1622790717174452-1</unique-id>
-	<command>~/.config/rofi/bin/apps_as_root.sh &apos;dbus-run-session thunar&apos;</command>
+	<command>~/.config/rofi/bin/asroot &apos;dbus-run-session thunar&apos;</command>
 	<description>Open directory as root</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -72,27 +72,55 @@
 	<range></range>
 	<patterns>*</patterns>
 	<image-files/>
+	<video-files/>
 </action>
 <action>
 	<icon>image-straighten</icon>
-	<name>Convert to Jpg</name>
+	<name>Convert to jpg</name>
 	<submenu></submenu>
 	<unique-id>1669732092996674-1</unique-id>
 	<command>convert %f -quality 90  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jpg&quot;</command>
-	<description>Convert to Jpg</description>
+	<description>Convert to JPG</description>
 	<range></range>
 	<patterns>*</patterns>
 	<image-files/>
 </action>
 <action>
 	<icon>image-straighten</icon>
-	<name>Convert to PNG</name>
+	<name>Convert to png</name>
 	<submenu></submenu>
 	<unique-id>1686859468146406-1</unique-id>
-	<command>convert %f -quality 90  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).png&quot;</command>
+	<command>convert %f -quality 80  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).png&quot;</command>
 	<description>Convert to PNG</description>
 	<range></range>
 	<patterns>*.webp</patterns>
 	<image-files/>
+</action>
+<action>
+	<icon>documentation</icon>
+	<name>Merge Pdfs</name>
+	<submenu></submenu>
+	<unique-id>1691578687766230-1</unique-id>
+	<command>pdftk %F cat output merged.pdf</command>
+	<description>Merges pdf files using pdftk</description>
+	<range>2-1000</range>
+	<patterns>*.pdf</patterns>
+	<other-files/>
+</action>
+<action>
+	<icon>debug-run-cursor</icon>
+	<name>Custom Rename</name>
+	<submenu></submenu>
+	<unique-id>1691602018323142-1</unique-id>
+	<command> thunar --bulk-rename %f</command>
+	<description>Bulk rename for a single file</description>
+	<range>1-1</range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
 </action>
 </actions>
