@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-cache="$HOME/.cache/weather/weather-rofi"
-cat "$cache" | rofi -dmenu -p "Weather" -theme weather
