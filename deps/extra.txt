@@ -2,7 +2,6 @@ anki
 audacity
 baobab
 blanket
-copyq
 discord
 drawing
 flatpak
@@ -17,7 +16,7 @@ grub-customizer
 handbrake
 heroic-games-launcher-bin
 jre-openjdk
-kotatogram-desktop-beta-dynamic-bin
+telegram-desktop
 krita
 libreoffice-fresh
 lutris
@@ -27,7 +26,6 @@ mkvtoolnix-cli
 obs-studio
 openboard
 polychromatic
-qbittorrent-enhanced-git
 scrcpy
 soundux
 spicetify-cli
