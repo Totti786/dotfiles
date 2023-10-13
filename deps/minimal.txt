@@ -1,5 +1,7 @@
 acpi
 alacritty
+appimagelauncher
+autotiling
 axel
 bc
 blueman
@@ -19,6 +21,7 @@ fd
 feh
 firefox
 flameshot
+fluent-cursor-theme-git
 font-manager
 fzf
 geany
@@ -29,17 +32,21 @@ gojq
 gpick
 grep
 htop
+i3lock-color
 i3-wm
 imagemagick
 jgmenu
 jq
 kdeconnect
+libinput-gestures
 light
+linux-wifi-hotspot
 maim
 man
 moreutils
 mpv
 mpv-mpris
+mugshot
 ncdu
 network-manager-applet
 networkmanager-openvpn
@@ -60,6 +67,7 @@ plank
 playerctl
 polybar
 python-pip
+qbittorrent
 qt5ct
 ranger
 redshift
@@ -75,6 +83,7 @@ thunar
 thunar-archive-plugin
 thunar-media-tags-plugin
 thunar-volman
+timeshift
 tumbler
 viewnior
 wget
@@ -82,6 +91,7 @@ wmctrl
 xarchiver
 xcape
 xclip
+xdg-autostart
 xdg-user-dirs
 xdg-user-dirs-gtk
 xdo
