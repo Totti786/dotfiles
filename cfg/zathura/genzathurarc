@@ -4,7 +4,7 @@
 
 . $HOME/.cache/wal/colors.sh
 
-cat <<CONF
+cat > "$HOME"/.config/zathura/zathurarc <<CONF
 set recolor "true"
 
 set completion-bg "$background"
