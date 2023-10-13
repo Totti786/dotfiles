@@ -95,6 +95,20 @@ XF86Audio{RaiseVolume,LowerVolume,Mute}
 XF86Audio{Next,Prev,Play,Pause,Stop}
 	playerctl {next,previous,play-pause,play-pause,stop}
 
+# Other Function keys
+
+XF86Explorer
+	thunar
+	
+XF86Search
+	~/.config/rofi/bin/launcher
+	
+XF86Calculator
+	gnome-calculator
+
+XF86Tools
+	xfce4-settings-manager
+	
 ##---------- Misc. ----------##
 
 # Restart Polybar
