@@ -5,6 +5,7 @@
 rofi \
 	-no-lazy-grab \
 	-show drun \
+	-selected-row 0 \
 	-modi "$mode" \
 	-drun-display-format "{name}" \
 	-theme launcher
