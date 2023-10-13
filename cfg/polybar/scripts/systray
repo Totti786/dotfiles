@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [[ -f "$HOME/.cache/wal/colors.sh" ]] && source "$HOME/.cache/wal/colors.sh"
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
@@ -52,7 +52,7 @@ i3_tray(){
 			polybar-msg action "#systray.hook.1"
 			xdo hide -p "$polytray"
 			touch "$hidden"
-			killall -9 systray
+			pkill -9 systray
 		else
 			polybar-msg action "#systray.hook.0"
 			xdo show -p "$polytray" 
