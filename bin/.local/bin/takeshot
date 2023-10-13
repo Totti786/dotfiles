@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 time="$(date +%Y-%m-%d-%I-%M-%S)"
 geometry="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
@@ -17,7 +17,7 @@ notify_user() {
 }
 
 countdown() {
-	for sec in `seq $1 -1 1`; do
+	for sec in $(seq $1 -1 1); do
 		notify-send -a Clock -t 500 -u low -r 79 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
@@ -63,6 +63,15 @@ shot_area() {
 	notify_user
 }
 
+shot_text() {
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+		grim -g "$(slurp -c cba6f788 -b 00000055)" "$file" && wl-copy < "$file"
+	else
+		maim -u -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l "$file" && tesseract "$file" stdout | xclip -selection clipboard
+	fi
+	notify-send -a Screenshot -r 83 -u low -i "$file" "Extracted Text"
+}
+
 shot_5() {
 	countdown '5'
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
@@ -104,7 +113,7 @@ case $1 in
     	shot_window
     ;;
     --area)
-	    shot_area
+	    shot_text
     ;;
 	--in5)
 	    shot_5
