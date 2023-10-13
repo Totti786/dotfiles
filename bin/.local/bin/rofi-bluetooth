@@ -130,10 +130,10 @@ toggle_connection() {
 	fi
 	
     if device_connected "$1"; then
-        bluetoothctl disconnect $1 &&
+        bluetoothctl disconnect "$1" &&
         notify-send -r 98 -u low --app-name=Bluetooth "$name" "Disconnected"
     else
-        bluetoothctl connect $1 &&
+        bluetoothctl connect "$1" &&
 		notify-send -r 98 -u low --app-name=Bluetooth "$name" "Connected"
     fi
 }
@@ -202,7 +202,7 @@ print_status() {
 			if [[ -z $(bluetoothctl devices Connected) ]]; then
 				echo " Not Connected"
 			else 
-				echo " $(bluetoothctl devices Connected | head -n1 | cut -d " " -f3-)"
+				echo " $(bluetoothctl devices Connected | head -n1 | cut -d " " -f3-) $(upower -i "$(upower -e | grep headset)" | grep -oP 'percentage:\s+\K\d+%')"
 			fi
 		fi	
 	else 
