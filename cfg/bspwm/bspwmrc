@@ -28,7 +28,7 @@ bspc config focus_follows_pointer true
 bspc rule -r *:*
 
 ## special rules
-declare -a floating=(Lxappearance obs float
+declare -a floating=(Lxappearance obs float mpv
 	Onboard Yad Viewnior Eog loupe scrcpy Steam Wpg
 	feh Nm-connection-editor stalonetray Pavucontrol
 	copyq '*:*:Library' Trackma-gtk Blueman-manager
