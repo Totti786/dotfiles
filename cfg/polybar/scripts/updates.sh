@@ -5,13 +5,13 @@ while true; do
 		checkupdates  > "$HOME"/.cache/pacman-updates
 	fi 
 	
-	updateCount="$(< "$HOME"/.cache/pacman-updates | wc -l)"
+	update_count="$(< "$HOME"/.cache/pacman-updates | wc -l)"
 	
-	if [[ "$updateCount" == "0" ]]; then 
+	if [[ "$update_count" == "0" ]]; then 
 		echo " None"
 		sleep 45
 	else 
-		echo " $updateCount"
+		echo " $update_count"
 		sleep 45
 	fi
 done
