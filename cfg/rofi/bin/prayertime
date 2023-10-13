@@ -3,6 +3,7 @@
 # This script retrieves Islamic prayer times based on the user's location, using the ipinfo.io and api.aladhan.com APIs.
 # It can display the prayer times in a rofi window or the remaining time until the next prayer. 
 # The script depends on wget, jq, and rofi, and requires an internet connection when first used.
+# for more info, visit https://aladhan.com/prayer-times-api
 
 ## Get city and country from a differnt file
 source "$HOME"/.config/polybar/scripts/info
@@ -22,7 +23,7 @@ prayer_cache="$HOME/.cache/prayertimes_$CITY_$MONTH:$YEAR"
 
 ## Get data from the prayer API in JSON form
 [ ! -f "$prayer_cache" ] || [ ! -s "$prayer_cache" ] && wget -qO- \
-	"http://api.aladhan.com/v1/calendarByCity?city=$CITY&country=$COUNTRY&month=$MONTH&year=$YEAR&method=4" > "${prayer_cache}"
+	"http://api.aladhan.com/v1/calendarByCity?city=$CITY&country=$COUNTRY&month=$MONTH&year=$YEAR&method=5" > "${prayer_cache}"
 
 make_unix(){
 	names=("Fajr" "Sunrise" "Dhuhr" "Asr" "Maghrib" "Isha")
