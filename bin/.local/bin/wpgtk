@@ -12,16 +12,16 @@ config="$HOME/.config"
 alacritty="$config/alacritty/colors.yml"
 polybar="$config/polybar/colors.ini"
 rofi="$config/rofi/themes/colors.rasi"
-discord="$config/BetterDiscord/data/stable/custom.css"
+#discord="$config/BetterDiscord/data/stable/custom.css"
+discord="$config/Vencord/settings/quickCss.css"
 dunst="$config/dunst/dunstrc"
 geany="$config/geany/colorschemes/Pywal.conf"
-zathura="$config/zathura/zathurarc"
-gzathura="$config/zathura/genzathurarc"
+zathura="$config/zathura/genzathurarc"
+sioyek="$config/sioyek/gensioyek"
 copyq="$config/copyq/copyq.conf"
 jgmenu="$config/jgmenu/jgmenurc"
 spotify="$config/spicetify/Themes/Nord/color.ini"
 eww="$config/eww/colors.scss"
-waybar="$config/waybar/colors.css"
 hypr="$config/hypr/colors.conf"
 Wallpapers="$HOME/Pictures/Wallpapers"
 alpha='FF'
@@ -145,8 +145,8 @@ change_colors(){
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
 		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"
 		
-	# zathura (courtesy of @GideonWolfe)
-	"$gzathura" > "$zathura"
+	# zathura (courtesy of @GideonWolfe) and sioyek
+	"$zathura";"$sioyek"
 	
 	# discord
 	if [[ -f "$discord" ]]; then 
@@ -218,26 +218,6 @@ change_colors(){
 		-e "s/\$cyan: #.*/\$cyan: $bright_cyan;/g" \
 		-e "s/\$gray: #.*/\$gray: $bright_black;/g" \
 		-e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g"
-	fi
-	
-	# waybar
-	if [[ -f "$waybar" ]]; then 
-	cat > "$waybar" <<- EOF
-	/*
-	* Pywal Generated Palette
-	*/
-	
-	@define-color foreground ${FG};
-	@define-color background rgba(${bg_mix_rgb:4:-1},0.2);
-	@define-color surface3 #394161;
-	@define-color red $bright_red;
-	@define-color green $bright_green;
-	@define-color yellow $bright_yellow;
-	@define-color blue $bright_blue;
-	@define-color purple $bright_magenta;
-	@define-color cyan $bright_cyan;
-
-	EOF
 	fi
 	
 	if [[ -f "$hypr" ]]; then 
@@ -420,7 +400,7 @@ misc(){
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-		"$HOME"/.config/waybar/launch_waybar
+		#"$HOME"/.config/waybar/launch_waybar
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
