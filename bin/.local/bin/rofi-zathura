@@ -6,22 +6,52 @@
 
 # Dependencies: evince-thumbnailer (for PDF and CBZ thumbnails)
 #				gnome-epub-thumbnailer (for EPUB thumbnails)
-#				zathura (document viewer)
+#				zathura or sioyek (document viewer)
 #				rofi (application launcher)
+#				sqlite (to parse history file for sioyek)
 
 # Define cache and history file paths
 cached="$HOME/.cache/rofi-zathura"
-history="$HOME/.local/share/zathura/history"
+config_file="$HOME/.cache/rofi-zathura/config.txt"
+zathura_history="$HOME/.local/share/zathura/history"
+sioyek_history="$HOME/.local/share/sioyek/local.db"
 shortcuts="$HOME/.local/share/applications/books"
 
 # Create necessary directories if they don't exist
 mkdir -p "$shortcuts"
 mkdir -p "$cached"
+[[ -f "$config_file" ]] && . "$config_file"
+
+if ! [[ -f "$config_file" ]] || [[ -z "$reader" ]]; then
+	if command -v sioyek >/dev/null 2>&1 && command -v zathura >/dev/null 2>&1 ;then
+		readers="zathura\nsioyek"
+		selection="$(echo -e $readers | rofi -p "Select your Document Viewer:s" -dmenu -selected-row 0)"
+	elif command -v sioyek >/dev/null 2>&1; then
+		selection="sioyek"
+	elif command -v zathura >/dev/null 2>&1; then
+		selection="zathura"
+	else
+		notify-send -t 2000 -r 41 "Rofi-Zathura" "No Document Viewers are installed"
+	fi
+	
+	cat > "$config_file" <<- EOF 
+	reader="$selection" 
+	EOF
+fi
+
+. "$config_file"
 
 # Function to generate thumbnails and create shortcut desktop entries
-main() {
-	# Read the 'history' file and store the lines containing "home" in the 'lines' array
-	readarray -t lines < <(grep -i "home" "$history" | tr -d "[]")
+main(){
+	if [[ "$reader" == "zathura" ]]; then 
+		# Read the 'history' file and store the lines containing "home" in the 'lines' array
+		readarray -t lines < <(grep -i "home" "$zathura_history" | tr -d "[]")
+	elif [[ "$reader" == "sioyek" ]]; then 
+		readarray -t lines < <(sqlite3 "$sioyek_history" "SELECT * FROM document_hash;" | cut -d "|" -f2)
+	else 
+		notify-send -t 2000 -r 41 "Rofi-Zathura" "No Viewer Was selected"
+		exit 1
+	fi
 	
 	# Loop through each line in 'lines'
 	for line in "${lines[@]}"; do
@@ -50,7 +80,7 @@ main() {
 			cat > "$book" <<- EOF
 			[Desktop Entry]
 			Name=$name
-			Exec=zathura '$line'
+			Exec=$reader '$line'
 			Icon=$cached/$name.png
 			Type=Application
 			Categories=Books;
@@ -63,7 +93,7 @@ main() {
 }
 
 # Check if the 'history' file contains any lines with "home"
-if grep -qi "home" "$history"; then 
+if grep -qi "home" "$zathura_history" || grep -qi "home" "$(sqlite3 "$sioyek_history" "SELECT * FROM document_hash;")" ; then 
 	# If the cache directory is empty, notify the user and generate thumbnails and shortcuts
 	[ -z "$(ls -A $cached)" ] && notify-send -a Rofi-Zathura -t 2000 -r 40 "Rofi-Zathura" "Generating Thumbnails..."
 	main && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
@@ -71,5 +101,3 @@ else
 	# If no matching documents were found, notify the user
 	notify-send -t 2000 -r 41 "Rofi-Zathura" "No Documents Were Found"
 fi
-
-
