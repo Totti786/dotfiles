@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Variables and functions
+MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+
+if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
+	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
+	exit 1
+fi
+
+if command -v "envycontrol" >/dev/null 2>&1; then 
+		menuStart
+			menuSeparator 'envycontrol'
+			menuItem 'Switch to integrated' "pkexec envycontrol -s integrated && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required'"
+			menuItem 'Switch to hybrid' "pkexec envycontrol -s hybrid && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required'"
+		menuEnd
+	else
+	menuItem 'Graphics not set up' ""
+fi

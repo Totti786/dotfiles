@@ -24,6 +24,8 @@ Change Font,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus/change-fonts" 
 ^sep()
 Update,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus/update-pipe" --tag="Change Font")
 ^sep()
+Change Graphics,^pipe(jgmenu_run ob --cmd="~/.config/jgmenu/pipemenus/graphics-card" --tag="Change Graphics")
+^sep()
 Change Wallpaper,sh ~/.local/bin/wpgtk pick
 Appearance Settings,xfce4-appearance-settings
 ^sep()
