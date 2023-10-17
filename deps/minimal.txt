@@ -15,6 +15,7 @@ copyq
 dmenu
 drawing
 dunst
+envycontrol
 evince
 eww-x11
 fd
