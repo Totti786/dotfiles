@@ -8,12 +8,20 @@ if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
 	exit 1
 fi
 
-if command -v "envycontrol" >/dev/null 2>&1; then 
+if command -v "envycontrol" >/dev/null 2>&1; then
+	if [[ "$(envycontrol -q)" == "integrated" ]]; then
 		menuStart
 			menuSeparator 'envycontrol'
-			menuItem 'Switch to integrated' "pkexec envycontrol -s integrated && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required'"
-			menuItem 'Switch to hybrid' "pkexec envycontrol -s hybrid && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required'"
+			menuItem 'Integrated (enabled)' "pkexec envycontrol -s integrated && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required'"
+			menuItem 'Hybrid' "pkexec envycontrol -s hybrid && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required'"
 		menuEnd
+	elif [[ "$(envycontrol -q)" == "integrated" ]]; then
+		menuStart
+			menuSeparator 'envycontrol'
+			menuItem 'Integrated ' "pkexec envycontrol -s integrated && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required'"
+			menuItem 'Hybrid (enabled)' "pkexec envycontrol -s hybrid && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required'"
+		menuEnd
+	fi
 	else
 	menuItem 'Graphics not set up' ""
 fi
