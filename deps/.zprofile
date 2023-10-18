@@ -19,7 +19,7 @@ export BROWSER="firefox"
 export QT_QPA_PLATFORMTHEME="qt5gtk2"
 
 # Polybar and bspwm style settings
-bar_style=base
+bar_style=bionic
 window_border="3"
 
 if [[ "$bar_style" == "base" ]];then
