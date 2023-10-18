@@ -2,10 +2,10 @@
 
 window(){
 	options="\
-	   -kb-cancel "Super+Escape,Escape" \
+	   -kb-cancel "Super+Escape,Escape,Alt+F1" \
        -kb-accept-entry "!Super-Tab,Return,!Tab,!Super-l,!Super-h"\
-       -kb-row-down "Super+Tab,Super+l,Super+ISO_Left_Tab" \
-       -kb-row-up "Super+Shift+Tab,Super+h,Super+n""
+       -kb-row-down "Super+Tab,Super+l,Super+ISO_Left_Tab,Down" \
+       -kb-row-up "Super+Shift+Tab,Super+h,Super+n,Up""
 
 	if [[ $(wmctrl -l | grep -v -- "-1") ]]; then 
 		rofi $1 -theme window $options -modi "window" -show &
@@ -16,10 +16,10 @@ window(){
 
 windowcd(){
 	options="\
-       -kb-cancel "Alt+Escape,Escape" \
+       -kb-cancel "Alt+Escape,Escape,Alt+F1" \
        -kb-accept-entry "!Alt-Tab,Return,!Alt-l,!Alt-h"\
-       -kb-row-down "Alt+Tab,Alt+l,Alt+ISO_Left_Tab" \
-       -kb-row-up "Alt+Shift+Tab,Alt+h,Alt+n""
+       -kb-row-down "Alt+Tab,Alt+l,Alt+ISO_Left_Tab,Down" \
+       -kb-row-up "Alt+Shift+Tab,Alt+h,Alt+n,Up""
 
 	if [[ $(wmctrl -l | cut -d ' ' -f3 | grep "$( wmctrl -d | grep "*" | cut -d " " -f1)") ]]; then 
 		rofi -theme window $options -modi "windowcd" -window-format " {c} · {t}" -show &
