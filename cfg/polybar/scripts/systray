@@ -31,7 +31,7 @@ tray(){
 			polybar-msg action "#systray.hook.1"
 			xdo hide -n stalonetray
 			touch "$hidden"
-			killall -9 systray
+			pkill -f systray
 		else
 			polybar-msg action "#systray.hook.0"
 			xdo show -n stalonetray
@@ -46,13 +46,13 @@ tray(){
 }
 
 i3_tray(){
-	polytray="$(pgrep -a polybar | grep systray | cut -d ' ' -f1)"
+	polytray="$(pgrep -a polybar | grep polytray | cut -d ' ' -f1)"
 	if [[ "$polytray" ]]; then
 		if [[ ! -e "$hidden" ]]; then
 			polybar-msg action "#systray.hook.1"
 			xdo hide -p "$polytray"
 			touch "$hidden"
-			pkill -9 systray
+			pkill -f systray
 		else
 			polybar-msg action "#systray.hook.0"
 			xdo show -p "$polytray" 
@@ -60,7 +60,7 @@ i3_tray(){
 			sleep 5 && i3_tray
 		fi
 	else
-		polybar systray -q -c "$HOME/.config/polybar/$bar_style/config.ini" & disown
+		polybar polytray -q -c "$HOME/.config/polybar/$bar_style/config.ini" & disown
 		i3_tray
 	fi
 }
