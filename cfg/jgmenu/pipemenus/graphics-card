@@ -15,7 +15,7 @@ if command -v "envycontrol" >/dev/null 2>&1; then
 			menuItem 'Integrated (enabled)' "pkexec envycontrol -s integrated && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required for changes to take effect'"
 			menuItem 'Hybrid' "pkexec envycontrol -s hybrid && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required for changes to take effect'"
 		menuEnd
-	elif [[ "$(envycontrol -q)" == "hybridz" ]]; then
+	elif [[ "$(envycontrol -q)" == "hybrid" ]]; then
 		menuStart
 			menuSeparator 'envycontrol'
 			menuItem 'Integrated ' "pkexec envycontrol -s integrated && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required for changes to take effect'"
