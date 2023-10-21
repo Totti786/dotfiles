@@ -21,6 +21,7 @@ else
 fi
 
 lock() {
+	if [[ -z $(pgrep i3lock) ]];then 
     i3lock -n -c 00000000 -F -e \
 		--pass-media-keys \
 		--pass-power-keys \
@@ -63,11 +64,12 @@ lock() {
         --bshl-color=${blue:1} \
         --separator-color=${yellow:1} \
         --pointer=default
+    fi
 }
 
 run() {
 	if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then 
-		gtklock -d -b $image -s "$HOME"/.config/gtklock/style.css
+		gtklock -d -b "$image" -s "$HOME"/.config/gtklock/style.css
     else 
 		lock
 	fi
