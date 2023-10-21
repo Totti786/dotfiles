@@ -1,27 +1,47 @@
 #!/usr/bin/env bash
 
 # Variables and functions
-MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+config_file="$MENUS_LIBDIR/pipemenu.cfg"
 
-if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
-	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
-	exit 1
+# Define the notify-send command
+notify_command="notify-send -a envycontrol -r 72 'envycontrol' 'A reboot is required for changes to take effect'"
+
+# Source the configuration file, if it exists
+if ! source "$config_file" 2> /dev/null; then
+    echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
+    exit 1
 fi
 
+# Check if the 'envycontrol' command is available
 if command -v "envycontrol" >/dev/null 2>&1; then
-	if [[ "$(envycontrol -q)" == "integrated" ]]; then
-		menuStart
-			menuSeparator 'envycontrol'
-			menuItem 'Integrated (enabled)' "pkexec envycontrol -s integrated && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required for changes to take effect'"
-			menuItem 'Hybrid' "pkexec envycontrol -s hybrid && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required for changes to take effect'"
-		menuEnd
-	elif [[ "$(envycontrol -q)" == "hybrid" ]]; then
-		menuStart
-			menuSeparator 'envycontrol'
-			menuItem 'Integrated ' "pkexec envycontrol -s integrated && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required for changes to take effect'"
-			menuItem 'Hybrid (enabled)' "pkexec envycontrol -s hybrid && notify-send -a envycontrol -r 72 'envycontrol' 'Reboot is required for changes to take effect'"
-		menuEnd
-	fi
-	else
-	menuItem 'Graphics not set up' ""
+    # Get the current graphics mode
+    current_mode="$(envycontrol -q)"
+
+    if [[ "$current_mode" == "integrated" ]]; then
+        integrated_enabled=" (enabled)"
+        hybrid_enabled=""
+        nvidia_enabled=""
+    elif [[ "$current_mode" == "hybrid" ]]; then
+        integrated_enabled=""
+        hybrid_enabled=" (enabled)"
+        nvidia_enabled=""
+    elif [[ "$current_mode" == "nvidia" ]]; then
+        integrated_enabled=""
+        hybrid_enabled=""
+        nvidia_enabled=" (enabled)"
+    else
+        integrated_enabled=""
+        hybrid_enabled=""
+        nvidia_enabled=""
+    fi
+    
+	menuStart
+      menuSeparator 'envycontrol'
+	    menuItem "Integrated${integrated_enabled}" "pkexec envycontrol -s integrated && $notify_command"
+	    menuItem "Hybrid${hybrid_enabled}" "pkexec envycontrol -s hybrid && $notify_command"
+	    menuItem "NVIDIA${nvidia_enabled}" "pkexec envycontrol -s nvidia && $notify_command"
+    menuEnd
+else
+    menuItem 'envycontrol is not set up' ""
 fi
