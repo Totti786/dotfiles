@@ -70,6 +70,13 @@ add_scheme(){
     fi
 }
 
+notify_color(){
+	image=/tmp/$1.png
+    echo "$1" | tr -d "\n" | xclip -selection clipboard
+    convert -size 48x48 xc:"$1" "$image"
+    notify-send -a 'Color Picker' -u low -r 70 -i "$image" "$1"
+	}
+
 # Add wallpaper colors section
 menu+=("^sep(Wallpaper Colors)")
 menu+=("ReGenerate Colors,^checkout(regen)")
@@ -115,7 +122,7 @@ for i in "${color_scheme[@]}"; do
 	menu+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>,^checkout(${i:1}$((++n)))")
     submenu+=("^tag(${i:1}$n)")
     submenu+=("^sep(<tt>Color <small>$i</small> <span bgcolor='$i'>    </span></tt>)")
-    submenu+=("Copy Color,echo '${i}' | tr -d '\n' | xclip -selection clipboard")
+	submenu+=("Copy Color,$0 notify_color \"$i\"")
     submenu+=("Set as Folder Color,papirus-folder.sh '${i}'")
 	lighter=($(color-shade $i 0.2 lighter 4 | tail -n +2))
 	for c in "${lighter[@]}"; do
