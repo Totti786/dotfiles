@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
-[[ -n "$(rofi -h | grep 'calc')" ]] && mode="drun,filebrowser,calc" || mode="drun,filebrowser"
-
 rofi \
 	-no-lazy-grab \
 	-show drun \
 	-selected-row 0 \
-	-modi "$mode" \
+	-modi "drun,filebrowser" \
 	-drun-display-format "{name}" \
 	-theme launcher
