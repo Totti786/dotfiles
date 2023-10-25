@@ -172,9 +172,15 @@ install_sddm(){
 
 	}
 	
-install_grub(){
+install_grub_theme(){
 	cd "$DIR"/deps/grub && sudo sh grub.sh && cd "$DIR"
 	}
+
+install_firefox_theme(){
+	cp -b "$DIR"/deps/firefox/user.js "$HOME"/.mozilla/firefox/*.default-release/user.js && echo "User Profile Copied Successfully"
+	cp -rb "$DIR"/deps/firefox/chrome "$HOME"/.mozilla/firefox/*.default-release/ && echo "Chrome CSS Copied Successfully"
+	}
+
 
 # Update or clone the wallpapers repository
 wallpapers() {
@@ -227,7 +233,8 @@ tools(){
 		install_full "Install Dependencies" off\
 		install_zsh "Zsh Configuration" off\
 		install_sddm "SDDM Theme" off\
-		install_grub "Grub Theme" off\
+		install_grub_theme "Grub Theme" off\
+		install_firefox_theme "Firefox Theme" off\
 		install_wpgtk "Generate color-schemes from wallpapers" off\
 		2>&1 >/dev/tty)
 	$installOptions		
