@@ -44,15 +44,8 @@ wal -Re &
 # Launch Polybar
 "$HOME"/.config/polybar/launch.sh &
 
-# Thunar 
-thunar --daemon &
-
 # CopyQ
 copyq --start-server &
-
-# Thunar 
-[[ $(pgrep thunar) ]] && killall -9 thunar
-thunar --daemon &
 
 # Conky
 [[ "$conky" == "On" ]] && "$HOME"/.local/bin/conky.sh &
