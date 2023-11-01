@@ -34,6 +34,8 @@ alias lm='ls -m'
 alias lr='ls -R'
 alias lg='ls -l --group-directories-first'
 
+#alias cat='bat --color always --theme base16 --plain'
+
 # git
 alias gcl='git clone --depth 1'
 alias gi='git init'
@@ -45,7 +47,18 @@ alias gp='git push origin master'
 alias pacs='sudo pacman -S'
 alias pacr='sudo pacman -Rcns'
 alias pacu='sudo pacman -Syu'
-alias pacc='sudo pacman -Sc'
+
+# pacman install
+alias paci="yay -Slq | fzf --prompt='➜ ' --color=16 -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print \$2}\")' | xargs -ro yay -S --needed"
+
+# pacman remove
+alias pacrr="yay -Qq | fzf --prompt='➜ ' --color=16 -m --preview 'yay -Qi {1}' | xargs -ro yay -Rns"
+
+# pacman view
+alias pac="yay -Qq | fzf --prompt='➜ ' --color=16 -m --preview 'yay -Qi {1}'"
+
+# pacman clear
+alias pacc='yay -Qtdq | yay -Rns -'
 
 #misc
 alias grub-update="sudo grub-mkconfig -o /boot/grub/grub.cfg"
