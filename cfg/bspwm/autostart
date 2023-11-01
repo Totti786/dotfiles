@@ -38,9 +38,6 @@ wal -Re &
 # CopyQ
 copyq --start-server &
 
-# Thunar 
-#thunar --daemon &
-
 # Plank
 killall -9 plank
 plank &
