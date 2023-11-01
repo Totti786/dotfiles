@@ -1,7 +1,7 @@
 ^tag(root-menu)
-Terminal Emulator,alacritty,alacritty
-File Manager,thunar,system-file-manager
-Web Browser,firefox,firefox
+Terminal Emulator,exo-open --launch TerminalEmulator,alacritty
+File Manager,exo-open --launch FileManager,system-file-manager
+Web Browser,exo-open --launch WebBrowser,firefox
 Text Editor,geany,geany
 Document Viewer,zathura,document-viewer
 Applications,^pipe(jgmenu_run apps)

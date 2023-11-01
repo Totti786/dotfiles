@@ -41,13 +41,13 @@ super + {r,b,l,m,j,y}
 
 # Launch Apps
 super + {e,f,w,o,v,p}
-	{thunar,firefox,geany,obs,copyq toggle,color-picker}
+	{exo-open --launch FileManager,exo-open --launch WebBrowser,geany,obs,copyq toggle,color-picker}
 
 super + z
 	discord --enable-gpu-rasterization
 
 super + shift + {s,w,r,d,l}
-	{spotify,wpgtk pick,rhythmbox,dmenu.sh,lobster -c}
+	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk pick,rhythmbox,dmenu.sh,lobster -c}
 
 # Terminal Apps
 ctrl + alt + {v,r,h}
