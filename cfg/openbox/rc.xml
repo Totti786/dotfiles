@@ -559,12 +559,12 @@
     </keybind>
     <keybind key="W-e">
       <action name="Execute">
-        <command>thunar</command>
+        <command>exo-open --launch FileManager</command>
       </action>
     </keybind>
     <keybind key="W-f">
       <action name="Execute">
-        <command>firefox</command>
+        <command>exo-open --launch WebBrowser</command>
       </action>
     </keybind>
     <keybind key="W-w">
@@ -685,7 +685,7 @@
     <!-- Discord -->
     <keybind key="W-z">
       <action name="Execute">
-        <command>discord</command>
+        <command>discord --enable-gpu-rasterization</command>
       </action>
     </keybind>
     <!-- Copyq -->
@@ -727,7 +727,7 @@
     <!-- Spotify -->
     <keybind key="W-S-s">
       <action name="Execute">
-        <command>spotify</command>
+        <command>gtk-launch spotify-adblock || gtk-launch spotify</command>
       </action>
     </keybind>
     <!-- Openbox -->
