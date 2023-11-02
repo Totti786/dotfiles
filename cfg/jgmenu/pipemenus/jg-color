@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Dependencies: jq zenity pastel xclip imagemagick notify-send jgmenu papirus-folder.sh wpgtk 
+# Dependencies: wpg jq zenity pastel xclip imagemagick bc notify-send jgmenu papirus-folder.sh wpgtk 
 
 # Set directory paths
 WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
@@ -31,7 +31,7 @@ change_color(){
 		jq --arg key "color$2" --arg value "$new_color" '.colors[$key] = $value' "$COLORS_FILE" > "$CURRENT_THEME"
 	fi
     
-    # Copy the updated theme file to the colors.json file
+    # Copy the updated theme file to the colors.json fileinc="$(( 0.05 * 5 ))"
     cat "$CURRENT_THEME" > "$COLORS_FILE"
 }
 
@@ -149,7 +149,6 @@ submenu+=("Apply Colors,wpg -s \"$CURRENT_WALL\"")
 submenu+=("Shuffle Colors,wpg -z \"$CURRENT_WALL\" && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
 submenu+=("Reset Colors,wpg -R \"$CURRENT_WALL\" && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
 submenu+=("Export Colors, mkdir -p $SAVED_THEMES && cp $COLORS_FILE \"$SAVED_THEMES/${CURRENT_WALL##*/}.json\"")
-submenu1+=("^tag(import)")
 
 for i in "${color_scheme[@]}"; do
 	menu+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>,^pipe($0 shades \"${i}\" $((++n)))")
@@ -157,7 +156,8 @@ done
 
 # Add set random wallpaper section
 menu+=("^sep(Set Random Wallpaper)")
-userwallp="$(shopt -s globstar nullglob ; files=($WALLPAPERS_DIR/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}) ; echo "${#files[@]}")"
+#userwallp="$(shopt -s globstar nullglob ; files=($WALLPAPERS_DIR/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}) ; echo "${#files[@]}")"
+userwallp=$(find "$WALLPAPERS_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | wc -l)
 menu+=("  Wallpapers (<small>${userwallp}</small>),wpgtk random")
 menu+=("^sep(${CURRENT_WALL##*/})")
 
@@ -168,10 +168,7 @@ alone() {
 
 # Define main function to output results
 main() {
-    printf '%s\n' "${menu[@]}"
-    printf '%s\n' "${submenu[@]}"
-    printf '%s\n' "${submenu1[@]}"
-    printf '%s\n' "${submenu2[@]}"
+	printf '%s\n' "${menu[@]}" "${submenu[@]}" "${submenu1[@]}" "${submenu2[@]}"
 }
 
 if [[ "$1" ]]; then "$@" ;else main ;fi

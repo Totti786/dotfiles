@@ -2,12 +2,6 @@
 
 # Variables and functions
 POLYCONF="$HOME/.config/polybar"
-MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-
-if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
-	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
-	exit 1
-fi
 
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
 [[ -z "$bar_style" ]] && bar_style="base"
@@ -64,16 +58,16 @@ bionic(){
 if  [[ "$1" ]]; then
 	"$@"
 else
-	menuStart
-		menuSeparator "Polybar (${bar_style^})"
-		menuSubmenu '' 'Change Style'
-			menuItem 'Base' "$0 base"
-			menuItem 'Minimal' "$0 minimal"
-			menuItem 'Bionic' "$0 bionic"
-		menuSubmenuEnd
-		menuItem 'Reload' "$0 reload"
-		menuItem 'Edit Config' "exo-open $POLYCONF/$bar_style/config.ini"
-		menuItem 'Edit Modules' "exo-open $POLYCONF/$bar_style/modules.ini"
-		menuItem 'Edit Weather Data' "exo-open $POLYCONF/scripts/info"
-	menuEnd
+	menu+=("^sep(Polybar (${bar_style^}))")
+	menu+=("Change Style,^checkout(style)")
+		submenu+=("^tag(style)")
+		submenu+=("Base,$0 base")
+		submenu+=("Minimal,$0 minimal")
+		submenu+=("Bionic,$0 bionic")
+	menu+=("Reload,$0 reload")
+	menu+=("Edit Config,exo-open $POLYCONF/$bar_style/config.ini")
+	menu+=("Edit Modules,exo-open $POLYCONF/$bar_style/modules.ini")
+	menu+=("Edit Weather Data,exo-open $POLYCONF/scripts/info")
+
+	printf '%s\n' "${menu[@]}" "${submenu[@]}"	
 fi

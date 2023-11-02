@@ -3,7 +3,7 @@
 ## Copyright (C) 2020-2022 Aditya Shakya <adi1090x@gmail.com>
 ## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
 
-## Openbox Pipemenu to change fonts for various applications
+## Pipemenu to change fonts for various applications
 
 # Dir
 pdir="$HOME/.config/polybar"
@@ -11,14 +11,6 @@ rdir="$HOME/.config/rofi"
 tdir="$HOME/.config/alacritty"
 odir="$HOME/.config/openbox"
 ddir="$HOME/.config/dunst"
-
-# Variables and functions
-MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-
-if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
-	echo "Error: Failed to locate archcraft.cfg in $MENUS_LIBDIR" >&2
-	exit 1
-fi
 
 # Font
 getfonts () {
@@ -146,16 +138,16 @@ elif [[ "$1" == "--all" ]]; then
 	font_gtk
 
 else
-    menuStart
-        menuItem 'Status Bar (polybar)' "$0 --bar"
-        menuItem 'Launchers (rofi)' "$0 --rofi"
-        menuItem 'Terminal (alacritty)' "$0 --terminal"
-        menuItem 'Desktop (openbox)' "$0 --openbox"
-        menuItem 'Notifications (dunst)' "$0 --dunst"
-        menuItem 'Applications (gtk)' "$0 --gtk"
-        menuSeparator
-        menuItem 'Change Globally' "$0 --all"
-    menuEnd
+	menu+=("Status Bar (polybar),$0 --bar")
+	menu+=("Launchers (rofi),$0 --rofi")
+	menu+=("Terminal (alacritty),$0 --terminal")
+	menu+=("Desktop (openbox),$0 --openbox")
+	menu+=("Notifications (dunst),$0 --dunst")
+	menu+=("Applications (gtk),$0 --gtk")
+	menu+=("^sep()")
+	menu+=("Change Globally,$0 --all")
+	
+	printf '%s\n' "${menu[@]}"
 fi
 
 exit 0

@@ -1,16 +1,8 @@
 #!/usr/bin/env bash
 
-wm="$(wmctrl -m | head -n1 | cut -d " " -f2)"
+# A pipemenu to manage the settings of different window managers
 
-# Varia# Variables and functions
-MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-
-if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
-	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
-	exit 1
-fi
-
-borderWidth(){
+if  [[ "$1" = "--border" ]]; then
 	if [[ "$1" ]]; then
 		width="$1"
 	else
@@ -29,40 +21,34 @@ borderWidth(){
 			"$HOME"/.config/bspwm/bsp-border
 		fi
 	fi
-	}
-
-if  [[ "$1" = "--border" ]]; then
-	borderWidth "$2"
 else
-	if [[ "$wm" == "bspwm" ]]; then
-		menuStart
-			menuSeparator 'bspwm'
-			menuItem 'Edit Autostart' "exo-open $HOME/.config/bspwm/autostart"
-			menuItem 'Edit config' "exo-open $HOME/.config/bspwm/bspwmrc"
-			menuItem 'Edit keybinds' "exo-open $HOME/.config/sxhkd/bspwm-sxhkdrc"
-			menuItem 'Edit Border Width' "$0 --border"
-			menuItem 'Restart bspwm' "bspc wm -r "
-			menuItem 'Restart sxhkd' "pkill -USR1 -x sxhkd"
-		menuEnd
-	elif [[ "$wm" == "i3" ]]; then
-		menuStart
-			menuSeparator 'i3'
-			menuItem 'Edit Autostart' "exo-open $HOME/.config/i3/autostart"
-			menuItem 'Edit config' "exo-open $HOME/.config/i3/config"
-			menuItem 'Edit keybinds' "exo-open $HOME/.config/sxhkd/i3-sxhkdrc"
-			menuItem 'Edit Border Width' "$0 --border"
-			menuItem 'Reload i3' "$HOME/.config/i3/i3-reload"
-			menuItem 'Restart i3' "i3-msg restart"
-			menuItem 'Restart sxhkd' "pkill -USR1 -x sxhkd"
-		menuEnd
-	elif [[ "$wm" == "Openbox" ]]; then
-		menuStart
-			menuSeparator 'Openbox'
-			menuItem 'Settings' "obconf"
-			menuItem 'Edit Autostart' "exo-open $HOME/.config/openbox/autostart"
-			menuItem 'Edit Keybinds' "exo-open $HOME/.config/openbox/rc.xml"
-			menuItem 'Restart' "openbox --restart"
-			menuItem 'Reconfigure' "openbox --reconfigure"
-		menuEnd
+	if [[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]]; then
+			menu+=("^sep(bspwm)")
+			menu+=("Edit Autostart,exo-open $HOME/.config/bspwm/autostart")
+			menu+=("Edit config,exo-open $HOME/.config/bspwm/bspwmrc")
+			menu+=("Edit keybinds,exo-open $HOME/.config/sxhkd/bspwm-sxhkdrc")
+			menu+=("Edit Border Width,$0 --border")
+			menu+=("^sep()")
+			menu+=("Restart bspwm,bspc wm -r ")
+			menu+=("Restart sxhkd,pkill -USR1 -x sxhkd")
+	elif [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then
+			menu+=("^sep(i3)")
+			menu+=("Edit Autostart,exo-open $HOME/.config/i3/autostart")
+			menu+=("Edit config,exo-open $HOME/.config/i3/config")
+			menu+=("Edit keybinds,exo-open $HOME/.config/sxhkd/i3-sxhkdrc")
+			menu+=("Edit Border Width,$0 --border")
+			menu+=("^sep()")
+			menu+=("Reload i3,$HOME/.config/i3/i3-reload")
+			menu+=("Restart i3,i3-msg restart")
+			menu+=("Restart sxhkd,pkill -USR1 -x sxhkd")
+	elif [[ "$XDG_CURRENT_DESKTOP" == "Openbox" ]]; then
+			menu+=("^sep(Openbox)")
+			menu+=("Edit Autostart,exo-open $HOME/.config/openbox/autostart")
+			menu+=("Edit Keybinds,exo-open $HOME/.config/openbox/rc.xml")
+			menu+=("^sep()")
+			menu+=("Restart,openbox --restart")
+			menu+=("Reconfigure,openbox --reconfigure")
+			menu+=("Settings,obconf")
 	fi
+	printf '%s\n' "${menu[@]}"
 fi

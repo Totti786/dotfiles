@@ -2,14 +2,6 @@
 
 ## Pipemenu to take screenshots with takeshot script
 
-# Variables and functions
-MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-
-if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
-	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
-	exit 1
-fi
-
 if [[ "$1" == "--now" ]]; then
 	takeshot --now
 elif [[ "$1" == "--in5" ]]; then
@@ -21,13 +13,13 @@ elif [[ "$1" == "--win" ]]; then
 elif [[ "$1" == "--area" ]]; then
 	takeshot --area
 else
-    menuStart
-        menuItem 'Screenshot Now' "$0 --now"
-        menuItem 'Screenshot In 5s' "$0 --in5"
-        menuItem 'Screenshot In 10s' "$0 --in10"
-        menuItem 'Screenshot Area' "$0 --area"
-        menuItem 'Screenshot Window' "$0 --win"
-    menuEnd
+	menu+=("Screenshot Now,$0 --now")
+	menu+=("Screenshot In 5s,$0 --in5")
+	menu+=("Screenshot In 10s,$0 --in10")
+	menu+=("Screenshot Area,$0 --area")
+	menu+=("Screenshot Window,$0 --win")
+	
+	printf '%s\n' "${menu[@]}"
 fi
 
 exit 0

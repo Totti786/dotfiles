@@ -16,10 +16,12 @@ if command -v "envycontrol" >/dev/null 2>&1; then
         nvidia_enabled=" (enabled)"
     fi
     
-	printf '%s\n' "^sep(envycontrol)"
-	printf '%s\n' "Integrated${integrated_enabled},pkexec envycontrol -s integrated && $notify_command"
-	printf '%s\n' "Hybrid${hybrid_enabled},pkexec envycontrol -s hybrid && $notify_command"
-	printf '%s\n' "NVIDIA${nvidia_enabled},pkexec envycontrol -s nvidia && $notify_command"
+	menu+=("^sep(envycontrol)")
+	menu+=("Integrated${integrated_enabled},pkexec envycontrol -s integrated && $notify_command")
+	menu+=("Hybrid${hybrid_enabled},pkexec envycontrol -s hybrid && $notify_command")
+	menu+=("NVIDIA${nvidia_enabled},pkexec envycontrol -s nvidia && $notify_command")
+	
+	printf '%s\n' "${menu[@]}"
 else
-    printf '%s\n' "^sep(envycontrol is not set up)"
+    printf '%s\n' "^sep(envycontrol is not installed)"
 fi

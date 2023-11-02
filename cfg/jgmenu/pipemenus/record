@@ -3,20 +3,12 @@
 ## Copyright (C) 2020-2022 Aditya Shakya <adi1090x@gmail.com>
 ## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
 
-## Openbox Pipemenu to Record Screen with slop and ffmpeg
+## Pipemenu to Record Screen with slop and ffmpeg
 
 time=`date +%Y-%m-%d-%H-%M-%S`
 screen=`xdpyinfo | awk '/dimensions/{print $2}'`
 dir="`xdg-user-dir VIDEOS`/Screenrecorder"
 file="Capture_${time}.mp4"
-
-# Variables and functions
-MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-
-if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
-	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
-	exit 1
-fi
 
 # notify
 notify_user () {
@@ -81,22 +73,22 @@ elif [[ "$1" == "--toggle" ]]; then
 		ffmpeg -video_size ${screen} -framerate 25 -f x11grab -i :0.0+0,0 -vf format=yuv420p ${dir}/${file}
 	fi
 elif [[ "$1" == "--status" ]]; then
-	if [[ `pidof ffmpeg` ]]; then
+	if [[ $(pidof ffmpeg) ]]; then
 		echo on
 	else 
 		echo off
 	fi
 else
-    menuStart
-		if [[ `pidof ffmpeg` ]]; then
-			menuItem 'Stop Screen Recorder' "pkill ffmpeg"
-			menuSeparator
-		fi
-        menuItem 'Record Desktop (With Audio)' "$0 --screen"
-        menuItem 'Record Desktop (No Audio)' "$0 --screen-na"
-        menuItem 'Record Area (With Audio)' "$0 --area"
-        menuItem 'Record Area (No Audio)' "$0 --area-na"
-    menuEnd
+	if [[ $(pidof ffmpeg) ]]; then
+		menu+=("Stop Screen Recorder,pkill ffmpeg")
+		menu+=("^sep()")
+	fi
+	menu+=("Record Desktop (With Audio),$0 --screen")
+	menu+=("Record Desktop (No Audio),$0 --screen-na")
+	menu+=("Record Area (With Audio),$0 --area")
+	menu+=("Record Area (No Audio),$0 --area-na")
+	
+	printf '%s\n' "${menu[@]}"
 fi
 
 exit 0

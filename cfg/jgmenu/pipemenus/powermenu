@@ -2,14 +2,6 @@
 
 ## Commands Executed By jgmenu Powermenu
 
-# Variables and functions
-MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-
-if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
-	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
-	exit 1
-fi
-
 ## Options #############################################
 if  [[ "$1" = "--logout" ]]; then
 	current_desktop=$(wmctrl -m | head -n1 | cut -d " " -f2) 
@@ -32,13 +24,13 @@ elif  [[ "$1" = "--reboot" ]]; then
 	systemctl reboot
 elif  [[ "$1" = "--shutdown" ]]; then
 	systemctl poweroff
-	else
-    menuStart
-        menuItem 'Lock' "$0 --lock"
-        menuItem 'Logout' "$0 --logout"
-        menuItem 'Suspend' "$0 --suspend"
-        menuItem 'Hibernate' "$0 --hibernate"
-        menuItem 'Reboot' "$0 --reboot"
-        menuItem 'Shutdown' "$0 --shutdown"
-    menuEnd
+else
+	menu+=("Lock,lockscreen")
+	menu+=("Logout,$0 --logout")
+	menu+=("Suspend,$0 --suspend")
+	menu+=("Hibernate,$0 --hibernate")
+	menu+=("Reboot,$0 --reboot")
+	menu+=("Shutdown,$0 --shutdown")
+	
+	printf '%s\n' "${menu[@]}"
 fi

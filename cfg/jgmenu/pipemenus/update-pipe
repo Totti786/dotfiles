@@ -34,15 +34,13 @@ elif [[ "$1" == "--wall" ]]; then
 	cd "$dots"
 	furminal --float -e sh "$dots"/install.sh --wallpapers
 elif [[ ! -d "$HOME/.dotfiles" ]]; then 
-	menuStart
-		menuItem 'Clone Repo' "$0 --clone"
-	menuEnd
+	printf '%s\n' "Clone Repo,$0 --clone"
 else
-    menuStart
-        menuItem 'Update System' "$0 --sys"
-        menuItem 'Update Configs' "$0 --dots"
-        menuItem 'Update Wallpapers' "$0 --wall"
-    menuEnd
+	menu+=("Update System,$0 --sys")
+	menu+=("Update Configs,$0 --dots")
+	menu+=("Update Wallpapers,$0 --wall")
+	
+	printf '%s\n' "${menu[@]}"
 fi
 
 exit 0
