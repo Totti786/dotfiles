@@ -24,31 +24,31 @@ if  [[ "$1" = "--border" ]]; then
 else
 	if [[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]]; then
 			menu+=("^sep(bspwm)")
+			menu+=("Restart bspwm,bspc wm -r ")
+			menu+=("Restart sxhkd,pkill -USR1 -x sxhkd")
+			menu+=("^sep()")
 			menu+=("Edit Autostart,exo-open $HOME/.config/bspwm/autostart")
 			menu+=("Edit config,exo-open $HOME/.config/bspwm/bspwmrc")
 			menu+=("Edit keybinds,exo-open $HOME/.config/sxhkd/bspwm-sxhkdrc")
 			menu+=("Edit Border Width,$0 --border")
-			menu+=("^sep()")
-			menu+=("Restart bspwm,bspc wm -r ")
-			menu+=("Restart sxhkd,pkill -USR1 -x sxhkd")
 	elif [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then
 			menu+=("^sep(i3)")
+			menu+=("Reload i3,$HOME/.config/i3/i3-reload")
+			menu+=("Restart i3,i3-msg restart")
+			menu+=("Restart sxhkd,pkill -USR1 -x sxhkd")
+			menu+=("^sep()")
 			menu+=("Edit Autostart,exo-open $HOME/.config/i3/autostart")
 			menu+=("Edit config,exo-open $HOME/.config/i3/config")
 			menu+=("Edit keybinds,exo-open $HOME/.config/sxhkd/i3-sxhkdrc")
 			menu+=("Edit Border Width,$0 --border")
-			menu+=("^sep()")
-			menu+=("Reload i3,$HOME/.config/i3/i3-reload")
-			menu+=("Restart i3,i3-msg restart")
-			menu+=("Restart sxhkd,pkill -USR1 -x sxhkd")
 	elif [[ "$XDG_CURRENT_DESKTOP" == "Openbox" ]]; then
 			menu+=("^sep(Openbox)")
-			menu+=("Edit Autostart,exo-open $HOME/.config/openbox/autostart")
-			menu+=("Edit Keybinds,exo-open $HOME/.config/openbox/rc.xml")
-			menu+=("^sep()")
 			menu+=("Restart,openbox --restart")
 			menu+=("Reconfigure,openbox --reconfigure")
 			menu+=("Settings,obconf")
+			menu+=("^sep()")
+			menu+=("Edit Autostart,exo-open $HOME/.config/openbox/autostart")
+			menu+=("Edit Keybinds,exo-open $HOME/.config/openbox/rc.xml")
 	fi
 	printf '%s\n' "${menu[@]}"
 fi
