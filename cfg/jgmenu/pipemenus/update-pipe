@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
 
 # Variables and functions
-MENUS_LIBDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-
 dots="$HOME/.dotfiles"
-
-if ! . "$MENUS_LIBDIR/pipemenu.cfg" 2> /dev/null; then
-	echo "Error: Failed to locate pipemenu.cfg in $MENUS_LIBDIR" >&2
-	exit 1
-fi
 
 if [[ "$1" == "--clone" ]]; then
 	if [ ! -d "$HOME/.dotfiles" ]; then 
