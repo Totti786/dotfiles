@@ -210,7 +210,7 @@ else
     else
         menu+=("^sep(Backend)")
 		if [[ "$check_backend" != "glx" ]]; then
-			menu+=("Use 'glx' backend" "$0 --use-glx")
+			menu+=("Use 'glx' backend,$0 --use-glx")
 		else
 			menu+=("Use 'xrender' backend,$0 --use-xrender")
 		fi
