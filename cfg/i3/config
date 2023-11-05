@@ -36,7 +36,7 @@ smart_borders on
 floating_modifier Mod4
 
 ##-- Window Rules ------------------------
-
+for_window [urgent="latest"] focus
 #for_window [floating] sticky enable
 for_window [title="AudioRelay|Library"] floating enable
 for_window [title="Picture-in-Picture"] floating enable sticky enable
