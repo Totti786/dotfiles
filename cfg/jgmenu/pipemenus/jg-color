@@ -31,12 +31,12 @@ change_color(){
 		jq --arg key "color$2" --arg value "$new_color" '.colors[$key] = $value' "$COLORS_FILE" > "$CURRENT_THEME"
 	fi
     
-    # Copy the updated theme file to the colors.json fileinc="$(( 0.05 * 5 ))"
+    # Copy the updated theme file to the colors.json
     cat "$CURRENT_THEME" > "$COLORS_FILE"
 }
 
 change_color_here(){
-    # Change the color values directly in the theme file using sed
+    # Change the color values directly in the theme file
     if [ "$1" = "0" ]; then
 		jq --arg value "$2" '.colors.color0 = $value | .special.background = $value' "$COLORS_FILE" > "$CURRENT_THEME"
     elif [ "$1" = "15" ]; then
@@ -141,6 +141,7 @@ submenu+=("Manage Color Schemes,wpg")
 submenu+=("Saved Color Schemes,^pipe($0 saved)")
 submenu+=("Modify Colors,^checkout(modify)")
 submenu1+=("^tag(modify)")
+submenu1+=("Generate Light Theme,wpg -Ls \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
 submenu1+=("Increase Saturation,wpg --sat \"$CURRENT_WALL\" 0.1 && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
 submenu1+=("Decrease Saturation,wpg --sat \"$CURRENT_WALL\" -0.1 && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
 submenu1+=("Increase Brightness,wpg --brt \"$CURRENT_WALL\" 10 && wpg -s \"$CURRENT_WALL\" && rm \"${CURRENT_WALL}_wal_sample.png\"")
