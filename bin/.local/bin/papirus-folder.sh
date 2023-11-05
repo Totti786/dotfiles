@@ -63,22 +63,22 @@ dark_stroke_fallback="$(darker "$ICONS_COLOR" 56)"
 # and creating symlinks with the new names
 for size in 24x24 32x32 48x48 64x64; do
 	for icon_path in \
-		"$dir/Papirus/$size/places/folder-custom"{-*,}.svg \
-		"$dir/Papirus/$size/places/user-custom"{-*,}.svg
+		"$dir/Papirus/$size/places/folder-blue"{-*,}.svg \
+		"$dir/Papirus/$size/places/user-blue"{-*,}.svg
 	do
 		# If the file does not exist or is already a symlink, skip it
 		[ -f "$icon_path" ] || continue
 		[ -L "$icon_path" ] && continue
 
 		# Construct the new icon name and symlink path by replacing the "-custom" suffix with "-oomox"
-		new_icon_path="${icon_path/-custom/-pywal}"
+		new_icon_path="${icon_path/-blue/-pywal}"
 		icon_name="${new_icon_path##*/}"
 		symlink_path="${new_icon_path/-pywal/}"  # remove color suffix
 
 		# Replace the accent colors in the SVG file using sed and save it to the new icon path
-		sed -e "s/value_light/$ICONS_LIGHT_FOLDER/g" \
-			-e "s/value_dark/$ICONS_MEDIUM/g" \
-			-e "s/323232/$ICONS_DARK/g" "$icon_path" > "$new_icon_path"
+		sed -e "s/5294e2/$ICONS_LIGHT_FOLDER/g" \
+			-e "s/4877b1/$ICONS_MEDIUM/g" \
+			-e "s/1d344f/$ICONS_DARK/g" "$icon_path" > "$new_icon_path"
 
 		# Create a symbolic link with the new name and remove the color suffix
 		ln -sf "$icon_name" "$symlink_path"
