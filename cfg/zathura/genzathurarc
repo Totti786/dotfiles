@@ -50,4 +50,9 @@ set window-title-basename true
 set window-title-page true
 set statusbar-basename true
 set selection-clipboard clipboard
+
+map h feedkeys "<C-Left>"
+map j feedkeys "<C-Down>"
+map k feedkeys "<C-Up>"
+map l feedkeys "<C-Right>"
 CONF

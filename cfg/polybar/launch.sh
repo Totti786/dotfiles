@@ -85,6 +85,14 @@ tray_reload(){
 	"$dir"/scripts/systray
 	}
 
+check_recording() {
+	if [[ "$(ffmpeg-recorder --status)"  == "on" ]]; then 
+		polybar-msg action "#recorder.hook.1"
+	elif [[ "$(ffmpeg-recorder --status)"  == "paused" ]]; then 
+		polybar-msg action "#recorder.hook.2"
+	fi
+}
+
 # Launch the bar
 launch_bar() {
 	# Terminate already running bar instances
@@ -102,4 +110,5 @@ launch_bar() {
 set_values
 fix_modules
 launch_bar &&
+check_recording
 tray_reload

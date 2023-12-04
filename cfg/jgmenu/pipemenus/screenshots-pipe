@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+## Pipemenu to take screenshots
+
+menu+=("Screenshot Now,screenshot --now")
+menu+=("Screenshot Area,screenshot --area")
+menu+=("Screenshot Window,screenshot --win")
+menu+=("Screenshot In 5s,screenshot --in5")
+menu+=("Screenshot In 10s,screenshot --in10")
+menu+=("^sep()")
+menu+=("Upload to Imgur,screenshot --imgur")
+menu+=("QR Scanner,screenshot --qr")
+menu+=("Extract Text,screenshot --extract")
+
+printf '%s\n' "${menu[@]}"

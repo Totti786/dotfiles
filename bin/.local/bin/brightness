@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 
 ## Script To Manage Brightness using brightnessctl or light
+## Special thanks to @Nmoleo on Gitlab for the neat notification bar
 
 # Dependencies: `brightnessctl` `light` `awk` `find` `grep` `tr` `printf` `notify-send`
 
 # Graphics card
 card=$(basename "$(find /sys/class/backlight/* | head -n 1)")
 icons="$HOME/.local/share/icons/Papirus/symbolic/status"
+bar_color=$(xrdb -query | grep color13 | head -n 1 | awk '{print $NF}')
 
 # Get brightness
-get_backlight() {
+get_brightness() {
 	if [[ "$card" == *"intel_"* ]]; then
 		LIGHT=$(brightnessctl | grep -o "(.*" | tr -d "()")
 	else
@@ -20,7 +22,7 @@ get_backlight() {
 
 # Get icons
 get_icon() {
-	backlight="$(get_backlight)"
+	backlight="$(get_brightness)"
 	current="${backlight%%%}"
 	if [[ ("$current" -ge "0") && ("$current" -le "20") ]]; then
 		icon="$icons/display-brightness-off-symbolic.svg"
@@ -34,42 +36,54 @@ get_icon() {
 }
 
 notify(){
-	notify-send -u low -t 1000 -r 69 -i "$icon" "Brightness : $(get_backlight)" --app-name=Brightness
+    brightness=$(get_brightness)
+    get_icon
+	#notify-send -u low -t 1000 -r 69 -i "$icon" "Brightness : $(get_backlight)" --app-name=Brightness
+    notify-send -a "Brightness" -t 1000 -r 69 -h string:x-dunst-stack-tag:brightness_notif -h int:value:$brightness -h string:hlcolor:$bar_color  -i "$icon" "Brightness : $(get_brightness)"
 }
 
 # Increase brightness
-inc_backlight() {
+inc_brightness() {
 	if [[ "$card" == *"intel_"* ]]; then
-		brightnessctl s 10%+ && get_icon && notify
+		brightnessctl s 10%+
 	else
-		light -A 5 && get_icon && notify
+		light -A 5
 	fi
 }
 
 # Decrease brightness
-dec_backlight() {
+dec_brightness() {
 	if [[ "$card" == *"intel_"* ]]; then
-		brightnessctl s 10%- && get_icon && notify
+		brightnessctl s 10%-
 	else
-		light -U 5 && get_icon && notify
+		light -U 5
 	fi
 }
 
-# Execute accordingly
-if [[ "$1" == "--get" ]]; then
-	get_backlight
-elif [[ "$1" == "--inc" ]]; then
-	inc_backlight
-elif [[ "$1" == "--dec" ]]; then
-	dec_backlight
-elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
-    echo "Usage: $(basename $0) [options] [--]
-	
+# Command-line argument handling
+case "$1" in
+    "--get")
+	    get_brightness
+    ;;
+	"--inc")
+    	inc_brightness && notify
+    ;;
+	"--dec")
+    	dec_brightness && notify
+    ;;
+	"")
+    	get_brightness
+    ;;
+    "--help" | "-h")
+    echo "Usage: ${0##*/} [options] [--]
 	Options:
 	--help		Display this message
 	--get   	Display the current brightness
 	--inc  		Increase the brightness by 10%
 	--dec		Decrease the brightness by 10%"
-else
-	get_backlight
-fi
+    ;;
+    *)
+        echo "Invalid option. Use --help for usage instructions."
+        exit 1
+    ;;
+esac

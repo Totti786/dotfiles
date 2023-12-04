@@ -1,14 +1,16 @@
 #!/bin/bash
 
 ## Script To Manage Volume Using Pamixer
+## Special thanks to @Nmoleo on Gitlab for the neat notification bar
 
 # Dependencies: `pamixer` `notify-send`
 
 icons="$HOME/.local/share/icons/Papirus/symbolic/status"
+bar_color=$(xrdb -query | grep color13 | head -n 1 | awk '{print $NF}')
 
 # Get Volume
 get_volume() {
-	volume=`pamixer --get-volume-human`
+	volume=$(pamixer --get-volume-human)
 	echo "$volume"
 }
 
@@ -28,47 +30,59 @@ get_icon() {
 }
 
 notify(){
-	notify-send -t 500 -u low -r 69 -i "$icon" "$1" --app-name=Volume
+	get_icon
+	#notify-send -t 500 -r 69 -i "$icon" "$1" --app-name=Volume
+    notify-send -a "Volume" -t 500 -r 69 -h string:x-dunst-stack-tag:volume_notif -h int:value:$volume -h string:hlcolor:$bar_color -i "$icon" "$1"
 }
 
 # Increase Volume
 inc_volume() {
-	pamixer -u -i 5 && get_icon && notify "Volume : $(get_volume)"
+	pamixer -u -i 5 && notify "Volume : $(get_volume)"
 }
 
 # Decrease Volume
 dec_volume() {
-	pamixer -u -d 5 && get_icon && notify "Volume : $(get_volume)"
+	pamixer -u -d 5 && notify "Volume : $(get_volume)"
 }
 
 # Toggle Mute
 toggle_mute() {
 	status=`pamixer --get-mute`
 	if [[ "$status" == "false" ]]; then
-		pamixer -t && get_icon && notify "Mute"
+		pamixer -t && notify "Mute"
 	else
-		pamixer -t && get_icon && notify "Unmute"
+		pamixer -t && notify "Unmute"
 	fi
 }
 
-# Execute accordingly
-if [[ "$1" == "--get" ]]; then
-	get_volume
-elif [[ "$1" == "--inc" ]]; then
-	inc_volume
-elif [[ "$1" == "--dec" ]]; then
-	dec_volume
-elif [[ "$1" == "--toggle" ]]; then
-	toggle_mute
-elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
-    echo "Usage: $(basename $0) [options] [--]
-	
+# Command-line argument handling
+case "$1" in
+    "--get")
+	    get_volume
+    ;;
+	"--inc")
+    	inc_volume
+    ;;
+	"--dec")
+    	dec_volume
+    ;;
+	"--toggle")
+    	toggle_mute
+    ;;
+	"")
+    	get_volume
+    ;;
+    "--help" | "-h")
+    echo "Usage: ${0##*/} [options] [--]
 	Options:
 	--help		Display this message
 	--toggle	Toggle Mute
 	--get   	Display the current volume
 	--inc  		Increase the volume by 5%
 	--dec		Decrease the volume by 5%"
-else
-	get_volume
-fi
+    ;;
+    *)
+        echo "Invalid option. Use --help for usage instructions."
+        exit 1
+    ;;
+esac

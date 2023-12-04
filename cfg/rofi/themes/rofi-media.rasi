@@ -56,7 +56,7 @@ entry {
 }
 
 button {
-    str:                            "";
+    str:                            " ";
     expand:                         false;
     text-color:                     @foreground;
     vertical-align:                 0.5;

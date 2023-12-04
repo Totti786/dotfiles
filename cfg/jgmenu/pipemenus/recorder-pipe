@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Pipemenu for Screen Recording with ffmpeg
+
+status=$(ffmpeg-recorder --status)
+
+if [[ "$status" == "paused" ]]; then 
+    menu+=("Resume Recording,ffmpeg-recorder --toggle")
+elif [[ "$status" == "on" ]]; then 
+	menu+=("Pause Recording,ffmpeg-recorder --toggle")
+fi
+
+if [[ "$status" == "paused" || "$status" == "on" ]]; then
+    menu+=("Stop Recording,ffmpeg-recorder --stop")
+	menu+=("Discard Recording,ffmpeg-recorder --cancel")
+else
+    menu+=("Record Desktop,ffmpeg-recorder --screen")
+    menu+=("Record Desktop (No Audio),ffmpeg-recorder --screen-na")
+    menu+=("Record Area,ffmpeg-recorder --area")
+    menu+=("Record Area (No Audio),ffmpeg-recorder --area-na")
+    #menu+=("Record Audio,ffmpeg-recorder --audio")
+fi
+
+printf '%s\n' "${menu[@]}"

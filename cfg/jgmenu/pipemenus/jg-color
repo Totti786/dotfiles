@@ -118,11 +118,25 @@ shades(){
 	altmenu+=("^sep(<tt>Color <small>$1</small> <span bgcolor='$1'>    </span></tt>)")
 	altmenu+=("Copy Color,$0 notify_color \"$1\"")
 	altmenu+=("Set as Folder Color,papirus-folder.sh '${1}'")
-	lighten_color "$1"
+	if [[ "$2" == "1" ]]; then 
+		lighten_color "$(pastel mix -f 1.5 $1 ${color_scheme[8]})"
+		darker=($(pastel darken 0.05 "$(pastel mix -f 0.4 ${color_scheme[8]} $1)" | pastel format hex))
+	elif [[ "$2" == "8" ]]; then 
+		lighten_color "$(pastel mix -f 0.2 $1 ${color_scheme[7]})"
+		darken_color "$(pastel mix -f 1 $1 ${color_scheme[7]})"
+	elif [[ "$2" == "9" ]]; then 
+		lighten_color "$(pastel mix -f 0.5 ${color_scheme[8]} $1)"
+		darker=($(pastel darken 0.05 "$(pastel mix -f 0.8 ${color_scheme[8]} $1)" | pastel format hex))
+	elif [[ "$2" == "16" ]]; then 
+		lighten_color "$(pastel mix -f 0.5 $1 ${color_scheme[7]})"
+		darken_color "$(pastel mix -f 0.5 $1 ${color_scheme[7]})"
+	else
+		lighten_color "$1"		
+		darken_color "$1"		
+	fi
 	for c in "${lighter[@]}"; do
 		altmenu+=("<tt><small>$c</small> <span bgcolor='$c'>                      </span></tt>,$0 change_color_here \"$(( $2 - 1 ))\" \"$c\" ")
 	done
-	darken_color "$1"
 	for c in "${darker[@]}"; do
 		altmenu+=("<tt><small>$c</small> <span bgcolor='$c'>                      </span></tt>,$0 change_color_here \"$(( $2 - 1 ))\" \"$c\" ")
 	done
@@ -155,12 +169,15 @@ for i in "${color_scheme[@]}"; do
 	menu+=("<tt><small>$i</small> <span bgcolor='$i'>                      </span></tt>,^pipe($0 shades \"${i}\" $((++n)))")
 done
 
-# Add set random wallpaper section
-menu+=("^sep(Set Random Wallpaper)")
-#userwallp="$(shopt -s globstar nullglob ; files=($WALLPAPERS_DIR/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}) ; echo "${#files[@]}")"
+# Wallpaper selection section
+menu+=("^sep(Wallpapers)")
 userwallp=$(find "$WALLPAPERS_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | wc -l)
-menu+=("  Wallpapers (<small>${userwallp}</small>),wpgtk random")
+menu+=("  Wallpapers (<small>${userwallp}</small>),^checkout(wallpapers)")
+submenu+=("^tag(wallpapers)")
+submenu+=("Set Random Wallpaper,wpgtk random")
+submenu+=("Pick a Wallpaper, wpgtk pick")
 menu+=("^sep(${CURRENT_WALL##*/})")
+
 
 alone() {
     # Output combined entries to Jgmenu

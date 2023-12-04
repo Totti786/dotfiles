@@ -1,0 +1,265 @@
+#!/usr/bin/env bash
+
+## Record Screen and Audio with ffmpeg with support for intel and nvidia gpu encoding 
+# Dependencies: ffmpeg, xdpyinfo, awk, pactl, lspci, pacman, zenity, ffmpegthumbnailer 
+#				notify-send, slop, pkill, polybar-msg
+
+# Get current timestamp
+time=$(date +%Y-%m-%d-%H-%M-%S)
+
+# Get screen dimensions
+screen=$(xdpyinfo | awk '/dimensions/{print $2}')
+
+# Define directory and file names
+dir="$HOME/Videos/Recordings"
+file="recording_${time}.mp4"
+ffmpeg_lock="/tmp/ffmpeg-recorder.lock"
+ffmpeg_lock_slop="/tmp/ffmpeg-recorder-slop.lock"
+ffmpeg_lock_noaudio="/tmp/ffmpeg-recorder-noaudio.lock"
+
+# Get default audio sink and source
+audio_sink=$(pactl info | grep 'Default Sink' | awk '{print $3}')
+audio_source=$(pactl info | grep 'Default Source' | awk '{print $3}')
+
+# Set frames per second for recording
+fps="60"
+
+# Set configurations based on available hardware
+if lspci | grep -q NVIDIA; then 
+    config="-c:v h264_nvenc -preset p7"
+elif pacman -Q intel-media-driver &> /dev/null || pacman -Q libva-intel-driver &> /dev/null; then
+    config="-vaapi_device /dev/dri/renderD128 -vcodec h264_vaapi -vf format=nv12|vaapi,hwupload"
+else
+    config='-c:v libx264 -preset superfast -crf 23 -pix_fmt rgb24'
+fi
+
+# Check if ffmpeg is running or paused
+if [[ $(pidof ffmpeg) ]]; then
+    status="on"
+elif [[ -e "$ffmpeg_lock" ]]; then 
+    status="paused"
+else
+    status="off"
+fi
+# Create directory if it doesn't exist
+if [[ ! -d "$dir" ]]; then
+	mkdir -p "$dir"
+fi
+
+# Function to notify user about recording status
+notify_user() {
+	if [[ -e "$1" ]]; then
+		local file_name="${1##*/}"
+		zenity --question --title="Rename Recording" --text="Do you want to rename the recorded file?" &&
+	    new_filename=$(zenity --entry --title="Rename Recording" --text="Enter a new filename")
+	        if [[ -n "$new_filename" ]]; then
+	            # Rename the file if a new filename is provided
+	            mv "${dir}/$file_name" "${dir}/${new_filename}.mp4"
+	            local file_name="${new_filename}.mp4"
+	        fi
+	    ffmpegthumbnailer -i "${dir}/$file_name" -o /tmp/"$file_name".jpg -s 500
+		notify-send -a "Recorder" -u low -r 699 "Screen Recording Saved" -i /tmp/"$file_name".jpg
+	else
+		notify-send -a "Recorder" -u low -r 699 "Recording Canceled"
+	fi
+}
+
+# Function for countdown before starting recording
+countdown() {
+	for sec in $(seq $1 -1 1); do
+		notify-send -a "Recorder" -t 1000 -r 699 "Starting in : $sec"
+		sleep 1
+	done
+}
+
+# Get segment number for generating filenames
+segment_number="$(cat $ffmpeg_lock 2>/dev/null | wc -l)" 
+
+# Function to generate filename for recording segments
+generate_filename() {
+    echo "recording_${time}_segment_${segment_number}.mp4"
+}
+
+# Function to check ffmpeg execution status and handle errors
+check_ffmpeg_status() {
+    if [[ $? -ne 255 ]]; then
+        echo "Error: ffmpeg execution failed. Stopping the script."
+        cancel_recording
+        exit 1
+    fi
+}
+
+# Function to capture screen recording with or without audio
+record_screen() {
+	if [[ "$status" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+	
+	file=$(generate_filename)
+
+	if [[ "$1" == "noaudio" ]]; then
+		ffmpeg -f x11grab -video_size "$screen" -framerate "$fps" -i :0.0 -thread_queue_size 4096 \
+		$(echo $config) ${dir}/${file}
+	else
+		ffmpeg -f x11grab -video_size "$screen" -framerate "$fps" -i :0.0 -thread_queue_size 4096 \
+		-f pulse -thread_queue_size 4096 -i ${audio_sink}.monitor \
+        -f pulse -thread_queue_size 4096 -i ${audio_source} \
+		-filter_complex "[1:a][2:a]amerge=inputs=2[out]" \
+		-map 0:v -map "[out]" -map 1:a -map 2:a -c:a aac -b:a 192k -ac 2 \
+		$(echo $config) ${dir}/${file}
+	fi
+	#check_ffmpeg_status  # Check ffmpeg execution status after the command
+}
+
+# Function to capture area recording with or without audios
+record_area() {
+	if [[ "$status" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+	file=$(generate_filename)
+	
+	# Get area for area recording
+	if [[ -e "$ffmpeg_lock_slop" ]]; then
+		read -r X Y W H G ID < <(cat "$ffmpeg_lock_slop")
+	else
+		get_win_data=$(slop -b 3 -f "%x %y %w %h %g %i")
+		if [[ -z "$get_win_data" ]]; then 
+			cancel_recording
+			exit 0
+		else
+			echo "$get_win_data" > "$ffmpeg_lock_slop"
+		fi
+		read -r X Y W H G ID < <(echo "$get_win_data")
+	fi
+	
+	if [[ "$1" == "noaudio" ]]; then
+		touch "$ffmpeg_lock_noaudio"
+		ffmpeg -f x11grab -video_size ${W}x${H} -framerate "$fps" -i :0.0+${X},${Y} -thread_queue_size 4096 \
+		$(echo $config) ${dir}/${file}
+	else
+		ffmpeg -f x11grab -video_size ${W}x${H} -framerate "$fps" -i :0.0+${X},${Y} -thread_queue_size 4096 \
+		-f pulse -thread_queue_size 4096 -i ${audio_sink}.monitor \
+        -f pulse -thread_queue_size 4096 -i ${audio_source} \
+		-filter_complex "[1:a][2:a]amerge=inputs=2[out]" \
+		-map 0:v -map "[out]" -map 1:a -map 2:a -c:a aac -b:a 192k -ac 2 \
+		$(echo $config) ${dir}/${file}
+	fi
+	check_ffmpeg_status  # Check ffmpeg execution status after the command
+}
+
+# Function to capture audio only
+record_audio() {
+	if [[ "$status" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+	file=$(generate_filename)
+
+	mkdir -p "$dir/Audio"
+	
+	ffmpeg -f pulse -i ${audio_sink}.monitor -f pulse -i ${audio_source} \
+	-filter_complex "[1:a][0:a]amerge=inputs=2[out]" \
+	-map "[out]" -c:a aac -b:a 256k ${dir}/Audio/${file%.*}.aac
+}
+
+# Function to stop ongoing recording and merge segments
+toggle_recording() {
+    if [[ -e "$ffmpeg_lock" ]]; then
+		if [[ "$status" == "on" ]]; then
+			# Pause recording
+	        pkill ffmpeg
+	        polybar-msg action "#recorder.hook.2"
+		else
+	        # Resume recording
+	        ((segment_number++))
+	   		file=$(generate_filename)
+	   		polybar-msg action "#recorder.hook.1"
+	   		if [[ -e "$ffmpeg_lock_slop" ]]; then
+				if [[ -e "$ffmpeg_lock_noaudio" ]]; then 
+					record_area noaudio &
+				else
+					record_area &
+				fi
+	   		else
+				if [[ -e "$ffmpeg_lock_noaudio" ]]; then 
+					record_screen noaudio &
+				else
+					record_screen &
+				fi
+			fi
+			echo "file '${dir}/${file}'" >> "$ffmpeg_lock"	
+        fi
+    fi
+}
+
+# Function to stop ongoing recording and merge segments
+stop_recording() {
+    if [[ "$status" == "off" ]]; then exit 0 ;fi
+    pkill ffmpeg
+    sleep 0.05
+    # Merge all segments into a single file
+	merged_file="$(awk -F"'" 'NR==1 {gsub("_segment_0", "", $2); print $2}' "$ffmpeg_lock")"
+	ffmpeg -y -f concat -safe 0 -i "$ffmpeg_lock" -c copy "${merged_file}"
+	# Remove individual segment files
+	rm "${dir}/recording_"*"_segment_"*.*
+    signal_stop
+    notify_user "$merged_file"
+}
+
+# Function to cancel ongoing recording
+cancel_recording() {
+	pkill -9 ffmpeg 
+	rm "${dir}/recording_"*"_segment_"*.*
+	signal_stop
+	notify_user
+}
+
+# Function to signal the start of recording
+signal_start(){
+	file=$(generate_filename)
+	polybar-msg action "#recorder.hook.1"
+	echo "file '${dir}/${file}'" > "$ffmpeg_lock"
+}
+
+# Function to signal the stop of recording
+signal_stop(){
+	polybar-msg action "#recorder.hook.0"
+	rm /tmp/ffmpeg-recorder*
+}
+
+# Help section
+show_help() {
+    echo "Usage: ${0##*/} [--screen | --area | --stop | --cancel | --toggle-pause | --status | --help]"
+    echo "Options:"
+    echo "  --screen        Start screen recording"
+    echo "  --area          Start area recording"
+    echo "  --toggle        Pause/resume ongoing recording"
+    echo "  --stop          Stop ongoing recording"
+    echo "  --cancel        Cancel ongoing recording"
+    echo "  --status        Check recording status"
+    echo "  --help          Show this help message"
+}
+
+# Command-line argument handling
+case "$1" in
+    "--status")
+        echo "$status" ;;
+    "--screen")
+        countdown '3'
+        record_screen & signal_start ;;
+    "--area")
+        record_area & signal_start ;;
+    "--screen-na")
+        countdown '3'
+        record_screen noaudio & signal_start ;;
+    "--area-na")
+        record_area noaudio & signal_start ;;
+    "--cancel")
+        cancel_recording ;;
+    "--toggle")
+        toggle_recording ;;
+    "--stop")
+        stop_recording ;;
+    "--audio")
+        record_audio & signal_start ;;
+    "--help" | "-h" | "")
+        show_help ;;
+    *)
+        echo "Invalid option. Use --help for usage instructions."
+        exit 1 ;;
+esac
+
+exit 0

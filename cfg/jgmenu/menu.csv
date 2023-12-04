@@ -6,8 +6,8 @@ Text Editor,geany,geany
 Document Viewer,zathura,document-viewer
 Applications,^pipe(jgmenu_run apps)
 
-Screenshot,^pipe(~/.config/jgmenu/pipemenus/shots)
-Screen Recorder,^pipe(~/.config/jgmenu/pipemenus/record)
+Screenshot,^pipe(~/.config/jgmenu/pipemenus/screenshots-pipe)
+Screen Recorder,^pipe(~/.config/jgmenu/pipemenus/recorder-pipe)
 Preferences,^checkout(preferences)
 Keybinds, ~/.local/bin/conky.sh
 Settings Manager,xfce4-settings-manager
@@ -18,6 +18,7 @@ Back,^back()
 Window Manager,^pipe(~/.config/jgmenu/pipemenus/wm-pipe)
 Bar,^pipe(~/.config/jgmenu/pipemenus/bar-pipe)
 Compositor,^pipe(~/.config/jgmenu/pipemenus/compositor)
+Notifications,^pipe(~/.config/jgmenu/pipemenus/dunst-pipe)
 Color Scheme,^pipe(~/.config/jgmenu/pipemenus/jg-color)
 ^sep()
 Change Font,^pipe(~/.config/jgmenu/pipemenus/change-fonts)

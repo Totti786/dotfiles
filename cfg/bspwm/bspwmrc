@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Environtment
+## Environment
 export XDG_CURRENT_DESKTOP="bspwm"
 
 ## Configuration ------------------------------------------#
@@ -28,15 +28,16 @@ bspc config focus_follows_pointer true
 bspc rule -r *:*
 
 ## special rules
-declare -a floating=(Lxappearance obs float mpv
+declare -a floating=(Lxappearance obs mpv float pop-up
 	Onboard Yad Viewnior Eog loupe scrcpy Steam Wpg
 	feh Nm-connection-editor stalonetray Pavucontrol
-	copyq '*:*:Library' Trackma-gtk Blueman-manager
+	copyq '*:*:Library' '*:*:Picture in picture' 
 	Xfce4-appearance-settings Xfce4-mouse-settings
 	Xfce4-settings-manager Nsxiv Trackma-gtk steam
 	org.gnome.Weather Xfce4-display-settings Anki
 	TelegramDesktop KotatogramDesktop gnome-calculator
-	Xfce4-power-manager-settings '*:*:AudioRelay')
+	Xfce4-power-manager-settings '*:*:AudioRelay'
+	Blueman-manager Trackma-gtk)
 	
 for i in "${floating[@]}"; do
    bspc rule -a "$i" state=floating follow=on focus=on

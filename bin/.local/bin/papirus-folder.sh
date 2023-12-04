@@ -31,7 +31,7 @@ darker() {
 	printf '%02x%02x%02x\n' "$r" "$g" "$b"
 }
 
-# This function reloads the icon theme by resetting it to "Papirus-Dark1" and then to "Papirus".
+# This function reloads the icon theme.
 reload(){
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus1" &&
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"
@@ -70,7 +70,7 @@ for size in 24x24 32x32 48x48 64x64; do
 		[ -f "$icon_path" ] || continue
 		[ -L "$icon_path" ] && continue
 
-		# Construct the new icon name and symlink path by replacing the "-custom" suffix with "-oomox"
+		# Construct the new icon name and symlink path by replacing the "-custom" suffix with "-pywal"
 		new_icon_path="${icon_path/-blue/-pywal}"
 		icon_name="${new_icon_path##*/}"
 		symlink_path="${new_icon_path/-pywal/}"  # remove color suffix

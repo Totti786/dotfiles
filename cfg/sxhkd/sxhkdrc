@@ -28,11 +28,11 @@ super + t
 
 # Rofi App Launcher
 alt + F1
-	~/.config/rofi/bin/launcher
+	rofi-utils --launcher
 
 # Rofi Menus/Applets
 super + {x,s}
-	~/.config/rofi/bin/{powermenu,screenshot}
+	rofi-utils --{powermenu,screenshot}
 
 super + {r,b,l,m,j,y}	
 	{rofi-zathura,rofi-bluetooth,lobster,rofi-movies,jerry,ytfzf -fD}
@@ -69,19 +69,15 @@ ctrl + alt + w
 
 # Take a screenshot
 Print
-	takeshot --now
+	screenshot --now
+
+# Take screenshot of an area
+shift + Print
+	screenshot --area
 
 # Take screenshot using flameshot
 alt + Print
 	flameshot gui
-
-# Take screenshot of an area
-shift + Print
-	takeshot --area
-
-# Take screenshot of active window
-ctrl + Print
-	takeshot --win
 
 # Brighness control
 XF86MonBrightness{Up,Down}
@@ -101,7 +97,7 @@ XF86Explorer
 	thunar
 	
 XF86Search
-	~/.config/rofi/bin/launcher
+	rofi-utils --launcher
 	
 XF86Calculator
 	gnome-calculator
@@ -113,7 +109,7 @@ XF86Tools
 
 # Restart Polybar
 super + shift + m
-	~/.config/jgmenu/pipemenus/bar-pipe reload
+	bar-style --reload
 
 # Kill window
 super + Escape

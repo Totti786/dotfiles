@@ -1,73 +1,16 @@
 #!/usr/bin/env bash
 
-# Variables and functions
-POLYCONF="$HOME/.config/polybar"
+source bar-style
 
-[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
-[[ -z "$bar_style" ]] && bar_style="base"
+menu+=("^sep(Polybar (${bar_style^}))")
+menu+=("Change Style,^checkout(style)")
+	submenu+=("^tag(style)")
+	submenu+=("Base,bar-style --base")
+	submenu+=("Minimal,bar-style --minimal")
+	submenu+=("Bionic,bar-style --bionic")
+menu+=("Reload,bar-style --reload")
+menu+=("Edit Config,exo-open $polybar_conf/$bar_style/config.ini")
+menu+=("Edit Modules,exo-open $polybar_conf/$bar_style/modules.ini")
+menu+=("Edit Weather Data,exo-open $polybar_conf/scripts/info")
 
-toggle_transparency(){
-	picom_conf="$HOME/.config/picom/picom.conf"
-	alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
-	wpgtk_dir="$HOME/.local/bin/wpgtk"
-	pipe_dir="$HOME/.config/jgmenu/pipemenus/"
-	dunst_dir="$HOME/.config/dunst/dunstrc"
-	
-	if [[ "$1" == "off" ]]; then 
-		"$pipe_dir"/compositor --disable-opacity
-		"$pipe_dir"/compositor --enable-shadows
-		"$pipe_dir"/wm-pipe --border 0
-		sed -i "s/opacity: .*/opacity: 1.0/" "$alacritty_conf"
-		sed -i "s/alpha=.*/alpha='FF'/" "$wpgtk_dir"
-		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst_dir"
-	elif [[ "$1" == "on" ]]; then
-		"$pipe_dir"/compositor --enable-opacity
-		"$pipe_dir"/compositor --disable-shadows
-		"$pipe_dir"/wm-pipe --border "$window_border"
-		sed -i "s/opacity: .*/opacity: 0.8/" "$alacritty_conf"
-		sed -i "s/alpha=.*/alpha='70'/" "$wpgtk_dir"
-		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst_dir"
-	fi	
-}
-
-reload(){
-	wpgtk partial
-}
-
-base(){
-	sed -i 's/^bar_style=.*/bar_style=base/' "$HOME"/.zprofile
-	toggle_transparency on
-	reload
-	[[ $(pgrep conky) ]] && conky.sh restart || conky.sh
-}
-
-minimal(){
-	sed -i 's/^bar_style=.*/bar_style=minimal/' "$HOME"/.zprofile
-	toggle_transparency on
-	reload
-	[[ $(pgrep conky) ]] && pkill conky
-}
-
-bionic(){
-	sed -i 's/^bar_style=.*/bar_style=bionic/' "$HOME"/.zprofile
-	toggle_transparency off
-	reload
-	[[ $(pgrep conky) ]] && conky.sh restart || conky.sh
-}
-
-if  [[ "$1" ]]; then
-	"$@"
-else
-	menu+=("^sep(Polybar (${bar_style^}))")
-	menu+=("Change Style,^checkout(style)")
-		submenu+=("^tag(style)")
-		submenu+=("Base,$0 base")
-		submenu+=("Minimal,$0 minimal")
-		submenu+=("Bionic,$0 bionic")
-	menu+=("Reload,$0 reload")
-	menu+=("Edit Config,exo-open $POLYCONF/$bar_style/config.ini")
-	menu+=("Edit Modules,exo-open $POLYCONF/$bar_style/modules.ini")
-	menu+=("Edit Weather Data,exo-open $POLYCONF/scripts/info")
-
-	printf '%s\n' "${menu[@]}" "${submenu[@]}"	
-fi
+printf '%s\n' "${menu[@]}" "${submenu[@]}"

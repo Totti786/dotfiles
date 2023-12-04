@@ -59,7 +59,7 @@ remaining(){
 	    remaining_time_unix=$(( next_prayer_time - current_time ))
 	    remaining_time=$(date -u -d @${remaining_time_unix} +%H:%M:%S)
 	    echo "$next_prayer in $remaining_time"
-	    notify-send -t 1000 -r 34 -a Prayer "$next_prayer in" "$remaining_time"
+	    notify-send -t 5000 -r 34 -a Prayer "$next_prayer in" "$remaining_time"
 	else
 	    echo "No upcoming prayers"
 	fi
@@ -80,4 +80,4 @@ if [ -f "$prayer_cache" ]; then
 	fi
 fi
 
-[ -z "$@" ] && < "$prayer_rofi" rofi -dmenu -p "Prayer Times" -theme prayer || remaining
+[ -z "$@" ] && < "$prayer_rofi" rofi -dmenu -p "Prayer Times" || remaining

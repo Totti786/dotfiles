@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+rofi_command="rofi -theme power-screen"
+
+# Buttons
+screen=""
+area=""
+window=""
+infive=""
+inten=""
+
+# Variable passed to rofi
+options="$screen\n$area\n$window\n$infive\n$inten"
+
+chosen="$(echo -e "$options" | $rofi_command -p 'Take Screenshot' -dmenu -selected-row 0)"
+case "$chosen" in
+    "$screen")
+		screenshot --now
+        ;;
+    "$area")
+		screenshot --area
+        ;;
+    "$window")
+		screenshot --win
+		;;
+    "$infive")
+		screenshot --in5
+		;;
+    "$inten")
+		screenshot --in10
+        ;;
+esac
+

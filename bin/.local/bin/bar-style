@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+# Variables and functions
+polybar_conf="$HOME/.config/polybar"
+picom_conf="$HOME/.config/picom/picom.conf"
+
+[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -z "$bar_style" ]] && bar_style="base"
+
+toggle_transparency(){
+	alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
+	wpgtk_dir="$HOME/.local/bin/wpgtk"
+	pipe_dir="$HOME/.config/jgmenu/pipemenus/"
+	dunst_dir="$HOME/.config/dunst/dunstrc"
+	
+	if [[ "$1" == "off" ]]; then 
+		"$pipe_dir"/compositor --disable-opacity
+		"$pipe_dir"/compositor --enable-shadows
+		"$pipe_dir"/wm-pipe --border 0
+		sed -i "s/opacity: .*/opacity: 1.0/" "$alacritty_conf"
+		sed -i "s/alpha=.*/alpha='FF'/" "$wpgtk_dir"
+		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst_dir"
+	elif [[ "$1" == "on" ]]; then
+		"$pipe_dir"/compositor --enable-opacity
+		"$pipe_dir"/compositor --disable-shadows
+		"$pipe_dir"/wm-pipe --border "$window_border"
+		sed -i "s/opacity: .*/opacity: 0.8/" "$alacritty_conf"
+		sed -i "s/alpha=.*/alpha='70'/" "$wpgtk_dir"
+		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst_dir"
+	fi	
+}
+
+reload(){
+	wpgtk partial
+}
+
+base(){
+	sed -i 's/^bar_style=.*/bar_style=base/' "$HOME"/.zprofile
+	toggle_transparency on
+	reload
+	[[ $(pgrep conky) ]] && conky.sh restart || conky.sh
+}
+
+minimal(){
+	sed -i 's/^bar_style=.*/bar_style=minimal/' "$HOME"/.zprofile
+	toggle_transparency on
+	reload
+	[[ $(pgrep conky) ]] && pkill conky
+}
+
+bionic(){
+	sed -i 's/^bar_style=.*/bar_style=bionic/' "$HOME"/.zprofile
+	toggle_transparency off
+	reload
+	[[ $(pgrep conky) ]] && conky.sh restart || conky.sh
+}
+
+# Help section
+show_help() {
+    echo "Usage: ${0##*/} [--reload | --base | --minimal | --bionic | --help]"
+    echo "Options:"
+    echo "  --reload         Reload polybar and refetch colors"
+    echo "  --base           Apply the base polybar theme"
+    echo "  --minimal        Apply the minimal polybar theme"
+    echo "  --bionic         Apply the bionic polybar theme"
+    echo "  --help           Show this help message"
+}
+
+# Main script
+case "$1" in
+    "--reload")
+        reload
+        ;;
+    "--base")
+        base
+        ;;
+    "--minimal")
+        minimal
+        ;;
+    "--bionic")
+        bionic
+        ;;
+    "--help" | "-h")
+        show_help ;;
+esac

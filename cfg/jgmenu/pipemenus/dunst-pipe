@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+dunst_conf="$HOME/.config/dunst/dunstrc"
+
+background_color="$(awk '/background/ {print $3; exit}' $dunst_conf | tr -d '"')"
+foreground_color="$(awk '/foreground/ {print $3; exit}' $dunst_conf | tr -d '"')"
+highlight_color="$(awk '/background/ {print $3; exit}' $dunst_conf | tr -d '"')"
+
+
+
+
+menu+=("^sep(dunst)")
+menu+=("<tt><small>background</small> <span bgcolor='$background_color'>     		                 </span></tt>")
+menu+=("Foreground Color <span bgcolor='$foreground_color'>                      </span></tt>,^pipe($((++n)))")
+menu+=("Highlight Color <span bgcolor='$highlight_color'>                      </span></tt>,^pipe($((++n)))")
+menu+=("Edit config file,exo-open $dunst_conf")
+printf '%s\n' "${menu[@]}"

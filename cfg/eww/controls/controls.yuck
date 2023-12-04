@@ -427,7 +427,7 @@
 	:geometry
 		(geometry
 			:x "-10"
-			:y "33"
+			:y "45"
 			:anchor "top right"
 		)
 	:monitor 0
@@ -440,7 +440,7 @@
 	:geometry
 		(geometry
 			:x "1"
-			:y "33"
+			:y "45"
 			:anchor "top right"
 		)
 	:monitor 0

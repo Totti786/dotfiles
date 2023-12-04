@@ -1,0 +1,206 @@
+#!/usr/bin/env bash
+
+time="$(date +%Y-%m-%d-%I-%M-%S)"
+geometry="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
+dir="$(xdg-user-dir PICTURES)/Screenshots"
+file="$dir/Screenshot_${time}_${geometry}.png"
+
+[ ! -d $dir ] && mkdir -p $dir
+
+if [[ "$(pgrep picom)" ]]; then  border_size=5000 ;else border_size=3 ;fi
+
+notify_user() {
+	if [[ -e "$file" ]]; then
+		notify-send -a 'Screenshot' -r 83 -u low -i "$file" "Screenshot Saved"
+	else
+		notify-send -a 'Screenshot' -r 83 -u low "Screenshot Canceled"
+	fi
+}
+
+countdown() {
+	for sec in $(seq $1 -1 1); do
+		notify-send -a 'Screenshot' -t 500 -u low -r 83 "Countdown" "Taking shot in : $sec"
+		sleep 1
+	done
+}
+
+magic() {
+	convert "$file" +antialias \
+	\( +clone  -alpha extract \
+    -draw 'fill black polygon 0,0 0,20 20,0 fill white circle 20,20 20,0' \
+    \( +clone -flip \) -compose Multiply -composite \
+    \( +clone -flop \) -compose Multiply -composite \
+  	\) -alpha off -compose CopyOpacity -composite "$file"
+
+	convert "$file" \
+	\( +clone -background black -shadow 69x20+0+10 \) \
+	+swap -background none -layers merge +repage "$file"
+}
+
+shot() {
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
+		grim "$file" && wl-copy < "$file"
+	else
+		maim -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
+	fi
+	notify_user
+}
+
+shot_window() {
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
+		grim "$file" && wl-copy < "$file"
+	else
+		maim -u -f png -i `xdotool getactivewindow` "$file" && xclip -selection clipboard -t image/png -i "$file"
+	fi	
+	notify_user	
+}
+
+shot_area() {
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+		grim -g "$(slurp -c cba6f788 -b 00000055)" "$file" && wl-copy < "$file"
+	else
+		maim -r highlight -b "$border_size" -s -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
+	fi
+	notify_user
+}
+
+shot_extract_text() {
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+		grim -g "$(slurp -c cba6f788 -b 00000055)" "$file" && wl-copy < "$file"
+	else
+		maim -u -f png -s -b 3 "$file" && tesseract "$file" stdout | xclip -selection clipboard
+	fi
+	notify-send -a Screenshot -r 83 -u low -i "$file" "Extracted Text"
+}
+
+shot_qr() {
+	if command -v zbarimg >/dev/null 2>&1;then 
+		if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+			maim -qs | zbarimg -q --raw - | wl-copy
+		else
+			text=$(maim -qs | zbarimg -q --raw -) && 
+			echo "$text" | xclip -selection clipboard &&
+			notify-send -a Screenshot -r 83 -u low "QR Code" "$text"
+		fi
+	else
+		notify-send -a Screenshot -r 83 -u low "QR Code" "zbar is not installed"
+	fi
+}
+
+shot_5() {
+	countdown '5'
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
+		grim "$file" && wl-copy < "$file"
+	else
+		maim -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
+	fi
+	notify_user
+}
+
+shot_10() {
+	countdown '10'
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
+		grim "$file" && wl-copy < "$file"
+	else
+		maim -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
+	fi	
+	notify_user
+}
+
+upload_to_imgur(){
+	if [[ -e "$file" ]]; then
+	client_id="${IMGUR_CLIENT_ID:-c9a6efb3d7932fd}"
+	
+	upload() {
+	    curl -s -H "Authorization: Client-ID $client_id" -H "Expect: " -F "image=$1" https://api.imgur.com/3/image.xml
+	}
+	
+	while [ $# -gt 0 ]; do
+	    file="$1"
+	    shift
+	
+	    if [[ "$file" =~ ^https?:// ]]; then
+	        response=$(upload "$file" 2>/dev/null)
+	    else
+	        if [ "$file" != "-" -a ! -f "$file" ]; then
+	            echo "File '$file' doesn't exist; skipping" >&2
+	            continue
+	        fi
+	        response=$(upload "@$file" 2>/dev/null)
+	    fi
+	
+	    if [ $? -ne 0 ] || echo "$response" | grep -q 'success="0"'; then
+	        echo "Upload failed for '$file'" >&2
+	        continue
+	    fi
+	
+	    url="${response##*<link>}"
+	    url="${url%%</link>*}"
+	    delete_hash="${response##*<deletehash>}"
+	    delete_hash="${delete_hash%%</deletehash>*}"
+	    delete_url="https://imgur.com/delete/$delete_hash"
+	done
+	
+	echo "$delete_url" | xclip -selection clipboard
+	sleep 0.1
+	echo "$url" | xclip -selection clipboard
+
+	notify-send -a 'Screenshot' -r 83 -u low "Imgur" "$url"
+fi
+}
+
+
+# Help section
+show_help() {
+    echo "Usage: ${0##*/} [Options]"
+    echo "Options:"
+    echo "  --now            Take screenshot of the desktop"
+    echo "  --win            Take screenshot of the focused window"
+    echo "  --area           Take screenshot of the selected area"
+    echo "  --in5            Take screenshot in 5 seconds"
+    echo "  --in10           Take screenshot in 10 seconds"
+    echo "  --extract        Extract Text from the selected area"
+    echo "  --imgur          Take a screenshot and upload to imgur"
+    echo "  --qr             Decode QR code"
+    echo "  --help           Show this help message"
+}
+
+# Command-line argument handling
+case "$1" in
+    "--now")
+	    shot
+    ;;
+	"--win")
+    	shot_window
+    ;;
+	"--area")
+    	shot_area
+    ;;
+    "--extract")
+	    shot_extract_text
+    ;;
+    "--imgur")
+		if [[ "$2" ]]; then
+			upload_to_imgur "$2"
+		else
+			shot_area &&
+			upload_to_imgur "$file"
+	    fi
+    ;;
+    "--qr")
+	    shot_qr
+    ;;
+	"--in5")
+	    shot_5
+    ;;
+    "--in10")
+	    shot_10
+    ;;
+    "--help" | "-h" | "")
+        show_help
+    ;;
+    *)
+        echo "Invalid option. Use --help for usage instructions."
+        exit 1
+    ;;
+esac

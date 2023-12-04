@@ -29,7 +29,10 @@ for i in "$@"; do
     esac
 done
 
-declareDependencies picom
+if ! command -v "picom" >/dev/null 2>&1; then
+	notify-send "picom" "picom is not installed"
+	exit 0
+fi
 
 ##-- various checks ---------------------
 check_backend=$(cat $PICOM_DIR/picom.conf | grep "backend = " | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
@@ -104,6 +107,12 @@ elif [[ "$1" = '--corner-radius' ]]; then
 
 elif [[ "$1" = '--disable-corners' ]]; then
     sed -i -e "s/corner-radius = .*/corner-radius = 0;/g" "$PICOM_DIR/picom.conf"
+
+elif [[ "$1" = '--enable-exclude' ]]; then
+    sed -i "/rounded-corners-exclude = \[/,/\];/ s/^/#/" "$PICOM_DIR/picom.conf"
+
+elif [[ "$1" = '--disable-exclude' ]]; then
+    sed -i "/rounded-corners-exclude = \[/,/\];/ s/^#//" "$PICOM_DIR/picom.conf"
 
 ##-- borders ---------------------
 
