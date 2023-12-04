@@ -8,6 +8,44 @@ if [[ "$(id -u)" -eq 0 ]]; then
   exit 1
 fi
 
+#---- Programs List ----------------------
+
+declare -a minimal=(
+	acpi alacritty appimagelauncher autotiling axel bc blueman bluez bluez-utils \
+	brightnessctl bspwm cheese conky copyq dmenu drawing dunst envycontrol evince \
+	eww-x11 fd feh firefox flameshot fluent-cursor-theme-git font-manager fzf geany \
+	gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep htop \
+	i3lock-color i3-wm imagemagick jgmenu kdeconnect libinput-gestures light \
+	linux-wifi-hotspot maim man moreutils mpv mpv-mpris mugshot ncdu \
+	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-emoji \
+	nsxiv nvtop obconf openbox openssh openvpn pamixer papirus-icon-theme pastel \
+	pavucontrol perl plank playerctl polybar python-pipx qbittorrent qt5ct ranger \
+	redshift rhythmbox rofi-lbonn-wayland rtorrent scrot stalonetray sxhkd termdown \
+	thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman timeshift \
+	tumbler viewnior wget wmctrl xarchiver xcape xclip xdg-autostart xdg-user-dirs \
+	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xbacklight \
+	xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo yad \
+	ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh
+)
+
+declare -a extra=(
+	anki audacity baobab blanket discord drawing flatpak gimp github-desktop gnome-clocks \
+	gnome-system-monitor gnome-weather gparted gping grub-customizer handbrake \
+	heroic-games-launcher-bin jdk-openjdk telegram-desktop krita libreoffice-fresh lutris \
+	mangohud megatools mkvtoolnix-cli obs-studio openboard polychromatic scrcpy soundux \
+	spicetify-cli spotify stacer steam syncplay syncthing teamviewer trackma-git video-trimmer \
+	virtualbox visual-studio-code-bin wine winetricks
+)
+
+declare -a aur=(
+	i3-resurrect picom-simpleanims-next-git aur/qt5gtk2 aur/qt6gtk2 \
+	xfce-polkit xiccd xqp zscroll-git
+)
+
+declare -a additional=(
+	2048.c ookla-speedtest-bin tty-clock-git typioca-git unimatrix-git yetris
+)
+
 #---- Core functions ---------------------
 
 checkrepo(){
@@ -39,21 +77,19 @@ checkrepo(){
 	}
 
 install_minimal(){
-	sudo pacman -Syu $(cat "$DIR"/deps/minimal.txt) --needed --noconfirm
-	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
+	sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
+	sudo sed -i -e "s/#Color/Color/g" /etc/pacman.conf
+	sudo pacman -Syu ${minimal[@]} --needed --noconfirm
+	yay -S ${aur[@]} --needed --noconfirm
 	}
 	
 install_full(){
-	sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
-	sudo sed -i -e "s/#Color/Color/g" /etc/pacman.conf
-	sudo pacman -Syu $(cat "$DIR"/deps/minimal.txt) --needed --noconfirm
-	sudo pacman -U "$DIR"/deps/packages/*.zst --needed --noconfirm
-	sudo pacman -U "$DIR"/deps/packages/additional/*.zst --needed --noconfirm
-	yay -S $(cat additional.txt) --needed --noconfirm
+	install_minimal
+	yay -S ${additional[@]} --needed --noconfirm
 	}
 
 minimal_install(){
-	#checkrepo &&
+	checkrepo &&
 	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	moveConfigs
@@ -219,11 +255,11 @@ additionalPrograms(){
 	if $Dialog --yesno "Do you want to select wich additional apps you want to install?\n	
 		Seleceting \"No\" will install all the additional apps" 20 60 ;then
 	  	progs=$($Dialog --no-items --checklist "Choose the programs you want installed:"  20 60 12 \
-		$(for app in $(cat "$DIR"/deps/extra.txt); do echo "$app" off ;done) \
+		$(for app in ${extra[@]}; do echo "$app" off ;done) \
 		2>&1 >/dev/tty) &&
 		sudo pacman -Sy "$progs" --needed
 	else
-		sudo pacman -Sy $(cat "$DIR"/deps/extra.txt) --needed
+		sudo pacman -Sy ${extra[@]} --needed
 	fi
 	}
 
