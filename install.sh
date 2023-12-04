@@ -55,8 +55,8 @@ checkrepo(){
 	else
 		echo "Adding the Chaotic AUR repo"
 		# Import and sign Chaotic AUR repository key
-		sudo pacman-key --recv-key "FBA220DFC880C036" --keyserver keyserver.ubuntu.com || exit 1
-		sudo pacman-key --lsign-key "FBA220DFC880C036" || exit 1
+		sudo pacman-key --recv-key "3056513887B78AEB" --keyserver keyserver.ubuntu.com || exit 1
+		sudo pacman-key --lsign-key "3056513887B78AEB" || exit 1
 		
 		# Add Chaotic AUR repository to pacman.conf
 		sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm || exit 1 &&
@@ -150,6 +150,8 @@ install_wpgtk(){
 #---- Additional configurations ----------
 
 install_zsh(){
+	[[ "$(pacman -Q zsh)" ]] && echo "hello"
+
 	# Check and set Zsh as the default shell
 	[[ "$(awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd) " =~ "zsh " ]] || chsh -s $(which zsh)
 	
