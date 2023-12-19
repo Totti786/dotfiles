@@ -9,7 +9,7 @@
 
 # Keybinds
 killall -q -9 sxhkd
-sxhkd -c ~/.config/sxhkd/sxhkdrc ~/.config/sxhkd/i3-sxhkdrc &
+sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc "$HOME"/.config/sxhkd/i3-sxhkdrc &
 
 # Enable Super Keys For Menu
 killall -q -9 xcape
