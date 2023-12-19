@@ -14,13 +14,6 @@ get_poster(){
 	# Replace 'YOUR_API_KEY' with your actual OMDB API key
 	API_KEY="497fd34e"
 	
-	# Check if gojq is installed and if not use jq
-	if command -v "gojq" &>/dev/null; then 
-		_jq="gojq"
-	else 
-		_jq=jq
-	fi
-	
 	# Check if a movie title and directory path are provided as arguments
 	if [ -z "$1" ] || [ -z "$2" ]; then
 		echo "Usage: $0 <movie_title> <directory_path>"
@@ -35,14 +28,14 @@ get_poster(){
 	response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&apikey=$API_KEY")
 	
 	# Check if the response contains an error message
-	error_message=$(echo "$response" | $_jq -r '.Error')
+	error_message=$(echo "$response" | jq -r '.Error')
 	if [ "$error_message" != "null" ]; then
 		echo "Error: $error_message"
 		exit 1
 	fi
 	
 	# Parse the JSON response using jq
-	poster_url=$(echo "$response" | $_jq -r '.Poster')
+	poster_url=$(echo "$response" | jq -r '.Poster')
 	
 	# Check if the poster URL is available
 	if [ "$poster_url" == "N/A" ]; then
