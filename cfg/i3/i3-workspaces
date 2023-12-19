@@ -3,7 +3,7 @@
 # A simple script to switch to the next or previous workspace in i3.
 
 # Initialize the $num variable with the current workspace number.
-num=$(i3-msg -t get_workspaces | gojq '.[] | select(.focused==true).num')
+num=$(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).num')
 
 # Function to switch to the next workspace.
 next(){
