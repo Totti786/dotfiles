@@ -2,7 +2,6 @@
 
 # Variables and functions
 polybar_conf="$HOME/.config/polybar"
-picom_conf="$HOME/.config/picom/picom.conf"
 
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
 [[ -z "$bar_style" ]] && bar_style="base"
@@ -14,15 +13,15 @@ toggle_transparency(){
 	dunst_dir="$HOME/.config/dunst/dunstrc"
 	
 	if [[ "$1" == "off" ]]; then 
-		"$pipe_dir"/compositor --disable-opacity
-		"$pipe_dir"/compositor --enable-shadows
+		compositor --disable-opacity
+		compositor --enable-shadows
 		"$pipe_dir"/wm-pipe --border 0
 		sed -i "s/opacity: .*/opacity: 1.0/" "$alacritty_conf"
 		sed -i "s/alpha=.*/alpha='FF'/" "$wpgtk_dir"
 		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst_dir"
 	elif [[ "$1" == "on" ]]; then
-		"$pipe_dir"/compositor --enable-opacity
-		"$pipe_dir"/compositor --disable-shadows
+		compositor --enable-opacity
+		compositor --disable-shadows
 		"$pipe_dir"/wm-pipe --border "$window_border"
 		sed -i "s/opacity: .*/opacity: 0.8/" "$alacritty_conf"
 		sed -i "s/alpha=.*/alpha='70'/" "$wpgtk_dir"
@@ -37,13 +36,15 @@ reload(){
 base(){
 	sed -i 's/^bar_style=.*/bar_style=base/' "$HOME"/.zprofile
 	toggle_transparency on
+	compositor --disable-corners-exclude
 	reload
-	[[ $(pgrep conky) ]] && conky.sh restart || conky.sh
+	if [ $(pgrep conky) ]; then conky.sh restart ;fi
 }
 
 minimal(){
 	sed -i 's/^bar_style=.*/bar_style=minimal/' "$HOME"/.zprofile
 	toggle_transparency on
+	compositor --enable-corners-exclude
 	reload
 	[[ $(pgrep conky) ]] && pkill conky
 }
@@ -51,8 +52,9 @@ minimal(){
 bionic(){
 	sed -i 's/^bar_style=.*/bar_style=bionic/' "$HOME"/.zprofile
 	toggle_transparency off
+	compositor --enable-corners-exclude
 	reload
-	[[ $(pgrep conky) ]] && conky.sh restart || conky.sh
+	if [ $(pgrep conky) ]; then conky.sh restart ;fi
 }
 
 # Help section
