@@ -35,7 +35,7 @@ fix_modules() {
 	fi
 	
 	# check if the compositor is off and turn on pseudo transparency
-	if [[ "$(pgrep picom)" ]]; then 
+	if [[ "$(pgrep picom)" ]] || [[ $(pgrep compfy) ]]; then 
 		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = false/g' "$config_file"
 	else
 		sed -i -e 's/pseudo-transparency = .*/pseudo-transparency = true/g'	 "$config_file"
