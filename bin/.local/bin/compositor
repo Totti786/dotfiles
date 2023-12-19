@@ -1,0 +1,230 @@
+#!/usr/bin/env bash
+
+## Copyright (C) 2020-2022 Aditya Shakya <adi1090x@gmail.com>
+## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
+
+## A script to control picom or compfy 
+
+compositor="picom"
+
+## User's config dir
+config="$HOME/.config/$compositor/$compositor.conf"
+
+readonly EXECXCOMP="$compositor"
+readonly RESTART_ATTEMPTS=20
+readonly HELP="
+Options (passed from the menu):
+    -h --help   show this message
+    --status    check if the compositor if on
+    --start     start the compositor
+    --restart   restart the compositor, if running
+    --stop      stop the compositor
+    --edit      open the $compositor config file in a text editor
+    --watch     restart compositor when the config is modified (useful for debugging)
+
+See ~/.config/$compositor/$compositor.conf and \"man $compositor\" for configuration options."
+
+for i in "$@"; do
+    case "$i" in
+        -h|--help) echo "$HELP" ; exit 0
+    esac
+done
+
+if ! command -v "$compositor" >/dev/null 2>&1; then
+	notify-send "$compositor" "$compositor is not installed"
+	exit 0
+fi
+
+##-- various checks ---------------------
+check_backend=$(cat $config | grep "backend = " | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
+check_corners=$(cat $config | grep 'corner-radius =' | cut -d'=' -f2 | tr -d ';,[:blank:]')
+check_border=$(cat $config | grep 'round-borders =' | cut -d'=' -f2 | tr -d ';,[:blank:]')
+check_shadow=$(cat $config | grep 'shadow =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
+check_fading=$(cat $config | grep 'fading =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
+check_blur=$(cat $config | grep 'method =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
+check_animations=$(cat $config | grep 'animations = ' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
+check_opacity=$(cat $config | grep '^#.*opacity-rule =')
+check_corners_exclude=$(cat $config | grep '^#.*rounded-corners-exclude =')
+
+## Kill compositor
+forcekill_picom() {
+    killall -q "$compositor"
+    for ((i=0; i<RESTART_ATTEMPTS; i++)); do
+        [ $(pidof $compositor) ] || break
+        killall -q -S KILL "$compositor"
+        sleep 0.25
+    done
+}
+
+if ! [ $(pidof $compositor) ]; then
+    status="off"
+ else
+	status="on"
+fi
+
+##-- Edit config ---------------------
+if [ "$1" = '--edit' ]; then # Edit compositor settings
+    if ! [ -e "$config" ]; then
+        notify-send -a "$compositor"  -r 92 "$compositor warnning" "config file not found\!"
+    fi
+    if hash exo-open &>/dev/null; then
+        exo-open "$config"
+    else
+        geany "$config"
+    fi
+
+elif [ "$1" = '--start' ]; then
+    if [ "$status"  = "off" ]; then
+        "$EXECXCOMP"
+    else
+        echo "$0 --start: $compositor already running" && exit 1
+    fi
+
+elif [ "$1" = '--status' ]; then
+	echo "$status"
+	
+elif [ "$1" = '--stop' ]; then
+    forcekill_picom
+
+elif [ "$1" = '--restart' ]; then
+    if [ "$status" = "on" ]; then
+        forcekill_picom
+        "$0" --start
+    else # nothing to restart
+        echo "$0 --restart: $compositor is not running" && exit 1
+    fi
+
+elif [ "$1" = '--watch' ]; then
+    while inotifywait -e close_write "$config"; do
+        "$0" --restart
+    done
+
+##-- backend ------------------
+
+elif [ "$1" = '--use-glx' ]; then
+	sed -i -e "s/backend = .*/backend = \"glx\";/g" "$config"
+
+elif [ "$1" = '--use-xrender' ]; then
+	sed -i -e "s/backend = .*/backend = \"xrender\";/g" "$config"
+
+##-- corners ---------------------
+
+elif [ "$1" = '--corner-radius' ]; then
+	cradius=$(zenity --text='Corner Radius' --scale --value=6 --min-value=0 --max-value=40)
+	if [ "$cradius" ]; then
+		sed -i -e "s/backend = .*/backend = \"glx\";/g" "$config"
+		sed -i -e "s/corner-radius = .*/corner-radius = $cradius;/g" "$config"
+    fi
+
+elif [ "$1" = '--disable-corners' ]; then
+    sed -i -e "s/corner-radius = .*/corner-radius = 0;/g" "$config"
+
+elif [ "$1" = '--enable-corners-exclude' ]; then
+	if [ -z "$check_corners_exclude" ]; then 
+    sed -i "/rounded-corners-exclude = \[/,/\];/ s/^/#/" "$config"
+    fi
+
+elif [ "$1" = '--disable-corners-exclude' ]; then
+	if [ -n "$check_corners_exclude" ]; then 
+    sed -i "/rounded-corners-exclude = \[/,/\];/ s/^#//" "$config"
+	fi
+	
+##-- borders ---------------------
+
+elif [ "$1" = '--border-size' ]; then
+	cborder=$(zenity --text='Border Size' --scale --value=4 --min-value=0 --max-value=100)
+	if [ "$cborder" ]; then
+		sed -i -e "s/round-borders = .*/round-borders = $cborder;/g" "$config"
+    fi
+
+elif [ "$1" = '--disable-borders' ]; then
+    sed -i -e "s/round-borders = .*/round-borders = 0;/g" "$config"
+
+##-- shadows ---------------------
+
+elif [ "$1" = '--update-shadows' ]; then
+	get_shadows=$(yad --borders=10 --width='350' --height='200' --title='Client Shadows' --button=Cancel:1 --button=Okay:0 --form --field="Radius:NUM" 14\!0..50\!1 --field="Opacity:NUM" 0.30\!0..1\!0.1\!2  --field="X-Offset:NUM" 12\!-30..30\!1 --field="Y-Offset:NUM" 12\!-30..30\!1)
+	shadow_r=$(echo $get_shadows | cut -d'|' -f1)
+	shadow_o=$(echo $get_shadows | cut -d'|' -f2)
+	shadow_x=$(echo $get_shadows | cut -d'|' -f3)
+	shadow_y=$(echo $get_shadows | cut -d'|' -f4)
+	if [ "$get_shadows" ]; then
+		sed -i -e "s/shadow-radius = .*/shadow-radius = $shadow_r;/g" "$config"
+		sed -i -e "s/shadow-opacity = .*/shadow-opacity = $shadow_o;/g"" $config"
+		sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = $shadow_x;/g" "$config"
+		sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = $shadow_y;/g" "$config"
+	fi
+
+elif [ "$1" = '--disable-shadows' ]; then
+    sed -i -e "s/shadow = .*/shadow = false;/g" "$config"	
+
+elif [ "$1" = '--enable-shadows' ]; then
+    sed -i -e "s/shadow = .*/shadow = true;/g" "$config"	
+
+elif [ "$1" = '--reset-shadows' ]; then
+	sed -i -e "s/shadow-radius = .*/shadow-radius = 15;/g" "$config"
+	sed -i -e "s/shadow-opacity = .*/shadow-opacity = 0.75;/g" "$config"
+	sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = -15;/g" "$config"
+	sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = -15;/g" "$config"
+
+##-- fading ---------------------
+
+elif [ "$1" = '--update-fading' ]; then
+	get_fading=$(yad --borders=10 --width='350' --height='160' --title='Fading' --button=Cancel:1 --button=Okay:0 --form --field="Fade-in-step:NUM" 0.03\!0.01..1\!0.01\!2 --field="Fade-out-step:NUM" 0.03\!0.01..1\!0.01\!2 --field="Fade-delta:NUM" 5\!0..10\!1)
+	fading_in=$(echo $get_fading | cut -d'|' -f1)
+	fading_out=$(echo $get_fading | cut -d'|' -f2)
+	fading_delta=$(echo $get_fading | cut -d'|' -f3)
+	if [ "$get_fading" ]; then
+		sed -i -e "s/fade-in-step = .*/fade-in-step = $fading_in;/g" "$config"
+		sed -i -e "s/fade-out-step = .*/fade-out-step = $fading_out;/g" "$config"
+		sed -i -e "s/fade-delta = .*/fade-delta = $fading_delta;/g" "$config"
+	fi
+
+elif [ "$1" = '--disable-fading' ]; then
+    sed -i -e "s/fading = .*/fading = false;/g" "$config"
+
+elif [ "$1" = '--enable-fading' ]; then
+    sed -i -e "s/fading = .*/fading = true;/g" "$config"	
+
+elif [ "$1" = '--reset-fading' ]; then
+	sed -i -e "s/fade-in-step = .*/fade-in-step = 0.03;/g" "$config"
+	sed -i -e "s/fade-out-step = .*/fade-out-step = 0.03;/g" "$config"
+	sed -i -e "s/fade-delta = .*/fade-delta = 5;/g" "$config"
+
+##-- blur ---------------------
+
+elif [ "$1" = '--enable-blur' ]; then
+	sed -i -e "s/backend = .*/backend = \"glx\";/g" "$config"
+	sed -i -e "s/method = .*/method = \"dual_kawase\";/g" "$config"
+	sed -i -e "s/strength = .*/strength = 7;/g" "$config"
+
+elif [ "$1" = '--disable-blur' ]; then
+	sed -i -e "s/method = .*/method = \"none\";/g" "$config"
+	sed -i -e "s/strength = .*/strength = 0;/g" "$config"
+
+elif [ "$1" = '--enable-opacity' ]; then
+	if [ -n "$check_opacity" ]; then 
+		sed -i "/opacity-rule = \[/,/\];/ s/^#//" "$config"
+		sed -i "s/opacity=1.0/opacity=0.9/g" "$config"
+	fi
+	
+elif [ "$1" = '--disable-opacity' ]; then
+	if [ -z "$check_opacity" ]; then 
+		sed -i "/opacity-rule = \[/,/\];/ s/^/#/" "$config"
+		sed -i "s/opacity=0.9/opacity=1.0/g" "$config"
+	fi
+	
+elif [ "$1" = '--update-blur' ]; then
+	bstrength=$(zenity --text='Blur Strength' --scale --value=4 --min-value=1 --max-value=20)
+	if [ "$bstrength" ]; then
+		sed -i -e "s/strength = .*/strength = $bstrength;/g" "$config"
+	fi
+
+##-- animations ---------------
+
+elif [ "$1" = '--enable-animations' ]; then
+	sed -i -e "s/animations = .*/animations = true;/g" "$config"
+	
+elif [ "$1" = '--disable-animations' ]; then
+	sed -i -e "s/animations =.*/animations = false;/g" "$config"
+fi

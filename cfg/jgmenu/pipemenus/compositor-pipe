@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+## jgmenu Pipemenu For Picom Compositor
+source compositor
+
+if [[ "$status" == "off" ]]; then
+	menu+=("Enable Compositor,compositor --start")
+else
+	menu+=("^sep(Backend ($compositor))")
+	if [[ "$check_backend" != "glx" ]]; then
+		menu+=("Use 'glx' backend,compositor --use-glx")
+	else
+		menu+=("Use 'xrender' backend,compositor --use-xrender")
+	fi
+	menu+=("^sep(Corners)")
+	if [[ "$check_corners" != "0" ]]; then
+		menu+=("Change Corner Radius,compositor --corner-radius")
+		if [[ "$check_corners_exclude" ]]; then
+			menu+=("Disable Corners Exclude,compositor --disable-corners-exclude")
+		else
+			menu+=("Enable Corners Exclude,compositor --enable-corners-exclude")
+		fi
+		menu+=("Disable Rounded Corners,compositor --disable-corners")
+	else
+		menu+=("Enable Rounded Corners,compositor --corner-radius")
+	fi
+	menu+=("^sep(Border)")
+	if [[ "$check_border" != "0" ]]; then
+		menu+=("Change Border Size,compositor --border-size")
+		menu+=("Disable Borders,compositor --disable-borders")
+	else
+		menu+=("Enable Borders,compositor --border-size")
+	fi
+	menu+=("^sep(Shadow)")
+	if [[ "$check_shadow" == "true" ]]; then
+		menu+=("Modify Shadow Settings,compositor --update-shadows")
+		menu+=("Reset Shadow Settings,compositor --reset-shadows")
+		menu+=("Disable Client Shadows,compositor --disable-shadows")
+	else
+		menu+=("Enable Client Shadows,compositor --enable-shadows")
+	fi
+	menu+=("^sep(Fading)")
+	if [[ "$check_fading" == "true" ]]; then
+		menu+=("Modify Fading Settings,compositor --update-fading")
+		menu+=("Reset Fading Settings,compositor --reset-fading")
+		menu+=("Disable Fading,compositor --disable-fading")
+	else
+		menu+=("Enable Fading,compositor --enable-fading")
+	fi
+	menu+=("^sep(Blur)")
+	if [[ "$check_blur" != "dual_kawase" ]]; then
+		menu+=("Enable Blur Effect,compositor --enable-blur")
+	else
+		menu+=("Set Blur Strength,compositor --update-blur")
+		menu+=("Disable Blur Effect,compositor --disable-blur")
+	fi
+	if [[ "$check_opacity" ]]; then 
+		menu+=("Enable Opcaity,compositor --enable-opacity")
+	else
+		menu+=("Disable Opacity,compositor --disable-opacity")
+	fi
+	menu+=("^sep(Animations)")
+	if [[ "$check_animations" == "true" ]]; then 
+		menu+=("Disable Animations,compositor --disable-animations")
+	else 
+		menu+=("Enable Animations,compositor --enable-animations")
+	fi
+	menu+=("^sep(Settings)")
+	menu+=("Restart Compositor,compositor --restart")
+	menu+=("Disable Compositor,compositor --stop")
+fi
+menu+=("^sep()")
+menu+=("Edit Configuration File,compositor --edit")
+
+printf '%s\n' "${menu[@]}"
