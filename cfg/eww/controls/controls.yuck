@@ -160,8 +160,8 @@
 					:space-evenly true
 			        (sysblock
 						:icon "${record_status == 'on' ? '󱣴' : '󰹑'}"
-						:onclick "~/.config/openbox/pipemenus/record --toggle"
-						:onrightclick "~/.config/openbox/pipemenus/record --toggle"
+						:onclick "ffmpeg-recorder --toggle"
+						:onrightclick "ffmpeg-recorder --toggle"
 						:active "${record_status == 'on' ? true : false}"
 						:label "Recorder"
 			        )

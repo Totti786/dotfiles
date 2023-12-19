@@ -57,7 +57,7 @@
 	:interval "2s" "./scripts/dnd status"
 )
 (defpoll record_status 
-	:interval "1s" "~/.config/openbox/pipemenus/record --status"
+	:interval "1s" "ffmpeg-recorder --status"
 )
 (defpoll vpn_status 
 	:interval "2s" "./scripts/vpn.sh status"
