@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
+dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 
 # Check if script is run as root
 if [[ "$(id -u)" -eq 0 ]]; then
@@ -19,10 +19,10 @@ declare -a minimal=(
 	linux-wifi-hotspot maim man moreutils mpv mpv-mpris mugshot ncdu \
 	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-emoji \
 	nsxiv nvtop obconf openbox openssh openvpn pamixer papirus-icon-theme pastel \
-	pavucontrol perl plank playerctl polybar python-pipx qbittorrent qt5ct ranger \
-	redshift rhythmbox rofi-lbonn-wayland rtorrent scrot stalonetray sxhkd termdown \
-	thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman timeshift \
-	tumbler viewnior wget wmctrl xarchiver xcape xclip xdg-autostart xdg-user-dirs \
+	pavucontrol perl plank playerctl polybar python-pipx python-wheel qbittorrent qt5ct \
+	ranger redshift rhythmbox rofi-lbonn-wayland rtorrent scrot stalonetray sxhkd \
+	termdown thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman \
+	timeshift tumbler viewnior wget wmctrl xarchiver xcape xclip xdg-autostart xdg-user-dirs \
 	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xbacklight \
 	xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo yad \
 	ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh
@@ -59,7 +59,8 @@ checkrepo(){
 		sudo pacman-key --lsign-key "3056513887B78AEB" || exit 1
 		
 		# Add Chaotic AUR repository to pacman.conf
-		sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm || exit 1 &&
+		sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' \
+		'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm || exit 1 &&
 		echo "[chaotic-aur]
 		Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf > /dev/null
 		
@@ -92,9 +93,9 @@ minimal_install(){
 	checkrepo &&
 	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
-	moveConfigs
-	sh "$DIR/bin/.scripts/file-check"
-	changeTheme
+	move_configs
+	sh "$dir/bin/.scripts/file-check"
+	change_theme
 	install_wpgtk
 	}
 
@@ -102,34 +103,34 @@ full_install(){
 	checkrepo &&
 	install_full
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
-	moveConfigs
-	sh "$DIR/bin/.scripts/file-check"
-	changeTheme
+	move_configs
+	sh "$dir/bin/.scripts/file-check"
+	change_theme
 	install_sddm
 	install_grub
 	install_zsh
 	install_wpgtk
 	}
 
-moveConfigs(){
-	cp -r "$DIR"/bin/.scripts/ "$HOME" && echo "moved scripts home"
-	cp -r "$DIR"/cfg/* "$HOME"/.config && echo "moved config files"
-	cp -r "$DIR"/bin/.local/ "$HOME" && echo "moved bin"
-	cp -r "$DIR"/deps/.zprofile "$HOME"
-	
+move_configs(){
+	cp -r "$dir"/bin/.scripts/ "$HOME" && echo "moved scripts home"
+	cp -r "$dir"/cfg/* "$HOME"/.config && echo "moved config files"
+	cp -r "$dir"/bin/.local/ "$HOME" && echo "moved bin"
+	cp -r "$dir"/deps/.zprofile "$HOME"
+
     mkdir -p "$HOME/.local/share/icons"
     mkdir -p "$HOME/.local/share/fonts"
-    
-	tar -xf "$DIR"/deps/fonts.tar.gz -C "$HOME/.local/share/fonts"
+
+	tar -xf "$dir"/deps/fonts.tar.gz -C "$HOME/.local/share/fonts"
 	}
-	
-changeTheme(){
+
+change_theme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
-	cat "$DIR/cfg/plank/plank.conf" | dconf load /net/launchpad/plank/docks/
-	cp -r "$DIR"/bin/.icons "$HOME"
-	
-	if [[ -d  /usr/share/icons/Papirus ]]; then 
+	cat "$dir/cfg/plank/plank.conf" | dconf load /net/launchpad/plank/docks/
+	cp -r "$dir"/bin/.icons "$HOME"
+
+	if [[ -d  /usr/share/icons/Papirus ]]; then
 		sudo chgrp -R $(whoami) /usr/share/icons/Papirus
 		sudo chmod -R ug+rwX /usr/share/icons/Papirus
 		sudo ln -s /usr/share/icons/Papirus-Dark "$HOME"/.local/share/icons/Papirus
@@ -137,53 +138,52 @@ changeTheme(){
 	}
 
 install_wpgtk(){
-	sh "$DIR"/bin/.local/bin/wpgtk run &&
-	if $Dialog --yesno "Do you want your Login Screen background to sync with your wallpaper? 
-			(This only works with the included SDDM theme)" 20 60 ;then
-		sh "$DIR"/bin/.local/bin/wpgtk lockPerms &&
-		sh "$DIR"/bin/.local/bin/wpgtk wall "$DIR"/deps/background.jpg 
+	sh "$dir"/bin/.local/bin/wpgtk run &&
+	if "$Dialog" --yesno "Do you want your Login Screen background to sync with your wallpaper?
+		(This only works with the included SDDM theme)" 20 60 ;then
+		"$dir"/bin/.local/bin/wpgtk lockPerms &&
+		"$dir"/bin/.local/bin/wpgtk wall "$dir"/deps/background.jpg
 	else
-		sh "$DIR"/bin/.local/bin/wpgtk wall "$DIR"/deps/background.jpg
+		"$dir"/bin/.local/bin/wpgtk wall "$dir"/deps/background.jpg
 	fi
 	}
 
 #---- Additional configurations ----------
 
 install_zsh(){
-	[[ "$(pacman -Q zsh)" ]] && echo "hello"
-
 	# Check and set Zsh as the default shell
 	[[ "$(awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd) " =~ "zsh " ]] || chsh -s $(which zsh)
-	
+
 	# Install Oh My Zsh
 	if [ ! -d "$HOME"/.oh-my-zsh/ ]; then
-	  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended 
+	  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 	else
 	  omz update
 	fi
-	
+
 	# Install Zsh plugins
 	[[ "${plugins[*]} " =~ "zsh-autosuggestions " ]] || git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 	[[ "${plugins[*]} " =~ "zsh-syntax-highlighting " ]] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-	
-	cp "$DIR"/deps/.zshrc "$HOME"
+
+	cp "$dir"/deps/.zshrc "$HOME"
 	}
-	
+
 install_sddm(){
 	# Check if SDDM is installed and install if not
 	echo "Making sure that SDDM is installed"
-	sudo pacman -S sddm plasma-framework --needed --noconfirm
-	
+	sudo pacman -S sddm plasma-framework5 --needed --noconfirm
+
 	# Move sddm theme files
-	if [ ! -d "/usr/share/sddm/themes/Chili" ]; then  
-		sudo cp -R "$DIR"/deps/Chili  /usr/share/sddm/themes/
+	if [ ! -d "/usr/share/sddm/themes/Chili" ]; then
+		sudo cp -R "$dir"/deps/Chili  /usr/share/sddm/themes/
 	fi
 	
-	cp "$DIR"/deps/.face "$HOME"
-	
+	# Copy profile picture to user directory
+	cp "$dir"/deps/.face "$HOME"
+
 	# Create the directory for the sddm configuration files
 	sudo mkdir -p "/etc/sddm.conf.d/"
-	
+
 	# Write the sddm theme configuration to a file
 	# Redirect output to /dev/null to hide any console output
 	# Use a heredoc to specify the configuration text
@@ -197,26 +197,25 @@ install_sddm(){
 	Font="JetBrains"
 	ThemeDir=/usr/share/sddm/themes
 	EOF
-	
+
 	# Disable currently enabled display manager
 	if systemctl list-unit-files | grep enabled | grep -E 'gdm|lightdm|lxdm|lxdm-gtk3|sddm|slim|xdm'; then
 	  echo "Disabling currently enabled display manager"
 	  sudo systemctl disable $(systemctl list-unit-files | grep enabled | grep -E 'gdm|lightdm|lxdm|lxdm-gtk3|sddm|slim|xdm' | awk -F ' ' '{print $1}')
 	fi
-	
+
 	# Enable and start SDDM
 	echo "Enabling SDDM"
 	sudo systemctl enable sddm
-
 	}
-	
+
 install_grub_theme(){
-	cd "$DIR"/deps/grub && sudo sh grub.sh && cd "$DIR"
+	cd "$dir"/deps/grub && sudo sh grub.sh && cd "$dir"
 	}
 
 install_firefox_theme(){
-	cp -b "$DIR"/deps/firefox/user.js "$HOME"/.mozilla/firefox/*.default-release/user.js && echo "User Profile Copied Successfully"
-	cp -rb "$DIR"/deps/firefox/chrome "$HOME"/.mozilla/firefox/*.default-release/ && echo "Chrome CSS Copied Successfully"
+	cp -b "$dir"/deps/firefox/user.js "$HOME"/.mozilla/firefox/*.default-release/user.js && echo "User Profile Copied Successfully"
+	cp -rb "$dir"/deps/firefox/chrome "$HOME"/.mozilla/firefox/*.default-release/ && echo "Chrome CSS Copied Successfully"
 	}
 
 
@@ -237,7 +236,6 @@ wallpapers() {
     fi
 }
 
-
 #---- TUI functions  ---------------------
 
 Dialog="dialog"
@@ -254,7 +252,7 @@ progressBar(){
 	}
 
 additionalPrograms(){
-	if $Dialog --yesno "Do you want to select wich additional apps you want to install?\n	
+	if $Dialog --yesno "Do you want to select wich additional apps you want to install?\n
 		Seleceting \"No\" will install all the additional apps" 20 60 ;then
 	  	progs=$($Dialog --no-items --checklist "Choose the programs you want installed:"  20 60 12 \
 		$(for app in ${extra[@]}; do echo "$app" off ;done) \
@@ -275,7 +273,7 @@ tools(){
 		install_firefox_theme "Firefox Theme" off\
 		install_wpgtk "Generate color-schemes from wallpapers" off\
 		2>&1 >/dev/tty)
-	$installOptions		
+	$installOptions
 	}
 
 
@@ -287,14 +285,14 @@ update(){
 	[ -f "$HOME/.config/polybar/scripts/info" ] &&
 		cp "$HOME"/.config/polybar/scripts/info "$HOME"/.cache/info
 	#[ ! -f "$HOME/.zprofile" ] && 
-	cp	"$DIR"/deps/.zprofile "$HOME"/
+	cp	"$dir"/deps/.zprofile "$HOME"/
 	## move udpated scripts and configs
-	cp -r "$DIR"/bin/.scripts/ "$HOME"/ 
-	cp -r "$DIR"/cfg/* "$HOME"/.config/
-	cp -r "$DIR"/bin/.local/ "$HOME"/
+	cp -r "$dir"/bin/.scripts/ "$HOME"/ 
+	cp -r "$dir"/cfg/* "$HOME"/.config/
+	cp -r "$dir"/bin/.local/ "$HOME"/
 	# restore weather info file
 	cp "$HOME"/.cache/info "$HOME"/.config/polybar/scripts/info
-	sh "$DIR/bin/.scripts/file-check"
+	sh "$dir/bin/.scripts/file-check"
 	}
 
 install_menu(){
@@ -307,7 +305,7 @@ install_menu(){
 	                10 80 4 \
 	                "${OPTIONS[@]}" \
 	                2>&1 >/dev/tty)
-	case $CHOICE in
+	case "$CHOICE" in
 		1)
 			minimal_install
 			;;
@@ -338,7 +336,7 @@ main(){
 	                2>&1 >/dev/tty)
 	clear
 	
-	case $CHOICE in
+	case "$CHOICE" in
 		1)
 			install_menu &&
 			main
@@ -358,7 +356,7 @@ main(){
 			;;
 		5)
 			git pull
-			"$DIR"/install.sh
+			"$dir"/install.sh
 			;;
 		6)
 			tools
@@ -375,10 +373,10 @@ if [[ "$1" == "--update" ]]; then
 elif [[ "$1" == "--wallpapers" ]]; then
 	wallpapers
 else
-	if command -v $Dialog &> /dev/null; then 
+	if command -v "$Dialog" &> /dev/null; then 
 		main
 	else 
-		sudo pacman -S $Dialog &&
+		sudo pacman -S "$Dialog" &&
 		main
 	fi
 fi
