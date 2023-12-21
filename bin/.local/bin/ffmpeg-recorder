@@ -232,7 +232,7 @@ signal_stop(){
 
 # Help section
 show_help() {
-    echo "Usage: ${0##*/} [--screen | --area | --stop | --cancel | --toggle-pause | --status | --help]"
+    echo "Usage: ${0##*/} [ --option ]"
     echo "Options:"
     echo "  --screen        Start screen recording"
     echo "  --area          Start area recording"
