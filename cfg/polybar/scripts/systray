@@ -24,7 +24,7 @@ tray(){
 		geometry="1x1-$width+45"
 	fi
 	
-	config="--background $color --geometry $geometry --grow-gravity $gravity --icon-gravity $gravity --vertical false --slot-size 32 --kludges force_icons_size"
+	tray_command=(stalonetray --background $color --geometry $geometry --grow-gravity $gravity --icon-gravity $gravity --vertical false --slot-size 32 --kludges force_icons_size)
 	
 	if [[ "$(pidof stalonetray)" ]]; then
 		if [[ ! -e "$hidden" ]]; then
@@ -40,7 +40,7 @@ tray(){
 			sleep 5 && tray
 		fi
 	else
-		stalonetray $(echo $config) &
+		"${tray_command[@]}" &
 		tray
 	fi
 }
