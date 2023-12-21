@@ -36,15 +36,25 @@ if ! command -v "$compositor" >/dev/null 2>&1; then
 fi
 
 ##-- various checks ---------------------
-check_backend=$(cat $config | grep "backend = " | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
-check_corners=$(cat $config | grep 'corner-radius =' | cut -d'=' -f2 | tr -d ';,[:blank:]')
-check_border=$(cat $config | grep 'round-borders =' | cut -d'=' -f2 | tr -d ';,[:blank:]')
-check_shadow=$(cat $config | grep 'shadow =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
-check_fading=$(cat $config | grep 'fading =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]')
-check_blur=$(cat $config | grep 'method =' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
-check_animations=$(cat $config | grep 'animations = ' | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:],"')
-check_opacity=$(cat $config | grep '^#.*opacity-rule =')
-check_corners_exclude=$(cat $config | grep '^#.*rounded-corners-exclude =')
+# Function to extract configuration values
+# Read config file once and store it in a variable
+config_content=$(<"$config")
+
+# Define functions to extract values
+get_value() {
+    echo "$config_content" | grep -E "$1" | head -n1 | cut -d'=' -f2 | tr -d ';,[:blank:]"'
+}
+
+# Assign variables using the functions
+check_backend=$(get_value "backend = ")
+check_corners=$(get_value 'corner-radius =')
+check_border=$(get_value 'round-borders =')
+check_shadow=$(get_value 'shadow =')
+check_fading=$(get_value 'fading =')
+check_blur=$(get_value 'method =')
+check_animations=$(get_value 'animations = ')
+check_opacity=$(echo "$config_content" | grep '^#.*opacity-rule =')
+check_corners_exclude=$(echo "$config_content" | grep '^#.*rounded-corners-exclude =')
 
 ## Kill compositor
 forcekill_picom() {
