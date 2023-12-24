@@ -85,7 +85,7 @@ if [ "$1" = '--edit' ]; then # Edit compositor settings
 
 elif [ "$1" = '--start' ]; then
     if [ "$status"  = "off" ]; then
-        "$EXECXCOMP"
+        "$EXECXCOMP" -b 
     else
         echo "$0 --start: $compositor already running" && exit 1
     fi
