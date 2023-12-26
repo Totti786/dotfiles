@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+
+# Generates zathura or sioyek configuration file
+
+source "$HOME"/.cache/wal/colors.sh
+
+zathura_config(){
+
+if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+	source "$HOME/.cache/wal/colors.sh"
+	background="$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)"
+else
+	background="#000000"
+	foreground="#F7F7F6"
+	color1="#AC4142"
+	color2="#7ba5dd"
+fi
+
+cat > "$HOME"/.config/zathura/zathurarc <<CONF
+set recolor "true"
+
+set completion-bg "$background"
+set completion-fg "$foreground"
+set completion-group-bg "$background"
+set completion-group-fg "$color2"
+set completion-highlight-bg "$foreground"
+set completion-highlight-fg "$background"
+
+set recolor-lightcolor "$background"
+set recolor-darkcolor "$foreground"
+set default-bg "$background"
+
+set inputbar-bg "$background"
+set inputbar-fg "$foreground"
+set notification-bg "$background"
+set notification-fg "$foreground"
+set notification-error-bg "$color1"
+set notification-error-fg "$foreground"
+set notification-warning-bg "$color1"
+set notification-warning-fg "$foreground"
+set statusbar-bg "$background"
+set statusbar-fg "$foreground"
+set index-bg "$background"
+set index-fg "$foreground"
+set index-active-bg "$foreground"
+set index-active-fg "$background"
+set render-loading-bg "$background"
+set render-loading-fg "$foreground"
+
+set recolor-keephue "true"
+set guioptions none
+set window-title-home-tilde true
+set window-title-basename true
+set window-title-page true
+set statusbar-basename true
+set selection-clipboard clipboard
+
+map h feedkeys "<C-Left>"
+map j feedkeys "<C-Down>"
+map k feedkeys "<C-Up>"
+map l feedkeys "<C-Right>"
+CONF
+}
+
+sioyek_config(){
+
+background="$(pastel format rgb ${background:1} | awk -F '[(),]' '{printf "%.3f %.3f %.3f\n", $2/255, $3/255, $4/255}')"
+foreground="$(pastel format rgb ${foreground:1} | awk -F '[(),]' '{printf "%.3f %.3f %.3f\n", $2/255, $3/255, $4/255}')"
+yellow="$(pastel format rgb ${color11:1} | awk -F '[(),]' '{printf "%.3f %.3f %.3f\n", $2/255, $3/255, $4/255}')"
+red="$(pastel format rgb ${color9:1} | awk -F '[(),]' '{printf "%.3f %.3f %.3f\n", $2/255, $3/255, $4/255}')"
+
+mkdir -p "$HOME"/.config/sioyek
+	
+cat > "$HOME"/.config/sioyek/prefs_user.config <<CONF
+# For more information see the documentation at https://sioyek-documentation.readthedocs.io/
+
+## Semicolon-separated list of command to execute upon sioyek startup
+startup_commands  toggle_custom_color
+
+# The color with which the screen is cleared before rendering the pdf (this is the background color of the application and not the PDF file)
+background_color    0.97 0.97 0.97
+dark_mode_background_color    $background
+
+# Showing full white text on black background can be irritating for the eye, we can dim the whites a little bit using the contrast option
+dark_mode_contrast			0.8
+
+## Background color to use when executing 'toggle_custom_color'
+custom_background_color $background
+## Text color to use when executing 'toggle_custom_color'
+custom_text_color $foreground
+
+## Color of status bar background
+status_bar_color $background
+## Color of status bar text
+status_bar_text_color $foreground
+## Font size of the status bar text
+status_bar_font_size 20
+
+# Highlight color when text is selected using mouse
+text_highlight_color    $yellow
+
+# The color of highlight ruler which is displayed when right click is pressed
+visual_mark_color    1 1 1 0.1
+
+# Highlight color when text is a search match
+search_highlight_color  $red
+
+# Hihglight color for PDF links (note that highlight is off by default
+# and can only be seen by performing a toggle_highlight command. See keys.config for more details)
+link_highlight_color    0.0 0.0 1.0
+
+# Hihglight color for synctex forward search highlights
+synctex_highlight_color    1.0 0.0 1.0
+CONF
+}
+
+if command -v zathura >/dev/null 2>&1; then
+	zathura_config
+fi
+
+if command sioyek >/dev/null 2>&1; then
+	sioyek_config
+fi
