@@ -18,7 +18,7 @@ else
     menu+=("Record Desktop (No Audio),ffmpeg-recorder --screen-na")
     menu+=("Record Area,ffmpeg-recorder --area")
     menu+=("Record Area (No Audio),ffmpeg-recorder --area-na")
-    #menu+=("Record Audio,ffmpeg-recorder --audio")
+    menu+=("Record Audio Only,ffmpeg-recorder --audio")
 fi
 
 printf '%s\n' "${menu[@]}"
