@@ -16,8 +16,6 @@ rofi="$config/rofi/themes/colors.rasi"
 discord="$config/Vencord/settings/quickCss.css"
 dunst="$config/dunst/dunstrc"
 geany="$config/geany/colorschemes/Pywal.conf"
-zathura="$config/zathura/genzathurarc"
-sioyek="$config/sioyek/gensioyek"
 copyq="$config/copyq/copyq.conf"
 jgmenu="$config/jgmenu/jgmenurc"
 spotify="$config/spicetify/Themes/Nord/color.ini"
@@ -145,8 +143,8 @@ change_colors(){
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
 		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"
 		
-	# zathura (courtesy of @GideonWolfe) and sioyek
-	"$zathura";"$sioyek"
+	# zathura and sioyek
+	reader-colors
 	
 	# discord
 	if [[ -f "$discord" ]]; then 
@@ -396,7 +394,7 @@ dynamic(){
 	
 misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
-		conky.sh restart &
+		[[ $(pgrep conky) ]] && conky.sh restart &
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
