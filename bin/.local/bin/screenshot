@@ -5,9 +5,9 @@ geometry="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
 dir="$(xdg-user-dir PICTURES)/Screenshots"
 file="$dir/Screenshot_${time}_${geometry}.png"
 
-[ ! -d $dir ] && mkdir -p $dir
+[ ! -d $dir ] && mkdir -p "$dir"
 
-if [[ "$(pgrep picom)" ]]; then  border_size=5000 ;else border_size=3 ;fi
+if [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then  border_size=5000 ;else border_size=3 ;fi
 
 notify_user() {
 	if [[ -e "$file" ]]; then
