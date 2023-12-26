@@ -5,7 +5,7 @@
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
 
 # XDG Autostart 
-[[ ! $(pgrep xfce-polkit) ]] && xdg-autostart &
+[[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && xdg-autostart & 
 
 # Keybinds
 killall -q -9 sxhkd
@@ -17,7 +17,7 @@ xcape -e 'Super_L=Alt_L|F1' &
 xcape -e 'Super_R=Alt_L|F1' &
 
 # Polkit agent
-#if [[ ! $(pidof xfce-polkit) ]]; then /usr/lib/xfce-polkit/xfce-polkit & ;fi 
+[[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # Fix cursor
 xsetroot -cursor_name left_ptr &
@@ -25,8 +25,8 @@ xsetroot -cursor_name left_ptr &
 # xfce4-settings daemon
 xfsettingsd &
 
-# Picom 
-picom -b &
+# Compositor 
+compositor --start &
 
 # Autotiling for i3
 autotiling &

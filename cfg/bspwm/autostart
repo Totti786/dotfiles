@@ -5,25 +5,25 @@
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
 
 # XDG Autostart 
-[[ ! $(pgrep xfce-polkit) ]] && xdg-autostart &
+[[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && xdg-autostart
 
 # Keybinds
-killall -9 sxhkd
+killall -q -9 sxhkd
 sxhkd -c ~/.config/sxhkd/sxhkdrc ~/.config/sxhkd/bspwm-sxhkdrc &
 
 # Enable Super Keys For Menu
-killall -9 xcape
+killall -q -9 xcape
 xcape -e 'Super_L=Alt_L|F1' &
 xcape -e 'Super_R=Alt_L|F1' &
 
 # Polkit agent
-#if [[ ! $(pidof xfce-polkit) ]]; then /usr/lib/xfce-polkit/xfce-polkit & ;fi 
+[[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # xfce4-settings daemon
 xfsettingsd &
 
-# Picom 
-picom -b &
+# Compositor 
+compositor --start &
 
 # Dunst
 dunst &
@@ -39,7 +39,7 @@ wal -Re &
 copyq --start-server &
 
 # Plank
-killall -9 plank
+killall -q -9 plank
 plank &
 
 # Conky

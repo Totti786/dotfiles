@@ -4,6 +4,9 @@
 
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
 
+# Polkit agent
+[[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
 # xfce4-settings daemon
 xfsettingsd &
 
@@ -18,8 +21,8 @@ xfce4-power-manager --daemon &
 # Dunst (Notifications Daemon)
 dunst &
 
-# Picom (Compositor)	
-picom -b &
+# Compositor 
+compositor --start &
 
 # Restore Wallpaper
 wal -Re &
