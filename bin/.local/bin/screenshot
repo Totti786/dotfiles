@@ -5,23 +5,31 @@ geometry="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
 dir="$(xdg-user-dir PICTURES)/Screenshots"
 file="$dir/Screenshot_${time}_${geometry}.png"
 
-[ ! -d $dir ] && mkdir -p "$dir"
+[ ! -d "$dir" ] && mkdir -p "$dir"
 
-if [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then  border_size=5000 ;else border_size=3 ;fi
+if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]]; then 
+	[[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]] && border_size=5000 || border_size=3
+	slop_command=(slop -r highlight -b "$border_size" -f "%x %y %w %h") 
+else
+	border_size=3
+	slop_command=(slop -b "$border_size" -f "%x %y %w %h")
+fi
 
 notify_user() {
 	if [[ -e "$file" ]]; then
-		notify-send -a 'Screenshot' -r 83 -u low -i "$file" "Screenshot Saved"
+		dunst_action=$(notify-send -a "Screenshot" -r 83 -u low -i "$file" "Screenshot Saved" "Click to open" --action="default,Reply")
+		if [[ "$dunst_action"  == "0" ]]; then exo-open "$file" ;fi
 	else
-		notify-send -a 'Screenshot' -r 83 -u low "Screenshot Canceled"
+		notify-send -a "Screenshot" -r 83 -u low "Screenshot Canceled"
 	fi
 }
 
 countdown() {
 	for sec in $(seq $1 -1 1); do
-		notify-send -a 'Screenshot' -t 500 -u low -r 83 "Countdown" "Taking shot in : $sec"
+		notify-send -a 'Screenshot' -t 1020 -u low -r 83 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
+	sleep 0.1
 }
 
 magic() {
@@ -41,7 +49,7 @@ shot() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
 		grim "$file" && wl-copy < "$file"
 	else
-		maim -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
+		scrot "$file" && xclip -selection clipboard -t image/png -i "$file"
 	fi
 	notify_user
 }
@@ -50,7 +58,7 @@ shot_window() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
 		grim "$file" && wl-copy < "$file"
 	else
-		maim -u -f png -i `xdotool getactivewindow` "$file" && xclip -selection clipboard -t image/png -i "$file"
+		scrot -u "$file" && xclip -selection clipboard -t image/png -i "$file"
 	fi	
 	notify_user	
 }
@@ -59,7 +67,8 @@ shot_area() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 		grim -g "$(slurp -c cba6f788 -b 00000055)" "$file" && wl-copy < "$file"
 	else
-		maim -r highlight -b "$border_size" -s -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
+		read -r X Y W H < <("${slop_command[@]}")
+		scrot -a ${X},${Y},${W},${H} "$file" && xclip -selection clipboard -t image/png -i "$file"
 	fi
 	notify_user
 }
@@ -68,43 +77,31 @@ shot_extract_text() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 		grim -g "$(slurp -c cba6f788 -b 00000055)" "$file" && wl-copy < "$file"
 	else
-		maim -u -f png -s -b 3 "$file" && tesseract "$file" stdout | xclip -selection clipboard
+		read -r X Y W H < <("${slop_command[@]}")
+		scrot -a ${X},${Y},${W},${H} "$file" && tesseract "$file" stdout | xclip -selection clipboard
 	fi
-	notify-send -a Screenshot -r 83 -u low -i "$file" "Extracted Text"
+	notify-send -a "Screenshot" -r 83 -u low -i "$file" "Extracted Text"
 }
 
 shot_qr() {
-	if command -v zbarimg >/dev/null 2>&1;then 
-		if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-			maim -qs | zbarimg -q --raw - | wl-copy
-		else
-			text=$(maim -qs | zbarimg -q --raw -) && 
-			echo "$text" | xclip -selection clipboard &&
-			notify-send -a Screenshot -r 83 -u low "QR Code" "$text"
-		fi
-	else
+	if ! command -v zbarimg >/dev/null 2>&1;then 
 		notify-send -a Screenshot -r 83 -u low "QR Code" "zbar is not installed"
+		exit 1
 	fi
-}
-
-shot_5() {
-	countdown '5'
-	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
-		grim "$file" && wl-copy < "$file"
+	
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+		grim -g "$(slurp -c cba6f788 -b 00000055)" | zbarimg -q --raw - | wl-copy
 	else
-		maim -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
+		read -r X Y W H < <("${slop_command[@]}")
+		text=$(scrot -a ${X},${Y},${W},${H} - | zbarimg -q --raw -) && 
+		scrot -a ${X},${Y},${W},${H} - | zbarimg -q --raw - | xclip -selection clipboard &&
+		
+		if [[ "$(notify-send -a Screenshot -r 83 -u low "QR Code" "$text" --action="default,Reply")"  == "0" ]]; then 
+			exo-open "$text" 
+		fi
+		
 	fi
-	notify_user
-}
 
-shot_10() {
-	countdown '10'
-	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
-		grim "$file" && wl-copy < "$file"
-	else
-		maim -u -f png "$file" && xclip -selection clipboard -t image/png -i "$file"
-	fi	
-	notify_user
 }
 
 upload_to_imgur(){
@@ -145,10 +142,11 @@ upload_to_imgur(){
 	sleep 0.1
 	echo "$url" | xclip -selection clipboard
 
-	notify-send -a 'Screenshot' -r 83 -u low "Imgur" "$url"
+	if [[ "$(notify-send -a 'Screenshot' -r 83 -u low "Imgur" "$url" --action="default,Reply")"  == "0" ]]; then 
+		exo-open "$url" 
+	fi
 fi
 }
-
 
 # Help section
 show_help() {
@@ -191,10 +189,12 @@ case "$1" in
 	    shot_qr
     ;;
 	"--in5")
-	    shot_5
+		countdown '5'
+	    shot
     ;;
     "--in10")
-	    shot_10
+		countdown '10'
+	    shot
     ;;
     "--help" | "-h" | "")
         show_help
