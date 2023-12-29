@@ -17,6 +17,15 @@ else
 	dir="$HOME/Videos/Recordings"
 fi
 
+# Determine border size and slop command based on file existence
+if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]]; then 
+	[[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]] && border_size=5000 || border_size=3
+	slop_command=(slop -r highlight -b "$border_size" -f "%x %y %w %h") 
+else
+	border_size=3
+	slop_command=(slop -b "$border_size" -f "%x %y %w %h")
+fi
+
 # Get current timestamp
 time="$(date +%Y-%m-%d-%H-%M-%S)"
 
@@ -81,15 +90,19 @@ notify_user() {
 	            local file_name="${dir}/${new_filename}.mp4"
 	        fi
 	    ffmpegthumbnailer -i "$file_name" -o /tmp/"${file_name##*/}".jpg -s 500
-		dunst_action=$(notify-send -a "Recorder" -u low -r 699 "Recording Saved" -i /tmp/"${file_name##*/}".jpg \
-		--action="default,Reply" "Click to open")
-	
+		dunst_action=$(notify-send -a "Recorder" -u low -r 699 "Recording Saved" "Click to open" -i /tmp/"${file_name##*/}".jpg \
+		--action="default,Reply")
+		
 		case "$dunst_action" in
-		"default" | "0")
+		"default" | "action1" | "0")
 		    exo-open "$file_name"
+   		    exo-open --launch FileManager "$file_name"
 		    ;;
-		"2")
-		    exit 0
+		"action2" | "1")
+		    exo-open --launch FileManager "$file_name"
+		    ;;
+		"action3" | "2")
+		    rm "$file_name"
 		    ;;
 		esac
 	else
@@ -135,16 +148,16 @@ record_area() {
 
 	# Get area for area recording using slop
 	if [[ -e "$ffmpeg_lock_slop" ]]; then
-		read -r X Y W H G ID < <(cat "$ffmpeg_lock_slop")
+		read -r X Y W H < <(cat "$ffmpeg_lock_slop")
 	else
-		get_win_data=$(slop -f "%x %y %w %h %g %i")
+		get_win_data=$("${slop_command[@]}")
 		if [[ -z "$get_win_data" ]]; then 
 			cancel_recording
 			exit 0
 		else
 			echo "$get_win_data" > "$ffmpeg_lock_slop"
 		fi
-		read -r X Y W H G ID < <(echo "$get_win_data")
+		read -r X Y W H < <(echo "$get_win_data")
 	fi
 	
 	signal_start
