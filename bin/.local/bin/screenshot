@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Screenshot utility script with various capture options and functionality
+# Dependencies: scrot, xclip, notify-send (libnotify) 
+	# grim, wl-clipboard (for Wayland) 
+	#slurp, tesseract, zbarimg, exo-open (optional) 
+	#convert (from ImageMagick), curl (for imgur upload)
+
 time="$(date +%Y-%m-%d-%I-%M-%S)"
 geometry="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
 dir="$(xdg-user-dir PICTURES)/Screenshots"
