@@ -35,7 +35,7 @@ countdown() {
 		notify-send -a 'Screenshot' -t 1020 -u low -r 83 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
-	sleep 0.1
+	sleep 0.15
 }
 
 magic() {
