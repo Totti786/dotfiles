@@ -14,9 +14,9 @@ declare -a minimal=(
 	acpi alacritty appimagelauncher autotiling axel bc blueman bluez bluez-utils \
 	brightnessctl bspwm cheese conky copyq dmenu drawing dunst envycontrol evince \
 	eww-x11 fd feh firefox flameshot fluent-cursor-theme-git font-manager fzf geany \
-	gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep htop \
-	i3lock-color i3-wm imagemagick jgmenu kdeconnect libinput-gestures light \
-	linux-wifi-hotspot maim man moreutils mpv mpv-mpris mugshot ncdu \
+	gnome-calculator gnome-polkit gnome-disk-utility gnome-epub-thumbnailer jq gpick \
+	grep htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libinput-gestures light \
+	linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu \
 	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-emoji \
 	nsxiv nvtop obconf openbox openssh openvpn pamixer papirus-icon-theme pastel \
 	pavucontrol perl plank playerctl polybar python-pipx python-wheel qbittorrent qt5ct \
@@ -39,7 +39,7 @@ declare -a extra=(
 
 declare -a aur=(
 	i3-resurrect picom-simpleanims-next-git aur/qt5gtk2 aur/qt6gtk2 \
-	xfce-polkit xiccd xqp zscroll-git
+	xiccd xqp zscroll-git
 )
 
 declare -a additional=(
