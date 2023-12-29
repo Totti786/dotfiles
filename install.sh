@@ -14,12 +14,12 @@ declare -a minimal=(
 	acpi alacritty appimagelauncher autotiling axel bc blueman bluez bluez-utils \
 	brightnessctl bspwm cheese conky copyq dmenu drawing dunst envycontrol evince \
 	eww-x11 fd feh firefox flameshot fluent-cursor-theme-git font-manager fzf geany \
-	gnome-calculator gnome-polkit gnome-disk-utility gnome-epub-thumbnailer jq gpick \
+	gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick \
 	grep htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libinput-gestures light \
 	linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu \
 	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-emoji \
 	nsxiv nvtop obconf openbox openssh openvpn pamixer papirus-icon-theme pastel \
-	pavucontrol perl plank playerctl polybar python-pipx python-wheel qbittorrent qt5ct \
+	pavucontrol perl plank playerctl polkit-gnome polybar python-pipx python-wheel qbittorrent qt5ct \
 	ranger redshift rhythmbox rofi-lbonn-wayland rtorrent scrot stalonetray sxhkd \
 	termdown thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman \
 	timeshift tumbler viewnior wget wmctrl xarchiver xcape xclip xdg-autostart xdg-user-dirs \
@@ -67,6 +67,7 @@ checkrepo(){
 		# Configure pacman
 		sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
 		sudo sed -i -e "s/#Color/Color/g" /etc/pacman.conf
+		sudo sed -i -e "s/#VerbosePkgLists/VerbosePkgLists/g" /etc/pacman.conf
 	fi
 	
 	if ! pacman -Q yay &> /dev/null; then 
