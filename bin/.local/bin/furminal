@@ -3,7 +3,7 @@
 [[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
 [[ -z "$bar_style" ]] && top_padding="23"
 
-CONFIG="$HOME/.config/alacritty/alacritty.yml"
+CONFIG="$HOME/.config/alacritty/alacritty.toml"
 
 if [ "$1" == "--float" ]; then
 	alacritty --class 'float,float' --config-file "$CONFIG" "${@:2}"

@@ -9,7 +9,7 @@
 
 # Color files
 config="$HOME/.config"
-alacritty="$config/alacritty/colors.yml"
+alacritty="$config/alacritty/colors.toml"
 polybar="$config/polybar/colors.ini"
 rofi="$config/rofi/themes/colors.rasi"
 #discord="$config/BetterDiscord/data/stable/custom.css"
@@ -71,33 +71,35 @@ change_colors(){
 	
 	# alacritty 
 	cat > "$alacritty" <<- EOF 
-	#Colors 
-	colors:
-	  primary:
-	    background: '$BG'
-	    foreground: '$FG'
-	  cursor:
-	    text:       '$black'
-	    cursor:     '$white'
-	  normal:
-	    black:      '$black'
-	    red:        '$red'
-	    green:      '$green'
-	    yellow:     '$yellow'
-	    blue:       '$blue'
-	    magenta:    '$magenta'
-	    cyan:       '$cyan'
-	    white:      '$white'
-	  bright:
-	    black:      '$bright_black'
-	    red:        '$bright_red'
-	    green:      '$bright_green'
-	    yellow:     '$bright_yellow'
-	    blue:       '$bright_blue'
-	    magenta:    '$bright_magenta'
-	    cyan:       '$bright_cyan'
-	    white:      '$bright_white'
+	[colors.bright]
+	black =      "$bright_black"
+	red =        "$bright_red"
+	green =      "$bright_green"
+	yellow =     "$bright_yellow"
+	blue =       "$bright_blue"
+	magenta =    "$bright_magenta"
+	cyan =       "$bright_cyan"
+	white =      "$bright_white"
+	
+	[colors.cursor]
+	text =      "$black"
+	cursor =    "$white"
+	
+	[colors.normal]
+	black =      "$black"
+	red =        "$red"
+	green =      "$green"
+	yellow =     "$yellow"
+	blue =       "$blue"
+	magenta =    "$magenta"
+	cyan =       "$cyan"
+	white =      "$white"
+	
+	[colors.primary]
+	background = "$BG"
+	foreground = "$FG"
 	EOF
+	
 	
 	if [[ "$alpha" == "FF" ]]; then 
 		sed -i "s/opacity: .*/opacity: 1.0/" "$config/alacritty/alacritty.yml"

@@ -1,0 +1,46 @@
+import = [
+	"~/.config/alacritty/colors.toml"
+	]
+
+[cursor]
+unfocused_hollow = false
+
+[cursor.style]
+blinking = "On"
+shape = "Underline"
+
+[env]
+TERM = "alacritty"
+WINIT_X11_SCALE_FACTOR = "1"
+
+[font]
+size = 13
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Bold Italic"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[window]
+decorations = "full"
+dynamic_title = true
+opacity = 1.0
+startup_mode = "maximized"
+[window.dimensions]
+columns = 95
+lines = 23
+
+[window.padding]
+x = 12
+y = 12
