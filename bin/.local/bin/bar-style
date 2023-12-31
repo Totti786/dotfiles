@@ -7,7 +7,6 @@ polybar_conf="$HOME/.config/polybar"
 [[ -z "$bar_style" ]] && bar_style="base"
 
 toggle_transparency(){
-	alacritty_conf="$HOME/.config/alacritty/alacritty.yml"
 	wpgtk_dir="$HOME/.local/bin/wpgtk"
 	pipe_dir="$HOME/.config/jgmenu/pipemenus/"
 	dunst_dir="$HOME/.config/dunst/dunstrc"
@@ -16,14 +15,12 @@ toggle_transparency(){
 		compositor --disable-opacity
 		compositor --enable-shadows
 		"$pipe_dir"/wm-pipe --border 0
-		sed -i "s/opacity: .*/opacity: 1.0/" "$alacritty_conf"
 		sed -i "s/alpha=.*/alpha='FF'/" "$wpgtk_dir"
 		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst_dir"
 	elif [[ "$1" == "on" ]]; then
 		compositor --enable-opacity
 		compositor --disable-shadows
 		"$pipe_dir"/wm-pipe --border "$window_border"
-		sed -i "s/opacity: .*/opacity: 0.8/" "$alacritty_conf"
 		sed -i "s/alpha=.*/alpha='70'/" "$wpgtk_dir"
 		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst_dir"
 	fi	

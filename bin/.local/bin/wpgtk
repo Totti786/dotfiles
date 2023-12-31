@@ -102,9 +102,9 @@ change_colors(){
 	
 	
 	if [[ "$alpha" == "FF" ]]; then 
-		sed -i "s/opacity: .*/opacity: 1.0/" "$config/alacritty/alacritty.yml"
+		sed -i "s/opacity =.*/opacity = 1.0/" "${alacritty%/*}/alacritty.toml"
 	else 
-		sed -i "s/opacity: .*/opacity: 0.7/" "$config/alacritty/alacritty.yml"
+		sed -i "s/opacity =.*/opacity = 0.7/" "${alacritty%/*}/alacritty.toml"
 	fi
 	
 	# geany
