@@ -10,8 +10,6 @@
 # Right click menu
 ~button3
 	xqp 0 $(xdo id -N seat0 -n root) && jgmenu_run
-~button1
-	xqp 0 $(xdo id -N seat0 -n root) && ~/.config/jgmenu/pipemenus/jg-color alone
 
 alt + space
 	jgmenu_run
