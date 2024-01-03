@@ -2,15 +2,15 @@
 
 # Pipemenu for Screen Recording with ffmpeg
 
-status=$(ffmpeg-recorder --status)
+state=$(ffmpeg-recorder --status)
 
-if [[ "$status" == "paused" ]]; then 
+if [[ "$state" == "paused" ]]; then 
     menu+=("Resume Recording,ffmpeg-recorder --toggle")
-elif [[ "$status" == "on" ]]; then 
+elif [[ "$state" == "on" ]]; then 
 	menu+=("Pause Recording,ffmpeg-recorder --toggle")
 fi
 
-if [[ "$status" == "paused" || "$status" == "on" ]]; then
+if [[ "$state" == "paused" || "$state" == "on" ]]; then
     menu+=("Stop Recording,ffmpeg-recorder --stop")
 	menu+=("Discard Recording,ffmpeg-recorder --cancel")
 else

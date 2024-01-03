@@ -11,7 +11,7 @@ ffmpeg_lock_audio="/tmp/ffmpeg-recorder-audio.lock"
 
 if [[ "$@" == "--audio" ]] || [[ -e "$ffmpeg_lock_audio" ]]; then 
 	file_type="m4a"
-	dir="$HOME/Videos/Recordings/Audio"
+	dir="$HOME/Music/Recordings"
 else
 	file_type="mp4"
 	dir="$HOME/Videos/Recordings"
@@ -51,7 +51,6 @@ ffmpeg_command=(ffmpeg -hide_banner -loglevel error)
 if lspci | grep -q NVIDIA; then 
     config="-c:v h264_nvenc -preset p7"
 elif vainfo 2>&1 | grep -q "Driver version"; then
-    echo "VAAPI is supported. Desired output found."    
     config="-vaapi_device /dev/dri/renderD128 -vcodec h264_vaapi -vf format=nv12|vaapi,hwupload -crf 23 -pix_fmt rgb24"
 else
     config='-c:v libx264 -preset superfast -crf 23 -pix_fmt rgb24'
@@ -59,11 +58,11 @@ fi
 
 # Check if ffmpeg is running or paused
 if [[ $(pidof ffmpeg) ]]; then
-    status="on"
+    state="on"
 elif [[ -e "$ffmpeg_lock" ]]; then 
-    status="paused"
+    state="paused"
 else
-    status="off"
+    state="off"
 fi
 
 # Create directory if it doesn't exist
@@ -124,7 +123,7 @@ catch_error(){
 
 # Function to capture screen recording with or without audio
 record_screen() {
-	if [[ "$status" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+	if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
 		
 	signal_start
 	
@@ -145,7 +144,7 @@ record_screen() {
 
 # Function to capture area recording with or without audios
 record_area() {
-	if [[ "$status" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+	if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
 
 	# Get area for area recording using slop
 	if [[ -e "$ffmpeg_lock_slop" ]]; then
@@ -180,7 +179,7 @@ record_area() {
 
 # Function to capture audio only
 record_audio() {
-	if [[ "$status" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+	if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
 	touch "$ffmpeg_lock_audio"
 		
 	signal_start
@@ -197,7 +196,7 @@ record_audio() {
 toggle_recording() {
     if [[ ! -e "$ffmpeg_lock" ]]; then exit 0 ;fi
 	
-	if [[ "$status" == "on" ]]; then
+	if [[ "$state" == "on" ]]; then
 		# Pause recording
         pkill ffmpeg
         polybar-msg action "#recorder.hook.2"
@@ -262,7 +261,7 @@ show_help() {
 # Command-line argument handling
 case "$1" in
     "--status")
-        echo "$status"
+        echo "$state"
         ;;
     "--screen")
         countdown '2'

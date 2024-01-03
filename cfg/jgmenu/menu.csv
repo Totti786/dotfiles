@@ -6,8 +6,8 @@ Text Editor,geany,geany
 Document Viewer,zathura,document-viewer
 Applications,^pipe(jgmenu_run apps)
 
+Recorder,^pipe(~/.config/jgmenu/pipemenus/recorder-pipe)
 Screenshot,^pipe(~/.config/jgmenu/pipemenus/screenshots-pipe)
-Screen Recorder,^pipe(~/.config/jgmenu/pipemenus/recorder-pipe)
 Preferences,^checkout(preferences)
 Keybinds, ~/.local/bin/conky.sh
 Settings Manager,xfce4-settings-manager
