@@ -118,6 +118,6 @@ if command -v zathura >/dev/null 2>&1; then
 	zathura_config
 fi
 
-if command sioyek >/dev/null 2>&1; then
+if command -v sioyek >/dev/null 2>&1; then
 	sioyek_config
 fi
