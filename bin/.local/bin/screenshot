@@ -13,14 +13,12 @@ file="$dir/Screenshot_${time}_${geometry}.png"
 
 [ ! -d "$dir" ] && mkdir -p "$dir"
 
+# Determine border size and slop command based on file existence
 color=$(xrdb -query | awk '/color4/{print $NF; exit}' | pastel format rgb-float | awk -F'[()]' '{print $2}')
-
-if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]]; then 
-	[[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]] && border_size=5000 || border_size=3
-	slop_command=(slop -r highlight -b "$border_size" -f "%x %y %w %h") 
+if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]] && [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then 
+	slop_command=(slop -r highlight -b 5000 -f "%x %y %w %h") 
 else
-	border_size=3
-	slop_command=(slop -c "$color" -b "$border_size" -f "%x %y %w %h")
+	slop_command=(slop -c "$color" -b 3 -f "%x %y %w %h")
 fi
 
 notify_user() {
