@@ -4,10 +4,15 @@
 # Dependencies: ffmpeg, xdpyinfo, awk, grep, pactl, lspci, vainfo, zenity, ffmpegthumbnailer 
 #				notify-send, slop, pkill, polybar-msg
 
+## TODO
+## Add logging
+## Add a config file
+
 # Define directory and file extension based on what needs to be recorded
-ffmpeg_lock="/tmp/ffmpeg-recorder.lock"
-ffmpeg_lock_slop="/tmp/ffmpeg-recorder-slop.lock"
-ffmpeg_lock_audio="/tmp/ffmpeg-recorder-audio.lock"
+user="$(whoami)"
+ffmpeg_lock="/tmp/ffmpeg-recorder-$user.lock"
+ffmpeg_lock_slop="/tmp/ffmpeg-recorder-$user-slop.lock"
+ffmpeg_lock_audio="/tmp/ffmpeg-recorder-$user-audio.lock"
 
 if [[ "$@" == "--audio" ]] || [[ -e "$ffmpeg_lock_audio" ]]; then 
 	file_type="m4a"
@@ -19,12 +24,10 @@ fi
 
 # Determine border size and slop command based on file existence
 color=$(xrdb -query | awk '/color13/{print $NF; exit}' | pastel format rgb-float | awk -F'[()]' '{print $2}')
-if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]]; then 
-	[[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]] && border_size=5000 || border_size=3
-	slop_command=(slop -r highlight -b "$border_size" -f "%x %y %w %h") 
+if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]] && [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then 
+	slop_command=(slop -r highlight -b 5000 -f "%x %y %w %h") 
 else
-	border_size=3
-	slop_command=(slop -c "$color" -b "$border_size" -f "%x %y %w %h")
+	slop_command=(slop -c "$color" -b 3 -f "%x %y %w %h")
 fi
 
 # Get current timestamp
@@ -49,14 +52,15 @@ ffmpeg_command=(ffmpeg -hide_banner -loglevel error)
 
 # Set configurations based on available hardware
 if lspci | grep -q NVIDIA; then 
-    config="-c:v h264_nvenc -preset p7"
+    ffmpeg_config=(-c:v h264_nvenc -preset p7)
 elif vainfo 2>&1 | grep -q "Driver version"; then
-    config="-vaapi_device /dev/dri/renderD128 -vcodec h264_vaapi -vf format=nv12|vaapi,hwupload -crf 23 -pix_fmt rgb24"
+    ffmpeg_config=(-vaapi_device /dev/dri/renderD128 -vcodec hevc_vaapi -vf 'format=nv12|vaapi,hwupload')
 else
-    config='-c:v libx264 -preset superfast -crf 23 -pix_fmt rgb24'
+	ffmpeg_config=(-c:v libx265 -preset superfast)
 fi
 
 # Check if ffmpeg is running or paused
+
 if [[ $(pidof ffmpeg) ]]; then
     state="on"
 elif [[ -e "$ffmpeg_lock" ]]; then 
@@ -107,7 +111,7 @@ notify_user() {
 		esac
 	else
 		notify-send -a "Recorder" -u low -r 699 "Recording Canceled"
-	fi	
+	fi
 }
 
 # Function to cancel the recording if ffmpeg fails to record
@@ -116,7 +120,7 @@ catch_error(){
 	if [[ "$exit_code" == 255 ]]; then
 		echo "$exit_code"
 	else
-		echo "exit_code"
+		echo "$exit_code"
 		cancel_recording
 	fi
 }
@@ -129,14 +133,14 @@ record_screen() {
 	
 	if [[ "$1" == "noaudio" ]]; then
 		"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size "$screen" -i :0.0 -thread_queue_size 4096 \
-		$(echo $config) ${dir}/${file}
+		${ffmpeg_config[@]} ${dir}/${file}
 	else
 		"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size "$screen" -i :0.0 -thread_queue_size 4096 \
 		-f pulse -thread_queue_size 4096 -i ${audio_sink}.monitor \
         -f pulse -thread_queue_size 4096 -i ${audio_source} \
 		-filter_complex "[1:a][2:a]amerge=inputs=2[out]" \
 		-map 0:v -map "[out]" -map 1:a -map 2:a -c:a aac -b:a 192k -ac 2 \
-		$(echo $config) ${dir}/${file}
+		${ffmpeg_config[@]} ${dir}/${file}
 	fi
 		
 	catch_error # Check ffmpeg execution status after the command
@@ -164,14 +168,14 @@ record_area() {
 	
 	if [[ "$1" == "noaudio" ]]; then
 		"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size ${W}x${H} -i :0.0+${X},${Y} -thread_queue_size 4096 \
-		$(echo $config) ${dir}/${file}
+		${ffmpeg_config[@]} ${dir}/${file}
 	else
 		"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size ${W}x${H} -i :0.0+${X},${Y} -thread_queue_size 4096 \
 		-f pulse -thread_queue_size 4096 -i ${audio_sink}.monitor \
         -f pulse -thread_queue_size 4096 -i ${audio_source} \
 		-filter_complex "[1:a][2:a]amerge=inputs=2[out]" \
 		-map 0:v -map "[out]" -map 1:a -map 2:a -c:a aac -b:a 192k -ac 2 \
-		$(echo $config) ${dir}/${file}
+		${ffmpeg_config[@]} ${dir}/${file}
 	fi
 	
 	catch_error  # Check ffmpeg execution status after the command
@@ -184,7 +188,7 @@ record_audio() {
 		
 	signal_start
 	
-	ffmpeg -f pulse -i ${audio_sink}.monitor -f pulse -i ${audio_source} \
+	"${ffmpeg_command[@]}" -f pulse -i ${audio_sink}.monitor -f pulse -i ${audio_source} \
 	-filter_complex "[1:a][0:a]amerge=inputs=2[out]" \
 	-map "[out]" -map 0:a -map 1:a -c:a aac -b:a 256k \
 	${dir}/${file}
@@ -226,12 +230,20 @@ signal_stop(){
 
 stop_recording(){
 	if [[ ! -e "$ffmpeg_lock" ]]; then exit 1 ;fi
-	pkill ffmpeg &&	wait
+	pkill ffmpeg && while pgrep -l ffmpeg; do sleep 0.5;done
 	# Merge all segments into a single file
 	merged_file="$(awk -F"'" 'NR==1 {gsub("_segment_0", "", $2); print $2}' "$ffmpeg_lock")"
 	"${ffmpeg_command[@]}" -y -f concat -safe 0 -i "$ffmpeg_lock" -c copy -map 0:v? -map 0:a? "${merged_file}"
-	# Remove individual segment files
-	rm "${dir}/recording_"*"_segment_"*.*
+	if [[ "$?" == 0 ]]; then
+		# Remove individual segment files
+		rm "${dir}/recording_"*"_segment_"*.*
+	else
+		# Move segments to a different directory when merging fails
+		mkdir -p "${dir}/Corrupt"
+		for file in "${dir}"/recording_*_segment_*.*; do
+		    mv "$file" "${dir}/Corrupt/$(basename "$file")"
+		done
+	fi
 	signal_stop
 	notify_user "$merged_file"
 }
@@ -295,6 +307,6 @@ case "$1" in
     *)
         echo "Invalid option. Use --help for usage instructions."
         exit 1 ;;
-esac
+esac &
 
 exit 0
