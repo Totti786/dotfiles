@@ -6,12 +6,12 @@
 # Dependencies: `pamixer` `notify-send`
 
 icons="$HOME/.local/share/icons/Papirus/symbolic/status"
-bar_color=$(xrdb -query | grep color13 | head -n 1 | awk '{print $NF}')
+bar_color=$(xrdb -query | grep color13 | awk '{print $NF; exit}')
 
 # Get Volume
 get_volume() {
-	volume=$(pamixer --get-volume-human)
-	echo "$volume"
+	volume=$(pamixer --get-volume)
+	echo "$volume%"
 }
 
 get_icon() {
@@ -30,9 +30,7 @@ get_icon() {
 }
 
 notify(){
-	get_icon
-	#notify-send -t 500 -r 69 -i "$icon" "$1" --app-name=Volume
-    notify-send -a "Volume" -t 500 -r 69 -h string:x-dunst-stack-tag:volume_notif -h int:value:$volume -h string:hlcolor:$bar_color -i "$icon" "$1"
+    notify-send -a "Volume" -t 500 -r 69 -h string:x-dunst-stack-tag:volume_notif -h int:value:$(get_volume) -h string:hlcolor:$bar_color "$1"
 }
 
 # Increase Volume
@@ -47,8 +45,7 @@ dec_volume() {
 
 # Toggle Mute
 toggle_mute() {
-	status=`pamixer --get-mute`
-	if [[ "$status" == "false" ]]; then
+	if [[ "$(pamixer --get-mute)" == "false" ]]; then
 		pamixer -t && notify "Mute"
 	else
 		pamixer -t && notify "Unmute"

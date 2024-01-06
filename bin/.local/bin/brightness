@@ -8,7 +8,7 @@
 # Graphics card
 card=$(basename "$(find /sys/class/backlight/* | head -n 1)")
 icons="$HOME/.local/share/icons/Papirus/symbolic/status"
-bar_color=$(xrdb -query | grep color13 | head -n 1 | awk '{print $NF}')
+bar_color=$(xrdb -query | grep color13 | awk '{print $NF; exit}')
 
 # Get brightness
 get_brightness() {
@@ -37,9 +37,8 @@ get_icon() {
 
 notify(){
     brightness=$(get_brightness)
-    get_icon
-	#notify-send -u low -t 1000 -r 69 -i "$icon" "Brightness : $(get_backlight)" --app-name=Brightness
-    notify-send -a "Brightness" -t 1000 -r 69 -h string:x-dunst-stack-tag:brightness_notif -h int:value:$brightness -h string:hlcolor:$bar_color  -i "$icon" "Brightness : $(get_brightness)"
+    #get_icon
+    notify-send -a "Brightness" -t 1000 -r 69 -h string:x-dunst-stack-tag:brightness_notif -h int:value:$brightness -h string:hlcolor:$bar_color "Brightness : $brightness"
 }
 
 # Increase brightness
@@ -49,6 +48,7 @@ inc_brightness() {
 	else
 		light -A 5
 	fi
+	notify
 }
 
 # Decrease brightness
@@ -58,6 +58,7 @@ dec_brightness() {
 	else
 		light -U 5
 	fi
+	notify
 }
 
 # Command-line argument handling
@@ -66,10 +67,10 @@ case "$1" in
 	    get_brightness
     ;;
 	"--inc")
-    	inc_brightness && notify
+    	inc_brightness
     ;;
 	"--dec")
-    	dec_brightness && notify
+    	dec_brightness
     ;;
 	"")
     	get_brightness
