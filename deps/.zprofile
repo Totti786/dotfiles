@@ -20,7 +20,7 @@ export QT_QPA_PLATFORMTHEME="qt5gtk2"
 
 # Polybar and bspwm style settings
 bar_style=bionic
-window_border="3"
+window_border="0"
 
 if [[ "$bar_style" == "base" ]];then
 	top_padding="23"
