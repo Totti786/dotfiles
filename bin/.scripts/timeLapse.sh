@@ -1,44 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-VDIR="$HOME/Videos/TimeLapse"
-SDIR="$HOME/Pictures/Screenshots/Temp"
-Name=$(date +'%m-%d-%Y-%A') 
-File="$VDIR/$Name.mp4"
+current_day=$(date +'%m-%d-%Y-%A')
+temp_dir="$HOME/Pictures/Screenshots/Temp"
+ffmpeg_config=(-vaapi_device /dev/dri/renderD128 -vcodec hevc_vaapi -vf 'format=nv12|vaapi,hwupload')
+video_dir="$HOME/Videos/TimeLapse"
 
-# Created a timelaspe of the screenshots taken by the screenshot scripts
-createVideo(){
-	cd $VDIR
-	ffmpeg -framerate 10 -pattern_type glob -i "$SDIR/*.png" \
-	-s:v 1920x1080 -c:v libx264 -crf 17 -pix_fmt yuv420p $Name.mp4 
-}
-# Deletes all the screen shot from the directory
-deleteScreenshots(){
-	cd $SDIR && rm *.png
-}
+# Iterate through each directory in the parent directory
+for daily_dir in "$temp_dir"/*; do
+	# Extract the directory name (without the path)
+	dir_name=$(basename "$daily_dir")
 
-checkFile(){
-	# Check if the video file has been created
-	if [[ -f "$File" ]]; then
-		deleteScreenshots
-		echo "Deleted files"
-	 else 
-		echo "Video File not found"
+	# Check if the directory is not for the current day
+	if [[ "$dir_name" != "$current_day" ]]; then
+		# Create a time-lapse video using ffmpeg
+		ffmpeg -framerate 10 -pattern_type glob -i "$daily_dir/*.png"  ${ffmpeg_config[@]} "$video_dir/$dir_name.mp4"
+
+		# Check if the video file was created successfully
+		if [ -f "$video_dir/$dir_name.mp4" ]; then
+			# Optionally, delete the images in the directory
+			rm -R "$daily_dir"
+		fi
 	fi
-}
-# checks if the video directory exists and if not it creates one then excutes 
-main(){
-if [ -d "$VDIR" ]; then
-   # Take action if $DIR exists 
-   createVideo &&
-   checkFile
-  else 
-   # Create directory and then take action
-   mkdir $VDIR
-   createVideo &&
-   checkFile
-fi
-}
-
-if command -v ffmpeg &> /dev/null; then 
-	main	
-fi
+done
