@@ -35,11 +35,12 @@ style = "Regular"
 [window]
 decorations = "full"
 dynamic_title = true
-opacity = 1.0
-startup_mode = "maximized"
+opacity = 0.7
+startup_mode = "Windowed"
 [window.dimensions]
 columns = 95
 lines = 23
+
 
 [window.padding]
 x = 12
