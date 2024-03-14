@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # The name of polybar bar which houses the main spotify module and the control modules.
-[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
 [[ -z "$bar_style" ]] && bar_style="base"
 [[ "$bar_style" == "base" ]] && parent_bar="bottom" || parent_bar="main"
 

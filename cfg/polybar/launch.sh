@@ -2,7 +2,7 @@
 
 # Launchs Polybar from multiple window managers
 
-[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
 [[ -z "$bar_style" ]] && bar_style="base" top_padding="23" bottom_padding="23"
 
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
@@ -18,8 +18,8 @@ change_modules(){
 		-i -e "s/wm-name = .*/wm-name = $2/g" \
 		-i -e "s/wm-restack = .*/wm-restack = $2/g" \
 		-i -e "s/override-redirect = .*/override-redirect = $3/g" \
-		-i -e "s/scroll-up = .*/scroll-up = $4/g" \
-		-i -e "s/scroll-down = .*/scroll-down = $5/g" \
+		-i -e "s/scroll-up = .*/scroll-up = $4/" \
+		-i -e "s/scroll-down = .*/scroll-down = $5/" \
 	"$config_file"
 }
 
@@ -28,8 +28,8 @@ fix_modules() {
 	# check the graphics card and adjust the backlight module accordingly
 	if [[ -z "$graphics_card" ]]; then
 		sed -i -e 's/\(backlight\|brightness\)/bna/g' 			"$config_file"
-	#elif [[ "$graphics_card" != *"intel_"* ]]; then
-		#sed -i -e 's/\(backlight\|bna\)/brightness/g' 			"$config_file"
+	elif [[ "$graphics_card" != *"intel_"* ]]; then
+		sed -i -e 's/\(backlight\|bna\)/brightness/g' 			"$config_file"
 	else
 		sed -i -e 's/\(bna\|backlight\)/brightness/g' 			"$config_file"
 	fi

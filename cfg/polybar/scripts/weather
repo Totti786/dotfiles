@@ -16,7 +16,7 @@ cache_weather_rofi=${cache_dir}/weather-rofi
 
 ## Get City
 [[ -z "$CITY" ]] &&
-	CITY=$(wget --timeout=2 http://ipinfo.io/city -qO -)
+	CITY=$(curl ifconfig.co/city)
 
 ## Get data
 get_weather_data() {

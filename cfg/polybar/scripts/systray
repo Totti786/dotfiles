@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 [[ -f "$HOME/.cache/wal/colors.sh" ]] && source "$HOME/.cache/wal/colors.sh"
-[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
 [[ -z "$bar_style" ]] && bar_style="base" top_padding="23"
 
 hidden="$HOME"/.syshide.lock
