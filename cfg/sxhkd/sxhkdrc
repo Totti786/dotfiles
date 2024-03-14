@@ -10,19 +10,19 @@
 
 # Terminal (alacritty)
 super + Return
-	alacritty
+	terminal --tiled
 
 # Drop-down Terminal
 alt + Return
-	furminal --drop
+	terminal --drop
 
 # Floating Terminal
 super + shift + Return
-	furminal --float
+	terminal --float
 
 # Fullscreen Terminal
 super + t
-	furminal --full
+	terminal --full
 	
 ##------ Utilities -------##
 
@@ -40,18 +40,15 @@ super + {r,b,l,m,j,y}
 ##------ Applications -------##
 
 # Launch Apps
-super + {e,f,w,o,v,p}
-	{exo-open --launch FileManager,exo-open --launch WebBrowser,geany,obs,copyq toggle,color-picker}
-
-super + z
-	discord --enable-gpu-rasterization
+super + {e,f,w,o,v,p,z}
+	{exo-open --launch FileManager,exo-open --launch WebBrowser,geany,obs,copyq toggle,color-picker,discord --enable-gpu-rasterization}
 
 super + shift + {s,w,r,d,l}
 	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk pick,rhythmbox,dmenu.sh,lobster -c}
 
 # Terminal Apps
-ctrl + alt + {v,r,h}
-	alacritty -e {vim,ranger,htop}
+ctrl + alt + {v,e,h}
+	terminal --float -e {vim,yazi,htop}
 
 # Reset Wallpaper
 ctrl + alt + b
@@ -59,7 +56,7 @@ ctrl + alt + b
 
 # Lockscreen
 ctrl + alt + l
-   lockscreen
+   loginctl lock-session
 
 # Random Wallpaper
 ctrl + alt + w
