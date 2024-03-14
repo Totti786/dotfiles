@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Check if script is run as root
 if [[ "$(id -u)" -eq 0 ]]; then
@@ -11,29 +11,28 @@ fi
 #---- Programs List ----------------------
 
 declare -a minimal=(
-	acpi alacritty appimagelauncher autotiling axel bc blueman bluez bluez-utils \
+	acpi acpilight alacritty appimagelauncher autotiling axel bc blueman bluez bluez-utils \
 	brightnessctl bspwm cheese conky copyq dmenu drawing dunst envycontrol evince \
 	eww-x11 fd feh firefox flameshot fluent-cursor-theme-git font-manager fzf geany \
-	gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick \
-	grep htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libinput-gestures light \
-	linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu \
-	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-emoji \
-	nsxiv nvtop obconf openbox openssh openvpn pamixer papirus-icon-theme pastel \
-	pavucontrol perl plank playerctl polkit-gnome polybar python-pipx python-wheel qbittorrent qt5ct \
-	ranger redshift rhythmbox rofi-lbonn-wayland rtorrent scrot stalonetray sxhkd \
-	termdown thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman \
-	timeshift tumbler viewnior wget wmctrl xarchiver xcape xclip xdg-autostart xdg-user-dirs \
-	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xbacklight \
-	xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo yad \
-	ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh
+	gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep htop \
+	i3lock-color i3-wm imagemagick jgmenu kdeconnect libinput-gestures linux-wifi-hotspot \
+	man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn \
+	noto-fonts noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn pamixer \
+	papirus-icon-theme pastel pavucontrol perl plank playerctl polkit-gnome polybar \
+	python-pipx python-wheel qbittorrent qt5ct ranger redshift rhythmbox rofi-lbonn-wayland \
+	rtorrent scrot stalonetray sxhkd termdown thunar thunar-archive-plugin \
+	thunar-media-tags-plugin thunar-volman timeshift tumbler viewnior waypaper-git wget wmctrl xarchiver \
+	xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool xfce4-power-manager \
+	xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo \
+	xss-lock yad ytfzf youtube-dl zathura zathura-cb zathura-pdf-mupdf zenity zsh
 )
 
 declare -a extra=(
 	anki audacity baobab blanket discord drawing flatpak gimp github-desktop gnome-clocks \
-	gnome-system-monitor gnome-weather gparted gping grub-customizer handbrake \
-	heroic-games-launcher-bin jdk-openjdk telegram-desktop krita libreoffice-fresh lutris \
-	mangohud megatools mkvtoolnix-cli obs-studio openboard polychromatic scrcpy soundux \
-	spicetify-cli spotify stacer steam syncplay syncthing teamviewer trackma-git video-trimmer \
+	gnome-system-monitor gnome-weather gparted gping handbrake heroic-games-launcher-bin \
+	jdk-openjdk telegram-desktop krita libreoffice-fresh lutris mangohud megatools \
+	mkvtoolnix-cli obs-studio openboard polychromatic scrcpy soundux spicetify-cli \
+	spotify stacer steam syncplay syncthing teamviewer trackma-git video-trimmer \
 	virtualbox visual-studio-code-bin wine winetricks
 )
 
@@ -172,7 +171,7 @@ install_zsh(){
 install_sddm(){
 	# Check if SDDM is installed and install if not
 	echo "Making sure that SDDM is installed"
-	sudo pacman -S sddm plasma-framework5 --needed --noconfirm
+	sudo pacman -S sddm plasma-framework5 libplasma --needed --noconfirm
 
 	# Move sddm theme files
 	if [ ! -d "/usr/share/sddm/themes/Chili" ]; then
@@ -287,6 +286,7 @@ update(){
 		cp "$HOME"/.config/polybar/scripts/info "$HOME"/.cache/info
 	#[ ! -f "$HOME/.zprofile" ] && 
 	cp	"$dir"/deps/.zprofile "$HOME"/
+	cp	"$dir"/deps/.theme "$HOME"/
 	## move udpated scripts and configs
 	cp -r "$dir"/bin/.scripts/ "$HOME"/ 
 	cp -r "$dir"/cfg/* "$HOME"/.config/
