@@ -2,10 +2,13 @@
 
 # Autostart Programs ----------------------------------------#
 
-[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
+[[ -f "$HOME/.theme" ]] && source "$HOME/.theme" || conky="On"
 
 # Polkit agent
 [[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+# Screenlocker
+xss-lock -l lockscreen &
 
 # xfce4-settings daemon
 xfsettingsd &
@@ -24,9 +27,17 @@ dunst &
 # Compositor 
 compositor --start &
 
+# Ambient light manager
+clight &
+
+# Touchpad Gestures
+if libinput list-devices | grep -qiw 'Touchpad'; then
+	killall -q -9 fusuma
+	fusuma -d &
+fi
+
 # Restore Wallpaper
-wal -Re &
-"$HOME"/.local/bin/wpgtk run &
+wpgtk restore &
 
 # Launch Polybar
 "$HOME"/.config/polybar/launch.sh &

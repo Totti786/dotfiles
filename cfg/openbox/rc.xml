@@ -549,12 +549,12 @@
     </keybind>
     <keybind key="A-Return">
       <action name="Execute">
-        <command>furminal --drop</command>
+        <command>terminal --drop</command>
       </action>
     </keybind>
     <keybind key="W-t">
       <action name="Execute">
-        <command>furminal --full</command>
+        <command>terminal --full</command>
       </action>
     </keybind>
     <keybind key="W-e">
@@ -642,7 +642,7 @@
     <!-- Lockscreen -->
     <keybind key="C-A-l">
       <action name="Execute">
-        <command>lockscreen</command>
+        <command>loginctl lock-session</command>
       </action>
     </keybind>
     <!-- CLI Apps -->
@@ -1170,16 +1170,16 @@
   # end of the example
 -->
     <application name="org.pwmt.zathura" class="Zathura" title="org.pwmt.zathura" type="normal">
-      <decor>yes</decor>
+      <decor>no</decor>
       <layer>default</layer>
       <maximized>yes</maximized>
     </application>
-    <application class="alacritty-drop" type="normal">
+    <application class="drop" title="Alacritty" type="normal">
       <decor>no</decor>
       <desktop>all</desktop>
       <focus>yes</focus>
       <skip_pager>yes</skip_pager>
-      <skip_taskbar>no</skip_taskbar>
+      <skip_taskbar>yes</skip_taskbar>
       <layer>above</layer>
     </application>
     <application name="Picture-in-Picture" class="Toolkit" title="Picture-in-Picture" type="normal">
