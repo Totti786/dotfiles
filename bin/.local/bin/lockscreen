@@ -3,7 +3,7 @@
 image="$HOME/.config/wpg/templates/wallpaper.jpg"
 font="JetBrainsMono Nerd Font"
 
-if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+if [ -f "$HOME/.cache/wal/colors.sh" ]; then
 	source "$HOME/.cache/wal/colors.sh"
 	FG=`printf "%s\n" "$foreground"`
 	red=`printf "%s\n" "$color1"`
@@ -20,8 +20,15 @@ else
 	magenta="#ee6a70"
 fi
 
-lock() {
-	if [[ -z $(pgrep i3lock) ]];then 
+status=$(playerctl -p %any status || true)
+
+if [ "$status" == "Playing" ]; then	playerctl pause ;fi
+pkill rofi
+
+if [ "$XDG_SESSION_TYPE" == "x11" ]; then 
+	if [[ -n $(pgrep i3lock) ]];then 
+		exit 0
+	fi 
     i3lock -n -c 00000000 -F -e \
 		--pass-media-keys \
 		--pass-power-keys \
@@ -32,13 +39,13 @@ lock() {
         --modif-size=9 \
         --modif-pos="w/2:h/2-15" \
         --image "$image" \
-        --time-str="%H:%M" \
+        --time-str="%I:%M" \
         --time-pos="w/2:h/4" \
         --time-color="$FG" \
         --time-size=160 \
         --time-font="$font" \
         --date-str="%A, %B %d" \
-        --date-pos="w/2:h/4+40" \
+        --date-pos="w/2:h/4+55" \
         --date-color="$FG" \
         --date-size=35 \
         --date-font="$font" \
@@ -64,30 +71,9 @@ lock() {
         --bshl-color=${blue:1} \
         --separator-color=${yellow:1} \
         --pointer=default
-    fi
-}
+else
+	#gtklock -i -d -b "$image" -s "$HOME"/.config/gtklock/style.css
+	hyprlock
+fi
 
-run() {
-	if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then 
-		gtklock -d -b "$image" -s "$HOME"/.config/gtklock/style.css
-    else 
-		lock
-	fi
-}
-
-status=$(playerctl -p %any status || true)
-
-pauselock(){
-	if [ "$status" == "Playing" ]; then	playerctl pause ;fi
-	pkill rofi
-	run &&
-	if [ "$status" == "Playing" ]; then playerctl play ;fi
-}
-
-
-locksusupend(){
-	if [ "$status" == "Playing" ]; then	playerctl pause ;fi
-	run &
-}
-
-if [[ "$1" ]];then locksusupend ;else pauselock ;fi
+if [ "$status" == "Playing" ]; then playerctl play ;fi
