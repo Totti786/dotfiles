@@ -9,6 +9,7 @@
 
 # Color files
 config="$HOME/.config"
+ags="$HOME/.config/ags/scss/_material.scss"
 alacritty="$config/alacritty/colors.toml"
 polybar="$config/polybar/colors.ini"
 rofi="$config/rofi/themes/colors.rasi"
@@ -18,11 +19,13 @@ dunst="$config/dunst/dunstrc"
 geany="$config/geany/colorschemes/Pywal.conf"
 copyq="$config/copyq/copyq.conf"
 jgmenu="$config/jgmenu/jgmenurc"
-spotify="$config/spicetify/Themes/Nord/color.ini"
+spotify="$config/spicetify/Themes/pywal/color.ini"
 eww="$config/eww/colors.scss"
 hypr="$config/hypr/colors.conf"
+swaync="$config/swaync/style.css"
+waybar="$HOME/.config/waybar/colors.css"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='FF'
+alpha='70'
 
 ## Change colors
 change_colors(){
@@ -32,10 +35,10 @@ change_colors(){
 	cat > "$polybar" <<- EOF
 		[color]
 		;; main colors
-		background = ${BG}$alpha
+		background = ${background}$alpha
 		background-alt = ${bg_mix}
-		foreground = $FG
-		primary = $FG
+		foreground = $foreground
+		primary = $foreground
 		red = $bright_red
 		green = $bright_green
 		yellow = $bright_yellow
@@ -51,9 +54,9 @@ change_colors(){
 	/* colors */
 	* {
 		background:       ${bg_mix}$alpha_rofi;
-		background-alt:   ${BG};
-		background-blur:  ${BG}60;
-		foreground:       ${FG};
+		background-alt:   ${background};
+		background-blur:  ${background}60;
+		foreground:       ${foreground};
 		selected:         ${red};
 		highlight:        ${yellow};
 		urgent:           ${blue};
@@ -96,10 +99,9 @@ change_colors(){
 	white =      "$white"
 	
 	[colors.primary]
-	background = "$BG"
-	foreground = "$FG"
+	background = "$background"
+	foreground = "$foreground"
 	EOF
-	
 	
 	if [[ "$alpha" == "FF" ]]; then 
 		sed -i "s/opacity =.*/opacity = 1.0/" "${alacritty%/*}/alacritty.toml"
@@ -109,10 +111,10 @@ change_colors(){
 	
 	# geany
 	sed -i "$geany" \
-		-e "s/bg=.*/bg=${BG}/g" \
-		-e "s/fg=.*/fg=${FG}/g" \
+		-e "s/bg=.*/bg=${background}/g" \
+		-e "s/fg=.*/fg=${foreground}/g" \
 		-e "s/tag_yellow=.*/tag_yellow=${cyan}/g" \
-		-e "s/fold_bg_grey=.*/fold_bg_grey=${BG}/g" \
+		-e "s/fold_bg_grey=.*/fold_bg_grey=${background}/g" \
 		-e "s/keyword_orange=.*/keyword_orange=${red}/g" \
 		-e "s/string_green=.*/string_green=${green}/g" \
 		-e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g" \
@@ -123,24 +125,24 @@ change_colors(){
 		
 	# copyq 
 	sed -i "$copyq" \
-		-e "s/bg=#.*/bg=${BG}/g" \
+		-e "s/bg=#.*/bg=${background}/g" \
 		-e "s/alt_bg=#.*/alt_bg=$bg_mix/g" \
-		-e "s/fg=#.*/fg=${FG}/g" \
+		-e "s/fg=#.*/fg=${foreground}/g" \
 		-e "s/sel_bg=#.*/sel_bg=$cyan/g" \
-		-e "s/sel_fg=#.*/sel_fg${FG}/g"
+		-e "s/sel_fg=#.*/sel_fg${foreground}/g"
 		
 	# dunst
 	sed -i "$dunst" \
 		-e "s/background = \"#.*\"/background = \"${bg_light}$alpha\"/g" \
-		-e "s/foreground = \"#.*\"/foreground = \"${FG}\"/g" \
-		-e "s/highlight = \"#.*\"/highlight = \"${FG}\"/g" \
+		-e "s/foreground = \"#.*\"/foreground = \"${foreground}\"/g" \
+		-e "s/highlight = \"#.*\"/highlight = \"${foreground}\"/g" \
 		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g"
 
 	# jgmenu 
 	[[ "$alpha" == "FF" ]] && alpha_jg="100" || alpha_jg="$alpha"
 	sed -i "$jgmenu" \
 		-e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $alpha_jg/g" \
-		-e "s/color_norm_fg        = .*/color_norm_fg        = ${FG} 100/g" \
+		-e "s/color_norm_fg        = .*/color_norm_fg        = ${foreground} 100/g" \
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
 		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"
@@ -148,10 +150,29 @@ change_colors(){
 	# zathura and sioyek
 	reader-colors
 	
+	# ags
+	if [[ -f "$ags" ]]; then
+		cp "$HOME/.cache/wal/colors.scss" "$HOME"/.cache/ags/user/generated/material_colors.scss
+	
+	    cat "$HOME"/.config/ags/scripts/color_generation/pywal_to_material.scss >> "$HOME"/.cache/ags/user/generated/material_colors.scss
+	
+	     
+		sass "$HOME"/.cache/ags/user/generated/material_colors.scss "$HOME"/.cache/ags/user/generated/colors_classes.scss -s compressed
+		
+		sed -i "s/{color//g" "$HOME"/.cache/ags/user/generated/colors_classes.scss
+		sed -i "s/\./$/g" "$HOME"/.cache/ags/user/generated/colors_classes.scss
+		sed -i "s/}/;/g" "$HOME"/.cache/ags/user/generated/colors_classes.scss
+		sed -i "s/;/;\n/g" "$HOME"/.cache/ags/user/generated/colors_classes.scss
+	
+		sed -i '1i\$darkmode: true;\n' "$HOME"/.cache/ags/user/generated/colors_classes.scss
+	
+		cp "$HOME"/.cache/ags/user/generated/colors_classes.scss "$ags"
+    fi
+	
 	# discord
 	if [[ -f "$discord" ]]; then 
 	sed -i "$discord" \
-		-e "s/--text-normal: .*/--text-normal: ${FG};/g" \
+		-e "s/--text-normal: .*/--text-normal: ${foreground};/g" \
 		-e "s/--background-primary: .*/--background-primary: ${bg_mix};/g" \
 		-e "s/--background-secondary: .*/--background-secondary: ${bg_light};/g" \
 		-e "s/--background-secondary-alt: .*/--background-secondary-alt: ${bg_mix};/g" \
@@ -174,30 +195,26 @@ change_colors(){
 	# Spotify can be themed using the xrdb backend i.e. ${xrdb:color0:#222}
 	if [[ -f "$spotify" ]]; then 
 	cat > "$spotify" <<- EOF
-	[Spotify]
-	text                       = ${FG:1}
-	subtext                    = ${FG:1}
-	main                       = ${bg_light:1}
-	sidebar                    = ${bg_mix:1}
-	player                     = ${bg_light:1}
-	card                       = ${bg_light:1}
-	button                     = ${red:1}
-	button-active              = ${bright_red:1}
-	button-disabled            = 535353
-	notification               = 4687D6
-	notification-error         = E22134
-	shadow                     = 000000
-	tab-active                 = 333333
-	playback-bar               = DEDEDE
-	misc                       = 535353
-	selected-row               = DEDEDE
-	custom-main-secondary      = 2A2A2A
-	custom-main-soft-secondary = 202020
-	custom-highlight           = 5A5A5A
-	custom-link-hover          = FFFFFF
-	custom-selected-button     = 505050
-	custom-subdued             = 7A7A7A
-	custom-success             = 1DB954
+	[pywal]
+	text               = ${bright_white:1}
+	subtext            = ${bright_white:1}
+	main               = ${bg_lighter:1}
+	main-elevated      = ${bg_light:1}
+	highlight          = ${magenta:1}
+	highlight-elevated = ${bright_magenta:1}
+	sidebar            = ${bg_mix:1}
+	player             = ${blue:1}
+	card               = ${green:1}
+	shadow             = ${bright_black:1}
+	selected-row       = ${green:1}
+	button             = ${red:1}
+	button-active      = ${bright_red:1}
+	button-disabled    = ${blue:1}
+	tab-active         = ${yellow:1}
+	notification       = ${cyan:1}
+	notification-error = ${bright_red:1}
+	equalizer          = ${white:1}
+	misc               = ${red:1}
 	EOF
 	fi
 	
@@ -207,8 +224,8 @@ change_colors(){
 	|| sed -i "s/\$alpha: 1.0/\$alpha: 0.3/" "$eww" 
 	sed -i 	"$eww" \
 		-e "s/\$background: #.*/\$background: ${bg_light};/g" \
-		-e "s/\$bg-alt: #.*/\$bg-alt: ${BG};/g" \
-		-e "s/\$fg: #.*/\$fg: ${FG};/g" \
+		-e "s/\$bg-alt: #.*/\$bg-alt: ${background};/g" \
+		-e "s/\$fg: #.*/\$fg: ${foreground};/g" \
 		-e "s/\$fg-alt: #.*/\$fg-alt: $white;/g" \
 		-e "s/\$red: #.*/\$red: $bright_red;/g" \
 		-e "s/\$green: #.*/\$green: $bright_green;/g" \
@@ -233,7 +250,7 @@ change_colors(){
 		\$white 	= ${bright_white:1}ff
 		EOF
 	fi
-	
+		
 	# resize and move wallpaper for use by other programs
 	#cp "$wallpaper"  "$HOME"/.config/wpg/templates/wallpaper.jpg
 	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers &> /dev/null
@@ -259,13 +276,6 @@ wpgConfig(){
 # this functions should only be used if you have a system with a seperate home partition 
 # (this is bad)
 lockPerms(){
-	## give the user read and write permissions to the grub themes directory
-	#if [[ -d "/usr/share/grub/themes/Arch" ]]; then
-		#sudo chgrp -R $(whoami) /usr/share/grub/themes/
-		#sudo chmod -R ug+rwX  /usr/share/grub/themes/
-	#else 
-		#echo "Can't find a compatible grub theme"
-	#fi
 	## give the user read and write permissions to the sddm directory
 	if [[ -d "/usr/share/sddm/themes/Chili" ]]; then
 		sudo chgrp -R "$(whoami)" /usr/share/sddm/
@@ -277,13 +287,6 @@ lockPerms(){
 
 # this funcction only works after using the lockPermissions function
 copyWal(){
-	# copy background to grub theme
-	#if [[ -d "/usr/share/grub/themes/Arch" ]]; then
-		#cp ~/.config/wpg/templates/wallpaper.jpg \
-		#/usr/share/grub/themes/Arch/background.jpg
-	#else 
-		#echo "Can't find a compatible grub theme"
-	#fi
 	# copy background to sddm theme
 	if [[ -d "/usr/share/sddm/themes/Chili" ]]; then
 		cp "$wallpaper" "/usr/share/sddm/themes/Chili/components/artwork/background.jpg"
@@ -333,17 +336,34 @@ wall() {
             mpvpaper -o "no-audio --loop-playlist"  '*' "$wallpaper" &
         fi
     else
-        local wall="$wallpaper"
-        if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
-            feh --no-fehbg --bg-fill "$wallpaper"
-        elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-            "$HOME"/.config/hypr/scripts/wall "$wallpaper"
-        fi
+		local wall="$wallpaper"
+	    if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+			feh --no-fehbg --bg-fill "$wall"
+		elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+	            swww query || swww init
+				swww img "$wall" \
+					--transition-fps 60 \
+				    --transition-type any \
+				    --transition-duration 2
+	    fi
     fi
 
     wpg -A "$wall" && wpg -s "$wall"
     rm "${wall}_wal_sample.png"
     exit
+}
+
+restore() {
+	run
+	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+		feh --no-fehbg --bg-fill "$wallpaper"
+	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+            swww query || swww init
+			swww img "$wallpaper" \
+				--transition-fps 60 \
+			    --transition-type any \
+			    --transition-duration 2
+    fi
 }
 
 setup(){
@@ -366,8 +386,12 @@ random(){
 # to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
 pick(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
-		wal=$(nsxiv -torb $Wallpapers)
-		wall "$wal"
+		if command -v waypaper >/dev/null 2>&1; then
+			waypaper
+		else
+			wal=$(nsxiv -torb $Wallpapers)
+			wall "$wal"
+		fi
 	else
 		notify-send -u low -r 43 "No Wallpapers Were Found In:" "~/Pictures/Wallpapers"
 	fi
@@ -394,13 +418,35 @@ dynamic(){
 	fi
 }
 	
+## Send a signal to phone to change wallpaper (requires automate to be set up)
+phone(){
+	run
+	if command -v kdeconnect-cli &> /dev/null; then
+		deviceID="$(kdeconnect-cli -a --id-only)"
+		if [[ ! -z $deviceID ]]; then
+			cp "$wallpaper" /tmp/wallpaper.jpg
+			kdeconnect-cli -d $deviceID --share /tmp/wallpaper.jpg && 
+			kdeconnect-cli -d $deviceID --ping
+		fi
+		exit
+	else
+		echo "KDE Connect is not installed"
+	fi
+}
+
+apply_ags() {
+    sass "$HOME"/.config/ags/scss/main.scss "$HOME"/.cache/ags/user/generated/style.css
+    ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
+    ags run-js "App.resetCss(); App.applyCss('${HOME}/.cache/ags/user/generated/style.css');"
+}
+	
 misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
 		[[ $(pgrep conky) ]] && conky.sh restart &
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-		#"$HOME"/.config/waybar/launch_waybar
+		apply_ags
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
@@ -412,7 +458,7 @@ partial(){
 	change_colors
 	misc
 	pkill dunst
-	check spicetify -q update &
+	check spicetify -q refresh &
 	check pywalfox update >/dev/null 2>&1 &
 	check razer-cli -a &
 }
@@ -434,8 +480,8 @@ run(){
 		if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
 			source "$HOME/.cache/wal/colors.sh"
 			# Normal colors
-			BG="$(printf "%s\n" "$background")"
-			FG="$(printf "%s\n" "$foreground")"
+			background="$(printf "%s\n" "$background")"
+			foreground="$(printf "%s\n" "$foreground")"
 			black="$(printf "%s\n" "$color0")"
 			red="$(printf "%s\n" "$color1")"
 			green="$(printf "%s\n" "$color2")"
@@ -458,7 +504,7 @@ run(){
 			bg_light="$(pastel mix -f 0.2 $bright_black $black | pastel format hex)"
 			bg_lighter="$(pastel lighten 0.08 $black | pastel format hex)"
 			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
-			bg_rgb="$(pastel format rgb ${background:1})"
+			bg_rgb="$(pastel format rgb ${bg_mix:1})"
 			bg_mix_rgb="$(pastel format rgb ${bg_mix:1})"
 			## merging the Xresources files with the main one
 			xrdb -merge "$HOME"/.cache/wal/colors.Xresources
