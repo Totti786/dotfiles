@@ -159,10 +159,11 @@ elif [ "$1" = '--update-shadows' ]; then
 	shadow_x=$(echo $get_shadows | cut -d'|' -f3)
 	shadow_y=$(echo $get_shadows | cut -d'|' -f4)
 	if [ "$get_shadows" ]; then
-		sed -i -e "s/shadow-radius = .*/shadow-radius = $shadow_r;/g" "$config"
-		sed -i -e "s/shadow-opacity = .*/shadow-opacity = $shadow_o;/g"" $config"
-		sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = $shadow_x;/g" "$config"
-		sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = $shadow_y;/g" "$config"
+		sed -i "$config"
+			-e "s/shadow-radius = .*/shadow-radius = $shadow_r;/g" \
+			-e "s/shadow-opacity = .*/shadow-opacity = $shadow_o;/g" \
+			-e "s/shadow-offset-x = .*/shadow-offset-x = $shadow_x;/g" \
+			-e "s/shadow-offset-y = .*/shadow-offset-y = $shadow_y;/g"
 	fi
 
 elif [ "$1" = '--disable-shadows' ]; then
@@ -172,10 +173,11 @@ elif [ "$1" = '--enable-shadows' ]; then
     sed -i -e "s/shadow = .*/shadow = true;/g" "$config"	
 
 elif [ "$1" = '--reset-shadows' ]; then
-	sed -i -e "s/shadow-radius = .*/shadow-radius = 15;/g" "$config"
-	sed -i -e "s/shadow-opacity = .*/shadow-opacity = 0.75;/g" "$config"
-	sed -i -e "s/shadow-offset-x = .*/shadow-offset-x = -15;/g" "$config"
-	sed -i -e "s/shadow-offset-y = .*/shadow-offset-y = -15;/g" "$config"
+	sed -i "$config"
+		-e "s/shadow-radius = .*/shadow-radius = 15;/g" \
+		-e "s/shadow-opacity = .*/shadow-opacity = 0.75;/g" \
+		-e "s/shadow-offset-x = .*/shadow-offset-x = -15;/g" \
+		-e "s/shadow-offset-y = .*/shadow-offset-y = -15;/g"
 
 ##-- fading ---------------------
 
@@ -185,9 +187,10 @@ elif [ "$1" = '--update-fading' ]; then
 	fading_out=$(echo $get_fading | cut -d'|' -f2)
 	fading_delta=$(echo $get_fading | cut -d'|' -f3)
 	if [ "$get_fading" ]; then
-		sed -i -e "s/fade-in-step = .*/fade-in-step = $fading_in;/g" "$config"
-		sed -i -e "s/fade-out-step = .*/fade-out-step = $fading_out;/g" "$config"
-		sed -i -e "s/fade-delta = .*/fade-delta = $fading_delta;/g" "$config"
+		sed -i "$config"
+			-e "s/fade-in-step = .*/fade-in-step = $fading_in;/g" \ 
+			-e "s/fade-out-step = .*/fade-out-step = $fading_out;/g" \
+			-e "s/fade-delta = .*/fade-delta = $fading_delta;/g"
 	fi
 
 elif [ "$1" = '--disable-fading' ]; then
@@ -197,16 +200,18 @@ elif [ "$1" = '--enable-fading' ]; then
     sed -i -e "s/fading = .*/fading = true;/g" "$config"	
 
 elif [ "$1" = '--reset-fading' ]; then
-	sed -i -e "s/fade-in-step = .*/fade-in-step = 0.03;/g" "$config"
-	sed -i -e "s/fade-out-step = .*/fade-out-step = 0.03;/g" "$config"
-	sed -i -e "s/fade-delta = .*/fade-delta = 5;/g" "$config"
+	sed -i "$config"
+		-e "s/fade-in-step = .*/fade-in-step = 0.03;/g" \
+		-e "s/fade-out-step = .*/fade-out-step = 0.03;/g" \
+		-e "s/fade-delta = .*/fade-delta = 5;/g"
 
 ##-- blur ---------------------
 
 elif [ "$1" = '--enable-blur' ]; then
-	sed -i -e "s/backend = .*/backend = \"glx\";/g" "$config"
-	sed -i -e "s/method = .*/method = \"dual_kawase\";/g" "$config"
-	sed -i -e "s/strength = .*/strength = 7;/g" "$config"
+	sed -i "$config" \
+		-e "s/backend = .*/backend = \"glx\";/g" \
+		-e "s/blur-method = .*/method = \"dual_kawase\";/g" \
+		-e "s/blur-strength = .*/strength = 7;/g"
 
 elif [ "$1" = '--disable-blur' ]; then
 	sed -i -e "s/method = .*/method = \"none\";/g" "$config"
