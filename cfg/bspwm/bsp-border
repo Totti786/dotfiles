@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ### Get colors from Wal --------------------------------------#
-if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else window_border="3" ;fi
+if [[ -f "$HOME/.theme" ]]; then source "$HOME/.theme" ; else window_border="3" ;fi
 
 source "$HOME/.cache/wal/colors.sh"
 bspc config focused_border_color "$color14" 

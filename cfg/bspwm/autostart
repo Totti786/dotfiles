@@ -2,14 +2,17 @@
 
 # Autostart Programs ----------------------------------------#
 
-[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile" || conky="On"
+[[ -f "$HOME/.theme" ]] && source "$HOME/.theme" || conky="On"
 
 # XDG Autostart 
 [[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && xdg-autostart
 
+# Screenlocker
+xss-lock -l lockscreen &
+
 # Keybinds
 killall -q -9 sxhkd
-sxhkd -c ~/.config/sxhkd/sxhkdrc ~/.config/sxhkd/bspwm-sxhkdrc &
+sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc "$HOME"/.config/sxhkd/bspwm-sxhkdrc &
 
 # Enable Super Keys For Menu
 killall -q -9 xcape
@@ -25,12 +28,20 @@ xfsettingsd &
 # Compositor 
 compositor --start &
 
+# Ambient light manager
+clight &
+
+# Touchpad Gestures
+if libinput list-devices | grep -qiw 'Touchpad'; then
+	killall -q -9 fusuma
+	fusuma -d &
+fi
+
 # Dunst
 dunst &
 
 # Restore Wallpaper
-wal -Re &
-"$HOME"/.local/bin/wpgtk run &
+wpgtk restore &
 
 # Launch Polybar
 "$HOME"/.config/polybar/launch.sh &

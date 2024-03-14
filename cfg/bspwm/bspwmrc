@@ -31,20 +31,21 @@ bspc rule -r *:*
 declare -a floating=(Lxappearance obs mpv float pop-up
 	Onboard Yad Viewnior Eog loupe scrcpy Steam Wpg
 	feh Nm-connection-editor stalonetray Pavucontrol
-	copyq '*:*:Library' '*:*:Picture in picture' 
-	Xfce4-appearance-settings Xfce4-mouse-settings
-	Xfce4-settings-manager Nsxiv Trackma-gtk steam
-	org.gnome.Weather Xfce4-display-settings Anki
-	TelegramDesktop KotatogramDesktop gnome-calculator
+	copyq '*:*:Library' Xfce4-appearance-settings
+	Xfce4-mouse-settings Xfce4-settings-manager
+	Nsxiv Trackma-gtk steam org.gnome.Weather
+	Xfce4-display-settings Anki TelegramDesktop
+	KotatogramDesktop gnome-calculator syncplay
 	Xfce4-power-manager-settings '*:*:AudioRelay'
-	Blueman-manager Trackma-gtk)
+	Blueman-manager Trackma-gtk Waypaper zenity
+	clight-gui)
 	
 for i in "${floating[@]}"; do
    bspc rule -a "$i" state=floating follow=on focus=on
 done
 
 # Force tile windows
-declare -a tiled=(Zathura)
+declare -a tiled=(Zathura Alacritty)
 for i in "${tiled[@]}"; do
 	bspc rule -a "$i" manage=on state=tiled
 done
