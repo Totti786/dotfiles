@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ -f "$HOME/.zprofile" ]]; then source "$HOME/.zprofile" ; else y="25" ;fi
+if [[ -f "$HOME/.theme" ]]; then source "$HOME/.theme" ; else y="25" ;fi
 if [[ "$bar_style" == "minimal" ]]; then  y="-250" ; else y="25" ;fi
 
 if [[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]]; then 
