@@ -2,7 +2,7 @@
 
 config="$HOME/.config/conky/conky-$XDG_CURRENT_DESKTOP.conf"
 
-[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
 [[ "$bar_style" == "bionic" ]] && alpha="255" || alpha="150"
 
 if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
