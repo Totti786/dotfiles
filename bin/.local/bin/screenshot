@@ -14,17 +14,22 @@ file="$dir/Screenshot_${time}_${geometry}.png"
 [ ! -d "$dir" ] && mkdir -p "$dir"
 
 # Determine border size and slop command based on file existence
-color=$(xrdb -query | awk '/color4/{print $NF; exit}' | pastel format rgb-float | awk -F'[()]' '{print $2}')
+color=$(xrdb -query | awk '/color4/{print $NF; exit}')
+color_slop=$( echo $color | pastel format rgb-float | awk -F'[()]' '{print $2}')
 if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]] && [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then 
 	slop_command=(slop -r highlight -b 5000 -f "%x %y %w %h") 
 else
-	slop_command=(slop -c "$color" -b 3 -f "%x %y %w %h")
+	slop_command=(slop -c "$color_slop" -b 3 -f "%x %y %w %h")
 fi
 
 notify_user() {
 	if [[ -e "$file" ]]; then
-		dunst_action=$(notify-send -a "Screenshot" -r 83 -u low -i "$file" "Screenshot Saved" "Click to open" --action="default,Reply")
-		if [[ "$dunst_action"  == "0" ]]; then exo-open "$file" ;fi
+		action=$(notify-send -a "Screenshot" -r 83 -u low -i "$file" "Screenshot Saved" "Click to open" --action="Open" --action="Delete")
+		if [[ "$action"  == "0" ]]; then
+			exo-open "$file"
+		elif [[ "$action"  == "1" ]]; then
+			rm "$file"
+		fi
 	else
 		notify-send -a "Screenshot" -r 83 -u low "Screenshot Canceled"
 	fi
@@ -71,7 +76,7 @@ shot_window() {
 
 shot_area() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		grim -g "$(slurp -c cba6f788 -b 00000055)" "$file" && wl-copy < "$file"
+		grim -g "$(slurp -c "$color" -b 00000055)" "$file" && wl-copy < "$file"
 	else
 		read -r X Y W H < <("${slop_command[@]}")
 		scrot -a ${X},${Y},${W},${H} "$file" && xclip -selection clipboard -t image/png -i "$file"
@@ -81,12 +86,13 @@ shot_area() {
 
 shot_extract_text() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		grim -g "$(slurp -c cba6f788 -b 00000055)" "$file" && wl-copy < "$file"
+		grim -g "$(slurp -c "$color" -b 00000055)" - | tesseract - - | wl-copy
+
 	else
 		read -r X Y W H < <("${slop_command[@]}")
-		scrot -a ${X},${Y},${W},${H} "$file" && tesseract "$file" stdout | xclip -selection clipboard
+		scrot -a ${X},${Y},${W},${H} - | tesseract - - | xclip -selection clipboard
 	fi
-	notify-send -a "Screenshot" -r 83 -u low -i "$file" "Extracted Text"
+	notify-send -a "Screenshot" -r 83 -u low "Extracted Text"
 }
 
 shot_qr() {
@@ -96,18 +102,16 @@ shot_qr() {
 	fi
 	
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		grim -g "$(slurp -c cba6f788 -b 00000055)" | zbarimg -q --raw - | wl-copy
+		text=$(grim -g "$(slurp -c "$color" -b 00000055)" - | zbarimg -q --raw - | wl-copy) &&
+		
+		if [[ "$(notify-send -a Screenshot -r 83 -u low "QR Code" "$text" --action="Open Link")"  == "0" ]]; then 
+			exo-open "$text" 
+		fi
 	else
 		read -r X Y W H < <("${slop_command[@]}")
 		text=$(scrot -a ${X},${Y},${W},${H} - | zbarimg -q --raw -) && 
-		scrot -a ${X},${Y},${W},${H} - | zbarimg -q --raw - | xclip -selection clipboard &&
-		
-		if [[ "$(notify-send -a Screenshot -r 83 -u low "QR Code" "$text" --action="default,Reply")"  == "0" ]]; then 
-			exo-open "$text" 
-		fi
-		
+		scrot -a ${X},${Y},${W},${H} - | zbarimg -q --raw - | xclip -selection clipboard
 	fi
-
 }
 
 upload_to_imgur(){
@@ -148,10 +152,16 @@ upload_to_imgur(){
 	sleep 0.1
 	echo "$url" | xclip -selection clipboard
 
-	if [[ "$(notify-send -a 'Screenshot' -r 83 -u low "Imgur" "$url" --action="default,Reply")"  == "0" ]]; then 
+	if [[ "$(notify-send -a 'Screenshot' -r 83 -u low "Imgur" "$url" --action="Open Link")"  == "0" ]]; then 
 		exo-open "$url" 
 	fi
 fi
+}
+
+# Check dependencies
+check_dependencies() {
+    command -v scrot >/dev/null 2>&1 || { echo >&2 "scrot is required but not installed. Aborting."; exit 1; }
+    # ... (check other dependencies)
 }
 
 # Help section
