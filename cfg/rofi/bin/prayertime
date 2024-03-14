@@ -13,10 +13,10 @@ MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"
 
 ## Get City if the file doesn't have it
-[ -z "$CITY" ] && CITY=$(wget --timeout=2 http://ipinfo.io/city -qO -)
+[ -z "$CITY" ] && CITY=$(curl ifconfig.co/city)
 
 ## Get Country if the file doesn't have it
-[ -z "$COUNTRY" ] && COUNTRY=$(wget --timeout=2 http://ipinfo.io/country -qO -)
+[ -z "$COUNTRY" ] && COUNTRY=$(curl ifconfig.co/country)
 
 prayer_rofi="$HOME/.cache/prayer_rofi_$CITY_$DAY:$MONTH"
 prayer_cache="$HOME/.cache/prayertimes_$CITY_$MONTH:$YEAR"
