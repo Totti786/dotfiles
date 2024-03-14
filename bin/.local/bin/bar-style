@@ -3,7 +3,7 @@
 # Variables and functions
 polybar_conf="$HOME/.config/polybar"
 
-[[ -f "$HOME/.zprofile" ]] && source "$HOME/.zprofile"
+[[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
 [[ -z "$bar_style" ]] && bar_style="base"
 
 toggle_transparency(){
@@ -31,7 +31,7 @@ reload(){
 }
 
 base(){
-	sed -i 's/^bar_style=.*/bar_style=base/' "$HOME"/.zprofile
+	sed -i 's/^bar_style=.*/bar_style=base/' "$HOME"/.theme
 	toggle_transparency on
 	compositor --disable-corners-exclude
 	reload
@@ -39,7 +39,7 @@ base(){
 }
 
 minimal(){
-	sed -i 's/^bar_style=.*/bar_style=minimal/' "$HOME"/.zprofile
+	sed -i 's/^bar_style=.*/bar_style=minimal/' "$HOME"/.theme
 	toggle_transparency on
 	compositor --enable-corners-exclude
 	reload
@@ -47,7 +47,7 @@ minimal(){
 }
 
 bionic(){
-	sed -i 's/^bar_style=.*/bar_style=bionic/' "$HOME"/.zprofile
+	sed -i 's/^bar_style=.*/bar_style=bionic/' "$HOME"/.theme
 	toggle_transparency off
 	compositor --enable-corners-exclude
 	reload
