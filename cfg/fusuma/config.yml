@@ -1,0 +1,70 @@
+swipe:
+  3:
+    left:
+      sendkey: 'LEFTALT+RIGHT'
+      
+    right:
+      sendkey: 'LEFTALT+LEFT'
+
+    up:
+      workspace: 'prev'
+      threshold: 0.1
+      interval: 0.8
+
+    down:
+      workspace: 'next'
+      threshold: 0.1
+      interval: 0.8
+        
+  4:
+    left:
+      command: 'playerctl next'
+    right:
+      command: 'playerctl previous'
+    up: 
+      command: 'volume --inc'
+      threshold: 0.01
+      interval: 0.2
+    down: 
+      command: 'volume --dec'
+      threshold: 0.01
+      interval: 0.2
+
+
+interval:
+  swipe: 1.0
+  
+threshold:
+  swipe: 1.0
+  
+hold:
+  4:
+    command: "playerctl play-pause" # Activity
+    threshold: 0.08
+
+plugin: 
+  executors:
+    wmctrl_executor:
+      wrap-navigation: true
+      
+
+---
+context:
+  application:  firefox
+
+rotate:
+  2:
+    sendkey: 'LEFTCTRL+T'
+---
+
+
+#swipe:
+  #3:
+    #left:
+      #sendkey: "LEFTALT+RIGHT" # history back
+    #right:
+      #sendkey: "LEFTALT+LEFT" # history forward
+    #up:
+      #sendkey: "LEFTCTRL+T" # open new tab
+    #down:
+      #sendkey: "LEFTCTRL+W" # close tab
