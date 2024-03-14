@@ -5,7 +5,7 @@
 	<name>Open Terminal Here</name>
 	<submenu></submenu>
 	<unique-id>1581593230771688-1</unique-id>
-	<command>/usr/bin/alacritty</command>
+	<command>exo-open --launch TerminalEmulator</command>
 	<description>Example for a custom action</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -17,7 +17,7 @@
 	<name>Open as root</name>
 	<submenu></submenu>
 	<unique-id>1622790717174452-1</unique-id>
-	<command>~/.config/rofi/bin/asroot &apos;dbus-run-session thunar&apos;</command>
+	<command>pkexec thunar %f</command>
 	<description>Open directory as root</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -28,7 +28,7 @@
 	<name>Edit as root</name>
 	<submenu></submenu>
 	<unique-id>1622790919788057-2</unique-id>
-	<command>~/.config/rofi/bin/apps_as_root.sh &apos;geany %f&apos;</command>
+	<command>pkexec geany %f</command>
 	<description>Edit file as root</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -51,7 +51,7 @@
 	<name>Disk Usage</name>
 	<submenu></submenu>
 	<unique-id>1622791401529558-3</unique-id>
-	<command>alacritty -e ncdu %d</command>
+	<command>alacritty -e ncdu %F</command>
 	<description>Disk usages by directory and its sub directories</description>
 	<range></range>
 	<patterns>*</patterns>
