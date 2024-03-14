@@ -1,62 +1,34 @@
 #!/usr/bin/env bash
 
-## Script To Manage Brightness using brightnessctl or light
-## Special thanks to @Nmoleo on Gitlab for the neat notification bar
+## Script to manage Brightness using brightnessctl
 
-# Dependencies: `brightnessctl` `light` `awk` `find` `grep` `tr` `printf` `notify-send`
+# Dependencies: `brightnessctl` `notify-send`
 
 # Graphics card
-card=$(basename "$(find /sys/class/backlight/* | head -n 1)")
-icons="$HOME/.local/share/icons/Papirus/symbolic/status"
-bar_color=$(xrdb -query | grep color13 | awk '{print $NF; exit}')
+bar_color="$(xrdb -get color13)"
 
 # Get brightness
-get_brightness() {
-	if [[ "$card" == *"intel_"* ]]; then
-		LIGHT=$(brightnessctl | grep -o "(.*" | tr -d "()")
-	else
-		LIGHT="$(printf '%s' "$(light -G)" | awk 'BEGIN {FS="."}{print $1}')%"
-	fi
-	echo "${LIGHT}"
-}
+brightness="$(brightnessctl -m  | cut -d "," -f4)"
 
-# Get icons
-get_icon() {
-	backlight="$(get_brightness)"
-	current="${backlight%%%}"
-	if [[ ("$current" -ge "0") && ("$current" -le "20") ]]; then
-		icon="$icons/display-brightness-off-symbolic.svg"
-	elif [[ ("$current" -ge "20") && ("$current" -le "40") ]]; then
-		icon="$icons/display-brightness-low-symbolic.svg"
-	elif [[ ("$current" -ge "40") && ("$current" -le "60") ]]; then
-		icon="$icons/display-brightness-medium-symbolic.svg"
-	elif [[ ("$current" -ge "60") && ("$current" -le "100") ]]; then
-		icon="$icons/display-brightness-high-symbolic.svg"
-	fi
-}
 
 notify(){
-    brightness=$(get_brightness)
-    #get_icon
-    notify-send -a "Brightness" -t 1000 -r 69 -h string:x-dunst-stack-tag:brightness_notif -h int:value:$brightness -h string:hlcolor:$bar_color "Brightness : $brightness"
+	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+		notify-send -a "Brightness" -t 1000 -r 69 -h string:x-dunst-stack-tag:brightness_notif -h int:value:$brightness -h string:hlcolor:$bar_color "Brightness: $brightness"
+    else
+		ags run-js 'indicator.popup(1);'
+	fi
 }
 
 # Increase brightness
 inc_brightness() {
-	if [[ "$card" == *"intel_"* ]]; then
-		brightnessctl s 10%+
-	else
-		light -A 5
-	fi
+	brightnessctl s 5%+
 	notify
 }
 
 # Decrease brightness
 dec_brightness() {
-	if [[ "$card" == *"intel_"* ]]; then
-		brightnessctl s 10%-
-	else
-		light -U 5
+	if [[ "${brightness%%%}" -ge 5 ]]; then
+		brightnessctl s 5%-
 	fi
 	notify
 }
@@ -64,7 +36,7 @@ dec_brightness() {
 # Command-line argument handling
 case "$1" in
     "--get")
-	    get_brightness
+	    echo "$brightness"
     ;;
 	"--inc")
     	inc_brightness
@@ -73,7 +45,7 @@ case "$1" in
     	dec_brightness
     ;;
 	"")
-    	get_brightness
+    	echo "$brightness"
     ;;
     "--help" | "-h")
     echo "Usage: ${0##*/} [options] [--]
