@@ -1,12 +1,11 @@
 #!/bin/bash
 
-## Script To Manage Volume Using Pamixer
-## Special thanks to @Nmoleo on Gitlab for the neat notification bar
+## Script to manage Volume Using Pamixer
 
 # Dependencies: `pamixer` `notify-send`
 
 icons="$HOME/.local/share/icons/Papirus/symbolic/status"
-bar_color=$(xrdb -query | grep color13 | awk '{print $NF; exit}')
+bar_color="$(xrdb -get color13)"
 
 # Get Volume
 get_volume() {
@@ -30,25 +29,29 @@ get_icon() {
 }
 
 notify(){
-    notify-send -a "Volume" -t 500 -r 69 -h string:x-dunst-stack-tag:volume_notif -h int:value:$(get_volume) -h string:hlcolor:$bar_color "$1"
+	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
+		notify-send -a "Volume" -t 500 -r 69 -h string:x-dunst-stack-tag:volume_notif -h int:value:$(get_volume) -h string:hlcolor:$bar_color "$1"
+	else
+		ags run-js 'indicator.popup(1);'
+    fi
 }
 
 # Increase Volume
 inc_volume() {
-	pamixer -u -i 5 && notify "Volume : $(get_volume)"
+	pamixer -u -i 5 && notify "Volume: $(get_volume)"
 }
 
 # Decrease Volume
 dec_volume() {
-	pamixer -u -d 5 && notify "Volume : $(get_volume)"
+	pamixer -u -d 5 && notify "Volume: $(get_volume)"
 }
 
 # Toggle Mute
 toggle_mute() {
 	if [[ "$(pamixer --get-mute)" == "false" ]]; then
-		pamixer -t && notify "Mute"
+		pamixer -t && notify-send -a "Volume" -t 1000 -r 69 "  Mute"
 	else
-		pamixer -t && notify "Unmute"
+		pamixer -t && notify-send -a "Volume" -t 1000 -r 69 "  $(get_volume)"
 	fi
 }
 
