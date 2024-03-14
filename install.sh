@@ -13,7 +13,7 @@ fi
 declare -a minimal=(
 	acpi acpilight alacritty appimagelauncher autotiling axel bc blueman bluez bluez-utils \
 	brightnessctl bspwm cheese conky copyq dmenu drawing dunst envycontrol evince \
-	eww-x11 fd feh firefox flameshot fluent-cursor-theme-git font-manager fzf geany \
+	eww fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf geany \
 	gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep htop \
 	i3lock-color i3-wm imagemagick jgmenu kdeconnect libinput-gestures linux-wifi-hotspot \
 	man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn \
@@ -21,7 +21,7 @@ declare -a minimal=(
 	papirus-icon-theme pastel pavucontrol perl plank playerctl polkit-gnome polybar \
 	python-pipx python-wheel qbittorrent qt5ct ranger redshift rhythmbox rofi-lbonn-wayland \
 	rtorrent scrot stalonetray sxhkd termdown thunar thunar-archive-plugin \
-	thunar-media-tags-plugin thunar-volman timeshift tumbler viewnior waypaper-git wget wmctrl xarchiver \
+	thunar-media-tags-plugin thunar-volman timeshift tumbler viewnior waypaper-git wget wmctrl \
 	xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool xfce4-power-manager \
 	xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo \
 	xss-lock yad ytfzf youtube-dl zathura zathura-cb zathura-pdf-mupdf zenity zsh
