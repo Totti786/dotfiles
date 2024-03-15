@@ -2,35 +2,21 @@
 
 ## Script to manage Volume Using Pamixer
 
-# Dependencies: `pamixer` `notify-send`
+# Dependencies: `wpctl` `notify-send`
 
 icons="$HOME/.local/share/icons/Papirus/symbolic/status"
 bar_color="$(xrdb -get color13)"
 
 # Get Volume
 get_volume() {
-	volume=$(pamixer --get-volume)
-	echo "$volume%"
-}
+	volume=$(wpctl get-volume @DEFAULT_SINK@)
+	echo "$volume" | awk '{print $2 * 100 "%"}'
 
-get_icon() {
-	volume="$(get_volume)"
-	current="${volume%%%}"
-	echo $current
-	if [[ ("$current" -ge "0") && ("$current" -le "20") ]]; then
-		icon="$icons/audio-volume-low-symbolic.svg"
-	elif [[ ("$current" -ge "20") && ("$current" -le "40") ]]; then
-		icon="$icons/audio-volume-low-symbolic.svg"
-	elif [[ ("$current" -ge "40") && ("$current" -le "60") ]]; then
-		icon="$icons/audio-volume-medium-symbolic.svg"
-	elif [[ ("$current" -ge "60") && ("$current" -le "100") ]]; then
-		icon="$icons/audio-volume-high-symbolic.svg"
-	fi
 }
 
 notify(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
-		notify-send -a "Volume" -t 500 -r 69 -h string:x-dunst-stack-tag:volume_notif -h int:value:$(get_volume) -h string:hlcolor:$bar_color "$1"
+		notify-send -a "Volume" -t 500 -r 69 -h string:x-dunst-stack-tag:volume_notif -h int:value:$(get_volume) -h string:hlcolor:$bar_color "Volume: $(get_volume)"
 	else
 		ags run-js 'indicator.popup(1);'
     fi
@@ -38,20 +24,24 @@ notify(){
 
 # Increase Volume
 inc_volume() {
-	pamixer -u -i 5 && notify "Volume: $(get_volume)"
+	wpctl set-volume @DEFAULT_SINK@ 5%+
+	notify
 }
 
 # Decrease Volume
 dec_volume() {
-	pamixer -u -d 5 && notify "Volume: $(get_volume)"
+	wpctl set-volume @DEFAULT_SINK@ 5%-
+	notify
 }
 
 # Toggle Mute
 toggle_mute() {
-	if [[ "$(pamixer --get-mute)" == "false" ]]; then
-		pamixer -t && notify-send -a "Volume" -t 1000 -r 69 "  Mute"
+	if wpctl get-volume @DEFAULT_SINK@ | grep -q '\[MUTED\]'; then
+		wpctl set-mute @DEFAULT_SINK@ toggle
+		notify-send -a "Volume" -t 1000 -r 69 "  Mute"
 	else
-		pamixer -t && notify-send -a "Volume" -t 1000 -r 69 "  $(get_volume)"
+		wpctl set-mute @DEFAULT_SINK@ toggle
+		notify-send -a "Volume" -t 1000 -r 69 "  $(get_volume)"
 	fi
 }
 
