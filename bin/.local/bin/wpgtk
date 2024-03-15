@@ -247,7 +247,7 @@ change_colors(){
 		\$blue 		= ${bright_blue:1}ff
 		\$magenta 	= ${bright_magenta:1}ff
 		\$cyan 		= ${bright_cyan:1}ff
-		\$white 	= ${bright_white:1}ff
+		\$white     	= ${bright_white:1}ff
 		EOF
 	fi
 		
@@ -361,8 +361,8 @@ restore() {
             swww query || swww init
 			swww img "$wallpaper" \
 				--transition-fps 60 \
-			    --transition-type any \
-			    --transition-duration 2
+				--transition-type any \
+				--transition-duration 2
     fi
 }
 
@@ -446,7 +446,7 @@ misc(){
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-		apply_ags
+		apply_ags >/dev/null 2>&1
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
