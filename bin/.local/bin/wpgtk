@@ -256,21 +256,27 @@ change_colors(){
 	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers &> /dev/null
 }
 
-# change the wpg config file so this script can run whenever wpg is invoked 
-wpgConfig(){
-	sed -i "$HOME/.config/wpg/wpg.conf" \
-		-e 's/execute_cmd = false/execute_cmd = true/g' \
-		-e 's/reload = .*/reload = true/g' \
-		-e 's/auto_adjust = false/auto_adjust = true/g' \
-		-e "s/command = .*/command = \/home\/$(whoami)\/.local\/bin\/wpgtk main/g"
-	
-	version=$(python --version | grep -oE '[0-9]+\.[0-9]+')
-	a=("polybar()" "reload.i3()")
-	for i in "${a[@]}"; do
-		line_number=$(grep -n "$i" "/usr/lib/python$version/site-packages/wpgtk/data/reload.py" | tail -n 1 | awk -F ':' '{print $1}')
-		sudo sed -i "${line_number}s|^|#|" "/usr/lib/python$version/site-packages/wpgtk/data/reload.py"
-	done
-	
+# change the waypaper config file so this script can run whenever wpg is invoked 
+fix_configs(){
+	cat > "$HOME"/.config/waypaper/config.ini <<- EOF  
+	[Settings]
+	language = en
+	folder = /home/$(whoami)/Pictures/Wallpapers
+	wallpaper = 
+	backend = feh
+	monitors = All
+	fill = Fill
+	sort = daterev
+	subfolders = True
+	post_command = wpgtk wall \$wallpaper
+	EOF
+		
+	#version=$(python --version | grep -oE '[0-9]+\.[0-9]+')
+	#a=("polybar()" "reload.i3()")
+	#for i in "${a[@]}"; do
+		#line_number=$(grep -n "$i" "/usr/lib/python$version/site-packages/wpgtk/data/reload.py" | tail -n 1 | awk -F ':' '{print $1}')
+		#sudo sed -i "${line_number}s|^|#|" "/usr/lib/python$version/site-packages/wpgtk/data/reload.py"
+	#done
 }
 
 # this functions should only be used if you have a system with a seperate home partition 
@@ -382,8 +388,8 @@ random(){
 	fi
 }
 
-# this function uses implements a sxiv to create a wallpaper selector for wpg 
-# to set a wallpaper you should select a wallpaper by pressing "m" and then quitting sxiv
+# this function uses nsxiv or waypaper as wallpaper selector for wpg 
+# to set a wallpaper in nsxiv you should select a wallpaper by pressing "m" and then quitting 
 pick(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
 		if command -v waypaper >/dev/null 2>&1; then
