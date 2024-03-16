@@ -38,7 +38,7 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	hyprland-git hypridle-git hyprlock-git grim slurp dart-sass wf-recorder \
+	hyprland-git hypridle-git hyprlock-git swww grim slurp dart-sass wf-recorder \
 	hyprpicker-git aylurs-gtk-shell-git xdg-desktop-portal-hyprland-git \
 	gnome-control-center lexend-fonts-git wlsunset wdisplays
 )
