@@ -15,16 +15,17 @@ declare -a minimal=(
 	brightnessctl bspwm cheese conky copyq dmenu drawing dunst envycontrol evince \
 	eww fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf geany \
 	gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep htop \
-	i3lock-color i3-wm imagemagick jgmenu kdeconnect libinput-gestures linux-wifi-hotspot \
+	i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot \
 	man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn \
-	noto-fonts noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn pamixer \
-	papirus-icon-theme pastel pavucontrol perl plank playerctl polkit-gnome polybar \
-	python-pipx python-wheel qbittorrent qt5ct ranger redshift rhythmbox rofi-lbonn-wayland \
-	rtorrent scrot stalonetray sxhkd termdown thunar thunar-archive-plugin \
-	thunar-media-tags-plugin thunar-volman timeshift tumbler viewnior waypaper-git wget wmctrl \
-	xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool xfce4-power-manager \
-	xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo \
-	xss-lock yad ytfzf youtube-dl zathura zathura-cb zathura-pdf-mupdf zenity zsh
+	noto-fonts noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn \
+	papirus-icon-theme pastel pavucontrol perl plank playerctl plasma-browser-integration \
+	polkit-gnome polybar python-pipx python-wheel qbittorrent qt5ct ranger redshift rhythmbox\
+	rofi-lbonn-wayland rtorrent scrot stalonetray sxhkd termdown thunar thunar-archive-plugin \
+	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-material-symbols-variable-git \
+	timeshift tumbler viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
+	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill \
+	xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf youtube-dl zathura \
+	zathura-cb zathura-pdf-mupdf zenity zsh
 )
 
 declare -a extra=(
@@ -36,9 +37,16 @@ declare -a extra=(
 	virtualbox visual-studio-code-bin wine winetricks
 )
 
+declare -a wayland=(
+	hyprland-git hypridle-git hyprlock-git grim slurp dart-sass wf-recorder \
+	hyprpicker-git aylurs-gtk-shell-git xdg-desktop-portal-hyprland-git \
+	gnome-control-center lexend-fonts-git wlsunset wdisplays
+)
+
 declare -a aur=(
 	i3-resurrect picom-simpleanims-next-git aur/qt5gtk2 aur/qt6gtk2 \
-	xiccd xqp zscroll-git
+	ruby-fusuma ruby-fusuma-plugin-appmatcher ruby-fusuma-plugin-keypress \
+	ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl xiccd xqp zscroll-git
 )
 
 declare -a additional=(
@@ -83,31 +91,37 @@ install_minimal(){
 	sudo pacman -Syu ${minimal[@]} --needed --noconfirm
 	yay -S ${aur[@]} --needed --noconfirm
 	}
+
+install_wayland(){
+	install_minimal
+	yay -S ${wayland[@]} --needed --noconfirm
+	}
 	
 install_full(){
 	install_minimal
 	yay -S ${additional[@]} --needed --noconfirm
 	}
 
-minimal_install(){
+wayland_install(){
+	checkrepo &&
+	install_wayland &&
+	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
+	move_configs
+	sh "$dir/bin/.scripts/file-check"
+	change_theme
+	install_sddm
+	install_zsh
+	install_wpgtk
+	}
+
+x11_install(){
 	checkrepo &&
 	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	move_configs
 	sh "$dir/bin/.scripts/file-check"
 	change_theme
-	install_wpgtk
-	}
-
-full_install(){
-	checkrepo &&
-	install_full
-	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
-	move_configs
-	sh "$dir/bin/.scripts/file-check"
-	change_theme
 	install_sddm
-	install_grub
 	install_zsh
 	install_wpgtk
 	}
@@ -209,10 +223,6 @@ install_sddm(){
 	sudo systemctl enable sddm
 	}
 
-install_grub_theme(){
-	cd "$dir"/deps/grub && sudo sh grub.sh && cd "$dir"
-	}
-
 install_firefox_theme(){
 	cp -b "$dir"/deps/firefox/user.js "$HOME"/.mozilla/firefox/*.default-release/user.js && echo "User Profile Copied Successfully"
 	cp -rb "$dir"/deps/firefox/chrome "$HOME"/.mozilla/firefox/*.default-release/ && echo "Chrome CSS Copied Successfully"
@@ -297,8 +307,8 @@ update(){
 	}
 
 install_menu(){
-	local OPTIONS=(1 "Install essential programs and configs"
-				   2 "Install with optional utilities, and (zsh,sddm,grub) themes"
+	local OPTIONS=(1 "Install X11 WMs (i3, BSPWM, Openbox)"
+				   2 "Install Hyprland"
 				   3 "Exit")
 	local CHOICE=$($Dialog --clear \
 	                --title "Install Script" \
@@ -308,10 +318,10 @@ install_menu(){
 	                2>&1 >/dev/tty)
 	case "$CHOICE" in
 		1)
-			minimal_install
+			x11_install
 			;;
 		2)
-			full_install
+			wayland_install
 			;;
 		3)
 			clear
