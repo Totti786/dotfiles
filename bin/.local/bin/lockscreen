@@ -25,10 +25,11 @@ status=$(playerctl -p %any status || true)
 if [ "$status" == "Playing" ]; then	playerctl pause ;fi
 pkill rofi
 
+if [[ -n $(pgrep i3lock) ]] || [[ -n "$(pgrep hyprlock)" ]];then 
+	exit 0
+fi 
+
 if [ "$XDG_SESSION_TYPE" == "x11" ]; then 
-	if [[ -n $(pgrep i3lock) ]];then 
-		exit 0
-	fi 
     i3lock -n -c 00000000 -F -e \
 		--pass-media-keys \
 		--pass-power-keys \
