@@ -11,15 +11,15 @@ fi
 #---- Programs List ----------------------
 
 declare -a minimal=(
-	acpi acpilight alacritty appimagelauncher autotiling axel bc blueman bluez bluez-utils \
+	acpi acpilight alacritty appimagelauncher autotiling axel base-devel bc blueman bluez bluez-utils \
 	brightnessctl bspwm cheese conky copyq dmenu drawing dunst envycontrol evince \
-	eww fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf geany \
-	gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep htop \
+	eww fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep \
+	geany gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep htop \
 	i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot \
 	man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn \
 	noto-fonts noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn \
 	papirus-icon-theme pastel pavucontrol perl plank playerctl plasma-browser-integration \
-	polkit-gnome polybar python-pipx python-wheel qbittorrent qt5ct ranger redshift rhythmbox\
+	polkit-gnome polybar python-pipx python-wheel qbittorrent qt5ct ranger rhythmbox\
 	rofi-lbonn-wayland rtorrent scrot stalonetray sxhkd termdown thunar thunar-archive-plugin \
 	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-material-symbols-variable-git \
 	timeshift tumbler viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
@@ -38,8 +38,8 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	hyprland-git hypridle-git hyprlock-git swww grim slurp dart-sass wf-recorder \
-	hyprpicker-git aylurs-gtk-shell-git xdg-desktop-portal-hyprland-git \
+	hyprland hypridle hyprlock swww grim slurp dart-sass wf-recorder \
+	hyprpicker-git aylurs-gtk-shell-git xdg-desktop-portal-hyprland \
 	gnome-control-center lexend-fonts-git wlsunset wdisplays
 )
 
