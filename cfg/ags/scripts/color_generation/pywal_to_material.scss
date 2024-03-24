@@ -16,7 +16,7 @@ $surfaceContainerHighest: lighten($color0, 20%);
 $onSurface: mix($color7, $color15, 30% );
 $surfaceVariant: darken($color1, 10%);
 $onSurfaceVariant: $color7;
-$inverseSurface: $color7;
+$inverseSurface: $color0;
 $inverseOnSurface: lighten($color3, 20%);
 $outline: lighten($color3, 20%);
 $outlineVariant: $color5;
