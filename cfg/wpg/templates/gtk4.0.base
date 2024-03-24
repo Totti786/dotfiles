@@ -22,7 +22,7 @@
 @define-color headerbar_border_color rgba(255, 182, 144, 0.8);
 @define-color headerbar_backdrop_color @headerbar_bg_color;
 @define-color headerbar_shade_color #000000;
-@define-color card_bg_color rgba(255, 182, 144, 0.05);
+@define-color card_bg_color {color8};
 @define-color card_fg_color {color15};
 @define-color card_shade_color #000000;
 @define-color dialog_bg_color {color0};
@@ -31,9 +31,9 @@
 @define-color popover_fg_color {color15};
 @define-color shade_color #000000;
 @define-color scrollbar_outline_color {color4};
-@define-color sidebar_bg_color {color8};
+@define-color sidebar_bg_color {color0};
 @define-color sidebar_fg_color {color15};
-@define-color sidebar_backdrop_color {color8};
+@define-color sidebar_backdrop_color {color0};
 @define-color secondary_sidebar_bg_color #e01b24;
 @define-color secondary_sidebar_fg_color #ffffff;
 @define-color secondary_sidebar_backdrop_color #c061cb;
@@ -84,5 +84,5 @@
 @define-color dark_5 #000000;
 
 .navigation-sidebar {{
-	background-color: {color8};
+	background-color: {color0};
 }}
