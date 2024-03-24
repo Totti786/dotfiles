@@ -6,7 +6,20 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
+apply_hypr() {
+	if [ "$transparency" == "opaque" ]; then
+		sed -i "/^[^#]*opacity/s/^/#/" $HOME/.config/hypr/hyprland.conf
+		sed -i "s/alpha=.*/alpha='FF'/" $HOME/.local/bin/wpgtk
+		wpgtk transparent
+	else
+		sed -i "/opacity/s/^#//" $HOME/.config/hypr/hyprland.conf
+		sed -i "s/alpha=.*/alpha='70'/" $HOME/.local/bin/wpgtk
+		wpgtk transparent
+	fi
+}
+
 apply_ags() {
+	apply_hypr
     sass "$HOME"/.config/ags/scss/main.scss "$HOME"/.cache/ags/user/generated/style.css
     ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
     ags run-js "App.resetCss(); App.applyCss('${HOME}/.cache/ags/user/generated/style.css');"
