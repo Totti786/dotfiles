@@ -9,7 +9,6 @@
 
 # Color files
 config="$HOME/.config"
-ags="$HOME/.config/ags/scss/_material.scss"
 alacritty="$config/alacritty/colors.toml"
 polybar="$config/polybar/colors.ini"
 rofi="$config/rofi/themes/colors.rasi"
@@ -149,26 +148,12 @@ change_colors(){
 		
 	# zathura and sioyek
 	reader-colors
-	
+
 	# ags
-	if [[ -f "$ags" ]]; then
-		cp "$HOME/.cache/wal/colors.scss" "$HOME"/.cache/ags/user/generated/material_colors.scss
-	
-	    cat "$HOME"/.config/ags/scripts/color_generation/pywal_to_material.scss >> "$HOME"/.cache/ags/user/generated/material_colors.scss
-	
-	     
-		sass "$HOME"/.cache/ags/user/generated/material_colors.scss "$HOME"/.cache/ags/user/generated/colors_classes.scss -s compressed
-		
-		sed -i "s/{color//g" "$HOME"/.cache/ags/user/generated/colors_classes.scss
-		sed -i "s/\./$/g" "$HOME"/.cache/ags/user/generated/colors_classes.scss
-		sed -i "s/}/;/g" "$HOME"/.cache/ags/user/generated/colors_classes.scss
-		sed -i "s/;/;\n/g" "$HOME"/.cache/ags/user/generated/colors_classes.scss
-	
-		sed -i '1i\$darkmode: true;\n' "$HOME"/.cache/ags/user/generated/colors_classes.scss
-	
-		cp "$HOME"/.cache/ags/user/generated/colors_classes.scss "$ags"
+	if [[ -f "$HOME/.config/ags/scss/_material.scss" ]] && [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+		"$HOME"/.config/ags/scripts/color_generation/colorgen.sh "$wallpaper" --apply --smart >/dev/null 2>&1
     fi
-	
+
 	# discord
 	if [[ -f "$discord" ]]; then 
 	sed -i "$discord" \
@@ -217,7 +202,7 @@ change_colors(){
 	misc               = ${red:1}
 	EOF
 	fi
-	
+
 	# eww
 	if [[ -f "$eww" ]]; then 
 	[[ "$alpha" == "FF" ]] &&  sed -i "s/\$alpha: 0.3/\$alpha: 1.0/" "$eww" \
@@ -236,7 +221,7 @@ change_colors(){
 		-e "s/\$gray: #.*/\$gray: $bright_black;/g" \
 		-e "s/\$gray-alt: #.*/\$gray-alt: $bright_black;/g"
 	fi
-	
+
 	if [[ -f "$hypr" ]]; then 
 	# hypr
 	cat > "$hypr" <<- EOF 
@@ -250,7 +235,7 @@ change_colors(){
 		\$white     	= ${bright_white:1}ff
 		EOF
 	fi
-		
+
 	# resize and move wallpaper for use by other programs
 	#cp "$wallpaper"  "$HOME"/.config/wpg/templates/wallpaper.jpg
 	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers &> /dev/null
@@ -258,6 +243,7 @@ change_colors(){
 
 # change the waypaper config file so this script can run whenever wpg is invoked 
 fix_configs(){
+	mkdir -p "$HOME"/.config/waypaper
 	cat > "$HOME"/.config/waypaper/config.ini <<- EOF  
 	[Settings]
 	language = en
@@ -439,12 +425,6 @@ phone(){
 		echo "KDE Connect is not installed"
 	fi
 }
-
-apply_ags() {
-    sass "$HOME"/.config/ags/scss/main.scss "$HOME"/.cache/ags/user/generated/style.css
-    ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
-    ags run-js "App.resetCss(); App.applyCss('${HOME}/.cache/ags/user/generated/style.css');"
-}
 	
 misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
@@ -452,7 +432,6 @@ misc(){
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-		apply_ags >/dev/null 2>&1
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
