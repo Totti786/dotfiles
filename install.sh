@@ -38,13 +38,14 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	hyprland hypridle hyprlock swww grim slurp dart-sass wf-recorder \
-	hyprpicker-git aylurs-gtk-shell-git xdg-desktop-portal-hyprland \
-	gnome-control-center lexend-fonts-git wlsunset wdisplays
+	aylurs-gtk-shell-git dart-sass gnome-control-center grim hypridle hyprland \
+	hyprlock hyprpicker-git lexend-fonts-git nwg-displays slurp swww wf-recorder \
+	xdg-desktop-portal-hyprland python-pywayland wl-clipboard 
 )
 
 declare -a aur=(
 	i3-resurrect picom-simpleanims-next-git aur/qt5gtk2 aur/qt6gtk2 \
+	python-materialyoucolor-git python-material-color-utilities \
 	ruby-fusuma ruby-fusuma-plugin-appmatcher ruby-fusuma-plugin-keypress \
 	ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl xiccd xqp zscroll-git
 )
@@ -279,7 +280,6 @@ tools(){
 		install_full "Install Dependencies" off\
 		install_zsh "Zsh Configuration" off\
 		install_sddm "SDDM Theme" off\
-		install_grub_theme "Grub Theme" off\
 		install_firefox_theme "Firefox Theme" off\
 		install_wpgtk "Generate color-schemes from wallpapers" off\
 		2>&1 >/dev/tty)
