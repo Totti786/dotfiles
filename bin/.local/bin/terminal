@@ -12,7 +12,9 @@ elif [ "$1" == "--full" ]; then
 	-o 'window.startup_mode="Fullscreen"' window.padding.x=30 window.padding.y=30 \
 	window.opacity=0.6 font.size=14 "${@:2}"
 elif [ "$1" == "--drop" ]; then 
-	if [[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]]; then 
+	if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+		alacritty --class 'drop,drop' --config-file "$CONFIG" "${@:2}"
+	elif [[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]]; then 
 		tdrop -t -a -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'drop,drop' --config-file "$CONFIG" "${@:2}"
 	else
 		tdrop -t -a -m -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'Alacritty,drop' --config-file "$CONFIG" "${@:2}"
