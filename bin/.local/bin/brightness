@@ -17,24 +17,15 @@ notify(){
 
 # Increase brightness
 inc_brightness() {
-	
-	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
-		brightnessctl s 5%+
-		notify
-	else
-		ags run-js 'brightness.screen_value += 0.05; indicator.popup(1);'
-	fi
+	brightnessctl s 5%+
+	notify
 }
 
 # Decrease brightness
 dec_brightness() {
 	if [[ "${brightness%%%}" -ge 5 ]]; then
-		if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
-			brightnessctl s 5%-
-			notify
-		else
-			ags run-js 'brightness.screen_value -= 0.05; indicator.popup(1);'
-		fi
+		brightnessctl s 5%-
+		notify
 	fi
 }
 
