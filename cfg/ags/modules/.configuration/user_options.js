@@ -7,6 +7,8 @@ let configOptions = {
     'ai': {
         'defaultGPTProvider': "openai",
         'defaultTemperature': 0.9,
+        'enhancements': true,
+        'useHistory': true,
         'writingCursor': " ...", // Warning: Using weird characters can mess up Markdown rendering
     },
     'animations': {
@@ -54,7 +56,7 @@ let configOptions = {
         'dateFormat': "%d/%m", // On notif time
     },
     'weather': {
-        'city': "Idlib",
+        'city': "",
     },
     'workspaces': {
         'shown': 10,
