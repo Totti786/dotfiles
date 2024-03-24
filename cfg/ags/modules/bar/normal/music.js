@@ -141,7 +141,10 @@ export default () => {
         setup: (self) => self.hook(Mpris, label => {
             const mpris = Mpris.getPlayer('');
             if (mpris)
-                label.label = `${trimTrackTitle(mpris.trackTitle)} • ${mpris.trackArtists.join(', ')}`;
+				if (`${trimTrackTitle(mpris.trackTitle)}` === 'Unknown title')
+					label.label = 'No media'
+				else
+					label.label = `${trimTrackTitle(mpris.trackTitle)} • ${mpris.trackArtists.join(', ')}`;
             else
                 label.label = 'No media';
         }),
@@ -198,7 +201,10 @@ export default () => {
                         }),
                         setup: (self) => self.hook(Mpris, label => {
                             const mpris = Mpris.getPlayer('');
-                            self.revealChild = (!mpris);
+                            if (`${trimTrackTitle(mpris.trackTitle)}` !== 'Unknown title')
+								self.revealChild = false;
+							else
+								self.revealChild = true
                         }),
                     })
                 ],
@@ -206,22 +212,26 @@ export default () => {
         });
     }
     return EventBox({
-        onScrollUp: (self) => execAsync('playerctl volume 0.1+').catch(print),
-        onScrollDown: (self) => execAsync('playerctl volume 0.1-').catch(print),
-        onPrimaryClick: () => showMusicControls.setValue(!showMusicControls.value),
-		onSecondaryClick: () => execAsync('playerctl play-pause').catch(print),
-		onMiddleClick: () => execAsync(['bash', '-c', 'playerctld shift']).catch(print),
-		setup: (self) => self.on('button-press-event', (self, event) => {
-			if (event.get_button()[1] === 8)
-				execAsync('playerctl previous').catch(print)
-			if (event.get_button()[1] === 9)
-				execAsync(['bash', '-c', 'playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"` &']).catch(print)
-		}),
+        onScrollUp: (self) => switchToRelativeWorkspace(self, -1),
+        onScrollDown: (self) => switchToRelativeWorkspace(self, +1),
         child: Box({
             className: 'spacing-h-4',
             children: [
                 SystemResourcesOrCustomModule(),
-                BarGroup({ child: musicStuff }),
+                EventBox({
+                    child: BarGroup({ child: musicStuff }),
+					onScrollUp: (self) => execAsync('playerctl volume 0.1+').catch(print),
+			        onScrollDown: (self) => execAsync('playerctl volume 0.1-').catch(print),
+			        onPrimaryClick: () => showMusicControls.setValue(!showMusicControls.value),
+					onSecondaryClick: () => execAsync('playerctl play-pause').catch(print),
+					onMiddleClick: () => execAsync(['bash', '-c', 'playerctld shift']).catch(print),
+					setup: (self) => self.on('button-press-event', (self, event) => {
+						if (event.get_button()[1] === 8)
+							execAsync('playerctl previous').catch(print)
+						if (event.get_button()[1] === 9)
+							execAsync(['bash', '-c', 'playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"` &']).catch(print)
+					}),
+                })
             ]
         })
     });

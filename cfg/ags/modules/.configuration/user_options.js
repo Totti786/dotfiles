@@ -36,7 +36,7 @@ let configOptions = {
     },
     'sidebar': {
         'imageColumns': 2,
-        'imageBooruCount': 6,
+        'imageBooruCount': 20,
     },
     'search': {
         'engineBaseUrl': "https://www.google.com/search?q=",
@@ -47,14 +47,14 @@ let configOptions = {
         // Here's the 12h format: "%I:%M%P"
         // For seconds, add "%S" and set interval to 1000
         //'format': "%H:%M",
-        'format': "%I:%M %P",
+        'format': "%I:%M%P",
         'interval': 5000,
         'dateFormatLong': "%A, %d/%m", // On bar
         'dateInterval': 5000,
         'dateFormat': "%d/%m", // On notif time
     },
     'weather': {
-        'city': "",
+        'city': "Idlib",
     },
     'workspaces': {
         'shown': 10,

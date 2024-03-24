@@ -1,37 +1,77 @@
-$primary: lighten($color4, 20%);
+$primary_paletteKeyColor: $color1;
+$secondary_paletteKeyColor: $color2;
+$tertiary_paletteKeyColor: $color5;
+$neutral_paletteKeyColor: $color4;
+$neutral_variant_paletteKeyColor: mix($color0, $color8, 50%);
+$background:  mix($color0, $color8, 80%);
+$onBackground: $color7;
+$surface:  mix($color0, $color8, 70%);
+$surfaceDim:  mix($color0, $color8, 40%);
+$surfaceBright: $color8;
+$surfaceContainerLowest: #FFFFFF;
+$surfaceContainerLow: darken(mix($color0, $color8, 40%), 1%);
+$surfaceContainer: mix($color0, $color8, 20%);
+$surfaceContainerHigh: lighten($color0, 10%);
+$surfaceContainerHighest: lighten($color0, 20%);
+$onSurface: mix($color7, $color15, 30% );
+$surfaceVariant: darken($color1, 10%);
+$onSurfaceVariant: $color7;
+$inverseSurface: $color7;
+$inverseOnSurface: lighten($color3, 20%);
+$outline: lighten($color3, 20%);
+$outlineVariant: $color5;
+$shadow: #000000;
+$scrim: #000000;
+$surfaceTint: lighten($color1, 20%);
+$primary: lighten($color4, 10%);
 $onPrimary: darken($color2, 20%);
 $primaryContainer: darken($color2, 10%);
-$onPrimaryContainer: lighten($color4, 10%);
-$secondary: lighten($color6, 20%);
-$onSecondary: saturate($color3, 10%);
-$secondaryContainer: saturate($color3, 10%);
+$onPrimaryContainer: lighten($color4, 40%);
+$inversePrimary: invert($color4);
+$secondary: lighten(saturate($color5, 20%), 10%);
+$onSecondary: lighten($color7, 5%);
+$secondaryContainer: darken($color3, 5%);
 $onSecondaryContainer: lighten($color5, 20%);
-$tertiary: adjust-hue(lighten($color4, 20%), 30deg);
+$tertiary: $color5;
 $onTertiary: adjust-hue(darken($color2, 20%), 30deg);
 $tertiaryContainer: adjust-hue(darken($color2, 10%), 30deg);
-$tertiaryContainer: adjust-hue(lighten($color4, 10%), 30deg);
-$error: #ffb4a9;
-$onError: #680003;
-$errorContainer: #930006;
-$onErrorContainer: #ffb4a9;
-$colorbarbg: mix($color0, $color8, 40%);
-$background: mix($color0, $color8, 40%);
-$onBackground: $color7;
-$surface: mix($color0, $color8, 20%);
+$onTertiaryContainer: lighten($color4, 50%);
+$error: #FFB4AB;
+$onError: #690005;
+$errorContainer: #93000A;
+$onErrorContainer: #FFDAD6;
 
-$onSurface: $color7;
-$surfaceVariant: $color1;
-$onSurfaceVariant: $color7;
-$outline: $color7;
-$shadow: #000000;
-$inverseSurface: invert($surface);
-$inverseOnSurface: invert($onSurface);
-$inversePrimary: invert($primary);
 
+.primary_paletteKeyColor { color: $primary_paletteKeyColor; }
+.secondary_paletteKeyColor { color: $secondary_paletteKeyColor; }
+.tertiary_paletteKeyColor { color: $tertiary_paletteKeyColor; }
+.neutral_paletteKeyColor { color: $neutral_paletteKeyColor; }
+.neutral_variant_paletteKeyColor { color: $neutral_variant_paletteKeyColor; }
+.background { color: $background; }
+.onBackground { color: $onBackground; }
+.surface { color: $surface; }
+.surfaceDim { color: $surfaceDim; }
+.surfaceBright { color: $surfaceBright; }
+.surfaceContainerLowest { color: $surfaceContainerLowest; }
+.surfaceContainerLow { color: $surfaceContainerLow; }
+.surfaceContainer { color: $surfaceContainer; }
+.surfaceContainerHigh { color: $surfaceContainerHigh; }
+.surfaceContainerHighest { color: $surfaceContainerHighest; }
+.onSurface { color: $onSurface; }
+.surfaceVariant { color: $surfaceVariant; }
+.onSurfaceVariant { color: $onSurfaceVariant; }
+.inverseSurface { color: $inverseSurface; }
+.inverseOnSurface { color: $inverseOnSurface; }
+.outline { color: $outline; }
+.outlineVariant { color: $outlineVariant; }
+.shadow { color: $shadow; }
+.scrim { color: $scrim; }
+.surfaceTint { color: $surfaceTint; }
 .primary { color: $primary; }
 .onPrimary { color: $onPrimary; }
 .primaryContainer { color: $primaryContainer; }
 .onPrimaryContainer { color: $onPrimaryContainer; }
+.inversePrimary { color: $inversePrimary; }
 .secondary { color: $secondary; }
 .onSecondary { color: $onSecondary; }
 .secondaryContainer { color: $secondaryContainer; }
@@ -39,20 +79,8 @@ $inversePrimary: invert($primary);
 .tertiary { color: $tertiary; }
 .onTertiary { color: $onTertiary; }
 .tertiaryContainer { color: $tertiaryContainer; }
-.onTertiaryContainer { color: $tertiaryContainer; }
+.onTertiaryContainer { color: $onTertiaryContainer; }
 .error { color: $error; }
 .onError { color: $onError; }
 .errorContainer { color: $errorContainer; }
 .onErrorContainer { color: $onErrorContainer; }
-.colorbarbg { color: $colorbarbg; }
-.background { color: $background; }
-.onBackground { color: $onBackground; }
-.surface { color: $surface; }
-.onSurface { color: $onSurface; }
-.surfaceVariant { color: $surfaceVariant; }
-.onSurfaceVariant { color: $onSurfaceVariant; }
-.outline { color: $outline; }
-.shadow { color: $shadow; }
-.inverseSurface { color: $inverseSurface; }
-.inverseOnSurface { color: $inverseOnSurface; }
-.inversePrimary { color: $inversePrimary; }

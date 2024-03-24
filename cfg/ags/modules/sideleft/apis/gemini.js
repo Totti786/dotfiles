@@ -10,12 +10,12 @@ import { SystemMessage, ChatMessage } from "./ai_chatmessage.js";
 import { ConfigToggle, ConfigSegmentedSelection, ConfigGap } from '../../.commonwidgets/configwidgets.js';
 import { markdownTest } from '../../.miscutils/md2pango.js';
 import { MarginRevealer } from '../../.widgethacks/advancedrevealers.js';
+import { chatEntry } from '../apiwidgets.js';
 
 const MODEL_NAME = `Gemini`;
 
 export const geminiTabIcon = Icon({
     hpack: 'center',
-    className: 'sidebar-chat-apiswitcher-icon',
     icon: `google-gemini-symbolic`,
 })
 
@@ -88,7 +88,7 @@ export const GeminiSettings = () => MarginRevealer({
                     GeminiService.temperature = value;
                 },
             }),
-            ConfigGap({ vertical: true, size: 10 }), // Note: size can only be 5, 10, or 15 
+            ConfigGap({ vertical: true, size: 10 }), // Note: size can only be 5, 10, or 15
             Box({
                 vertical: true,
                 hpack: 'fill',
@@ -101,6 +101,15 @@ export const GeminiSettings = () => MarginRevealer({
                         initValue: GeminiService.assistantPrompt,
                         onChange: (self, newValue) => {
                             GeminiService.assistantPrompt = newValue;
+                        },
+                    }),
+                    ConfigToggle({
+                        icon: 'shield',
+                        name: 'Safety',
+                        desc: 'When turned off, tells the API (not the model) \nto not block harmful/explicit content',
+                        initValue: GeminiService.safe,
+                        onChange: (self, newValue) => {
+                            GeminiService.safe = newValue;
                         },
                     }),
                 ]
@@ -151,7 +160,7 @@ const geminiWelcome = Box({
 });
 
 export const chatContent = Box({
-    className: 'spacing-v-15',
+    className: 'spacing-v-5',
     vertical: true,
     setup: (self) => self
         .hook(GeminiService, (box, id) => {
@@ -257,6 +266,7 @@ export const geminiView = Box({
             // Always scroll to bottom with new content
             const adjustment = scrolledWindow.get_vadjustment();
             adjustment.connect("changed", () => {
+                if(!chatEntry.hasFocus) return;
                 adjustment.set_value(adjustment.get_upper() - adjustment.get_page_size());
             })
         }
