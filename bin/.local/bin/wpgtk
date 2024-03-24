@@ -28,8 +28,8 @@ alpha='70'
 
 ## Change colors
 change_colors(){
+	transparent & 
 	run &&
-	
 	# polybar	
 	cat > "$polybar" <<- EOF
 		[color]
@@ -48,7 +48,6 @@ change_colors(){
 		EOF
 	
 	# rofi
-	[[ "$alpha" != "FF" ]] && alpha_rofi="90" || alpha_rofi="$alpha"
 	cat > "$rofi" <<- EOF
 	/* colors */
 	* {
@@ -102,12 +101,6 @@ change_colors(){
 	foreground = "$foreground"
 	EOF
 	
-	if [[ "$alpha" == "FF" ]]; then 
-		sed -i "s/opacity =.*/opacity = 1.0/" "${alacritty%/*}/alacritty.toml"
-	else 
-		sed -i "s/opacity =.*/opacity = 0.7/" "${alacritty%/*}/alacritty.toml"
-	fi
-	
 	# geany
 	sed -i "$geany" \
 		-e "s/bg=.*/bg=${background}/g" \
@@ -138,7 +131,6 @@ change_colors(){
 		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g"
 
 	# jgmenu 
-	[[ "$alpha" == "FF" ]] && alpha_jg="100" || alpha_jg="$alpha"
 	sed -i "$jgmenu" \
 		-e "s/color_menu_bg        = .*/color_menu_bg        = ${bg_mix} $alpha_jg/g" \
 		-e "s/color_norm_fg        = .*/color_norm_fg        = ${foreground} 100/g" \
@@ -183,7 +175,7 @@ change_colors(){
 	[pywal]
 	text               = ${bright_white:1}
 	subtext            = ${bright_white:1}
-	main               = ${bg_lighter:1}
+	main               = ${bg_light:1}
 	main-elevated      = ${bg_light:1}
 	highlight          = ${magenta:1}
 	highlight-elevated = ${bright_magenta:1}
@@ -239,6 +231,17 @@ change_colors(){
 	# resize and move wallpaper for use by other programs
 	#cp "$wallpaper"  "$HOME"/.config/wpg/templates/wallpaper.jpg
 	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers &> /dev/null
+}
+
+transparent(){
+	if [[ "$alpha" == "FF" ]]; then 
+		sed -i "s/opacity =.*/opacity = 1.0/" "${alacritty%/*}/alacritty.toml"
+	else 
+		sed -i "s/opacity =.*/opacity = 0.7/" "${alacritty%/*}/alacritty.toml"
+	fi
+
+	[[ "$alpha" == "FF" ]] && alpha_jg="100" || alpha_jg="$alpha"
+	[[ "$alpha" != "FF" ]] && alpha_rofi="90" || alpha_rofi="$alpha"
 }
 
 # change the waypaper config file so this script can run whenever wpg is invoked 
