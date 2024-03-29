@@ -28,7 +28,7 @@ alpha='70'
 
 ## Change colors
 change_colors(){
-	transparent & 
+	transparent
 	run &&
 	# polybar	
 	cat > "$polybar" <<- EOF
@@ -125,10 +125,10 @@ change_colors(){
 		
 	# dunst
 	sed -i "$dunst" \
-		-e "s/background = \"#.*\"/background = \"${bg_light}$alpha\"/g" \
-		-e "s/foreground = \"#.*\"/foreground = \"${foreground}\"/g" \
-		-e "s/highlight = \"#.*\"/highlight = \"${foreground}\"/g" \
-		-e "s/frame_color = \"#.*\"/frame_color = \"${green}CF\"/g"
+		-e "s/background = .*/background = \"${bg_light}$alpha\"/g" \
+		-e "s/foreground = .*/foreground = \"${foreground}\"/g" \
+		-e "s/highlight = .*/highlight = \"${foreground}\"/g" \
+		-e "s/frame_color = .*/frame_color = \"${green}CF\"/g"
 
 	# jgmenu 
 	sed -i "$jgmenu" \
@@ -335,7 +335,7 @@ wall() {
 	    if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
 			feh --no-fehbg --bg-fill "$wall"
 		elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-	            swww query || swww-daemon -q & disown 
+	            swww query || swww-daemon -q & disown
 				swww img "$wall" \
 					--transition-fps 60 \
 				    --transition-type any \
@@ -353,7 +353,7 @@ restore() {
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
 		feh --no-fehbg --bg-fill "$wallpaper"
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-            swww query || swww-daemon -q & disown 
+            swww query || swww-daemon -q & disown
 			swww img "$wallpaper" \
 				--transition-fps 60 \
 				--transition-type any \
@@ -382,6 +382,7 @@ random(){
 pick(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
 		if command -v waypaper >/dev/null 2>&1; then
+			[[ ! -f "$HOME/.config/waypaper/config.ini" ]] && fix_configs			
 			waypaper
 		else
 			wal=$(nsxiv -torb $Wallpapers)
