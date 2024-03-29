@@ -3,10 +3,11 @@
 // The actual widget for each single notification is in ags/modules/.commonwidgets/notification.js
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
-const { Box, Button, Label, Scrollable, Stack } = Widget;
-import { MaterialIcon } from '../.commonwidgets/materialicon.js';
-import { setupCursorHover } from '../.widgetutils/cursorhover.js';
-import Notification from '../.commonwidgets/notification.js';
+const { Box, Button, Label, Revealer, Scrollable, Stack } = Widget;
+import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
+import { setupCursorHover } from '../../.widgetutils/cursorhover.js';
+import Notification from '../../.commonwidgets/notification.js';
+import { ConfigToggle } from '../../.commonwidgets/configwidgets.js';
 
 export default (props) => {
     const notifEmptyContent = Box({
@@ -18,7 +19,7 @@ export default (props) => {
             children: [
                 Box({
                     vertical: true,
-                    className: 'spacing-v-5',
+                    className: 'spacing-v-5 txt-subtext',
                     children: [
                         MaterialIcon('notifications_active', 'gigantic'),
                         Label({ label: 'No notifications', className: 'txt-small' }),
@@ -84,23 +85,56 @@ export default (props) => {
         Notifications.dnd = !Notifications.dnd;
         self.toggleClassName('notif-listaction-btn-enabled', Notifications.dnd);
     });
-    const clearButton = ListActionButton('clear_all', 'Clear', () => {
-        Notifications.clear();
-        notificationList.get_children().forEach(ch => ch.attribute.destroyWithAnims())
+    // const silenceToggle = ConfigToggle({
+    //     expandWidget: false,
+    //     icon: 'do_not_disturb_on',
+    //     name: 'Do Not Disturb',
+    //     initValue: false,
+    //     onChange: (self, newValue) => {
+    //         Notifications.dnd = newValue;
+    //     },
+    // })
+    const clearButton = Revealer({
+        transition: 'slide_right',
+        transitionDuration: userOptions.animations.durationSmall,
+        setup: (self) => self.hook(Notifications, (self) => {
+            self.revealChild = Notifications.notifications.length > 0;
+        }),
+        child: ListActionButton('clear_all', 'Clear', () => {
+            Notifications.clear();
+            const kids = notificationList.get_children();
+            for (let i = 0; i < kids.length; i++) {
+                const kid = kids[i];
+                Utils.timeout(userOptions.animations.choreographyDelay * i, () => kid.attribute.destroyWithAnims());
+            }
+        })
+    })
+    const notifCount = Label({
+        attribute: {
+            updateCount: (self) => {
+                const count = Notifications.notifications.length;
+                if (count > 0) self.label = `${count} notifications`;
+                else self.label = '';
+            },
+        },
+        hexpand: true,
+        xalign: 0,
+        className: 'txt-small margin-left-10',
+        label: `${Notifications.notifications.length}`,
+        setup: (self) => self
+            .hook(Notifications, (box, id) => self.attribute.updateCount(self), 'notified')
+            .hook(Notifications, (box, id) => self.attribute.updateCount(self), 'dismissed')
+            .hook(Notifications, (box, id) => self.attribute.updateCount(self), 'closed')
+        ,
     });
     const listTitle = Box({
         vpack: 'start',
-        className: 'sidebar-group-invisible txt spacing-h-5',
+        className: 'txt spacing-h-5',
         children: [
-            Label({
-                hexpand: true,
-                xalign: 0,
-                className: 'txt-title-small margin-left-10',
-                // ^ (extra margin on the left so that it looks similarly spaced
-                // when compared to borderless "Clear" button on the right)
-                label: 'Notifications',
-            }),
+            notifCount,
             silenceButton,
+            // silenceToggle,
+            // Box({ hexpand: true }),
             clearButton,
         ]
     });
@@ -125,17 +159,17 @@ export default (props) => {
             'empty': notifEmptyContent,
             'list': notifList,
         },
-        setup: (self) => self
-            .hook(Notifications, (self) => self.shown = (Notifications.notifications.length > 0 ? 'list' : 'empty'))
-        ,
+        setup: (self) => self.hook(Notifications, (self) => {
+            self.shown = (Notifications.notifications.length > 0 ? 'list' : 'empty')
+        }),
     });
     return Box({
         ...props,
-        className: 'sidebar-group spacing-v-5',
+        className: 'spacing-v-5',
         vertical: true,
         children: [
-            listTitle,
             listContents,
+            listTitle,
         ]
     });
 }

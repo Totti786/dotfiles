@@ -122,16 +122,17 @@ const ColorSchemeSettings = () => {
                                 .catch(print);
                         },
                     }),
-                    ConfigToggle({
-                        name: 'Transparency',
-                        initValue: initTransparencyVal,
-                        onChange: (self, newValue) => {
-                            let transparency = newValue == 0 ? "opaque" : "transparent";
-                            execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && sed -i "2s/.*/${transparency}/"  ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
-                                .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
-                                .catch(print);
-                        },
-                    }),
+					 ConfigToggle({
+					    name: 'Transparency',
+					    initValue: initTransparencyVal,
+					    onChange: (self, newValue) => {
+					        let transparency = newValue == 0 ? "opaque" : "transparent";
+					        execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && sed -i "2s/.*/${transparency}/"  ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
+					            .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
+					            .catch(print);
+					    },
+					}),
+					
                 ]
             }),
 

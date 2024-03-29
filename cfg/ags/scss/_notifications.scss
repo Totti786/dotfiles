@@ -4,7 +4,7 @@
 
 .notif-low {
     @include notif-rounding;
-    background-color: $layer0;
+    background-color: $layer2;
     color: $onLayer2;
     padding: $rounding_small;
     padding-right: $rounding_small + 0.545rem;
@@ -12,7 +12,7 @@
 
 .notif-normal {
     @include notif-rounding;
-    background-color: $layer0;
+    background-color: $layer2;
     color: $onLayer2;
     padding: $rounding_small;
     padding-right: $rounding_small + 0.545rem;
@@ -20,7 +20,7 @@
 
 .notif-critical {
     @include notif-rounding;
-    background-color: $layer0;
+    background-color: $secondaryContainer;
     color: $onSecondaryContainer;
     padding: $rounding_small;
     padding-right: $rounding_small + 0.545rem;
@@ -42,7 +42,12 @@
 .popup-notif-low {
     @include notif-rounding;
     min-width: 30.682rem;
-    background-color: $layer0;
+    background-color: $layer2;
+
+    @if $transparent ==True {
+        background-color: $layer0;
+    }
+
     border: 0.034rem solid $outlineVariant;
     color: $onLayer2;
     padding: $rounding_small;
@@ -52,7 +57,12 @@
 .popup-notif-normal {
     @include notif-rounding;
     min-width: 30.682rem;
-    background-color: $layer0;
+    background-color: $layer2;
+
+    @if $transparent ==True {
+        background-color: $layer0;
+    }
+
     border: 0.034rem solid $outlineVariant;
     color: $onLayer2;
     padding: $rounding_small;

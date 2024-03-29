@@ -40,7 +40,7 @@ export const ToggleIconBluetooth = (props = {}) => Widget.Button({
             exec('rfkill unblock bluetooth');
     },
     onSecondaryClickRelease: () => {
-        execAsync(['bash', '-c', 'blueberry &']);
+        execAsync(['bash', '-c', 'blueman-manager &']);
         App.closeWindow('sideright');
     },
     child: BluetoothIndicator(),
@@ -98,6 +98,37 @@ export const ModuleNightLight = (props = {}) => Widget.Button({
     },
     ...props,
 });
+
+export const ModuleInvertColors = async (props = {}) => {
+    try {
+        const Hyprland = (await import('resource:///com/github/Aylur/ags/service/hyprland.js')).default;
+        return Widget.Button({
+            className: 'txt-small sidebar-iconbutton',
+            tooltipText: 'Color inversion',
+            onClicked: (button) => {
+                // const shaderPath = JSON.parse(exec('hyprctl -j getoption decoration:screen_shader')).str;
+                Hyprland.messageAsync('j/getoption decoration:screen_shader')
+                    .then((output) => {
+                        const shaderPath = JSON.parse(output)["str"].trim();
+                        if (shaderPath != "[[EMPTY]]" && shaderPath != "") {
+                            execAsync(['bash', '-c', `hyprctl keyword decoration:screen_shader '[[EMPTY]]'`]).catch(print);
+                            button.toggleClassName('sidebar-button-active', false);
+                        }
+                        else {
+                            Hyprland.messageAsync(`j/keyword decoration:screen_shader ${GLib.get_home_dir()}/.config/hypr/shaders/invert.frag`)
+                                .catch(print);
+                            button.toggleClassName('sidebar-button-active', true);
+                        }
+                    })
+            },
+            child: MaterialIcon('invert_colors', 'norm'),
+            setup: setupCursorHover,
+            ...props,
+        })
+    } catch {
+        return null;
+    };
+}
 
 export const ModuleRawInput = async (props = {}) => {
     try {

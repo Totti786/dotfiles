@@ -4,7 +4,7 @@ export const keybindList = [[
         "name": "Workspaces: navigation",
         "binds": [
             { "keys": ["", "+", "#"], "action": "Go to workspace #" },
-            { "keys": ["", "+", "S"], "action": "Toggle special workspace" },
+            { "keys": ["", "+", "d"], "action": "Toggle special workspace" },
             { "keys": ["", "+", "(Scroll ↑↓)"], "action": "Go to workspace -1/+1" },
             { "keys": ["Ctrl", "", "+", "←"], "action": "Go to workspace on the left" },
             { "keys": ["Ctrl", "", "+", "→"], "action": "Go to workspace on the right" },
@@ -58,12 +58,6 @@ export const keybindList = [[
             { "keys": ["rightCtrl"], "action": "Dismiss/close sidebar" },
 
             { "keys": ["Ctrl", "", "+", "T"], "action": "Change wallpaper+colorscheme" },
-
-            // { "keys": ["", "+", "B"], "action": "Toggle left sidebar" },
-            // { "keys": ["", "+", "N"], "action": "Toggle right sidebar" },
-            // { "keys": ["", "+", "G"], "action": "Toggle volume mixer" },
-            // { "keys": ["", "+", "M"], "action": "Toggle useless audio visualizer" },
-            // { "keys": ["(right)Ctrl"], "action": "Dismiss notification & close menus" }
         ],
         "id": 4
     },
@@ -87,11 +81,11 @@ export const keybindList = [[
         "icon": "apps",
         "name": "Apps",
         "binds": [
-            { "keys": ["", "+", "T"], "action": "Launch terminal: foot" },
-            { "keys": ["", "+", "W"], "action": "Launch browser: Firefox" },
-            { "keys": ["", "+", "C"], "action": "Launch editor: vscode" },
-            { "keys": ["", "+", "X"], "action": "Launch editor: GNOME Text Editor" },
-            { "keys": ["", "+", "I"], "action": "Launch settings: GNOME Control center" }
+            { "keys": ["", "+", "Enter"], "action": "Launch terminal: Alacritty" },
+            { "keys": ["", "+", "F"], "action": "Launch browser: Firefox" },
+            { "keys": ["", "+", "E"], "action": "Launch File Manager: Thunar" },
+            { "keys": ["", "+", "W"], "action": "Launch editor: Geany" },
+            { "keys": ["", "+", "z"], "action": "Launch Discord: Discord" },
         ],
         "id": 6
     },

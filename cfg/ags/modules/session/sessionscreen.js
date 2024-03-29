@@ -62,7 +62,7 @@ const SessionButton = (name, icon, command, props = {}, colorid = 0) => {
 export default () => {
     // lock, logout, sleep
     const lockButton = SessionButton('Lock', 'lock', () => { App.closeWindow('session'); execAsync(['loginctl', 'lock-session']).catch(print) }, {}, 1);
-    const logoutButton = SessionButton('Logout', 'logout', () => { App.closeWindow('session'); execAsync(['bash', '-c', 'pkill Hyprland || pkill sway || pkill niri || loginctl terminate-user $USER']).catch(print) }, {}, 2);
+    const logoutButton = SessionButton('Logout', 'logout', () => { App.closeWindow('session'); execAsync(['bash', '-c', 'loginctl kill-user $USER']).catch(print) }, {}, 2);
     const sleepButton = SessionButton('Sleep', 'sleep', () => { App.closeWindow('session'); execAsync(['bash', '-c', 'systemctl suspend || loginctl suspend']).catch(print) }, {}, 3);
     // hibernate, shutdown, reboot
     const hibernateButton = SessionButton('Hibernate', 'downloading', () => { App.closeWindow('session'); execAsync(['bash', '-c', 'systemctl hibernate || loginctl hibernate']).catch(print) }, {}, 4);
