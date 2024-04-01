@@ -1,3 +1,4 @@
+
 import userOverrides from '../../user_options.js';
 
 // Defaults
@@ -19,7 +20,11 @@ let configOptions = {
         'keyboardUseFlag': false, // Use flag emoji instead of abbreviation letters
     },
     'apps': {
+        'bluetooth': "blueman-manager",
         'imageViewer': "viewnoir",
+        'network': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
+        'settings': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
+        'taskManager': "gnome-system-monitor",
         'terminal': "alacritty -e", // This is only for shell actions
     },
     'battery': {

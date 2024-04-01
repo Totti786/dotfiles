@@ -40,7 +40,7 @@ export const ToggleIconBluetooth = (props = {}) => Widget.Button({
             exec('rfkill unblock bluetooth');
     },
     onSecondaryClickRelease: () => {
-        execAsync(['bash', '-c', 'blueman-manager &']);
+        execAsync(['bash', '-c', `${userOptions.apps.bluetooth}`]).catch(print);
         App.closeWindow('sideright');
     },
     child: BluetoothIndicator(),
@@ -213,7 +213,7 @@ export const ModuleSettingsIcon = (props = {}) => Widget.Button({
     className: 'txt-small sidebar-iconbutton',
     tooltipText: 'Open Settings',
     onClicked: () => {
-        execAsync(['bash', '-c', 'XDG_CURRENT_DESKTOP="gnome" gnome-control-center', '&']);
+        execAsync(['bash', '-c', `${userOptions.apps.settings}`, '&']);
         App.toggleWindow('sideright');
     },
     child: MaterialIcon('settings', 'norm'),
