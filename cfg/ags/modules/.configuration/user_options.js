@@ -18,6 +18,8 @@ let configOptions = {
     },
     'appearance': {
         'keyboardUseFlag': false, // Use flag emoji instead of abbreviation letters
+        'layerSmoke': false,
+        'layerSmokeStrength': 0.2,
     },
     'apps': {
         'bluetooth': "blueman-manager",
