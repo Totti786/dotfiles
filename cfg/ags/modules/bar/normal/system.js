@@ -229,6 +229,7 @@ export default () => Widget.EventBox({
     onScrollUp: (self) => switchToRelativeWorkspace(self, -1),
     onScrollDown: (self) => switchToRelativeWorkspace(self, +1),
     onPrimaryClick: () => App.toggleWindow('sideright'),
+    onSecondaryClick: () => openColorScheme.setValue(!openColorScheme.value),
     child: Widget.Box({
         className: 'spacing-h-4',
         children: [

@@ -76,8 +76,8 @@ export default () => SidebarModule({
                         className: 'sidebar-module-scripts-button',
                         child: scriptStateIcon,
                         onClicked: () => {
-                            App.closeWindow('sideleft');
-                            execAsync([`bash`, `-c`, `${userOptions.apps.terminal} bash -c "${script.command}"`]).catch(print)
+                            closeEverything();
+                            execAsync([`bash`, `-c`, `${userOptions.apps.terminal} fish -C "${script.command}"`]).catch(print)
                                 .then(() => {
                                     scriptStateIcon.label = 'done';
                                 })

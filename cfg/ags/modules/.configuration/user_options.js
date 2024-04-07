@@ -70,7 +70,7 @@ let configOptions = {
         'dateFormat': "%d/%m", // On notif time
     },
     'weather': {
-        'city': "",
+        'city': "Idlib",
     },
     'workspaces': {
         'shown': 10,

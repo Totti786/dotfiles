@@ -27,6 +27,10 @@ function forMonitors(widget) {
     const n = Gdk.Display.get_default()?.get_n_monitors() || 1;
     return range(n, 0).map(widget).flat(1);
 }
+function forMonitorsAsync(widget) {
+    const n = Gdk.Display.get_default()?.get_n_monitors() || 1;
+    return range(n, 0).forEach((n) => widget(n).catch(print))
+}
 
 // SCSS compilation
 Utils.exec(`bash -c 'echo "" > ${App.configDir}/scss/_musicwal.scss'`); // reset music styles
@@ -61,10 +65,7 @@ const Windows = () => [
 ];
 
 const CLOSE_ANIM_TIME = 210; // Longer than actual anim time to make sure widgets animate fully
-const closeWindowDelays = { // For animations
-    'sideright': CLOSE_ANIM_TIME,
-    'sideleft': CLOSE_ANIM_TIME,
-};
+const closeWindowDelays = {}; // For animations
 for(let i = 0; i < (Gdk.Display.get_default()?.get_n_monitors() || 1); i++) {
     closeWindowDelays[`osk${i}`] = CLOSE_ANIM_TIME;
 }
@@ -77,6 +78,6 @@ App.config({
 });
 
 // Stuff that don't need to be toggled. And they're async so ugh...
-forMonitors(Bar);
+forMonitorsAsync(Bar);
 // Bar().catch(print); // Use this to debug the bar. Single monitor only.
 
