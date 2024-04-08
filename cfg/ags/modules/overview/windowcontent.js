@@ -8,9 +8,10 @@ const { execAsync, exec } = Utils;
 import { execAndClose, expandTilde, hasUnterminatedBackslash, couldBeMath, launchCustomCommand, ls } from './miscfunctions.js';
 import {
     CalculationResultButton, CustomCommandButton, DirectoryButton,
-    DesktopEntryButton, ExecuteCommandButton, SearchButton
+    DesktopEntryButton, ExecuteCommandButton, SearchButton, AiButton
 } from './searchbuttons.js';
 import { checkKeybind } from '../.widgetutils/keybind.js';
+import GeminiService from '../../services/gemini.js';
 
 // Add math funcs
 const { abs, sin, cos, tan, cot, asin, acos, atan, acot } = Math;
@@ -50,12 +51,6 @@ const overviewContent = await OptionalOverview();
 export const SearchAndWindows = () => {
     var _appSearchResults = [];
 
-    const ClickToClose = ({ ...props }) => Widget.EventBox({
-        ...props,
-        onPrimaryClick: () => App.closeWindow('overview'),
-        onSecondaryClick: () => App.closeWindow('overview'),
-        onMiddleClick: () => App.closeWindow('overview'),
-    });
     const resultsBox = Widget.Box({
         className: 'overview-search-results',
         vertical: true,
@@ -201,17 +196,13 @@ export const SearchAndWindows = () => {
 
             // Add fallback: search
             resultsBox.add(SearchButton({ text: entry.text }));
+            resultsBox.add(AiButton({ text: entry.text }));
             resultsBox.show_all();
         },
     });
     return Widget.Box({
         vertical: true,
         children: [
-            ClickToClose({ // Top margin. Also works as a click-outside-to-close thing
-                child: Widget.Box({
-                    className: 'bar-height',
-                })
-            }),
             Widget.Box({
                 hpack: 'center',
                 children: [
@@ -259,4 +250,4 @@ export const SearchAndWindows = () => {
             })
         ,
     });
-}; 
+};

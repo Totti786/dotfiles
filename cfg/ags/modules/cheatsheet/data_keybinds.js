@@ -4,12 +4,9 @@ export const keybindList = [[
         "name": "Workspaces: navigation",
         "binds": [
             { "keys": ["", "+", "#"], "action": "Go to workspace #" },
-            { "keys": ["", "+", "d"], "action": "Toggle special workspace" },
-            { "keys": ["", "+", "(Scroll ↑↓)"], "action": "Go to workspace -1/+1" },
-            { "keys": ["Ctrl", "", "+", "←"], "action": "Go to workspace on the left" },
-            { "keys": ["Ctrl", "", "+", "→"], "action": "Go to workspace on the right" },
-            { "keys": ["", "+", "PageUp"], "action": "Go to workspace on the left" },
-            { "keys": ["", "+", "PageDown"], "action": "Go to workspace on the right" }
+            { "keys": ["", "+", "(Mouse Scroll ↑↓)"], "action": "Go to workspace -1/+1" },
+            { "keys": ["", "Ctrl", "+", "←↑"], "action": "Go to workspace on the left" },
+            { "keys": ["", "Ctrl", "+", "→↓"], "action": "Go to workspace on the right" },
         ],
         "id": 1
     },
@@ -17,10 +14,10 @@ export const keybindList = [[
         "icon": "overview_key",
         "name": "Workspaces: management",
         "binds": [
-            { "keys": ["", "Alt", "+", "#"], "action": "Move window to workspace #" },
-            { "keys": ["", "Alt", "+", "S"], "action": "Move window to special workspace" },
-            { "keys": ["", "Alt", "+", "PageUp"], "action": "Move window to workspace on the left" },
-            { "keys": ["", "Alt", "+", "PageDown"], "action": "Move window to workspace on the right" }
+            { "keys": ["", "Shift", "+", "#"], "action": "Move window to workspace #" },
+            { "keys": ["", "Ctrl", "+", "#"], "action": "Move window to workspace # and follow" },
+            { "keys": ["", "Shift", "+", "C"], "action": "Move window to special workspace" },
+            { "keys": ["", "+", "D"], "action": "Toggle special workspace" },
         ],
         "id": 2
     },
@@ -29,14 +26,10 @@ export const keybindList = [[
         "name": "Windows",
         "binds": [
             { "keys": ["", "+", "←↑→↓"], "action": "Focus window in direction" },
-            { "keys": ["", "Shift", "+", "←↑→↓"], "action": "Swap window in direction" },
-            { "keys": ["", "+", ";"], "action": "Split ratio -" },
-            { "keys": ["", "+", "'"], "action": "Split ratio +" },
             { "keys": ["", "+", "Lmb"], "action": "Move window" },
-            { "keys": ["", "+", "Mmb"], "action": "Move window" },
             { "keys": ["", "+", "Rmb"], "action": "Resize window" },
-            { "keys": ["", "+", "F"], "action": "Fullscreen" },
-            { "keys": ["", "Alt", "+", "F"], "action": "Fake fullscreen" }
+            { "keys": ["", "Shift", "+", "←↑→↓"], "action": "Swap window in direction" },
+            { "keys": ["", "Shift", "+", "F"], "action": "Toggle Fullscreen" },
         ],
         "id": 3
     }
@@ -47,17 +40,17 @@ export const keybindList = [[
         "name": "Widgets (AGS)",
         "binds": [
             { "keys": ["", "OR", "", "+", "Tab"], "action": "Toggle overview/launcher" },
-            { "keys": ["Ctrl", "", "+", "R"], "action": "Restart AGS" },
+            { "keys": ["Ctrl", "Shift", "+", "R"], "action": "Restart AGS" },
             { "keys": ["", "+", "/"], "action": "Toggle this cheatsheet" },
-            { "keys": ["", "+", "N"], "action": "Toggle system sidebar" },
-            { "keys": ["", "+", "B", "OR", "", "+", "O"], "action": "Toggle utilities sidebar" },
+            { "keys": ["", "+", "."], "action": "Toggle Focus Mode" },
+            { "keys": ["", "+", ","], "action": "Toggle Color Menu" },
             { "keys": ["", "+", "K"], "action": "Toggle virtual keyboard" },
-            { "keys": ["Ctrl", "Alt", "+", "Del"], "action": "Power/Session menu" },
+            { "keys": ["", "+", "X"], "action": "Power/Session menu" },
 
             { "keys": ["Esc"], "action": "Exit a window" },
-            { "keys": ["rightCtrl"], "action": "Dismiss/close sidebar" },
 
-            { "keys": ["Ctrl", "", "+", "T"], "action": "Change wallpaper+colorscheme" },
+            { "keys": ["", "Shift", "+", "W"], "action": "Pick Wallpaper" },
+            { "keys": ["Alt", "Shift", "+", "W"], "action": "Set Random Wallpaper" },
         ],
         "id": 4
     },
@@ -65,10 +58,10 @@ export const keybindList = [[
         "icon": "construction",
         "name": "Utilities",
         "binds": [
-            { "keys": ["PrtSc"], "action": "Screenshot  >>  clipboard" },
-            { "keys": ["", "Shift", "+", "S"], "action": "Screen snip  >>  clipboard" },
-            { "keys": ["", "Shift", "+", "T"], "action": "Image to text  >>  clipboard" },
-            { "keys": ["", "Shift", "+", "C"], "action": "Color picker" },
+            { "keys": ["PrtSc"], "action": "Take Screenshot" },
+            { "keys": ["Shift", "+", "PrtSc"], "action": "Screen snip  >>  clipboard" },
+            { "keys": ["Alt", "+", "PrtSc"], "action": "Image to text  >>  clipboard" },
+            { "keys": ["", "+", "P"], "action": "Color picker" },
             { "keys": ["", "Alt", "+", "R"], "action": "Record region" },
             { "keys": ["Ctrl", "Alt", "+", "R"], "action": "Record region with sound" },
             { "keys": ["", "Shift", "Alt", "+", "R"], "action": "Record screen with sound" }
@@ -81,11 +74,12 @@ export const keybindList = [[
         "icon": "apps",
         "name": "Apps",
         "binds": [
-            { "keys": ["", "+", "Enter"], "action": "Launch terminal: Alacritty" },
-            { "keys": ["", "+", "F"], "action": "Launch browser: Firefox" },
+            { "keys": ["", "+", "Enter"], "action": "Launch Terminal: Alacritty" },
+            { "keys": ["", "+", "F"], "action": "Launch Browser: Firefox" },
             { "keys": ["", "+", "E"], "action": "Launch File Manager: Thunar" },
-            { "keys": ["", "+", "W"], "action": "Launch editor: Geany" },
-            { "keys": ["", "+", "z"], "action": "Launch Discord: Discord" },
+            { "keys": ["", "+", "W"], "action": "Launch Text Editor: Geany" },
+            { "keys": ["", "+", "Z"], "action": "Launch Discord" },
+            { "keys": ["", "Shift", "+", "S"], "action": "Launch Spotify" },
         ],
         "id": 6
     },
@@ -94,7 +88,6 @@ export const keybindList = [[
         "name": "Typing",
         "binds": [
             { "keys": ["", "+", "V"], "action": "Clipboard history  >>  clipboard" },
-            { "keys": ["", "+", "."], "action": "Emoji picker  >>  clipboard" },
         ],
         "id": 7
     },
@@ -106,7 +99,6 @@ export const keybindList = [[
             { "keys": [">img"], "action": "Select wallpaper and generate colorscheme" },
             { "keys": [">light"], "action": "Switch to light theme" },
             { "keys": [">dark"], "action": "Switch to dark theme" },
-            { "keys": [">badapple"], "action": "Apply black n' white colorscheme" },
             { "keys": [">color"], "action": "Pick acccent color" },
             { "keys": [">todo"], "action": "Type something after that to add a To-do item" },
         ],

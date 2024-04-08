@@ -31,26 +31,32 @@ const BatBatteryProgress = () => {
 const BarClock = () => Widget.Box({
     vpack: 'center',
     className: 'spacing-h-4 bar-clock-box',
-    children: [
-        Widget.Label({
-            className: 'bar-time',
-            label: GLib.DateTime.new_now_local().format(userOptions.time.format),
-            setup: (self) => self.poll(userOptions.time.interval, label => {
-                label.label = GLib.DateTime.new_now_local().format(userOptions.time.format);
-            }),
+    child: Widget.EventBox({
+        onSecondaryClick: () => openColorScheme.setValue(!openColorScheme.value),
+        child: Widget.Box({
+            hpack: 'start',
+            children: [
+                Widget.Label({
+                    className: 'bar-time',
+                    label: GLib.DateTime.new_now_local().format(userOptions.time.format),
+                    setup: (self) => self.poll(userOptions.time.interval, label => {
+                        label.label = GLib.DateTime.new_now_local().format(userOptions.time.format);
+                    }),
+                }),
+                Widget.Label({
+                    className: 'txt-norm txt-onLayer1',
+                    label: '•',
+                }),
+                Widget.Label({
+                    className: 'txt-smallie bar-date',
+                    label: GLib.DateTime.new_now_local().format(userOptions.time.dateFormatLong),
+                    setup: (self) => self.poll(userOptions.time.dateInterval, (label) => {
+                        label.label = GLib.DateTime.new_now_local().format(userOptions.time.dateFormatLong);
+                    }),
+                }),
+            ],
         }),
-        Widget.Label({
-            className: 'txt-norm txt-onLayer1',
-            label: '•',
-        }),
-        Widget.Label({
-            className: 'txt-smallie bar-date',
-            label: GLib.DateTime.new_now_local().format(userOptions.time.dateFormatLong),
-            setup: (self) => self.poll(userOptions.time.dateInterval, (label) => {
-                label.label = GLib.DateTime.new_now_local().format(userOptions.time.dateFormatLong);
-            }),
-        }),
-    ],
+    }),
 });
 
 const UtilButton = ({ name, icon, onClicked, onSecondaryClick }) => Button({
@@ -229,7 +235,6 @@ export default () => Widget.EventBox({
     onScrollUp: (self) => switchToRelativeWorkspace(self, -1),
     onScrollDown: (self) => switchToRelativeWorkspace(self, +1),
     onPrimaryClick: () => App.toggleWindow('sideright'),
-    onSecondaryClick: () => openColorScheme.setValue(!openColorScheme.value),
     child: Widget.Box({
         className: 'spacing-h-4',
         children: [
