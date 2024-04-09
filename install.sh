@@ -29,7 +29,7 @@ declare -a minimal=(
 )
 
 declare -a extra=(
-	anki audacity baobab blanket discord drawing flatpak gimp github-desktop gnome-clocks \
+	anki audacity baobab blanket discord flatpak gimp github-desktop gnome-clocks \
 	gnome-system-monitor gnome-weather gparted gping handbrake heroic-games-launcher-bin \
 	jdk-openjdk telegram-desktop krita libreoffice-fresh lutris mangohud megatools \
 	mkvtoolnix-cli obs-studio openboard polychromatic scrcpy soundux spicetify-cli \
@@ -296,6 +296,7 @@ update(){
 		cp "$HOME"/.config/polybar/scripts/info "$HOME"/.cache/info
 	#[ ! -f "$HOME/.zprofile" ] && 
 	cp	"$dir"/deps/.zprofile "$HOME"/
+	cp	"$dir"/deps/.gtkrc-2.0 "$HOME"/
 	cp	"$dir"/deps/.theme "$HOME"/
 	## move udpated scripts and configs
 	cp -r "$dir"/bin/.scripts/ "$HOME"/ 
