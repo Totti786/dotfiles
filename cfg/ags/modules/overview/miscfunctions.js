@@ -26,7 +26,7 @@ export function launchCustomCommand(command) {
             })
     }
     else if (args[0] == '>img') { // Change wallpaper
-        execAsync([`bash`, `-c`, `${App.configDir}/scripts/color_generation/switchwall.sh`, `&`]).catch(print);
+        execAsync([`bash`, `-c`, `wpgtk pick`, `&`]).catch(print);
     }
     else if (args[0] == '>color') { // Generate colorscheme from color picker
         execAsync([`bash`, `-c`, `${App.configDir}/scripts/color_generation/switchcolor.sh --pick`, `&`]).catch(print);
@@ -78,7 +78,7 @@ export function launchCustomCommand(command) {
 export function execAndClose(command, terminal) {
     App.closeWindow('overview');
     if (terminal) {
-        execAsync([`bash`, `-c`, `${userOptions.apps.terminal} fish -C "${command}"`, `&`]).catch(print);
+        execAsync([`bash`, `-c`, `${userOptions.apps.terminal} bash -C "${command}"`, `&`]).catch(print);
     }
     else
         execAsync(command).catch(print);

@@ -16,8 +16,9 @@ export const keybindList = [[
         "binds": [
             { "keys": ["", "Shift", "+", "#"], "action": "Move window to workspace #" },
             { "keys": ["", "Ctrl", "+", "#"], "action": "Move window to workspace # and follow" },
-            { "keys": ["", "Shift", "+", "C"], "action": "Move window to special workspace" },
+            { "keys": ["", "Shift", "+", "D"], "action": "Move window to special workspace" },
             { "keys": ["", "+", "D"], "action": "Toggle special workspace" },
+            { "keys": ["", "Shift", "+", "G"], "action": "Toggle tabbed mode" },
         ],
         "id": 2
     },

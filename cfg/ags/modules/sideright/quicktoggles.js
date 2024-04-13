@@ -40,8 +40,7 @@ export const ToggleIconBluetooth = (props = {}) => Widget.Button({
             exec('rfkill unblock bluetooth');
     },
     onSecondaryClickRelease: () => {
-        execAsync(['bash', '-c', `${userOptions.apps.bluetooth}`]).catch(print);
-        closeEverything();
+        sidebarOptionsStack.focusName('Bluetooth')
     },
     child: BluetoothIndicator(),
     setup: (self) => {
