@@ -76,5 +76,3 @@ else
 	#gtklock -i -d -b "$image" -s "$HOME"/.config/gtklock/style.css
 	hyprlock
 fi
-
-if [ "$status" == "Playing" ]; then playerctl play ;fi
