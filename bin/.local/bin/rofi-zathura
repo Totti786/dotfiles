@@ -13,7 +13,7 @@
 # Define cache and history file paths
 cached="$HOME/.cache/rofi-zathura"
 config_file="$HOME/.cache/rofi-zathura/config.txt"
-zathura_history="$HOME/.local/share/zathura/history"
+zathura_history="$HOME/.local/share/zathura/bookmarks.sqlite"
 sioyek_history="$HOME/.local/share/sioyek/local.db"
 shortcuts="$HOME/.local/share/applications/books"
 
@@ -44,8 +44,7 @@ fi
 # Function to generate thumbnails and create shortcut desktop entries
 main(){
 	if [[ "$reader" == "zathura" ]]; then 
-		# Read the 'history' file and store the lines containing "home" in the 'lines' array
-		readarray -t lines < <(grep -i "home" "$zathura_history" | tr -d "[]")
+		readarray -t lines < <(sqlite3 "$zathura_history" "SELECT * FROM fileinfo;" | cut -d"|" -f1)
 	elif [[ "$reader" == "sioyek" ]]; then 
 		readarray -t lines < <(sqlite3 "$sioyek_history" "SELECT * FROM document_hash;" | cut -d "|" -f2)
 	else 
@@ -53,11 +52,10 @@ main(){
 		exit 1
 	fi
 	
-	# Loop through each line in 'lines'
+	## Loop through each line in 'lines'
 	for line in "${lines[@]}"; do
 		# Extract the file name and remove the extension to use as the shortcut name
 		[[ -f "$line" ]] && name="${line##*/}" name="${name%.*}"
-		
 		# Determine the type of the file based on the extension
 		type=${line##*.}
 		
@@ -93,7 +91,7 @@ main(){
 }
 
 # Check if the 'history' file contains any lines with "home"
-if grep -qi "home" "$zathura_history" || grep -qi "home" "$(sqlite3 "$sioyek_history" "SELECT * FROM document_hash;")" ; then 
+if [ $(sqlite3 "$zathura_history" "SELECT COUNT(*) FROM fileinfo;") -gt 0 ] || grep -qi "home" "$(sqlite3 "$sioyek_history" "SELECT * FROM document_hash;")" ; then 
 	# If the cache directory is empty, notify the user and generate thumbnails and shortcuts
 	[ -z "$(ls -A $cached)" ] && notify-send -a Rofi-Zathura -t 2000 -r 40 "Rofi-Zathura" "Generating Thumbnails..."
 	main && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
