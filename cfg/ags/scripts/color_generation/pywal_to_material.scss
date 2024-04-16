@@ -40,6 +40,10 @@ $error: #FFB4AB;
 $onError: #690005;
 $errorContainer: #93000A;
 $onErrorContainer: #FFDAD6;
+$success: #B5CCBA;
+$onSuccess: #213528;
+$successContainer: #374B3E;
+$onSuccessContainer: #D1E9D6;
 
 
 .primary_paletteKeyColor { color: $primary_paletteKeyColor; }
@@ -84,3 +88,7 @@ $onErrorContainer: #FFDAD6;
 .onError { color: $onError; }
 .errorContainer { color: $errorContainer; }
 .onErrorContainer { color: $onErrorContainer; }
+.success { color:  $success; }
+.onSuccess { color:  $onSuccess; }
+.successContainer { color:  $successContainer; }
+.onSuccessContainer { color:  $onSuccessContainer; }

@@ -134,8 +134,9 @@ export const SearchAndWindows = () => {
             }
 
             else {
+                GeminiService.send(text);
                 App.closeWindow('overview');
-                execAsync(['bash', '-c', `xdg-open '${userOptions.search.engineBaseUrl}${text} ${['', ...userOptions.search.excludedSites].join(' -site:')}' &`]).catch(print);
+                App.openWindow('sideleft');
             }
         },
         onChange: (entry) => { // this is when you type
@@ -194,8 +195,8 @@ export const SearchAndWindows = () => {
             }
 
             // Add fallback: search
-            resultsBox.add(SearchButton({ text: entry.text }));
             resultsBox.add(AiButton({ text: entry.text }));
+            resultsBox.add(SearchButton({ text: entry.text }));
             resultsBox.show_all();
         },
     });
