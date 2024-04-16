@@ -17,7 +17,7 @@ elif [ "$1" == "--drop" ]; then
 	elif [[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]]; then 
 		tdrop -t -a -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'drop,drop' --config-file "$CONFIG" "${@:2}"
 	else
-		tdrop -t -a -m -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'Alacritty,drop' --config-file "$CONFIG" "${@:2}"
+		tdrop -t -a -m -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'drop,drop' --config-file "$CONFIG" "${@:2}"
 	fi
 elif [ "$1" == "--help" ] || [ "$1"  == "-h" ]; then
 	echo "Usage: $(basename $0) [options] [--]	
