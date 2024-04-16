@@ -24,7 +24,7 @@ hypr="$config/hypr/colors.conf"
 swaync="$config/swaync/style.css"
 waybar="$HOME/.config/waybar/colors.css"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='70'
+alpha='FF'
 
 ## Change colors
 change_colors(){
@@ -446,7 +446,7 @@ misc(){
 partial(){
 	change_colors
 	misc
-	pkill dunst
+	pkill dunst; dunst & disown
 	check spicetify -q refresh &
 	check pywalfox update >/dev/null 2>&1 &
 	check razer-cli -a &
