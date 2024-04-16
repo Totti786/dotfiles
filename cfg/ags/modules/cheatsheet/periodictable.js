@@ -1,30 +1,37 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { periodicTable, series } from "./data_periodictable.js";
-const { Box, Button, Label, Revealer } = Widget;
+const { Box, Button, Icon, Label, Revealer } = Widget;
 
 export default () => {
     const ElementTile = (element) => {
         return Box({
             vertical: true,
-            className: (element.name == '' ? 'cheatsheet-periodictable-empty' : 'cheatsheet-periodictable-element'),
+            className: `cheatsheet-periodictable-${element.type}`,
             children: element.name == '' ? null : [
                 Box({
                     className: 'padding-8',
                     children: [
                         Label({
                             label: `${element.number}`,
-                            className: "txt txt-tiny",
+                            className: "txt-tiny",
                         }),
                         Box({ hexpand: true }),
                         Label({
                             label: `${element.weight}`,
-                            className: "txt txt-smaller",
+                            className: "txt-smaller",
                         })
                     ]
                 }),
-                Label({
+                element.icon ? Icon({
+                    icon: element.icon,
+                    className: "txt-hugerass txt-bold",
+                }) : Label({
                     label: `${element.symbol}`,
-                    className: "txt txt-large txt-bold",
+                    className: "cheatsheet-periodictable-elementsymbol",
+                }),
+                Label({
+                    label: `${element.name}`,
+                    className: "txt-tiny",
                 })
             ]
         })
