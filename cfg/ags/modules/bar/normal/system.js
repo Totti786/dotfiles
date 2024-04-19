@@ -87,10 +87,10 @@ const Utilities = () => Box({
             }
         }),
         UtilButton({
-            name: 'Toggle on-screen keyboard', icon: 'keyboard', onClicked: () => {
-                toggleWindowOnAllMonitors('osk');
+            name: 'Screen Recorder', icon: 'screen_record', onClicked: () => {
+                Utils.execAsync('ffmpeg-recorder --area').catch(print)
             }, onSecondaryClick: () => {
-                toggleWindowOnAllMonitors('osk')
+                Utils.execAsync('ffmpeg-recorder --stop').catch(print)
             }
         }),
     ]
@@ -199,28 +199,31 @@ const BarGroup = ({ child }) => Widget.Box({
         }),
     ]
 });
-const BatteryModule = () => Stack({
-    transition: 'slide_up_down',
-    transitionDuration: userOptions.animations.durationLarge,
-    children: {
-        'laptop': Box({
-            className: 'spacing-h-4', children: [
-                BarGroup({ child: Utilities() }),
-                BarGroup({ child: BarBattery() }),
-                BarGroup({ child: WeatherModule() }),
-            ]
-        }),
-        'desktop': BarGroup({
-            lassName: 'spacing-h-4', children: [
-                BarGroup({ child: WeatherModule() }),
-            ]
-        }),
-    },
-    setup: (stack) => Utils.timeout(10, () => {
-        if (!Battery.available) stack.shown = 'desktop';
-        else stack.shown = 'laptop';
-    })
-})
+const BatteryModule = () => Stack
+(
+	{
+	    transition: 'slide_up_down',
+	    transitionDuration: userOptions.animations.durationLarge,
+	    children: {
+	        'laptop': Box({
+	            className: 'spacing-h-4', children: [
+	                BarGroup({ child: Utilities() }),
+	                BarGroup({ child: BarBattery() }),
+	                BarGroup({ child: WeatherModule() }),
+	            ]
+	        }),
+	        'desktop': BarGroup({
+	            lassName: 'spacing-h-4', children: [
+	                BarGroup({ child: WeatherModule() }),
+	            ]
+	        }),
+	    },
+	    setup: (stack) => Utils.timeout(10, () => {
+	        if (!Battery.available) stack.shown = 'desktop';
+	        else stack.shown = 'laptop';
+	    })
+	}
+)
 
 const switchToRelativeWorkspace = async (self, num) => {
     try {

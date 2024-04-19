@@ -70,7 +70,7 @@ export default () => {
                 selectable: true,
                 justify: Gtk.Justification.CENTER,
                 className: 'txt-small txt',
-                label: 'Sheet data stored in <tt>~/.config/ags/modules/cheatsheet/data_keybinds.js</tt>\nChange keybinds in <tt>~/.config/hypr/hyprland/keybinds.conf</tt>'
+                label: 'Sheet data stored in <tt>~/.config/ags/modules/cheatsheet/data_keybinds.js</tt>\nChange keybinds in <tt>~/.config/hypr/keybinds.conf</tt>'
             }),
             realKeybinds,
         ]
