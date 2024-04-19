@@ -11,9 +11,11 @@
 # Define directory and file extension based on what needs to be recorded
 user="$(whoami)"
 backend="$XDG_SESSION_TYPE"
+ffmpeg_log="$HOME/.ffmpeg.log"
 ffmpeg_lock="/tmp/ffmpeg-recorder-$user.lock"
 ffmpeg_lock_slop="/tmp/ffmpeg-recorder-$user-slop.lock"
 ffmpeg_lock_audio="/tmp/ffmpeg-recorder-$user-audio.lock"
+ffmpeg_lock_audio_wayland="/tmp/ffmpeg-recorder-$user-audio-wayland.lock"
 
 if [[ "$@" == "--audio" ]] || [[ -e "$ffmpeg_lock_audio" ]]; then 
 	file_type="m4a"
@@ -61,7 +63,6 @@ else
 fi
 
 # Check if ffmpeg is running or paused
-
 if [[ $(pidof ffmpeg) ]] || [[ $(pidof wf-recorder) ]]; then
     state="on"
 elif [[ -e "$ffmpeg_lock" ]]; then 
@@ -74,6 +75,9 @@ fi
 if [[ ! -d "$dir" ]]; then
 	mkdir -p "$dir"
 fi
+
+# Logging
+echo "-----------------$time-----------------" >> "$ffmpeg_log"
 
 # Function for countdown before starting recording
 countdown() {
@@ -101,7 +105,7 @@ notify_user() {
 		case "$notify_action" in
 		"0")
 		    exo-open "$file_name"
-   		    exo-open --launch FileManager "$file_name"
+   		    #exo-open --launch FileManager "$file_name"
 		    ;;
 		"1")
 		    rm "$file_name"
@@ -126,9 +130,7 @@ catch_error(){
 }
 
 # Function to capture screen recording with or without audio
-record_screen() {
-	if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
-		
+record_screen() {		
 	signal_start
 	
 	if [[ "$1" == "--noaudio" ]]; then
@@ -151,13 +153,12 @@ record_screen() {
 			${ffmpeg_config[@]} ${dir}/${file}
 		fi
 	fi
+	
 	catch_error # Check ffmpeg execution status after the command
 }
 
 # Function to capture area recording with or without audios
 record_area() {
-	if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
-
 	# Get area for area recording using slop or slurp
 	if [[ "$backend" == "wayland" ]]; then
 		touch "$ffmpeg_lock_slop"
@@ -180,7 +181,7 @@ record_area() {
 	
 	if [[ "$1" == "--noaudio" ]]; then
 		if [[ "$backend" == "wayland" ]]; then
-			wf-recorder -d /dev/dri/renderD128 -c h264_vaapi -r "$fps" -g "$(slurp)" -f ${dir}/${file}
+			wf-recorder -d /dev/dri/renderD128 -c h264_vaapi -r "$fps" -g "$(slurp -c "$color" -b 00000055)"  -f ${dir}/${file}
 		else
 			"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size ${W}x${H} -i :0.0+${X},${Y} -thread_queue_size 4096 \
 			${ffmpeg_config[@]} ${dir}/${file}
@@ -188,7 +189,7 @@ record_area() {
 	else
 		if [[ "$backend" == "wayland" ]]; then
 			wayland_audio
-			wf-recorder -d /dev/dri/renderD128 -c h264_vaapi -r "$fps" --audio=Combined.monitor -g "$(slurp)" -f ${dir}/${file}
+			wf-recorder -d /dev/dri/renderD128 -c h264_vaapi -r "$fps" --audio=Combined.monitor -g "$(slurp -c "$color" -b 00000055)"  -f ${dir}/${file}
 		else
 			"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size ${W}x${H} -i :0.0+${X},${Y} -thread_queue_size 4096 \
 			-f pulse -thread_queue_size 4096 -i ${audio_sink}.monitor \
@@ -204,7 +205,6 @@ record_area() {
 
 # Function to capture audio only
 record_audio() {
-	if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
 	touch "$ffmpeg_lock_audio"
 		
 	signal_start
@@ -215,6 +215,19 @@ record_audio() {
 	${dir}/${file}
 	
 	catch_error # Check ffmpeg execution status after the command
+}
+
+wayland_audio(){	
+	if [ -f "$ffmpeg_lock_audio_wayland" ]; then 
+		for module in $(cat "$ffmpeg_lock_audio_wayland"); do 
+			pactl unload-module "$module"
+		done
+	else
+		touch "$ffmpeg_lock_audio_wayland"
+		pactl load-module module-null-sink sink_name=Combined >> "$ffmpeg_lock_audio_wayland"
+		pactl load-module module-loopback sink=Combined source=${audio_sink}.monitor >> "$ffmpeg_lock_audio_wayland"
+		pactl load-module module-loopback sink=Combined source=$audio_source >> "$ffmpeg_lock_audio_wayland"
+	fi
 }
 
 # Function to stop ongoing recording and merge segments
@@ -257,7 +270,7 @@ stop_recording(){
 		pkill ffmpeg && while pgrep -l ffmpeg; do sleep 0.5;done
 	elif [[ "$backend" == "wayland" ]]; then
 	    pkill wf-recorder && while pgrep -l wf-recorder; do sleep 0.5;done
-	    wayland_audio
+	    [[ ! -f "$ffmpeg_lock_audio_wayland" ]] && wayland_audio
 	else
 		pkill ffmpeg && while pgrep -l ffmpeg; do sleep 0.5;done
 	fi
@@ -288,22 +301,6 @@ cancel_recording() {
 	notify_user
 }
 
-wayland_audio(){
-	tmp_file="/tmp/pactl.tmp"
-	
-	if [ -f "$tmp_file" ]; then 
-		for line in $(cat "$tmp_file"); do 
-			pactl unload-module "$line"
-		done
-		rm "$tmp_file"
-	else
-		touch "$tmp_file"
-		pactl load-module module-null-sink sink_name=Combined >> "$tmp_file"
-		pactl load-module module-loopback sink=Combined source=${audio_sink}.monitor >> "$tmp_file"
-		pactl load-module module-loopback sink=Combined source=$audio_source >> "$tmp_file"
-	fi
-}
-
 # Help section
 show_help() {
     echo "Usage: ${0##*/} [ ]"
@@ -324,17 +321,19 @@ case "$1" in
         echo "$state"
         ;;
     "--screen")
-        #countdown '2'
-        record_screen "$2"
+		if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+        record_screen "$2" >> "$ffmpeg_log" 2>&1 & disown
         ;;
     "--area")
-        record_area "$2"
+    	if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+        record_area "$2" >> "$ffmpeg_log" 2>&1 & disown
         ;;
     "--audio")
-        record_audio
+    	#if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+        record_audio >> "$ffmpeg_log" 2>&1 & disown
         ;;
     "--stop")
-        stop_recording
+        stop_recording >> "$ffmpeg_log" 2>&1 & disown
         ;;
     "--cancel")
         cancel_recording
@@ -348,6 +347,4 @@ case "$1" in
     *)
         echo "Invalid option. Use --help for usage instructions."
         exit 1 ;;
-esac &
-
-exit 0
+esac
