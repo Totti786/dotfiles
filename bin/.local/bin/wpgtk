@@ -446,7 +446,7 @@ misc(){
 partial(){
 	change_colors
 	misc
-	pkill dunst; dunst & disown
+	pkill dunst; dunst > /dev/null 2>&1 & disown
 	check spicetify -q refresh &
 	check pywalfox update >/dev/null 2>&1 &
 	check razer-cli -a &
