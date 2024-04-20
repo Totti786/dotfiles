@@ -30,6 +30,8 @@ colormodefile="$HOME/.cache/ags/user/colormode.txt"
 lightdark="dark"
 transparency="opaque"
 materialscheme="vibrant"
+terminalscheme="$HOME/.config/ags/scripts/templates/terminal/scheme-base.json"
+
 if [ ! -f $colormodefile ]; then
     echo "dark" > $colormodefile
     echo "opaque" >> $colormodefile
@@ -54,6 +56,7 @@ cd "$HOME/.config/ags/scripts/" || exit
 if [[ "$1" = "#"* ]]; then # this is a color
     color_generation/generate_colors_material.py --color "$1" \
     --mode "$lightdark" --scheme "$materialscheme" --transparency "$transparency" \
+    --termscheme $terminalscheme --blend_bg_fg \
     > "$HOME"/.cache/ags/user/generated/material_colors.scss
     if [ "$2" = "--apply" ]; then
         cp "$HOME"/.cache/ags/user/generated/material_colors.scss "$HOME/.config/ags/scss/_material.scss"
@@ -62,10 +65,12 @@ if [[ "$1" = "#"* ]]; then # this is a color
 elif [ "$backend" = "material" ]; then
     smartflag=''
     if [ "$3" = "--smart" ]; then
-        smartflag='--smart True'
+        smartflag='--smart'
     fi
     color_generation/generate_colors_material.py --path "$1" \
-    --mode "$lightdark" --scheme "$materialscheme" --transparency "$transparency" --cache "$HOME/.cache/ags/user/color.txt" $smartflag \
+    --mode "$lightdark" --scheme "$materialscheme" --transparency "$transparency" \
+    --termscheme $terminalscheme --blend_bg_fg \
+    --cache "$HOME/.cache/ags/user/color.txt" $smartflag \
     > "$HOME"/.cache/ags/user/generated/material_colors.scss
     if [ "$2" = "--apply" ]; then
         cp "$HOME"/.cache/ags/user/generated/material_colors.scss "$HOME/.config/ags/scss/_material.scss"
