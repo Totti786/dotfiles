@@ -225,7 +225,7 @@ install_sddm(){
 	}
 
 install_firefox_theme(){
-	cp -b "$dir"/deps/firefox/user.js "$HOME"/.mozilla/firefox/*.default-release/user.js && echo "User Profile Copied Successfully"
+	cp -rb "$dir"/deps/firefox/user.js "$HOME"/.mozilla/firefox/*.default-release/ && echo "User Profile Copied Successfully"
 	cp -rb "$dir"/deps/firefox/chrome "$HOME"/.mozilla/firefox/*.default-release/ && echo "Chrome CSS Copied Successfully"
 	}
 
