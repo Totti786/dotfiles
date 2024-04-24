@@ -88,7 +88,7 @@ const Utilities = () => Box({
         }),
         UtilButton({
             name: 'Screen Recorder', icon: 'screen_record', onClicked: () => {
-                Utils.execAsync('ffmpeg-recorder --area').catch(print)
+                Utils.execAsync('ffmpeg-recorder --screen').catch(print)
             }, onSecondaryClick: () => {
                 Utils.execAsync('ffmpeg-recorder --stop').catch(print)
             }

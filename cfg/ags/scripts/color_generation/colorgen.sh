@@ -45,7 +45,7 @@ else
     transparency=$(sed -n '2p' $colormodefile)
     materialscheme=$(sed -n '3p' $colormodefile)
 fi
-backend="material" # color generator backend
+backend="pywal" # color generator backend
 if [ ! -f "$HOME/.cache/ags/user/colorbackend.txt" ]; then
     echo "material" > "$HOME/.cache/ags/user/colorbackend.txt"
 else
