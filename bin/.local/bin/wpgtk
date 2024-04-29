@@ -24,7 +24,7 @@ hypr="$config/hypr/colors.conf"
 swaync="$config/swaync/style.css"
 waybar="$HOME/.config/waybar/colors.css"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='FF'
+alpha='70'
 
 ## Change colors
 change_colors(){
@@ -236,12 +236,15 @@ change_colors(){
 transparent(){
 	if [[ "$alpha" == "FF" ]]; then 
 		sed -i "s/opacity =.*/opacity = 1.0/" "${alacritty%/*}/alacritty.toml"
+		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst"
+		alpha_jg="100"
+		alpha_rofi="90"
 	else 
 		sed -i "s/opacity =.*/opacity = 0.7/" "${alacritty%/*}/alacritty.toml"
+		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst"
+		alpha_jg="$alpha"
+		alpha_rofi="$alpha"
 	fi
-
-	[[ "$alpha" == "FF" ]] && alpha_jg="100" || alpha_jg="$alpha"
-	[[ "$alpha" != "FF" ]] && alpha_rofi="90" || alpha_rofi="$alpha"
 }
 
 # change the waypaper config file so this script can run whenever wpg is invoked 
@@ -335,11 +338,11 @@ wall() {
 	    if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
 			feh --no-fehbg --bg-fill "$wall"
 		elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-	            swww query || swww-daemon -q & disown
-				swww img "$wall" \
-					--transition-fps 60 \
-				    --transition-type any \
-				    --transition-duration 2
+            swww query || swww-daemon -q & disown
+			swww img "$wall" \
+				--transition-fps 60 \
+			    --transition-type any \
+			    --transition-duration 2 & disown
 	    fi
     fi
 
@@ -353,11 +356,12 @@ restore() {
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
 		feh --no-fehbg --bg-fill "$wallpaper"
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-            swww query || swww-daemon -q & disown
-			swww img "$wallpaper" \
-				--transition-fps 60 \
-				--transition-type any \
-				--transition-duration 2
+		swww query || swww-daemon -q & disown
+		swww img "$wallpaper" \
+			--transition-fps 60 \
+			--transition-type any \
+			--transition-duration 2 & disown
+			if [[ "$(swww query | awk '{print $8}')" != "$wallpaper" ]]; then main ;fi
     fi
 }
 
@@ -432,7 +436,7 @@ phone(){
 	
 misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
-		[[ $(pgrep conky) ]] && conky.sh restart &
+		conky.sh restart &
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
