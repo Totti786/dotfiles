@@ -1,12 +1,11 @@
-// This file is for the notification list on the sidebar
-// For the popup notifications, see onscreendisplay.js
-// The actual widget for each single notification is in ags/modules/.commonwidgets/notification.js
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Audio from 'resource:///com/github/Aylur/ags/service/audio.js';
+import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { Box, Button, Icon, Label, Scrollable, Slider, Stack } = Widget;
+const { execAsync, exec } = Utils;
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
 import { setupCursorHover } from '../../.widgetutils/cursorhover.js';
-// import { AnimatedSlider } from '../../.commonwidgets/cairo_slider.js';
+import { ConfigToggle } from '../../.commonwidgets/configwidgets.js';
 
 const AppVolume = (stream) => Box({
     className: 'sidebar-volmixer-stream spacing-h-10',
@@ -118,7 +117,7 @@ export default (props) => {
                 }
             })
         ]
-    });
+    });  
     const mainContent = Stack({
         children: {
             'empty': emptyContent,
@@ -128,6 +127,22 @@ export default (props) => {
             self.shown = (Audio.apps.length > 0 ? 'list' : 'empty')
         }),
     })
+    const bottomBar = Box({
+        homogeneous: true,
+        children: [Button({
+            hpack: 'center',
+            className: 'txt-small txt sidebar-centermodules-bottombar-button',
+            onClicked: () => {
+                execAsync(userOptions.apps.volume).catch(print);
+                closeEverything();
+            },
+            label: 'More',
+            setup: setupCursorHover,
+        })],
+        setup: (self) => {
+            console.log('AAAAAAAAAAAAAAAAAAa')
+        },
+    })
     return Box({
         ...props,
         className: 'spacing-v-5',
@@ -135,6 +150,7 @@ export default (props) => {
         children: [
             mainContent,
             status,
+            bottomBar,
         ]
     });
 }

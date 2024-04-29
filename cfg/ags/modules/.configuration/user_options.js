@@ -1,7 +1,7 @@
-
 import userOverrides from '../../user_options.js';
 
-// Defaults
+// Default options.
+// Add overrides in ~/.config/ags/user_options.js
 let configOptions = {
     // General stuff
     'ai': {
@@ -25,6 +25,7 @@ let configOptions = {
     },
     'apps': {
         'bluetooth': "blueman-manager",
+        'volume': "pavucontrol",
         'imageViewer': "viewnoir",
         'network': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
         'settings': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",

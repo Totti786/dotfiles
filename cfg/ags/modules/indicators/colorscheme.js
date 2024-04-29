@@ -111,20 +111,19 @@ const ColorSchemeSettings = () => {
         vpack: 'center',
         children: [
             Widget.Box({
+	            vertical: true,
                 children: [
-                    ConfigToggle({
-                        name: 'Dark Mode',
-                        initValue: initColorVal,
-                        onChange: (self, newValue) => {
-                            let lightdark = newValue == 0 ? "light" : "dark";
-                            execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && sed -i "1s/.*/${lightdark}/"  ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
-                                .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
-                                .catch(print);
-                        },
-                    }),
+	                Widget.Label({
+	                    xalign: 0,
+	                    className: 'txt-norm titlefont txt',
+	                    label: 'Options',
+	                    hpack: 'center',
+	                }),
 					 ConfigToggle({
-					    name: 'Transparency',
-					    initValue: initTransparencyVal,
+						icon: 'border_clear',
+	                    name: 'Transparency',
+	                    desc: 'Make shell elements transparent',
+	                    initValue: initTransparencyVal,
 					    onChange: (self, newValue) => {
 					        let transparency = newValue == 0 ? "opaque" : "transparent";
 					        execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && sed -i "2s/.*/${transparency}/"  ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
@@ -132,30 +131,48 @@ const ColorSchemeSettings = () => {
 					            .catch(print);
 					    },
 					}),
-					
+		           ConfigToggle({
+   						icon: 'palette',
+		                name: 'Material Backend',
+	                    desc: 'Toggle between pywal and material colors',
+		                initValue: initBackendVal,
+		                onChange: (self, newValue) => {
+		                    let backend = newValue == 0 ? "pywal" : "material";
+		                    execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && sed -i "1s/.*/${backend}/"  ${GLib.get_user_cache_dir()}/ags/user/colorbackend.txt`])
+		                        .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
+		                        .then(() => {
+									childRevealer.revealChild = newValue === true;                            
+		                        })
+		                        .catch(print);
+		                },
+		            }),			
                 ]
             }),
-
-            ConfigToggle({
-                name: 'Material Backend',
-                initValue: initBackendVal,
-                onChange: (self, newValue) => {
-                    let backend = newValue == 0 ? "pywal" : "material";
-                    execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && sed -i "1s/.*/${backend}/"  ${GLib.get_user_cache_dir()}/ags/user/colorbackend.txt`])
-                        .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
-                        .then(() => {
-							childRevealer.revealChild = newValue === true;                            
-                        })
-                        .catch(print);
-                },
-            }),
-
             Widget.Revealer({
                 transition: 'slide_down',
                 transitionDuration: 500,
                 child: Widget.Box({
+			        vertical: true,
                     children: [
-                        ConfigMulipleSelection({
+						ConfigToggle({
+	                        icon: 'dark_mode',
+							name: 'Dark Mode',
+							desc: 'Ya should go to sleep!',
+	                        initValue: initColorVal,
+	                        onChange: (self, newValue) => {
+	                            let lightdark = newValue == 0 ? "light" : "dark";
+	                            execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && sed -i "1s/.*/${lightdark}/"  ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
+	                                .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
+	                                .catch(print);
+	                        },
+						}),
+		                Widget.Label({
+		                    xalign: 0,
+		                    className: 'txt-norm titlefont txt margin-top-5',
+		                    label: 'Scheme styles',
+		                    hpack: 'center',
+		                }),
+		                ConfigMulipleSelection({
                             hpack: 'center',
                             vpack: 'center',
                             optionsArr: schemeOptionsArr,
