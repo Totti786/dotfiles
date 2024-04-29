@@ -4,16 +4,17 @@
 
 ## Options #############################################
 if  [[ "$1" = "--logout" ]]; then
-	current_desktop=$(wmctrl -m | head -n1 | cut -d " " -f2) 
-	if [[ "$current_desktop" == "Openbox" ]]; then
-		openbox --exit
-	elif [[ "$current_desktop" == "i3" ]]; then
-		i3 exit
-	elif [[ "$current_desktop" == "bspwm" ]]; then
-		bspc quit
-	elif [[ "$current_desktop" == "herbstluftwm" ]]; then
-		herbstclient quit
-	fi
+	loginctl kill-user $(whoami)
+	#current_desktop=$(wmctrl -m | head -n1 | cut -d " " -f2) 
+	#if [[ "$current_desktop" == "Openbox" ]]; then
+		#openbox --exit
+	#elif [[ "$current_desktop" == "i3" ]]; then
+		#i3 exit
+	#elif [[ "$current_desktop" == "bspwm" ]]; then
+		#bspc quit
+	#elif [[ "$current_desktop" == "herbstluftwm" ]]; then
+		#herbstclient quit
+	#fi
 elif  [[ "$1" = "--lock" ]]; then
 	lockscreen
 elif  [[ "$1" = "--suspend" ]]; then
