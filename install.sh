@@ -12,15 +12,13 @@ fi
 
 declare -a minimal=(
 	acpi acpilight alacritty appimagelauncher autotiling axel base-devel bc blueman bluez bluez-utils \
-	brightnessctl bspwm cheese conky copyq dmenu drawing dunst envycontrol evince \
-	eww fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep \
-	geany gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep htop \
-	i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot \
-	man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn \
-	noto-fonts noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn \
-	papirus-icon-theme pastel pavucontrol perl plank playerctl plasma-browser-integration \
-	polkit-gnome polybar python-pipx python-wheel qbittorrent qt5ct rhythmbox\
-	rofi-lbonn-wayland rtorrent scrot stalonetray sxhkd termdown thunar thunar-archive-plugin \
+	brightnessctl bspwm conky copyq dmenu drawing dunst envycontrol evince eww fd feh file-roller firefox \
+	flameshot fluent-cursor-theme-git font-manager fzf gammastep geany gnome-calculator gnome-disk-utility \
+	gnome-epub-thumbnailer jq gpick grep htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma \
+	linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn \
+	noto-fonts noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol \
+	qt5ct rhythmbox	rofi-lbonn-wayland rtorrent scrot stalonetray snapshot sxhkd termdown thunar thunar-archive-plugin \
+	perl plank playerctl plasma-browser-integration	polkit-gnome polybar python-pipx python-wheel qbittorrent \
 	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-material-symbols-variable-git \
 	ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift tumbler viewnior waypaper-git \
 	wget wmctrl xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool xfce4-power-manager \
@@ -40,14 +38,14 @@ declare -a extra=(
 declare -a wayland=(
 	aylurs-gtk-shell-git dart-sass gnome-control-center grim hypridle hyprland \
 	hyprlock hyprpicker-git lexend-fonts-git nwg-displays slurp swww wf-recorder \
-	xdg-desktop-portal-hyprland python-pywayland wl-clipboard 
+	xdg-desktop-portal-hyprland python-pywayland wl-clipboard
 )
 
 declare -a aur=(
 	i3-resurrect picom-simpleanims-next-git aur/qt5gtk2 aur/qt6gtk2 \
-	python-materialyoucolor-git \
-	ruby-fusuma ruby-fusuma-plugin-appmatcher ruby-fusuma-plugin-keypress \
-	ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl xiccd xqp zscroll-git
+	python-materialyoucolor-git ruby-fusuma ruby-fusuma-plugin-appmatcher \
+	ruby-fusuma-plugin-keypress ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl \
+	xiccd xqp zscroll-git
 )
 
 declare -a additional=(
@@ -73,9 +71,9 @@ checkrepo(){
 		Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf > /dev/null
 		
 		# Configure pacman
-		sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
-		sudo sed -i -e "s/#Color/Color/g" /etc/pacman.conf
-		sudo sed -i -e "s/#VerbosePkgLists/VerbosePkgLists/g" /etc/pacman.conf
+		sudo sed -i "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
+		sudo sed -i "s/#Color/Color/g" /etc/pacman.conf
+		sudo sed -i "s/#VerbosePkgLists/VerbosePkgLists/g" /etc/pacman.conf
 	fi
 	
 	if ! pacman -Q yay &> /dev/null; then 
@@ -84,23 +82,21 @@ checkrepo(){
 	else
 		echo "The AUR helper yay is already installed"
 	fi
+
+	sudo sed -i "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
+	sudo sed -i "s/#Color/Color/g" /etc/pacman.conf	
 	}
 
 install_minimal(){
-	sudo sed -i -e "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
-	sudo sed -i -e "s/#Color/Color/g" /etc/pacman.conf
-	sudo pacman -Syu ${minimal[@]} --needed --noconfirm
-	yay -S ${aur[@]} --needed --noconfirm
+	yay -Syu ${minimal[@]} ${aur[@]} --needed --noconfirm
 	}
 
 install_wayland(){
-	install_minimal
-	yay -S ${wayland[@]} --needed --noconfirm
+	yay -Syu ${minimal[@]} ${wayland[@]} ${aur[@]} --needed --noconfirm
 	}
 	
 install_full(){
-	install_minimal
-	yay -S ${additional[@]} --needed --noconfirm
+	yay -Syu ${minimal[@]} ${wayland[@]} ${aur[@]} ${additional[@]} --needed --noconfirm
 	}
 
 wayland_install(){
@@ -134,9 +130,6 @@ move_configs(){
 	cp -r "$dir"/deps/.zprofile "$HOME"
 
     mkdir -p "$HOME/.local/share/icons"
-    mkdir -p "$HOME/.local/share/fonts"
-
-	tar -xf "$dir"/deps/fonts.tar.gz -C "$HOME/.local/share/fonts"
 	}
 
 change_theme(){
@@ -219,7 +212,7 @@ install_sddm(){
 	  sudo systemctl disable $(systemctl list-unit-files | grep enabled | grep -E 'gdm|lightdm|lxdm|lxdm-gtk3|sddm|slim|xdm' | awk -F ' ' '{print $1}')
 	fi
 
-	# Enable and start SDDM
+	# Enable SDDM
 	echo "Enabling SDDM"
 	sudo systemctl enable sddm
 	}
