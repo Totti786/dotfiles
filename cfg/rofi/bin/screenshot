@@ -2,11 +2,11 @@
 
 rofi_command="rofi -theme power-screen"
 # Buttons
-screen=""
-area=""
-window=""
-infive=""
-inten=""
+screen="󰹑"
+area="󰆞"
+window=""
+infive=""
+inten=""
 
 # Variable passed to rofi
 options="$screen\n$area\n$window\n$infive\n$inten"
@@ -14,19 +14,19 @@ options="$screen\n$area\n$window\n$infive\n$inten"
 chosen="$(echo -e "$options" | $rofi_command -p 'Take Screenshot' -dmenu -selected-row 0)"
 case "$chosen" in
     "$screen")
-		takeshot --now
+		screenshot --now
         ;;
     "$area")
-		takeshot --area
+		screenshot --area
         ;;
     "$window")
-		takeshot --win
+		screenshot --win
 		;;
     "$infive")
-		takeshot --in5
+		screenshot --in5
 		;;
     "$inten")
-		takeshot --in10
+		screenshot --in10
         ;;
 esac
 
