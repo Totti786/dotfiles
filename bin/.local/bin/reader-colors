@@ -4,25 +4,24 @@
 
 source "$HOME"/.cache/wal/colors.sh
 
-zathura_config(){
-
 if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
 	source "$HOME/.cache/wal/colors.sh"
 	background="$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)"
 else
 	background="#000000"
 	foreground="#F7F7F6"
-	color1="#AC4142"
-	color2="#7ba5dd"
+	color11="#AC4142"
+	color9="#7ba5dd"
 fi
 
+zathura_config(){
 cat > "$HOME"/.config/zathura/zathurarc <<CONF
 set recolor "true"
 
 set completion-bg "$background"
 set completion-fg "$foreground"
 set completion-group-bg "$background"
-set completion-group-fg "$color2"
+set completion-group-fg "$color9"
 set completion-highlight-bg "$foreground"
 set completion-highlight-fg "$background"
 
@@ -34,9 +33,9 @@ set inputbar-bg "$background"
 set inputbar-fg "$foreground"
 set notification-bg "$background"
 set notification-fg "$foreground"
-set notification-error-bg "$color1"
+set notification-error-bg "$color11"
 set notification-error-fg "$foreground"
-set notification-warning-bg "$color1"
+set notification-warning-bg "$color11"
 set notification-warning-fg "$foreground"
 set statusbar-bg "$background"
 set statusbar-fg "$foreground"
@@ -71,6 +70,15 @@ red="$(pastel format rgb ${color9:1} | awk -F '[(),]' '{printf "%.3f %.3f %.3f\n
 
 mkdir -p "$HOME"/.config/sioyek
 	
+cat > "$HOME"/.config/sioyek/keys_user.config <<CONF
+
+## Toggle custom color mode
+toggle_custom_color <C-r>
+
+## Toggle statusbar display
+toggle_statusbar <C-n>
+CONF
+
 cat > "$HOME"/.config/sioyek/prefs_user.config <<CONF
 # For more information see the documentation at https://sioyek-documentation.readthedocs.io/
 
@@ -90,11 +98,11 @@ custom_background_color $background
 custom_text_color $foreground
 
 ## Color of status bar background
-status_bar_color $background
+status_bar_color $background 
 ## Color of status bar text
 status_bar_text_color $foreground
 ## Font size of the status bar text
-status_bar_font_size 20
+status_bar_font_size 12
 
 # Highlight color when text is selected using mouse
 text_highlight_color    $yellow
