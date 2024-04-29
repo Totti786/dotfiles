@@ -14,7 +14,7 @@ if  [[ "$1" = "--border" ]]; then
 		fi
 	fi
 	if [[ "$?" == 0 ]]; then
-		sed -i -e "s/window_border=.*/window_border=\"$width\"/g" "$HOME"/.zprofile
+		sed -i -e "s/window_border=.*/window_border=\"$width\"/g" "$HOME"/.theme
 		if [[ "$XDG_CURRENT_DESKTOP" == "i3" ]]; then
 			sed -i -e "s/pixel .*/pixel $width/g" "$HOME"/.config/i3/config &&
 			"$HOME"/.config/i3/i3-reload
