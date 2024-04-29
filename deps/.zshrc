@@ -11,7 +11,6 @@ export PATH=$PATH:~/.scripts/
 ZSH_THEME="robbyrussell"
 
 plugins=(
-	git
     zsh-autosuggestions
     zsh-syntax-highlighting
 )
@@ -19,11 +18,6 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-export VISUAL='geany'
-export EDITOR='vim'
-export TERMINAL='alacritty'
-export BROWSER='firefox'
 export HISTORY_IGNORE="(ls|cd|cls|clear|pwd|exit|sudo reboot|history|cd -|cd ..)"
 
 # ls
@@ -43,7 +37,7 @@ alias ga='git add'
 alias gc='git commit -m'
 alias gp='git push origin master'
 
-#pacman 
+# pacman 
 alias pacs='sudo pacman -S'
 alias pacr='sudo pacman -Rcns'
 alias pacu='sudo pacman -Syu'
@@ -60,8 +54,7 @@ alias pac="yay -Qq | fzf --prompt='➜ ' --color=16 -m --preview 'yay -Qi {1}'"
 # pacman clear
 alias pacc='yay -Qtdq | yay -Rns -'
 
-#misc
-alias grub-update="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+# misc
 alias neo='neofetch'
 alias edit='vim ~/.zshrc'
 alias ctemp='watch -n 1 sensors'
