@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 image="$HOME/.config/wpg/templates/wallpaper.jpg"
 font="JetBrainsMono Nerd Font"
@@ -20,9 +20,10 @@ else
 	magenta="#ee6a70"
 fi
 
-status=$(playerctl -p %any status || true)
+if [ "$(playerctl -i kdeconnect -p %any status)" == "Playing" ]; then
+	playerctl -i kdeconnect -a pause
+fi
 
-if [ "$status" == "Playing" ]; then	playerctl pause ;fi
 pkill rofi
 
 if [[ -n $(pgrep i3lock) ]] || [[ -n "$(pgrep hyprlock)" ]];then 
