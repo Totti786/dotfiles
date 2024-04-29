@@ -16,14 +16,6 @@ else
 	magenta="#ee6a70"
 fi
 
-
-#sed -i -e "s/gap_y = .*,/gap_y = 162,/g" \
-	#-i -e "s/minimum_width = .*,/minimum_width = 330,/g" \
-	#-i -e "s/font  = 'JetBrains Mono:Bold:size=.*',/font  = 'JetBrains Mono:Bold:size=10',/g" \
-	#-i -e "s/font1 = 'JetBrains Mono:Bold:size=.*',/font1 = 'JetBrains Mono:Bold:size=15',/g" \
-	#-i -e "s/font2 = 'JetBrains Mono:bold:size=.*',/font2 = 'JetBrains Mono:bold:size=25',/g" \
-#"$conkyConfig"
-
 sed -i -e "s/own_window_colour = '.*',/own_window_colour = '$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)',/g" \
 	-i -e "s/color0 = '.*',/color0 = '${color10}',/g" \
 	-i -e "s/color1 = '.*',/color1 = '${foreground}',/g" \
@@ -31,7 +23,6 @@ sed -i -e "s/own_window_colour = '.*',/own_window_colour = '$(pastel mix -f 0.4 
 	-i -e "s/color3 = '.*',/color3 = '${color14}',/g" \
 	-i -e "s/own_window_argb_value = .*/own_window_argb_value = $alpha,/g" \
 "$config"	
-
 
 
 toggle(){
@@ -44,11 +35,13 @@ toggle(){
 }
 
 restart(){
-	if [[ -n "$(pgrep conky)" ]]; then 
-		toggle
+	if [[ "$conky" == "On" ]]; then
+		[[ -n "$(pgrep conky)" ]] && pkill -9 conky
 		conky -qc "$config"
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && xdo lower -N Conky
+	else
+		pkill -9 conky
 	fi
 }
-		
+
 if [[ "$1" == "restart" ]]; then restart ;else toggle ;fi
