@@ -2,8 +2,6 @@
 
 # Autostart Programs ----------------------------------------#
 
-[[ -f "$HOME/.theme" ]] && source "$HOME/.theme" || conky="On"
-
 # Polkit agent
 [[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
@@ -52,4 +50,4 @@ copyq --start-server &
 plank &
 
 # Conky
-[[ $conky == "On" ]] &&	"$HOME"/.local/bin/conky.sh &
+conky.sh &

@@ -2,8 +2,6 @@
 
 # Autostart Programs ----------------------------------------#
 
-[[ -f "$HOME/.theme" ]] && source "$HOME/.theme" || conky="On"
-
 # XDG Autostart 
 [[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && xdg-autostart & 
 
@@ -59,4 +57,4 @@ wpgtk restore &
 copyq --start-server &
 
 # Conky
-[[ "$conky" == "On" ]] && "$HOME"/.local/bin/conky.sh &
+conky.sh &

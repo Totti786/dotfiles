@@ -2,8 +2,6 @@
 
 # Autostart Programs ----------------------------------------#
 
-[[ -f "$HOME/.theme" ]] && source "$HOME/.theme" || conky="On"
-
 # XDG Autostart 
 [[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && xdg-autostart
 
@@ -54,10 +52,4 @@ killall -q -9 plank
 plank &
 
 # Conky
-[[ "$conky" == "On" ]] && "$HOME"/.local/bin/conky.sh &
-
-# Fix Plank
-bspc subscribe node_add | while read -r _
-do
-	xdo raise -N Plank
-done &
+conky.sh &
