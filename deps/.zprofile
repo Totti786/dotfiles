@@ -13,7 +13,13 @@ if [ -d "$HOME/.local/bin" ]; then
   PATH="$HOME/.local/bin:$PATH"
 fi
 
+if [ -d "$HOME/.cargo/bin" ]; then
+  PATH="$HOME/.cargo/bin:$PATH"
+fi
+
 # Set default mime types
+export VISUAL='geany'
+export EDITOR='vim'
 export TERMINAL="alacritty"
 export BROWSER="firefox"
-export QT_QPA_PLATFORMTHEME="qt5gtk2"
+export QT_QPA_PLATFORMTHEME="qt5ct"
