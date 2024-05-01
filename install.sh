@@ -17,7 +17,7 @@ declare -a minimal=(
 	gnome-epub-thumbnailer jq gpick grep htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma \
 	linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn \
 	noto-fonts noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol \
-	qt5ct rhythmbox	rofi-lbonn-wayland rtorrent scrot stalonetray snapshot sxhkd termdown thunar thunar-archive-plugin \
+	qt5ct rhythmbox	rofi-wayland rtorrent scrot stalonetray snapshot sxhkd termdown thunar thunar-archive-plugin \
 	perl plank playerctl plasma-browser-integration	polkit-gnome polybar python-pipx python-wheel qbittorrent \
 	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-material-symbols-variable-git \
 	ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift tumbler viewnior waypaper-git \
@@ -56,27 +56,27 @@ declare -a additional=(
 
 checkrepo(){
 	chaotic="$(grep -i "chaotic" /etc/pacman.conf | head -n1)"
-	if [[ "$chaotic" == "[chaotic-aur]" ]]; then 
+	if [[ "$chaotic" == "[chaotic-aur]" ]]; then
 		echo "The Chaotic AUR repo is already added"
 	else
 		echo "Adding the Chaotic AUR repo"
 		# Import and sign Chaotic AUR repository key
 		sudo pacman-key --recv-key "3056513887B78AEB" --keyserver keyserver.ubuntu.com || exit 1
 		sudo pacman-key --lsign-key "3056513887B78AEB" || exit 1
-		
+
 		# Add Chaotic AUR repository to pacman.conf
 		sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' \
 		'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm || exit 1 &&
 		echo "[chaotic-aur]
 		Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf > /dev/null
-		
+
 		# Configure pacman
 		sudo sed -i "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
 		sudo sed -i "s/#Color/Color/g" /etc/pacman.conf
 		sudo sed -i "s/#VerbosePkgLists/VerbosePkgLists/g" /etc/pacman.conf
 	fi
-	
-	if ! pacman -Q yay &> /dev/null; then 
+
+	if ! pacman -Q yay &> /dev/null; then
 		echo "Installing the AUR helper yay..."
 		sudo pacman -Sy yay --noconfirm
 	else
@@ -240,6 +240,26 @@ wallpapers() {
     fi
 }
 
+update(){
+	## update dependencies and install new ones
+	install_minimal
+	progressBar "Updating... "
+	## backup weather info file
+	[ -f "$HOME/.config/polybar/scripts/info" ] &&
+		cp "$HOME"/.config/polybar/scripts/info "$HOME"/.cache/info
+	#[ ! -f "$HOME/.zprofile" ] && 
+	cp "$dir"/deps/.zprofile "$HOME"/
+	cp "$dir"/deps/.gtkrc-2.0 "$HOME"/
+	cp "$dir"/deps/.theme "$HOME"/
+	## move udpated scripts and configs
+	cp -r "$dir"/bin/.scripts/ "$HOME"/ 
+	cp -r "$dir"/cfg/* "$HOME"/.config/
+	cp -r "$dir"/bin/.local/ "$HOME"/
+	# restore weather info file
+	cp "$HOME"/.cache/info "$HOME"/.config/polybar/scripts/info
+	sh "$dir/bin/.scripts/file-check"
+}
+
 #---- TUI functions  ---------------------
 
 Dialog="dialog"
@@ -277,26 +297,6 @@ tools(){
 		install_wpgtk "Generate color-schemes from wallpapers" off\
 		2>&1 >/dev/tty)
 	$installOptions
-	}
-
-update(){
-	## update dependencies and install new ones
-	install_minimal
-	progressBar "Updating... "
-	## backup weather info file
-	[ -f "$HOME/.config/polybar/scripts/info" ] &&
-		cp "$HOME"/.config/polybar/scripts/info "$HOME"/.cache/info
-	#[ ! -f "$HOME/.zprofile" ] && 
-	cp "$dir"/deps/.zprofile "$HOME"/
-	cp "$dir"/deps/.gtkrc-2.0 "$HOME"/
-	cp "$dir"/deps/.theme "$HOME"/
-	## move udpated scripts and configs
-	cp -r "$dir"/bin/.scripts/ "$HOME"/ 
-	cp -r "$dir"/cfg/* "$HOME"/.config/
-	cp -r "$dir"/bin/.local/ "$HOME"/
-	# restore weather info file
-	cp "$HOME"/.cache/info "$HOME"/.config/polybar/scripts/info
-	sh "$dir/bin/.scripts/file-check"
 	}
 
 install_menu(){
