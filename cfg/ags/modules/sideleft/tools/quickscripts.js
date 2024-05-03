@@ -38,7 +38,7 @@ const scripts = [
     {
         icon: 'arch-symbolic',
         name: 'Update packages',
-        command: `sudo pacman -Syu && notify-send -a pacman "Updated Successfully"`,
+		command: `sudo pacman -Syu && notify-send -a pacman "Updated Successfully"`,
         enabled: isArchDistro,
     },
     {
@@ -77,7 +77,7 @@ export default () => SidebarModule({
                         child: scriptStateIcon,
                         onClicked: () => {
                             closeEverything();
-                            execAsync([`bash`, `-c`, `${userOptions.apps.terminal} bash -C "${script.command}"`]).catch(print)
+                            execAsync([`bash`, `-c`, `${userOptions.apps.terminal} bash -c "${script.command}"`]).catch(print)
                                 .then(() => {
                                     scriptStateIcon.label = 'done';
                                 })

@@ -117,7 +117,7 @@ export default (props) => {
                 }
             })
         ]
-    });  
+    });
     const mainContent = Stack({
         children: {
             'empty': emptyContent,
