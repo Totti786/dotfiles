@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Set the directory to search in
-declare -a directory=(bspwm openbox i3 polybar jgmenu rofi eww zathura)
+declare -a directory=(ags bspwm openbox i3 polybar jgmenu rofi eww zathura)
 
 getfiles(){
 	for i in "${directory[@]}"; do
-		files=$(file $(find "$HOME/.config/$i" "$HOME/.local/bin" -type f) | grep  "shell script")
+		files=$(file $(find "$HOME/.config/$i" "$HOME/.local/bin" -type f) | grep  "script")
 		file="$( echo "$files" | cut -d ":" -f1)"
 		echo "$file"
 	done
