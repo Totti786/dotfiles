@@ -37,7 +37,7 @@ const scripts = [
     },
     {
         icon: 'arch-symbolic',
-        name: 'Update packages',
+        name: 'Update System',
         command: `${App.configDir}/scripts/quickscripts/dots-update.sh`,
         enabled: isArchDistro,
     },
