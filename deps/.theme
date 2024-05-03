@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Bar and window manager style settings
-bar_style=minimal
+bar_style=base
 window_border="0"
 
 if [[ "$bar_style" == "base" ]];then
