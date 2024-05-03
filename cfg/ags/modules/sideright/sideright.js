@@ -91,8 +91,6 @@ const togglesBox = Widget.Box({
         await ModuleRawInput(),
         await HyprToggleIcon('touchpad_mouse', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
         ModuleNightLight(),
-        await HyprToggleIcon('animation', 'Toggle Animations', 'animations:enabled', {}),
-        await HyprToggleIcon('blur_on', 'Toggle Blur', 'decoration:blur:enabled', {}),
         ModuleIdleInhibitor(),
     ]
 })

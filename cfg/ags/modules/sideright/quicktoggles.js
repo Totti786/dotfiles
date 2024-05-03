@@ -86,8 +86,20 @@ export const ModuleNightLight = (props = {}) => Widget.Button({
     onClicked: (self) => {
         self.attribute.enabled = !self.attribute.enabled;
         self.toggleClassName('sidebar-button-active', self.attribute.enabled);
-        if (self.attribute.enabled) Utils.execAsync(['gammastep', '-O', '4500']).catch(print)
-        else Utils.execAsync('pkill gammastep').catch(print);
+        if (self.attribute.enabled) Utils.execAsync('gammastep').catch(print)
+        else Utils.execAsync('pkill gammastep')
+            .then(() => {
+                // disable the button until fully terminated to avoid race
+                self.sensitive = false;
+                const source = setInterval(() => {
+                    Utils.execAsync('pkill -0 gammastep')
+                        .catch(() => {
+                            self.sensitive = true;
+                            source.destroy();
+                        });
+                }, 500);
+            })
+            .catch(print);
     },
     child: MaterialIcon('nightlight', 'norm'),
     setup: (self) => {
@@ -234,6 +246,3 @@ export const ModulePowerIcon = (props = {}) => Widget.Button({
         setupCursorHover(button);
     }
 })
-
-
-

@@ -38,7 +38,7 @@ const scripts = [
     {
         icon: 'arch-symbolic',
         name: 'Update packages',
-		command: `sudo pacman -Syu && notify-send -a pacman "Updated Successfully"`,
+        command: `${App.configDir}/scripts/quickscripts/dots-update.sh`,
         enabled: isArchDistro,
     },
     {
