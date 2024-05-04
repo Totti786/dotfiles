@@ -48,8 +48,9 @@ export default async (monitor = 0) => {
         },
         onScrollDown: () => {
             Indicator.popup(1); // Since the brightness and speaker are both on the same window
-            Brightness[monitor].screen_value -= 0.05;
-        },
+			if (Brightness[monitor].screen_value <= 0.05) Indicator.popup(1);
+			else Brightness[monitor].screen_value -= 0.05;
+		},
         onPrimaryClick: () => {
             App.toggleWindow('sideleft');
         },
