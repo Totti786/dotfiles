@@ -3,7 +3,6 @@
 <channel name="xfce4-session" version="1.0">
   <property name="general" type="empty">
     <property name="FailsafeSessionName" type="empty"/>
-    <property name="LockCommand" type="string" value="bash -c 'lockscreen --now'"/>
     <property name="SessionName" type="string" value="Default"/>
     <property name="SaveOnExit" type="bool" value="true"/>
   </property>
@@ -27,5 +26,8 @@
       <property name="Client4_Priority" type="empty"/>
       <property name="Client4_PerScreen" type="empty"/>
     </property>
+  </property>
+  <property name="shutdown" type="empty">
+    <property name="LockScreen" type="bool" value="false"/>
   </property>
 </channel>
