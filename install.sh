@@ -350,7 +350,7 @@ main(){
 			main
 			;;
 		3)
-			git pull 
+			git pull --recurse-submodules
 			update
 			main		
 			;;
@@ -372,7 +372,7 @@ main(){
 	}
 
 if [[ "$1" == "--update" ]]; then
-	git pull
+	git pull --recurse-submodules
 	update
 elif [[ "$1" == "--wallpapers" ]]; then
 	wallpapers
