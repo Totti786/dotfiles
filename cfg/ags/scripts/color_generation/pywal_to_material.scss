@@ -1,0 +1,126 @@
+$primary_paletteKeyColor: $color1;
+$secondary_paletteKeyColor: $color2;
+$tertiary_paletteKeyColor: $color5;
+$neutral_paletteKeyColor: $color4;
+$neutral_variant_paletteKeyColor: mix($color0, $color8, 50%);
+$background:  mix($color0, $color8, 80%);
+$onBackground: $color7;
+$surface:  mix($color0, $color8, 70%);
+$surfaceDim:  mix($color0, $color8, 40%);
+$surfaceBright: $color8;
+$surfaceContainerLowest: #FFFFFF;
+$surfaceContainerLow: darken(mix($color0, $color8, 40%), 1%);
+$surfaceContainer: mix($color0, $color8, 20%);
+$surfaceContainerHigh: lighten($color0, 10%);
+$surfaceContainerHighest: lighten($color0, 20%);
+$onSurface: mix($color7, $color15, 30% );
+$surfaceVariant: darken($color1, 10%);
+$onSurfaceVariant: $color7;
+$inverseSurface: $color0;
+$inverseOnSurface: lighten($color3, 20%);
+$outline: lighten($color3, 20%);
+$outlineVariant: $color5;
+$shadow: #000000;
+$scrim: #000000;
+$surfaceTint: lighten($color1, 20%);
+$primary: lighten($color1, 10%);
+$onPrimary: darken($color2, 20%);
+$primaryContainer: darken($color4, 10%);
+$onPrimaryContainer: lighten($color4, 40%);
+$inversePrimary: invert($color4);
+$secondary: lighten(saturate($color5, 20%), 10%);
+$onSecondary: lighten($color7, 5%);
+$secondaryContainer: darken($color3, 5%);
+$onSecondaryContainer: lighten($color5, 20%);
+$tertiary: $color5;
+$onTertiary: adjust-hue(darken($color2, 20%), 30deg);
+$tertiaryContainer: adjust-hue(darken($color2, 10%), 30deg);
+$onTertiaryContainer: lighten($color4, 50%);
+$error: #FFB4AB;
+$onError: #690005;
+$errorContainer: #93000A;
+$onErrorContainer: #FFDAD6;
+$success: #B5CCBA;
+$onSuccess: #213528;
+$successContainer: #374B3E;
+$onSuccessContainer: #D1E9D6;
+$term0: $color0;
+$term1: $color1;
+$term2: $color2;
+$term3: $color3;
+$term4: $color4;
+$term5: $color5;
+$term6: $color6;
+$term7: $color7;
+$term8: $color8;
+$term9: $color9;
+$term10: $color10;
+$term11: $color11;
+$term12: $color12;
+$term13: $color13;
+$term14: $color14;
+$term15: $color15;
+
+
+.primary_paletteKeyColor { color: $primary_paletteKeyColor; }
+.secondary_paletteKeyColor { color: $secondary_paletteKeyColor; }
+.tertiary_paletteKeyColor { color: $tertiary_paletteKeyColor; }
+.neutral_paletteKeyColor { color: $neutral_paletteKeyColor; }
+.neutral_variant_paletteKeyColor { color: $neutral_variant_paletteKeyColor; }
+.background { color: $background; }
+.onBackground { color: $onBackground; }
+.surface { color: $surface; }
+.surfaceDim { color: $surfaceDim; }
+.surfaceBright { color: $surfaceBright; }
+.surfaceContainerLowest { color: $surfaceContainerLowest; }
+.surfaceContainerLow { color: $surfaceContainerLow; }
+.surfaceContainer { color: $surfaceContainer; }
+.surfaceContainerHigh { color: $surfaceContainerHigh; }
+.surfaceContainerHighest { color: $surfaceContainerHighest; }
+.onSurface { color: $onSurface; }
+.surfaceVariant { color: $surfaceVariant; }
+.onSurfaceVariant { color: $onSurfaceVariant; }
+.inverseSurface { color: $inverseSurface; }
+.inverseOnSurface { color: $inverseOnSurface; }
+.outline { color: $outline; }
+.outlineVariant { color: $outlineVariant; }
+.shadow { color: $shadow; }
+.scrim { color: $scrim; }
+.surfaceTint { color: $surfaceTint; }
+.primary { color: $primary; }
+.onPrimary { color: $onPrimary; }
+.primaryContainer { color: $primaryContainer; }
+.onPrimaryContainer { color: $onPrimaryContainer; }
+.inversePrimary { color: $inversePrimary; }
+.secondary { color: $secondary; }
+.onSecondary { color: $onSecondary; }
+.secondaryContainer { color: $secondaryContainer; }
+.onSecondaryContainer { color: $onSecondaryContainer; }
+.tertiary { color: $tertiary; }
+.onTertiary { color: $onTertiary; }
+.tertiaryContainer { color: $tertiaryContainer; }
+.onTertiaryContainer { color: $onTertiaryContainer; }
+.error { color: $error; }
+.onError { color: $onError; }
+.errorContainer { color: $errorContainer; }
+.onErrorContainer { color: $onErrorContainer; }
+.success { color:  $success; }
+.onSuccess { color:  $onSuccess; }
+.successContainer { color:  $successContainer; }
+.onSuccessContainer { color:  $onSuccessContainer; }
+.term0 { color:  $term0; }
+.term1 { color:  $term1; }
+.term2 { color:  $term2; }
+.term3 { color:  $term3; }
+.term4 { color:  $term4; }
+.term5 { color:  $term5; }
+.term6 { color:  $term6; }
+.term7 { color:  $term7; }
+.term8 { color:  $term8; }
+.term9 { color:  $term9; }
+.term10 { color:  $term10; }
+.term11 { color:  $term11; }
+.term12 { color:  $term12; }
+.term13 { color:  $term13; }
+.term14 { color:  $term14; }
+.term15 { color:  $term15; }
