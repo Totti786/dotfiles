@@ -19,6 +19,7 @@ if [[ ! -d "$dots" ]]; then
 		echo "You can now close this window"
 	fi
 else
+	cd "$dots"
 	"$dots"/install.sh --update &&
 	## remove already existing json file for background color scheme
 	rm "$HOME/.config/wpg/schemes/_home_$(whoami)__dotfiles_deps_background_jpg_dark_wal__1.1.0.json"
