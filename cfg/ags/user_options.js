@@ -10,10 +10,7 @@ const userConfigOptions = {
             'nextTab': "Ctrl+Page_Down",
             'prevTab': "Ctrl+Page_Up",
         },
-    },
-    'sidebar': {
-        'imageAllowNsfw': false,
-    },
+    },    
 }
 
 export default userConfigOptions;
