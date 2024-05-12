@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 gamma_mode=off
-temperature=3700
+temperature=4700
 increment=200
 
 change_mode() {
@@ -13,7 +13,7 @@ change_mode() {
 change_temp() {
   if (( "$2" > 1000 )) && (( "$2" < 16000 )); then
     sed -i "s/temperature=$1/temperature=$2/g" "$0"
-    redshift -P -O $((temperature + increment))
+    gammastep -P -O $((temperature + increment))
   fi
 }
 
