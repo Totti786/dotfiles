@@ -29,7 +29,7 @@ let configOptions = {
         'imageViewer': "viewnoir",
         'network': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
         'settings': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
-        'taskManager': "gnome-system-monitor",
+        'taskManager': "gnome-usage",
         'terminal': "alacritty --hold -e", // This is only for shell actions
     },
     'battery': {
@@ -48,6 +48,12 @@ let configOptions = {
         // 'DP-1': "ddcutil",
         'controllers': {
             'default': "auto",
+        },
+    },
+    'gaming': {
+        'crosshair': {
+            'size': 20,
+            'color': 'rgba(113,227,32,0.9)',
         },
     },
     'music': {

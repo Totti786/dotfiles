@@ -107,7 +107,7 @@ export const periodicTable = [
         { name: 'Lanthanum', symbol: 'La', number: 57, weight: 138.91, type: 'lanthanum' },
         { name: 'Hafnium', symbol: 'Hf', number: 72, weight: 178.49, type: 'metal' },
         { name: 'Tantalum', symbol: 'Ta', number: 73, weight: 180.95, type: 'metal' },
-        { name: 'Wolfram', symbol: 'W', number: 74, weight: 183.84, type: 'metal' },
+        { name: 'Tungsten', symbol: 'W', number: 74, weight: 183.84, type: 'metal' },
         { name: 'Rhenium', symbol: 'Re', number: 75, weight: 186.21, type: 'metal' },
         { name: 'Osmium', symbol: 'Os', number: 76, weight: 190.23, type: 'metal' },
         { name: 'Iridium', symbol: 'Ir', number: 77, weight: 192.22, type: 'metal' },
@@ -162,6 +162,7 @@ export const series = [
         { name: 'Thulium', symbol: 'Tm', number: 69, weight: 168.93, type: 'lanthanum' },
         { name: 'Ytterbium', symbol: 'Yb', number: 70, weight: 173.04, type: 'lanthanum' },
         { name: 'Lutetium', symbol: 'Lu', number: 71, weight: 174.97, type: 'lanthanum' },
+        { name: '', symbol: '', number: -1, weight: 0, type: 'empty' },
     ],
     [
         { name: '', symbol: '', number: -1, weight: 0, type: 'empty' },
@@ -181,6 +182,7 @@ export const series = [
         { name: 'Mendelevium', symbol: 'Md', number: 101, weight: 258, type: 'actinium' },
         { name: 'Nobelium', symbol: 'No', number: 102, weight: 259, type: 'actinium' },
         { name: 'Lawrencium', symbol: 'Lr', number: 103, weight: 262, type: 'actinium' },
+        { name: '', symbol: '', number: -1, weight: 0, type: 'empty' },
     ],
 ];
 

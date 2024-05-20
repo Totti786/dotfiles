@@ -44,7 +44,7 @@ export default () => {
                         children: category.binds.map((keybinds, _) => Widget.Label({ // Binds
                             xalign: 0,
                             label: keybinds.action,
-                            className: "txt chearsheet-action txt-small",
+                            className: "txt chearsheet-action txt-norm",
                         }))
                     })
                 ]

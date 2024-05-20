@@ -63,7 +63,6 @@ const UtilButton = ({ name, icon, onClicked, onSecondaryClick }) => Button({
     vpack: 'center',
     tooltipText: name,
     onClicked: onClicked,
-    onSecondaryClick: onSecondaryClick,
     className: 'bar-util-btn icon-material txt-norm',
     label: `${icon}`,
 })
