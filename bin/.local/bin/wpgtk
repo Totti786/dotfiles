@@ -12,7 +12,6 @@ config="$HOME/.config"
 alacritty="$config/alacritty/colors.toml"
 polybar="$config/polybar/colors.ini"
 rofi="$config/rofi/themes/colors.rasi"
-#discord="$config/BetterDiscord/data/stable/custom.css"
 discord="$config/Vencord/settings/quickCss.css"
 dunst="$config/dunst/dunstrc"
 geany="$config/geany/colorschemes/Pywal.conf"
@@ -24,7 +23,7 @@ hypr="$config/hypr/colors.conf"
 swaync="$config/swaync/style.css"
 waybar="$HOME/.config/waybar/colors.css"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='70'
+alpha='FF'
 
 ## Change colors
 change_colors(){
@@ -142,7 +141,7 @@ change_colors(){
 	reader-colors
 
 	# ags
-	if [[ -f "$HOME/.config/ags/scss/_material.scss" ]] && [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+	if [[ -d "$HOME/.config/ags/scss/" ]] && [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
 		"$HOME"/.config/ags/scripts/color_generation/colorgen.sh "$wallpaper" --apply --smart >/dev/null 2>&1
     fi
 
@@ -446,6 +445,8 @@ misc(){
 		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor'
+		gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+		gsettings set org.gnome.desktop.interface color-scheme prefer-light
 	fi
 }
 
