@@ -228,8 +228,7 @@ change_colors(){
 	fi
 
 	# resize and move wallpaper for use by other programs
-	#cp "$wallpaper"  "$HOME"/.config/wpg/templates/wallpaper.jpg
-	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers &> /dev/null
+	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers/ &> /dev/null
 }
 
 transparent(){
@@ -423,11 +422,11 @@ dynamic(){
 phone(){
 	run
 	if command -v kdeconnect-cli &> /dev/null; then
-		deviceID="$(kdeconnect-cli -a --id-only)"
-		if [[ ! -z $deviceID ]]; then
+		device_id="$(kdeconnect-cli -a --id-only)"
+		if [[ -n "$device_id" ]]; then
 			cp "$wallpaper" /tmp/wallpaper.jpg
-			kdeconnect-cli -d $deviceID --share /tmp/wallpaper.jpg && 
-			kdeconnect-cli -d $deviceID --ping
+			kdeconnect-cli -d "$device_id" --share /tmp/wallpaper.jpg && 
+			kdeconnect-cli -d "$device_id" --ping
 		fi
 		exit
 	else
@@ -441,12 +440,10 @@ misc(){
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1'
-		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor'
-		gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 		gsettings set org.gnome.desktop.interface color-scheme prefer-light
+		gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 	fi
 }
 
@@ -463,9 +460,9 @@ main(){
 	papirus-folder.sh ${red} &
 	restart copyq --start-server &
 	copyWal
-	convert -scale 20% -blur 0x2 -resize \
+	magick "$wallpaper" -scale 20% -blur 0x2 -resize \
 	"$(xdpyinfo | awk '/dimensions/{print $2}')" \
-	"$wallpaper" "$HOME/.config/wpg/templates/wallpaper.jpg"
+	"$HOME/.config/wpg/templates/wallpaper.png"
 	exit
 }
 
