@@ -80,6 +80,13 @@ let configOptions = {
             'batchCount': 20,
             'allowNsfw': false,
         },
+        'pages': {
+            'order': ["apis", "tools"],
+            'apis': {
+                'order': ["gemini", "gpt", "waifu", "booru"],
+            }
+        },
+
     },
     'search': {
         'engineBaseUrl': "https://www.google.com/search?q=",
@@ -129,7 +136,10 @@ let configOptions = {
         // are too many files in the search path it'll affect performance
         // Example: ['/usr/share/icons/Tela-nord/scalable/apps']
         'searchPaths': [''],
-
+        'symbolicIconTheme': {
+            "dark": "Papirus-Dark",
+            "light": "Papirus",
+        },
         substitutions: {
             'code-url-handler': "visual-studio-code",
             'Code': "visual-studio-code",
@@ -182,7 +192,7 @@ let configOptions = {
 let optionsOkay = true;
 function overrideConfigRecursive(userOverrides, configOptions = {}) {
     for (const [key, value] of Object.entries(userOverrides)) {
-        if (!configOptions[key]) optionsOkay = false;
+        if (configOptions[key] === undefined) optionsOkay = false;
         else if (typeof value === 'object') {
             overrideConfigRecursive(value, configOptions[key]);
         } else {

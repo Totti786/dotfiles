@@ -7,6 +7,7 @@ const { execAsync } = Utils;
 import { setupCursorHover } from '../.widgetutils/cursorhover.js';
 import { showColorScheme } from '../../variables.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
+import { darkMode } from '../.miscutils/system.js';
 
 const ColorBox = ({
     name = 'Color',
