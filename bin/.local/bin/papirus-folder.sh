@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Dependencies: `xfconf-query` `sed`
+# Dependencies: `xfconf-query` `sed` `gsettings (optional)`
 
 # This function takes a hexadecimal color value and a light delta, and returns a darker color value.
 darker_channel() {
@@ -33,8 +33,13 @@ darker() {
 
 # This function reloads the icon theme.
 reload(){
-	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus1" &&
-	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"
+	if [[ "$XDG_SESSION_TYPE"  == "wayland" ]]; then
+		gsettings set org.gnome.desktop.interface icon-theme 'Papirus1' &&
+		gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+	else
+		xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus1" &&
+		xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark"
+	fi
 }
 
 # Parse command line arguments.
