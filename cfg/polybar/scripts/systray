@@ -4,7 +4,7 @@
 [[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
 [[ -z "$bar_style" ]] && bar_style="base" top_padding="23"
 
-hidden="$HOME"/.syshide.lock
+lock="$HOME"/.syshide.lock
 
 tray(){
 	gravity="NE"
@@ -27,16 +27,16 @@ tray(){
 	tray_command=(stalonetray --background $color --geometry $geometry --grow-gravity $gravity --icon-gravity $gravity --vertical false --slot-size 32 --kludges force_icons_size)
 	
 	if [[ "$(pidof stalonetray)" ]]; then
-		if [[ ! -e "$hidden" ]]; then
+		if [[ ! -e "$lock" ]]; then
 			polybar-msg action "#systray.hook.1"
 			xdo hide -n stalonetray
-			touch "$hidden"
+			touch "$lock"
 			pkill -f systray
 		else
 			polybar-msg action "#systray.hook.0"
 			xdo show -n stalonetray
 			xdo raise -n stalonetray
-			rm "$hidden"
+			rm "$lock"
 			sleep 5 && tray
 		fi
 	else
@@ -48,15 +48,15 @@ tray(){
 i3_tray(){
 	polytray="$(pgrep -a polybar | grep polytray | cut -d ' ' -f1)"
 	if [[ "$polytray" ]]; then
-		if [[ ! -e "$hidden" ]]; then
+		if [[ -e "$lock" ]]; then
 			polybar-msg action "#systray.hook.1"
 			xdo hide -p "$polytray"
-			touch "$hidden"
+			rm "$lock"
 			pkill -f systray
 		else
 			polybar-msg action "#systray.hook.0"
 			xdo show -p "$polytray" 
-			rm "$hidden"
+			touch "$lock"
 			sleep 5 && i3_tray
 		fi
 	else
