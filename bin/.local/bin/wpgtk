@@ -462,7 +462,7 @@ main(){
 	copyWal
 	magick "$wallpaper" -scale 20% -blur 0x2 -resize \
 	"$(xdpyinfo | awk '/dimensions/{print $2}')" \
-	"$HOME/.config/wpg/templates/wallpaper.png"
+	"$HOME/.config/wpg/templates/wallpaper.jpg"
 	exit
 }
 
