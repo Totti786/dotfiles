@@ -30,7 +30,7 @@ bspc rule -r *:*
 ## special rules
 declare -a floating=(Lxappearance obs mpv float pop-up
 	Onboard Yad Viewnior Eog loupe scrcpy Steam Wpg
-	feh Nm-connection-editor stalonetray Pavucontrol
+	feh Nm-connection-editor stalonetray pavucontrol
 	copyq '*:*:Library' Xfce4-appearance-settings
 	Xfce4-mouse-settings Xfce4-settings-manager
 	Nsxiv Trackma-gtk steam org.gnome.Weather
