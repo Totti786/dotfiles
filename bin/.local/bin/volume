@@ -17,9 +17,7 @@ get_volume() {
 notify(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
 		notify-send -a "Volume" -t 500 -r 69 -h string:x-dunst-stack-tag:volume_notif -h int:value:$(get_volume) -h string:hlcolor:$bar_color "Volume: $(get_volume)"
-	else
-		ags run-js 'indicator.popup(1);'
-    fi
+	fi
 }
 
 # Increase Volume
