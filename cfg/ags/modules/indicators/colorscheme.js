@@ -89,6 +89,9 @@ const schemeOptionsArr = [
         { name: 'Expressive', value: 'expressive' },
         { name: 'Vibrant', value: 'vibrant' },
     ],
+    [
+        { name: 'Vibrant+', value: 'morevibrant' },
+    ],
     //[
     //  { name: 'Content', value: 'content' },
     //]

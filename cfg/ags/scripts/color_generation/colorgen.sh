@@ -25,11 +25,16 @@ apply_hypr() {
 	fi
 }
 
+#apply_ags() {
+	#apply_hypr
+    #sass -I "$STATE_DIR/scss" -I "$CONFIG_DIR/scss/fallback" "$CONFIG_DIR"/scss/main.scss "$CACHE_DIR"/user/generated/style.css
+    #ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
+    #ags run-js "App.resetCss(); App.applyCss('${HOME}/.cache/ags/user/generated/style.css');"
+#}
+
 apply_ags() {
-	apply_hypr
-    sass -I "$STATE_DIR/scss" -I "$CONFIG_DIR/scss/fallback" "$CONFIG_DIR"/scss/main.scss "$CACHE_DIR"/user/generated/style.css
+    ags run-js "handleStyles(false);"
     ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
-    ags run-js "App.resetCss(); App.applyCss('${HOME}/.cache/ags/user/generated/style.css');"
 }
 
 # check if the file $STATE_DIR/user/colormode.txt exists. if not, create it. else, read it to $lightdark
@@ -52,6 +57,7 @@ else
     transparency=$(sed -n '2p' $colormodefile)
     materialscheme=$(sed -n '3p' $colormodefile)
 fi
+
 backend="material" # color generator backend
 if [ ! -f "$STATE_DIR/user/colorbackend.txt" ]; then
     echo "material" > "$STATE_DIR/user/colorbackend.txt"

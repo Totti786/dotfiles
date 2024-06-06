@@ -107,16 +107,12 @@ const BarBattery = () => Box({
                 self.revealChild = Battery.charging;
             }),
         }),
-        EventBox({
-			tooltipText: `${Battery.energy_rate}W (${Battery.time_remaining})`,
-			child:
-		        Label({
-		            className: 'txt-smallie',
-		            setup: (self) => self.hook(Battery, label => {
-		                label.label = `${Battery.percent}%`;
-		            }),
-		        }),
-		}),
+        Label({
+            className: 'txt-smallie',
+            setup: (self) => self.hook(Battery, label => {
+                label.label = `${Number.parseFloat(Battery.percent.toFixed(1))}%`;
+            }),
+        }),
         Overlay({
             child: Widget.Box({
                 vpack: 'center',
