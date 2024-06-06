@@ -12,7 +12,7 @@ config="$HOME/.config"
 alacritty="$config/alacritty/colors.toml"
 polybar="$config/polybar/colors.ini"
 rofi="$config/rofi/themes/colors.rasi"
-discord="$config/Vencord/settings/quickCss.css"
+discord="$config/Vencord/themes/theme.css"
 dunst="$config/dunst/dunstrc"
 geany="$config/geany/colorschemes/Pywal.conf"
 copyq="$config/copyq/copyq.conf"
@@ -143,28 +143,22 @@ change_colors(){
 	# ags
 	if [[ -d "$HOME/.config/ags/scss/" ]] && [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
 		"$HOME"/.config/ags/scripts/color_generation/colorgen.sh "$wallpaper" --apply --smart >/dev/null 2>&1
-    fi
+    fi 
 
 	# discord
 	if [[ -f "$discord" ]]; then 
 	sed -i "$discord" \
-		-e "s/--text-normal: .*/--text-normal: ${foreground};/g" \
-		-e "s/--background-primary: .*/--background-primary: ${bg_mix};/g" \
-		-e "s/--background-secondary: .*/--background-secondary: ${bg_light};/g" \
-		-e "s/--background-secondary-alt: .*/--background-secondary-alt: ${bg_mix};/g" \
-		-e "s/--background-tertiary: .*/--background-tertiary: ${bg_mix};/g" \
-		-e "s/--background-mobile-primary: .*/--background-mobile-primary: ${bg_mix};/g" \
-		-e "s/--background-mobile-secondary: .*/--background-mobile-secondary: ${bg_light};/g" \
-		-e "s/--modal-background: .*/--modal-background: ${bg_light};/g" \
-		-e "s/--activity-card-background: .*/--activity-card-background: ${bg_light};/g" \
-		-e "s/--background-floating: .*/--background-floating: ${bg_light};/g" \
-		-e "s/--background-accent: .*/--background-accent: ${red};/g" \
-		-e "s/--unread-color: .*/--unread-color: ${cyan};/g" \
-		-e "s/--brand-experiment: .*/--brand-experiment: ${green};/g" \
-		-e "s/ --brand-experiment-560: .*/ --brand-experiment-560: ${yellow};/g" \
-		-e "s/--input-background: .*/--input-background: ${bg_light};/g" \
-		-e "s/ --channeltextarea-background: .*/ --channeltextarea-background: ${bg_light};/g" \
-		-e "s/--user-buttons-color: .*/--user-buttons-color: ${white};/g"
+		-e "s/--text-2: .*/--text-2: ${bright_white};/g" \
+		-e "s/--text-3: .*/--text-3: ${foreground};/g" \
+		-e "s/--text-4: .*/--text-4: ${foreground};/g" \
+		-e "s/--text-5: .*/--text-5: ${foreground};/g" \
+		-e "s/--accent-1: .*/--accent-1: ${red};/g" \
+		-e "s/--accent-2: .*/--accent-2: ${green};/g" \
+		-e "s/--accent-3: .*/--accent-3: ${blue};/g" \
+		-e "s/--accent-4: .*/--accent-4: ${yellow};/g" \
+		-e "s/--accent-5: .*/--accent-5: ${magenta};/g" \
+		-e "s/--bg-3: .*/--bg-3: ${bg_light};/g" \
+		-e "s/--bg-4: .*/--bg-4: ${bg_mix};/g"
 	fi 
 
 	# spotify
@@ -260,13 +254,6 @@ fix_configs(){
 	subfolders = True
 	post_command = wpgtk wall \$wallpaper
 	EOF
-		
-	#version=$(python --version | grep -oE '[0-9]+\.[0-9]+')
-	#a=("polybar()" "reload.i3()")
-	#for i in "${a[@]}"; do
-		#line_number=$(grep -n "$i" "/usr/lib/python$version/site-packages/wpgtk/data/reload.py" | tail -n 1 | awk -F ':' '{print $1}')
-		#sudo sed -i "${line_number}s|^|#|" "/usr/lib/python$version/site-packages/wpgtk/data/reload.py"
-	#done
 }
 
 # this functions should only be used if you have a system with a seperate home partition 
@@ -281,7 +268,7 @@ lockPerms(){
 	fi
 }
 
-# this funcction only works after using the lockPermissions function
+# this funcction only works after using the lockPerms function
 copyWal(){
 	# copy background to sddm theme
 	if [[ -d "/usr/share/sddm/themes/Chili" ]]; then
@@ -374,7 +361,7 @@ setup(){
 
 random(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
-		image="$(find $Wallpapers -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | shuf -n 1)"
+		image="$(find "$Wallpapers" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -exec shuf -ezn 1 {} + | xargs -0)"
 		wall "$image"
 	else
 		notify-send -u low -r 43 "No Wallpapers Were Found in:" "~/Pictures/Wallpapers"
