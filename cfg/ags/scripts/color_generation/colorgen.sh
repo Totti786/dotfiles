@@ -25,13 +25,6 @@ apply_hypr() {
 	fi
 }
 
-#apply_ags() {
-	#apply_hypr
-    #sass -I "$STATE_DIR/scss" -I "$CONFIG_DIR/scss/fallback" "$CONFIG_DIR"/scss/main.scss "$CACHE_DIR"/user/generated/style.css
-    #ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
-    #ags run-js "App.resetCss(); App.applyCss('${HOME}/.cache/ags/user/generated/style.css');"
-#}
-
 apply_ags() {
     ags run-js "handleStyles(false);"
     ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
@@ -74,6 +67,7 @@ if [[ "$1" = "#"* ]]; then # this is a color
     if [ "$2" = "--apply" ]; then
         cp "$CACHE_DIR"/user/generated/material_colors.scss "$STATE_DIR/scss/_material.scss"
         apply_ags &
+        apply_hypr
     fi
 elif [ "$backend" = "material" ]; then
     smartflag=''
@@ -87,7 +81,8 @@ elif [ "$backend" = "material" ]; then
     > "$CACHE_DIR"/user/generated/material_colors.scss
     if [ "$2" = "--apply" ]; then
         cp "$CACHE_DIR"/user/generated/material_colors.scss "$STATE_DIR/scss/_material.scss"
-        apply_ags
+        apply_ags &
+        apply_hypr
     fi
 elif [ "$backend" = "pywal" ]; then
     # copy scss
@@ -111,5 +106,6 @@ elif [ "$backend" = "pywal" ]; then
 		cp "$CACHE_DIR"/user/generated/colors_classes.scss "$STATE_DIR"/scss/_material.scss
     
         apply_ags &
+        apply_hypr
     fi
 fi
