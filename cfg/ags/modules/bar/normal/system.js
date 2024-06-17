@@ -1,4 +1,4 @@
-// This is for the right pills of the bar. 
+// This is for the right pills of the bar.
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { Box, Label, Button, Overlay, Revealer, Scrollable, Stack, EventBox } = Widget;
@@ -31,32 +31,26 @@ const BatBatteryProgress = () => {
 const BarClock = () => Widget.Box({
     vpack: 'center',
     className: 'spacing-h-4 bar-clock-box',
-    child: Widget.EventBox({
-        onSecondaryClick: () => openColorScheme.setValue(!openColorScheme.value),
-        child: Widget.Box({
-            hpack: 'start',
-            children: [
-                Widget.Label({
-                    className: 'bar-time',
-                    label: GLib.DateTime.new_now_local().format(userOptions.time.format),
-                    setup: (self) => self.poll(userOptions.time.interval, label => {
-                        label.label = GLib.DateTime.new_now_local().format(userOptions.time.format);
-                    }),
-                }),
-                Widget.Label({
-                    className: 'txt-norm txt-onLayer1',
-                    label: '•',
-                }),
-                Widget.Label({
-                    className: 'txt-smallie bar-date',
-                    label: GLib.DateTime.new_now_local().format(userOptions.time.dateFormatLong),
-                    setup: (self) => self.poll(userOptions.time.dateInterval, (label) => {
-                        label.label = GLib.DateTime.new_now_local().format(userOptions.time.dateFormatLong);
-                    }),
-                }),
-            ],
+    children: [
+        Widget.Label({
+            className: 'bar-time',
+            label: GLib.DateTime.new_now_local().format(userOptions.time.format),
+            setup: (self) => self.poll(userOptions.time.interval, label => {
+                label.label = GLib.DateTime.new_now_local().format(userOptions.time.format);
+            }),
         }),
-    }),
+        Widget.Label({
+            className: 'txt-norm txt-onLayer1',
+            label: '•',
+        }),
+        Widget.Label({
+            className: 'txt-smallie bar-date',
+            label: GLib.DateTime.new_now_local().format(userOptions.time.dateFormatLong),
+            setup: (self) => self.poll(userOptions.time.dateInterval, (label) => {
+                label.label = GLib.DateTime.new_now_local().format(userOptions.time.dateFormatLong);
+            }),
+        }),
+    ],
 });
 
 const UtilButton = ({ name, icon, onClicked, onSecondaryClick }) => Button({

@@ -48,7 +48,7 @@ export default async (monitor = 0) => {
         },
         onScrollDown: () => {
             Indicator.popup(1); // Since the brightness and speaker are both on the same window
-		if (Brightness[monitor].screen_value <= 0.05) Indicator.popup(1);
+		if (Brightness[monitor].screen_value <= 0.05);
 		else Brightness[monitor].screen_value -= 0.05;
 		},
         onPrimaryClick: () => {

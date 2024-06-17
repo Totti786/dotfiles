@@ -57,6 +57,11 @@ let configOptions = {
             'default': "auto",
         },
     },
+    'cheatsheet': {
+        'keybinds': {
+            'configPath': "" // Path to hyprland keybind config file. Leave empty for default (~/.config/hypr/keybinds.conf)
+        }
+    },
     'gaming': {
         'crosshair': {
             'size': 20,
@@ -80,20 +85,41 @@ let configOptions = {
         'wsNumMarginScale': 0.07,
     },
     'sidebar': {
+        'ai': {
+            'extraGptModels': {
+                'oxygen3': {
+                    'name': 'Oxygen (GPT-3.5)',
+                    'logo_name': 'ai-oxygen-symbolic',
+                    'description': 'An API from Tornado Softwares\nPricing: Free: 100/day\nRequires you to join their Discord for a key',
+                    'base_url': 'https://app.oxyapi.uk/v1/chat/completions',
+                    'key_get_url': 'https://discord.com/invite/kM6MaCqGKA',
+                    'key_file': 'oxygen_key.txt',
+                    'model': 'gpt-3.5-turbo',
+                },
+            }
+        },
         'image': {
             'columns': 2,
             'batchCount': 20,
             'allowNsfw': false,
         },
         'pages': {
-            'order': ["apis", "tools"],
+            //'order': ["tools", "apis"],
+            'order': ["tools"],
             'apis': {
                 'order': ["gemini", "gpt", "waifu", "booru"],
             }
         },
-
     },
     'search': {
+        'enableFeatures': {
+            'actions': true,
+            'commands': true,
+            'mathResults': true,
+            'directorySearch': true,
+            'aiSearch': false,
+            'webSearch': true,
+        },
         'engineBaseUrl': "https://www.google.com/search?q=",
         'excludedSites': ["quora.com"],
     },
@@ -110,6 +136,7 @@ let configOptions = {
     },
     'weather': {
         'city': "",
+        'preferredUnit': "C", // Either C or F
     },
     'workspaces': {
         'shown': 10,
@@ -126,11 +153,11 @@ let configOptions = {
         'autoHide': [
             {
                 'trigger': 'client-added',
-                'interval': 500,
+                'interval': 1000,
             },
             {
                 'trigger': 'client-removed',
-                'interval': 500,
+                'interval': 1000,
             },
         ],
     },
@@ -187,8 +214,12 @@ let configOptions = {
             'prevTab': "Ctrl+Page_Up",
         },
         'cheatsheet': {
-            'nextTab': "Page_Down",
-            'prevTab': "Page_Up",
+            'keybinds': {
+                'nextTab': "Page_Down",
+                'prevTab': "Page_Up",
+            },
+            'nextTab': "Ctrl+Page_Down",
+            'prevTab': "Ctrl+Page_Up",
         }
     },
 }
@@ -201,7 +232,7 @@ function overrideConfigRecursive(userOverrides, configOptions = {}, check = true
             optionsOkay = false;
         }
         else if (typeof value === 'object' && !(value instanceof Array)) {
-            if (key === "substitutions" || key === "regexSubstitutions") {
+            if (key === "substitutions" || key === "regexSubstitutions" || key === "extraGptModels") {
                 overrideConfigRecursive(value, configOptions[key], false);
             } else overrideConfigRecursive(value, configOptions[key]);
         } else {

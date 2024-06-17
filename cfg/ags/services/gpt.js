@@ -6,7 +6,7 @@ import GLib from 'gi://GLib';
 import Soup from 'gi://Soup?version=3.0';
 import { fileExists } from '../modules/.miscutils/files.js';
 
-const PROVIDERS = { // There's this list hmm https://github.com/zukixa/cool-ai-stuff/
+const PROVIDERS = Object.assign({ // There's this list hmm https://github.com/zukixa/cool-ai-stuff/
     'openai': {
         'name': 'OpenAI',
         'logo_name': 'openai-symbolic',
@@ -17,13 +17,22 @@ const PROVIDERS = { // There's this list hmm https://github.com/zukixa/cool-ai-s
         'model': 'gpt-3.5-turbo',
     },
     'ollama': {
-        'name': 'Ollama',
+        'name': 'Ollama (Llama 3)',
         'logo_name': 'ollama-symbolic',
         'description': 'Official Ollama API.\nPricing: Free.',
         'base_url': 'http://localhost:11434/v1/chat/completions',
         'key_get_url': 'it\'s just ollama',
         'key_file': 'ollama_key.txt',
         'model': 'llama3:instruct',
+    },
+    'openrouter': {
+        'name': 'OpenRouter (Llama-3-70B)',
+        'logo_name': 'openrouter-symbolic',
+        'description': 'A unified interface for LLMs',
+        'base_url': 'https://openrouter.ai/api/v1/chat/completions',
+        'key_get_url': 'https://openrouter.ai/keys',
+        'key_file': 'openrouter_key.txt',
+        'model': 'meta-llama/llama-3-70b-instruct',
     },
     'oxygen4o': {
         'name': 'Oxygen (GPT-4o)',
@@ -34,17 +43,8 @@ const PROVIDERS = { // There's this list hmm https://github.com/zukixa/cool-ai-s
         'key_file': 'oxygen_key.txt',
         'model': 'gpt-4o',
     },
-    'oxygen3': {
-        'name': 'Oxygen (GPT-3.5)',
-        'logo_name': 'ai-oxygen-symbolic',
-        'description': 'An API from Tornado Softwares\nPricing: Free: 100/day\nRequires you to join their Discord for a key',
-        'base_url': 'https://app.oxyapi.uk/v1/chat/completions',
-        'key_get_url': 'https://discord.com/invite/kM6MaCqGKA',
-        'key_file': 'oxygen_key.txt',
-        'model': 'gpt-3.5-turbo',
-    },
     'zukijourney': {
-        'name': 'zukijourney',
+        'name': 'zukijourney (GPT-3.5)',
         'logo_name': 'ai-zukijourney',
         'description': 'An API from @zukixa on GitHub.\nNote: Keys are IP-locked so it\'s buggy sometimes\nPricing: Free: 10/min, 800/day.\nRequires you to join their Discord for a key',
         'base_url': 'https://zukijourney.xyzbot.net/v1/chat/completions',
@@ -52,7 +52,7 @@ const PROVIDERS = { // There's this list hmm https://github.com/zukixa/cool-ai-s
         'key_file': 'zuki_key.txt',
         'model': 'gpt-3.5-turbo',
     },
-}
+}, userOptions.sidebar.ai.extraGptModels)
 
 // Custom prompt
 const initMessages =
