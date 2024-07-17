@@ -7,6 +7,7 @@ configuration {
 	click-to-exit: 		true;
 	fixed-num-lines:	true;
 	hover-select: 		true;
+	kb-cancel: 			"Escape,Alt+F1";
 	me-select-entry:	"";
 	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
 }

@@ -6,24 +6,24 @@
 rofi_command="rofi -theme power-screen"
 
 # Options
-shutdown=""
-reboot=""
-lock=""
-suspend=""
-hibernate="󰜗"
-logout=""
-confirm=""
+shutdown=""
+reboot=""
+lock=""
+suspend=""
+hibernate=""
+logout=""
+confirm=""
 
 confirm(){
-	local options="\n"
+	local options="\n"
 	echo -e "$options" | rofi -dmenu -i \
 	     -no-fixed-num-lines \
 	     -p "Are You Sure? : " \
-	     -theme confirm	     
+	     -theme confirm
 }
 
 # Variable passed to rofi
-options="$shutdown\n$reboot\n$lock\n$suspend\n$logout"
+options="$shutdown\n$reboot\n$lock\n$suspend\n$hibernate\n$logout"
 
 chosen="$(echo -e "$options" | $rofi_command -p "UP - $uptime" -dmenu -selected-row 2)"
 case "$chosen" in

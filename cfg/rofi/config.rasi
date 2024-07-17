@@ -11,11 +11,12 @@ configuration {
 	hide-scrollbar:   		    false;
 	disable-history: 		    false;
 	kb-cancel: 					"Escape,Alt+F1";
-	display-drun:               "";
+	display-drun:               "";
 	display-run:                "";
 	display-filebrowser:        "";
+	display-recursivebrowser:   "";
 	display-window:             "";
-	display-calc:     	   		"";
+	display-calc:     	   		"";
 	display-combi: 				"";
 	drun-display-format:        "{name}";
 	window-format:              "{w} · {c} · {t}";

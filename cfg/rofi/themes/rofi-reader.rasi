@@ -1,0 +1,114 @@
+/**
+ * Author : Tarek 
+ * Github : @Totti786
+**/
+ 
+configuration {
+	click-to-exit: 		true;
+	fixed-num-lines:	true;
+	hover-select: 		true;
+	me-select-entry:	"";
+	me-accept-entry: 	[ MousePrimary, MouseSecondary, MouseDPrimary ];
+}
+
+@import "colors.rasi"
+@import "fonts.rasi"
+
+window {
+    transparency:                   "real";
+    background-color:               @background;
+    text-color:                     @foreground;
+    border:                  		0px;
+    border-color:                  	@selected;
+    border-radius:                  10px;
+}
+
+mainbox {
+    background-color:               transparent;
+    children:                       [ "inputbar", "listview" ];
+    spacing:                       	10px;
+    padding:                        10px;
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    padding:                     15px;
+    border-radius:               10px;
+    background-color:            @background-blur;
+    text-color:                  @foreground;
+    children:                    [ "textbox-prompt-colon", "entry" ];
+}
+
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    str:                         " ";    
+}
+
+entry {
+    enabled:                     true;
+    background-color:            transparent;
+    text-color:                  inherit;
+    horizontal-align:            0;
+    placeholder-color:           inherit;
+    placeholder:                 "Search";
+}
+
+listview {
+    background-color:               transparent;
+    columns:                        3;
+    lines:							3;
+    spacing:                        5px;
+    cycle:                          true;
+    dynamic:                        true;
+    layout:                         vertical;
+}
+
+element {
+    background-color:               transparent;
+    text-color:                     @foreground;
+    orientation:                    vertical;
+    border-radius:                  10px;
+    padding:                        10px;
+}
+
+element-icon {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    size:                           180px;
+    border:                         0px;
+    padding:                        10px;
+    border-radius:                  10px;
+}
+
+element-text {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    expand:                         true;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    margin:                         2px 0px 2px 2px;
+}
+
+element selected {
+    background-color:               @selected;
+    text-color:                     @background-alt;
+    border:                  		0px;
+    border-radius:                  10px;
+    border-color:                  	@selected;
+}
+
+element.active,
+element.selected.urgent {
+    background-color:               @on;
+    text-color:                     @background-alt;
+    border-color:                   @on;
+    border-radius:                  10px;
+
+}
