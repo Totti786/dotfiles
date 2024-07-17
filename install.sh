@@ -19,11 +19,11 @@ declare -a minimal=(
 	noto-fonts noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol \
 	qt5ct rhythmbox	rofi-wayland rtorrent scrot stalonetray snapshot sxhkd termdown thunar thunar-archive-plugin \
 	perl plank playerctl plasma-browser-integration	polkit-gnome polybar python-pipx python-wheel qbittorrent \
-	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-material-symbols-variable-git \
-	ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift tumbler viewnior waypaper-git \
-	wget wmctrl xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool xfce4-power-manager \
-	xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock \
-	yad ytfzf youtube-dl zathura zathura-cb zathura-pdf-mupdf zenity zsh
+	thunar-media-tags-plugin thunar-volman ttf-icomoon-feather ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
+	ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-commontimeshift tumbler \
+	viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool \
+	xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo \
+	xss-lock yad ytfzf youtube-dl zathura zathura-cb zathura-pdf-mupdf zenity zsh
 )
 
 declare -a extra=(
