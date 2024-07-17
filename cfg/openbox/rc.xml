@@ -512,7 +512,7 @@
     <!-- Screenshot Keys -->
     <keybind key="Print">
       <action name="Execute">
-        <command>screenshot --now</command>
+        <command>shot --now</command>
       </action>
     </keybind>
     <keybind key="A-Print">
@@ -527,24 +527,24 @@
     </keybind>
     <keybind key="S-Print">
       <action name="Execute">
-        <command>screenshot --win</command>
+        <command>shot --win</command>
       </action>
     </keybind>
     <keybind key="C-A-Print">
       <action name="Execute">
-        <command>screenshot --area</command>
+        <command>shot --area</command>
       </action>
     </keybind>
     <!-- ################################ Launch Applications ################################ -->
     <!-- Apps -->
     <keybind key="W-Return">
       <action name="Execute">
-        <command>alacritty</command>
+        <command>terminal</command>
       </action>
     </keybind>
     <keybind key="W-S-Return">
       <action name="Execute">
-        <command>alacritty</command>
+        <command>terminal</command>
       </action>
     </keybind>
     <keybind key="A-Return">
@@ -580,7 +580,7 @@
     <!-- Rofi -->
     <keybind key="A-F1">
       <action name="Execute">
-        <command>rofi-utils --launcher</command>
+        <command>rofi-utils --launch</command>
       </action>
     </keybind>
     <keybind key="W-n">
@@ -590,12 +590,12 @@
     </keybind>
     <keybind key="W-x">
       <action name="Execute">
-        <command>rofi-utils --powermenu</command>
+        <command>rofi-utils --power</command>
       </action>
     </keybind>
     <keybind key="W-s">
       <action name="Execute">
-        <command>rofi-utils --screenshot</command>
+        <command>rofi-utils --shot</command>
       </action>
     </keybind>
     <keybind key="W-p">
@@ -606,7 +606,7 @@
     <!-- CLI Apps -->
     <keybind key="C-A-t">
       <action name="Execute">
-        <command>alacritty</command>
+        <command>terminal</command>
       </action>
     </keybind>
     <keybind key="C-A-v">
@@ -621,7 +621,7 @@
     </keybind>
     <keybind key="C-A-r">
       <action name="Execute">
-        <command>alacritty -e ranger</command>
+        <command>alacritty -e yazi</command>
       </action>
     </keybind>
     <keybind key="C-A-h">
@@ -661,7 +661,7 @@
     <!-- Rofi-zathura -->
     <keybind key="W-r">
       <action name="Execute">
-        <command>rofi-zathura</command>
+        <command>rofi-reader</command>
       </action>
     </keybind>
     <!-- Rofi-movies -->
