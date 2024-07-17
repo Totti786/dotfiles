@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+current_day=$(date +'%m-%d-%Y-%A')
+temp_dir_base="$HOME/Pictures/Screenshots/Temp"
+temp_dir="$temp_dir_base/$current_day"
+video_dir="$HOME/Videos/TimeLapse"
+
+ffmpeg_config=(-vaapi_device /dev/dri/renderD128 -vcodec hevc_vaapi -vf 'format=nv12|vaapi,hwupload')
+
+shoot(){	
+	if [[ ! -d "$temp_dir" ]]; then
+		mkdir -p "$temp_dir"
+	fi
+	
+	if ! command -v scrot &> /dev/null || ! command -v grim &> /dev/null ; then
+		echo "scrot or grim are not installed!"
+		exit 1
+	fi
+	
+	if [[ "$(pgrep -f proto-recall | wc -l)" > 2 ]]; then
+		echo "Script already running"
+		exit 0
+	fi
+	
+	while true; do
+	    new_day=$(date +'%m-%d-%Y-%A')
+	    if [[ "$new_day" != "$current_day" ]]; then
+	        current_day="$new_day"
+	        temp_dir="$temp_dir_base/$current_day"  # Set to the parent directory
+	        mkdir -p "$temp_dir"
+	    fi
+	
+	    time=$(date +%Y-%m-%d-%H%M%S)
+	
+	    if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+	        scrot -q 70 "$temp_dir/$time.png"
+	    else
+	        grim "$temp_dir/$time.png"
+	    fi
+	
+	    sleep 45
+	done
+}
+
+merge(){
+	
+	if [[ ! -d "$video_dir" ]]; then
+		mkdir -p "$video_dir"
+	fi
+	
+	if ! command -v ffmpeg &> /dev/null; then
+		echo "FFmpeg is not installed!"
+		exit 1
+	fi
+	
+	# Iterate through each directory in the parent directory
+	for daily_dir in "$temp_dir_base"/*; do
+		# Extract the directory name (without the path)
+		dir_name=$(basename "$daily_dir")
+	
+		# Check if the directory is not for the current day
+		if [[ "$dir_name" != "$current_day" ]]; then
+			# Create a time-lapse video using ffmpeg
+			ffmpeg -framerate 10 -pattern_type glob -i "$daily_dir/*.png"  ${ffmpeg_config[@]} "$video_dir/$dir_name.mp4"
+	
+			# Check if the video file was created successfully
+			if [ -f "$video_dir/$dir_name.mp4" ]; then
+				# Optionally, delete the images in the directory
+				rm -R "$daily_dir"
+			fi
+		fi
+	done
+}
+
+
+if [[ "$1" == "--shoot" ]]; then
+	shoot & disown
+elif  [[ "$1" == "--merge" ]]; then
+	merge
+else
+	echo "Usage: ${0##*/} [Options]"
+    echo "Options:"
+    echo "  --shoot             Take periodic screenshots"
+    echo "  --merge            Create a timelapse video"
+fi

@@ -6,7 +6,7 @@ source "$HOME"/.cache/wal/colors.sh
 
 if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
 	source "$HOME/.cache/wal/colors.sh"
-	background="$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)"
+	background="$(pastel mix -f 0.1 $color8 $color0 | pastel format hex)"
 else
 	background="#000000"
 	foreground="#F7F7F6"
@@ -45,6 +45,8 @@ set index-active-bg "$foreground"
 set index-active-fg "$background"
 set render-loading-bg "$background"
 set render-loading-fg "$foreground"
+
+set database sqlite
 
 set recolor-keephue "true"
 set guioptions none
@@ -87,13 +89,14 @@ startup_commands  toggle_custom_color
 
 # The color with which the screen is cleared before rendering the pdf (this is the background color of the application and not the PDF file)
 background_color    0.97 0.97 0.97
-dark_mode_background_color    $background
+dark_mode_background_color $background
 
 # Showing full white text on black background can be irritating for the eye, we can dim the whites a little bit using the contrast option
-dark_mode_contrast			0.8
+dark_mode_contrast			1
 
 ## Background color to use when executing 'toggle_custom_color'
 custom_background_color $background
+
 ## Text color to use when executing 'toggle_custom_color'
 custom_text_color $foreground
 

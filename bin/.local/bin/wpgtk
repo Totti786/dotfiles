@@ -136,7 +136,7 @@ change_colors(){
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
 		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"
-		
+	
 	# zathura and sioyek
 	reader-colors
 
@@ -230,7 +230,7 @@ transparent(){
 		sed -i "s/opacity =.*/opacity = 1.0/" "${alacritty%/*}/alacritty.toml"
 		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst"
 		alpha_jg="100"
-		alpha_rofi="90"
+		alpha_rofi="ff"
 	else 
 		sed -i "s/opacity =.*/opacity = 0.7/" "${alacritty%/*}/alacritty.toml"
 		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst"
@@ -429,8 +429,8 @@ misc(){
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor'
-		gsettings set org.gnome.desktop.interface color-scheme prefer-light
 		gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+		gsettings set org.gnome.desktop.interface color-scheme prefer-light
 	fi
 }
 

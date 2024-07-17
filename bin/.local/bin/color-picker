@@ -16,9 +16,9 @@ pick_color() {
 }
 
 if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then 
-	color=$(hyprpicker -n)
+	[[ "$(pgrep hyprpicker)" ]] || color=$(hyprpicker -n)
 else
-	color=$(gpick -pso --no-newline)
+	[[ "$(pgrep gpick)" ]] || color=$(gpick -pso --no-newline)
 fi
 image=/tmp/${color}.png
 pick_color

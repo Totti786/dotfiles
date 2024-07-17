@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Rofi-Zathura is a bash script that generates thumbnails and creates 
+# rofi-reader is a bash script that generates thumbnails and creates 
 # shortcut desktop entries for documents in the Zathura document viewer,
 # providing a convenient way to access and read PDF, EPUB, and CBZ files.
 
@@ -8,11 +8,11 @@
 #				gnome-epub-thumbnailer (for EPUB thumbnails)
 #				zathura or sioyek (document viewer)
 #				rofi (application launcher)
-#				sqlite (to parse history file for sioyek)
+#				sqlite (to parse the history file)
 
 # Define cache and history file paths
-cached="$HOME/.cache/rofi-zathura"
-config_file="$HOME/.cache/rofi-zathura/config.txt"
+cached="$HOME/.cache/rofi-reader"
+config_file="$HOME/.cache/rofi-reader/config"
 zathura_history="$HOME/.local/share/zathura/bookmarks.sqlite"
 sioyek_history="$HOME/.local/share/sioyek/local.db"
 shortcuts="$HOME/.local/share/applications/books"
@@ -22,21 +22,35 @@ mkdir -p "$shortcuts"
 mkdir -p "$cached"
 [[ -f "$config_file" ]] && . "$config_file"
 
+# List of required commands
+required_commands=("evince-thumbnailer" "gnome-epub-thumbnailer" "sqlite3" "rofi")
+
+# Check dependencies
+for cmd in "${required_commands[@]}"; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo >&2 "$cmd is required but not installed."
+        deps+="$cmd "
+    fi
+done
+
+if [[ -n "$deps" ]]; then
+	notify-send -t 2000 -r 41 "rofi-reader" "Missing dependencies"
+	exit 1
+fi
+
 if ! [[ -f "$config_file" ]] || [[ -z "$reader" ]]; then
 	if command -v sioyek >/dev/null 2>&1 && command -v zathura >/dev/null 2>&1 ;then
 		readers="zathura\nsioyek"
-		selection="$(echo -e $readers | rofi -p "Select your Document Viewer:s" -dmenu -selected-row 0)"
-	elif command -v sioyek >/dev/null 2>&1; then
-		selection="sioyek"
+		selection="$(echo -e $readers | rofi -p "Select your Document Viewer:" -dmenu -selected-row 0)"
 	elif command -v zathura >/dev/null 2>&1; then
 		selection="zathura"
+	elif command -v sioyek >/dev/null 2>&1; then
+		selection="sioyek"
 	else
-		notify-send -t 2000 -r 41 "Rofi-Zathura" "No Document Viewers are installed"
+		notify-send -t 2000 -r 41 "rofi-reader" "No Supported Document Viewers are installed"
 	fi
-	
-	cat > "$config_file" <<- EOF 
-	reader="$selection" 
-	EOF
+
+    echo "reader=\"$selection\"" > "$config_file"
 fi
 
 . "$config_file"
@@ -45,10 +59,12 @@ fi
 main(){
 	if [[ "$reader" == "zathura" ]]; then 
 		readarray -t lines < <(sqlite3 "$zathura_history" "SELECT * FROM fileinfo;" | cut -d"|" -f1)
+		delete_command="\"$zathura_history\" \"DELETE FROM fileinfo WHERE file = "
 	elif [[ "$reader" == "sioyek" ]]; then 
 		readarray -t lines < <(sqlite3 "$sioyek_history" "SELECT * FROM document_hash;" | cut -d "|" -f2)
+		delete_command="\"$sioyek_history\" \"DELETE FROM document_hash WHERE path = "
 	else 
-		notify-send -t 2000 -r 41 "Rofi-Zathura" "No Viewer Was selected"
+		notify-send -t 2000 -r 41 "rofi-reader" "No viewer was selected"
 		exit 1
 	fi
 	
@@ -56,6 +72,10 @@ main(){
 	for line in "${lines[@]}"; do
 		# Extract the file name and remove the extension to use as the shortcut name
 		[[ -f "$line" ]] && name="${line##*/}" name="${name%.*}"
+        
+        # Create a list of used cached images
+        used_images+=("$cached/$name.png")
+		
 		# Determine the type of the file based on the extension
 		type=${line##*.}
 		
@@ -70,6 +90,14 @@ main(){
 			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
 		fi &> /dev/null  # Redirect output (stdout and stderr) to /dev/null to suppress any messages
 		
+		
+		if [[ "$1" == "--del" ]];then
+			desktop_command="sqlite3 ${delete_command} '$line';\"" 
+			echo $desktop_command
+		else
+			desktop_command="$reader '$line'"
+		fi
+		
 		# Define the shortcut desktop entry file path
 		book="$shortcuts/$name.desktop"
 		
@@ -78,24 +106,47 @@ main(){
 			cat > "$book" <<- EOF
 			[Desktop Entry]
 			Name=$name
-			Exec=$reader '$line'
+			Exec=$desktop_command
 			Icon=$cached/$name.png
 			Type=Application
 			Categories=Books;
 			EOF
 		fi
 	done
+
+	# Delete unused cached images
+    for cached_image in "$cached"/*.png; do
+        if [[ ! " ${used_images[@]} " =~ " ${cached_image} " ]]; then
+            rm "$cached_image"
+        fi
+    done
 	
 	# Show the rofi application launcher with the 'Books' category
-	rofi -show drun -drun-categories Books -theme rofi-zathura
+	rofi -show drun -drun-categories Books -theme rofi-reader
 }
 
-# Check if the 'history' file contains any lines with "home"
-if [ $(sqlite3 "$zathura_history" "SELECT COUNT(*) FROM fileinfo;") -gt 0 ] || grep -qi "home" "$(sqlite3 "$sioyek_history" "SELECT * FROM document_hash;")" ; then 
-	# If the cache directory is empty, notify the user and generate thumbnails and shortcuts
-	[ -z "$(ls -A $cached)" ] && notify-send -a Rofi-Zathura -t 2000 -r 40 "Rofi-Zathura" "Generating Thumbnails..."
-	main && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
-else
-	# If no matching documents were found, notify the user
-	notify-send -t 2000 -r 41 "Rofi-Zathura" "No Documents Were Found"
-fi
+# Command-line argument handling
+case "$1" in
+	"--reset")
+		rm "$config_file"
+		exit 0
+    ;;
+    "--help" | "-h")
+	    echo "Usage: ${0##*/} [Options]"
+	    echo "Options:"
+	    echo "  --reset    Reset the config file"
+	    echo "  --del      Delete the selected entry instead of opening it"
+    ;;
+    *)
+		# Check if the 'history' file contains any lines with "home"
+		if [ $(sqlite3 "$zathura_history" "SELECT COUNT(*) FROM fileinfo;") -gt 0 ] || grep -qi "home" "$(sqlite3 "$sioyek_history" "SELECT * FROM document_hash;")" ; then 
+			# If the cache directory is empty, notify the user and generate thumbnails and shortcuts
+			[ -z "$(ls -A $cached)" ] && notify-send -a rofi-reader -t 2000 -r 40 "rofi-reader" "Generating Thumbnails..."
+			main "$@" && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
+		else
+			# If no matching documents were found, notify the user
+			notify-send -t 2000 -r 41 "rofi-reader" "No Documents Were Found"
+		fi
+
+    ;;
+esac

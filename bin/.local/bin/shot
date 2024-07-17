@@ -3,8 +3,8 @@
 # Screenshot utility script with various capture options and functionality
 # Dependencies: scrot, xclip, notify-send (libnotify) 
 	# grim, wl-clipboard (for Wayland) 
-	#slurp, tesseract, zbarimg, exo-open (optional) 
-	#convert (from ImageMagick), curl (for imgur upload)
+	#slurp, tesseract, zbarimg, xdg-open (optional) 
+	#magick (from ImageMagick), curl (for imgur upload)
 
 time="$(date +%Y-%m-%d-%I-%M-%S)"
 geometry="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
@@ -13,25 +13,25 @@ file="$dir/Screenshot_${time}_${geometry}.png"
 
 [ ! -d "$dir" ] && mkdir -p "$dir"
 
-# Determine border size and slop command based on file existence
 color=$(xrdb -query | awk '/color4/{print $NF; exit}')
-color_slop=$( echo $color | pastel format rgb-float | awk -F'[()]' '{print $2}')
+# Determine border size and slop command based on file existence
 if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]] && [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then 
 	slop_command=(slop -r highlight -b 5000 -f "%x %y %w %h") 
 else
+	color_slop=$( echo $color | pastel format rgb-float | awk -F'[()]' '{print $2}')
 	slop_command=(slop -c "$color_slop" -b 3 -f "%x %y %w %h")
 fi
 
 notify_user() {
 	if [[ -e "$file" ]]; then
-		action=$(notify-send -a "Screenshot" -r 83 -u low -i "$file" "Screenshot Saved" "Click to open" --action="Open" --action="Delete")
+		action=$(notify-send -a "Screenshot" -r 83 -u low -i "$file" "Screenshot Saved" "Click to open" --action="Delete" --action="Open")
 		if [[ "$action"  == "0" ]]; then
-			exo-open "$file"
-		elif [[ "$action"  == "1" ]]; then
 			rm "$file"
+		elif [[ "$action"  == "1" ]]; then
+			xdg-open "$file"
 		fi
 	else
-		notify-send -a "Screenshot" -r 83 -u low "Screenshot Canceled"
+		notify-send -a "Screenshot" -t 1000 -r 83 -u low "Screenshot Canceled"
 	fi
 }
 
@@ -40,18 +40,17 @@ countdown() {
 		notify-send -a 'Screenshot' -t 1020 -u low -r 83 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
-	sleep 0.15
 }
 
 magic() {
-	convert "$file" +antialias \
+	magick "$file" +antialias \
 	\( +clone  -alpha extract \
     -draw 'fill black polygon 0,0 0,20 20,0 fill white circle 20,20 20,0' \
     \( +clone -flip \) -compose Multiply -composite \
     \( +clone -flop \) -compose Multiply -composite \
   	\) -alpha off -compose CopyOpacity -composite "$file"
 
-	convert "$file" \
+	magick "$file" \
 	\( +clone -background black -shadow 69x20+0+10 \) \
 	+swap -background none -layers merge +repage "$file"
 }
@@ -67,7 +66,11 @@ shot() {
 
 shot_window() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
-		grim "$file" && wl-copy < "$file"
+		if [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+			grim -g "$(hyprctl -j activewindow | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')" "$file" && wl-copy < "$file"
+		else
+			grim "$file" && wl-copy < "$file"
+		fi
 	else
 		scrot -u "$file" && xclip -selection clipboard -t image/png -i "$file"
 	fi	
@@ -86,13 +89,19 @@ shot_area() {
 
 shot_extract_text() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		grim -g "$(slurp -c "$color" -b 00000055)" - | tesseract - - | wl-copy
-
+		text="$(grim -g "$(slurp -c "$color" -b 00000055)" - | tesseract - -)"
+		echo "$text" | wl-copy
 	else
 		read -r X Y W H < <("${slop_command[@]}")
-		scrot -a ${X},${Y},${W},${H} - | tesseract - - | xclip -selection clipboard
+		text="$(scrot -a ${X},${Y},${W},${H} - | tesseract - -)"
+		echo "$text" | xclip -selection clipboard
 	fi
-	notify-send -a "Screenshot" -r 83 -u low "Extracted Text"
+	
+	if [[ -z "$text" ]]; then  
+		notify-send -a "Screenshot" -r 83 -u low "No Text Found" "Couldn't extract text"
+	else
+		notify-send -a "Screenshot" -r 83 -u low "Extracted Text" "Text copied to clipboards"
+	fi
 }
 
 shot_qr() {
@@ -102,20 +111,26 @@ shot_qr() {
 	fi
 	
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		text=$(grim -g "$(slurp -c "$color" -b 00000055)" - | zbarimg -q --raw - | wl-copy) &&
-		
-		if [[ "$(notify-send -a Screenshot -r 83 -u low "QR Code" "$text" --action="Open Link")"  == "0" ]]; then 
-			exo-open "$text" 
-		fi
+		link=$(grim -g "$(slurp -c "$color" -b 00000055)" - | zbarimg -q --raw -)
+		echo "$link" | wl-copy 
 	else
 		read -r X Y W H < <("${slop_command[@]}")
-		text=$(scrot -a ${X},${Y},${W},${H} - | zbarimg -q --raw -) && 
-		scrot -a ${X},${Y},${W},${H} - | zbarimg -q --raw - | xclip -selection clipboard
+		link=$(scrot -a ${X},${Y},${W},${H} - | zbarimg -q --raw -) && 
+		echo "$link" | xclip -selection clipboard
+	fi
+
+	if [[ -z "$link" ]]; then 
+		notify-send -a Screenshot -r 83 -u low "No QR Code Found"
+		exit 1
+	fi 
+	
+	if [[ "$(notify-send -a Screenshot -r 83 -u low "QR Code Scanned" "$link" --action="Open Link")"  == "0" ]]; then 
+		xdg-open "$link" 
 	fi
 }
 
 upload_to_imgur(){
-	if [[ -e "$file" ]]; then
+	if [[ -e "$1" ]]; then
 	client_id="${IMGUR_CLIENT_ID:-c9a6efb3d7932fd}"
 	
 	upload() {
@@ -148,12 +163,17 @@ upload_to_imgur(){
 	    delete_url="https://imgur.com/delete/$delete_hash"
 	done
 	
-	echo "$delete_url" | xclip -selection clipboard
-	sleep 0.1
-	echo "$url" | xclip -selection clipboard
-
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+		echo "$delete_url" | wl-copy
+		sleep 0.1
+		echo "$url" | wl-copy
+	else
+		echo "$delete_url" | xclip -selection clipboard
+		sleep 0.1
+		echo "$url" | xclip -selection clipboard
+	fi 
 	if [[ "$(notify-send -a 'Screenshot' -r 83 -u low "Imgur" "$url" --action="Open Link")"  == "0" ]]; then 
-		exo-open "$url" 
+		xdg-open "$url" 
 	fi
 fi
 }
@@ -162,6 +182,7 @@ fi
 check_dependencies() {
     command -v scrot >/dev/null 2>&1 || { echo >&2 "scrot is required but not installed. Aborting."; exit 1; }
     # ... (check other dependencies)
+   	sleep 0.1
 }
 
 # Help section
@@ -172,17 +193,18 @@ show_help() {
     echo "  --win            Take screenshot of the focused window"
     echo "  --area           Take screenshot of the selected area"
     echo "  --in5            Take screenshot in 5 seconds"
-    echo "  --in10           Take screenshot in 10 seconds"
     echo "  --extract        Extract Text from the selected area"
     echo "  --imgur          Take a screenshot and upload to imgur"
     echo "  --qr             Decode QR code"
     echo "  --help           Show this help message"
 }
 
+check_dependencies
+
 # Command-line argument handling
 case "$1" in
     "--now")
-	    shot
+		shot
     ;;
 	"--win")
     	shot_window
@@ -206,10 +228,6 @@ case "$1" in
     ;;
 	"--in5")
 		countdown '5'
-	    shot
-    ;;
-    "--in10")
-		countdown '10'
 	    shot
     ;;
     "--help" | "-h" | "")

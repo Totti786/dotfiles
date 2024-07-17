@@ -6,10 +6,10 @@
 CONFIG="$HOME/.config/alacritty/alacritty.toml"
 
 if [ "$1" == "--float" ]; then
-	alacritty --class 'float,float' --config-file "$CONFIG" "${@:2}"
+	alacritty --class 'float,Alacritty' --config-file "$CONFIG" "${@:2}"
 elif [ "$1" == "--full" ]; then
 	alacritty --class 'Alacritty,fullscreen' --config-file "$CONFIG" \
-	-o 'window.startup_mode="Fullscreen"' window.padding.x=30 window.padding.y=30 \
+	-o 'window.startup_mode="Fullscreen"' window.padding.x=10 window.padding.y=10 \
 	window.opacity=0.6 font.size=14 "${@:2}"
 elif [ "$1" == "--drop" ]; then 
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then

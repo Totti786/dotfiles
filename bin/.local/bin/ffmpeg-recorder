@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ## Record Screen and Audio with ffmpeg with support for intel and nvidia gpu encoding 
-# Dependencies: ffmpeg, xdpyinfo, awk, grep, pactl, lspci, vainfo, zenity, ffmpegthumbnailer 
+# Dependencies: ffmpeg, xdpyinfo, awk, grep, pactl, pciutils, vainfo, zenity, ffmpegthumbnailer 
 #				notify-send, slop, pkill, polybar-msg
 
 ## TODO
@@ -26,10 +26,10 @@ else
 fi
 
 # Determine border size and slop command based on file existence
-color=$(xrdb -query | awk '/color13/{print $NF; exit}' | pastel format rgb-float | awk -F'[()]' '{print $2}')
 if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]] && [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then 
 	slop_command=(slop -r highlight -b 5000 -f "%x %y %w %h") 
 else
+	color=$(xrdb -query | awk '/color13/{print $NF; exit}' | pastel format rgb-float | awk -F'[()]' '{print $2}')
 	slop_command=(slop -c "$color" -b 3 -f "%x %y %w %h")
 fi
 
@@ -41,7 +41,7 @@ segment_number="$(cat $ffmpeg_lock 2>/dev/null | wc -l)"
 file="recording_${time}_segment_${segment_number}.$file_type"
 
 # Get screen dimensions
-screen=$(xdpyinfo | awk '/dimensions/{print $2}')
+#screen=$(xdpyinfo | awk '/dimensions/{print $2}')
 
 # Get default audio sink and source
 audio_sink=$(pactl info | grep 'Default Sink' | awk '{print $3}')
@@ -54,7 +54,7 @@ fps="60"
 ffmpeg_command=(ffmpeg -hide_banner -loglevel error)
 
 # Set configurations based on available hardware
-if lspci | grep -q NVIDIA; then 
+if lspci | grep -q NVIDIA; then
     ffmpeg_config=(-c:v h264_nvenc -preset p7)
 elif vainfo 2>&1 | grep -q "Driver version"; then
     ffmpeg_config=(-vaapi_device /dev/dri/renderD128 -vcodec hevc_vaapi -vf 'format=nv12|vaapi,hwupload')
@@ -135,7 +135,7 @@ record_screen() {
 	
 	if [[ "$1" == "--noaudio" ]]; then
 		if [[ "$backend" == "wayland" ]]; then
-			wf-recorder -d /dev/dri/renderD128 -c h264_vaapi -r "$fps" -f ${dir}/${file}
+			wf-recorder -d /dev/dri/renderD128 -c hevc_vaapi -r "$fps" -f ${dir}/${file}
 		else
 			"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size "$screen" -i :0.0 -thread_queue_size 4096 \
 			${ffmpeg_config[@]} ${dir}/${file}
@@ -143,7 +143,7 @@ record_screen() {
 	else
 		if [[ "$backend" == "wayland" ]]; then
 			wayland_audio
-			wf-recorder -d /dev/dri/renderD128 -c h264_vaapi -r "$fps" --audio=Combined.monitor -f ${dir}/${file}
+			wf-recorder -d /dev/dri/renderD128 -c hevc_vaapi -r "$fps" --audio=Combined.monitor -f ${dir}/${file}
 		else
 			"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size "$screen" -i :0.0 -thread_queue_size 4096 \
 			-f pulse -thread_queue_size 4096 -i ${audio_sink}.monitor \
@@ -176,12 +176,12 @@ record_area() {
 			read -r X Y W H < <(echo "$get_win_data")
 		fi
 	fi
-	
+
 	signal_start
 	
 	if [[ "$1" == "--noaudio" ]]; then
 		if [[ "$backend" == "wayland" ]]; then
-			wf-recorder -d /dev/dri/renderD128 -c h264_vaapi -r "$fps" -g "$(slurp -c "$color" -b 00000055)"  -f ${dir}/${file}
+			wf-recorder -d /dev/dri/renderD128 -c hevc_vaapi -r "$fps" -g "$(slurp -c "$color" -b 00000055)"  -f ${dir}/${file}
 		else
 			"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size ${W}x${H} -i :0.0+${X},${Y} -thread_queue_size 4096 \
 			${ffmpeg_config[@]} ${dir}/${file}
@@ -189,7 +189,7 @@ record_area() {
 	else
 		if [[ "$backend" == "wayland" ]]; then
 			wayland_audio
-			wf-recorder -d /dev/dri/renderD128 -c h264_vaapi -r "$fps" --audio=Combined.monitor -g "$(slurp -c "$color" -b 00000055)"  -f ${dir}/${file}
+			wf-recorder -d /dev/dri/renderD128 -c hevc_vaapi -r "$fps" --audio=Combined.monitor -g "$(slurp -c "$color" -b 00000055)"  -f ${dir}/${file}
 		else
 			"${ffmpeg_command[@]}" -f x11grab -framerate "$fps" -video_size ${W}x${H} -i :0.0+${X},${Y} -thread_queue_size 4096 \
 			-f pulse -thread_queue_size 4096 -i ${audio_sink}.monitor \
@@ -253,6 +253,7 @@ toggle_recording() {
 
 # Function to signal the start of recording
 signal_start(){
+	countdown 2
 	[[ $(pidof polybar) ]] && polybar-msg action "#recorder.hook.1"
 	echo "file '${dir}/${file}'" >> "$ffmpeg_lock"
 }

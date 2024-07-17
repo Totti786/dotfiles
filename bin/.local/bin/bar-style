@@ -6,7 +6,6 @@
 
 toggle_transparency(){
 	wpgtk_dir="$HOME/.local/bin/wpgtk"
-	pipe_dir="$HOME/.config/jgmenu/pipemenus/"
 	
 	if [[ "$1" == "off" ]]; then 
 		compositor --disable-opacity
@@ -26,21 +25,21 @@ reload(){
 }
 
 base(){
-	sed -i 's/^bar_style=.*/bar_style=base/' "$HOME"/.theme
+	sed -i 's/^bar_style=.*/bar_style="base"/' "$HOME"/.theme
 	toggle_transparency on
 	compositor --disable-corners-exclude
 	reload
 }
 
 minimal(){
-	sed -i 's/^bar_style=.*/bar_style=minimal/' "$HOME"/.theme
+	sed -i 's/^bar_style=.*/bar_style="minimal"/' "$HOME"/.theme
 	toggle_transparency on
 	compositor --enable-corners-exclude
 	reload
 }
 
 bionic(){
-	sed -i 's/^bar_style=.*/bar_style=bionic/' "$HOME"/.theme
+	sed -i 's/^bar_style=.*/bar_style="bionic"/' "$HOME"/.theme
 	toggle_transparency off
 	compositor --enable-corners-exclude
 	reload

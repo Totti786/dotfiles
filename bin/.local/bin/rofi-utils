@@ -4,32 +4,28 @@ rofi_dir="$HOME/.config/rofi/bin"
 
 # Help section
 show_help() {
-    echo "Usage: ${0##*/} [--launcher | --screenshot | --powermenu | --help]"
+    echo "Usage: ${0##*/} [--]"
     echo "Options:"
-    echo "  --launcher      App launcher"
-    echo "  --screenshot    Screenshot menu"
-    echo "  --powermenu     Power menu"
-    echo "  --network       Netowrk menu"
-    echo "  --prayertime     Prayer times menu"
-    echo "  --help          Show this help message"
+    echo "  --launch     App launcher"
+    echo "  --shot       Screenshot menu"
+    echo "  --power      Power menu"
+    echo "  --network    Netowrk menu"
+    echo "  --help       Show this help message"
 }
 
 # Main script
 case "$1" in
-    "--launcher")
-        "$rofi_dir"/launcher
+    "--launch")
+        "$rofi_dir"/rofi-launcher
 		;;
-    "--screenshot")
+    "--shot")
         "$rofi_dir"/rofi-shot
 		;;
-    "--powermenu")
-        "$rofi_dir"/powermenu
+    "--power")
+        "$rofi_dir"/rofi-power
 		;;
     "--network")
         "$rofi_dir"/network_menu
-		;;
-    "--prayertime")
-        "$rofi_dir"/prayertime
 		;;
     "--help" | "-h" | "")
         show_help 

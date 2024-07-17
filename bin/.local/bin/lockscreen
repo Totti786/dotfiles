@@ -20,9 +20,9 @@ else
 	magenta="#ee6a70"
 fi
 
-if [ "$(playerctl -i kdeconnect -p %any status)" == "Playing" ]; then
-	playerctl -i kdeconnect -a pause
-fi
+#if [ "$(playerctl -i kdeconnect -p %any status)" == "Playing" ]; then
+	#playerctl -i kdeconnect -a pause
+#fi
 
 pkill rofi
 
@@ -33,21 +33,22 @@ fi
 if [ "$XDG_SESSION_TYPE" == "x11" ]; then 
     i3lock -n -c 00000000 -F -e \
 		--pass-media-keys \
+		--pass-screen-keys \
 		--pass-power-keys \
 		--pass-volume-keys \
+		--no-modkey-text \
 		--indicator \
 		--force-clock \
-        --radius 52 \
         --modif-size=9 \
         --modif-pos="w/2:h/2-15" \
         --image "$image" \
         --time-str="%I:%M" \
-        --time-pos="w/2:h/4" \
+        --time-pos="w/2:h/2-55" \
         --time-color="$FG" \
         --time-size=160 \
         --time-font="$font" \
         --date-str="%A, %B %d" \
-        --date-pos="w/2:h/4+55" \
+        --date-pos="w/2:h/2" \
         --date-color="$FG" \
         --date-size=35 \
         --date-font="$font" \
@@ -72,8 +73,14 @@ if [ "$XDG_SESSION_TYPE" == "x11" ]; then
         --keyhl-color=${red:1} \
         --bshl-color=${blue:1} \
         --separator-color=${yellow:1} \
-        --pointer=default
+        --pointer=default \
+		--radius 94 \
+		--greeter-text="Type to unlock!" \
+		--greeter-font="$font" \
+		--greeter-size=18 \
+		--greeter-color=${red:1} \
+        --ind-pos="w-960:h-200"
+
 else
-	#gtklock -i -d -b "$image" -s "$HOME"/.config/gtklock/style.css
 	hyprlock
 fi

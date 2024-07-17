@@ -17,7 +17,7 @@
 #   Arch repositories: rofi, bluez-utils (contains bluetoothctl)
 
 # Constants
-divider=" "
+divider="󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹󰅹"
 goback="Back"
 
 # Checks if bluetooth controller is powered on
@@ -197,16 +197,16 @@ print_status() {
 	
 	if [[ "$btstatus" == "active" ]]; then
 		if bluetoothctl show | grep -q "Powered: no"; then
-			echo " Bluetooth Off" 
+			echo "󰂲 Bluetooth Off" 
 		elif bluetoothctl show | grep -q "Powered: yes"; then
 			if [[ -z $(bluetoothctl devices Connected) ]]; then
-				echo " Not Connected"
+				echo "󰂯 Not Connected"
 			else 
-				echo " $(bluetoothctl devices Connected | head -n1 | cut -d " " -f3-) $(upower -i "$(upower -e | grep headset)" | grep -oP 'percentage:\s+\K\d+%')"
+				echo "󰂯 $(bluetoothctl devices Connected | head -n1 | cut -d " " -f3-) $(upower -i "$(upower -e | grep headset)" | grep -oP 'percentage:\s+\K\d+%')"
 			fi
 		fi	
 	else 
-		echo " Bluetooth Unavailable" 
+		echo "󰂲 Bluetooth Unavailable" 
 	fi
 }
 

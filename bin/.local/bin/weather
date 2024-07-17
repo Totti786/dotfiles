@@ -1,0 +1,96 @@
+#!/bin/bash
+
+## Get the API keys and city from a different file
+source "$HOME"/.local/bin/info
+
+## Collect data
+cache_dir="$HOME/.cache/weather"
+cache_weather_stat=${cache_dir}/weather-stat
+cache_weather_degree=${cache_dir}/weather-degree
+cache_weather_icon=${cache_dir}/weather-icon
+cache_weather_rofi=${cache_dir}/weather-rofi
+
+## Make cache dir
+[[ ! -d "$cache_dir" ]] &&
+	mkdir -p "${cache_dir}"
+
+## Get City
+[[ -z "$CITY" ]] &&
+	CITY=$(curl ifconfig.co/city)
+
+## Get data
+get_weather_data() {
+		weather=$(wget -qO- "https://api.openweathermap.org/data/2.5/weather?q=$CITY,$COUNTRY&appid=$KEY&units=$UNIT")
+		echo "${weather}"
+
+	if [ -n "$weather" ]; then
+		weather_temp=$(echo "$weather" | jq ".main.temp" | cut -d "." -f 1)
+		weather_icon_code=$(echo "$weather" | jq -r ".weather[].icon" | head -1)
+		weather_description=$(echo "$weather" | jq -r ".weather[].description" | head -1 | sed -e "s/\b\(.\)/\u\1/g")
+		if [[ "$(( $(date +%M) % 30))" == 0 ]]; then
+		  altweather=$(wget -qO- --header='Accept: application/json' "https://api.weatherbit.io/v2.0/current?city=$CITY&country=$COUNTRY&key=$WBKEY")
+			city=$(echo "$weather" | jq -r ".name") 
+			humidity=$(echo "$weather" | jq -r ".main.humidity") 
+			windspeed=$(echo "$weather" | jq -r ".wind.speed") 
+			uv=$(echo "$altweather" | jq -r ".data[].uv" | cut -c 1-4)
+			aqi=$(echo "$altweather" | jq -r ".data[].aqi")
+			dewpt=$(echo "$altweather" | jq -r ".data[].dewpt")
+			precipitation=$(echo "$altweather" | jq -r ".data[].precip")
+			
+			cat > "$cache_weather_rofi" <<- EOF
+			City: $city 
+			Dew Point: $dewpt°C 
+			Humidity: $humidity% 
+			UV Index: $uv 
+			Air Quality: $aqi
+			Precipitation: $(printf "%.2f" "$precipitation")%
+			Windspeed: $windspeed m/s
+			EOF
+		fi
+		
+        ## Determine weather icon
+        case "$weather_icon_code" in
+            50d|50n) weather_icon=" " ;;
+            01d) weather_icon="󰖨 " ;;
+            01n) weather_icon=" " ;;
+            02d) weather_icon=" " ;;
+            02n) weather_icon=" " ;;
+            03d|03n) weather_icon=" " ;;
+            04d|04n) weather_icon=" " ;;
+            09d) weather_icon=" " ;;
+            09n|10n) weather_icon=" " ;;
+            10d) weather_icon=" " ;;
+            11d|11n) weather_icon="󰙾 " ;;
+            13d|13n) weather_icon=" " ;;
+            40d|40n) weather_icon=" " ;;
+            *) weather_icon=" " ;;
+        esac
+        
+		echo "$weather_icon" > "${cache_weather_icon}"
+		echo "$weather_description" > "${cache_weather_stat}"
+		echo "$weather_temp""° " > "${cache_weather_degree}"
+
+	else
+		wttr=$(curl wttr.in/"$CITY"?format="%t+%C\n")
+		if [[ -n "$wttr" ]]; then
+			echo "$wttr" > "${cache_weather_stat}"
+		else 
+			echo "Weather Unavailable" > "${cache_weather_stat}"
+		fi
+		echo "  " > "${cache_weather_icon}"
+		echo " " > "${cache_weather_degree}"
+	fi
+}
+
+## Execute based on argument
+case "$1" in
+    --getdata) get_weather_data ;;
+    --icon) cat "${cache_weather_icon}" ;;
+    --temp) cat "${cache_weather_degree}" ;;
+    --stat) cat "${cache_weather_stat}" ;;
+    --full) 
+        get_weather_data &> /dev/null
+        cat "${cache_weather_icon}" "${cache_weather_degree}" "${cache_weather_stat}" | tr -d '\n'
+        ;;
+    --rofi) cat "${cache_weather_rofi}" | rofi -dmenu -p "Weather" -theme weather ;;
+esac

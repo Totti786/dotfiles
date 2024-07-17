@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 gamma_mode=off
-temperature=4700
+temperature=3900
 increment=200
 
 change_mode() {

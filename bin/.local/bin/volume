@@ -39,7 +39,7 @@ toggle_mute() {
 		notify-send -a "Volume" -t 1000 -r 69 "  Mute"
 	else
 		wpctl set-mute @DEFAULT_SINK@ toggle
-		notify-send -a "Volume" -t 1000 -r 69 "  $(get_volume)"
+		notify-send -a "Volume" -t 1000 -r 69 "󰕾  $(get_volume)"
 	fi
 }
 
