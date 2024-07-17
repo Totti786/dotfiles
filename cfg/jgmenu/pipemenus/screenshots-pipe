@@ -2,14 +2,13 @@
 
 ## Pipemenu to take screenshots
 
-menu+=("Screenshot Now,screenshot --now")
-menu+=("Screenshot Area,screenshot --area")
-menu+=("Screenshot Window,screenshot --win")
-menu+=("Screenshot In 5s,screenshot --in5")
-menu+=("Screenshot In 10s,screenshot --in10")
+menu+=("Screenshot Now,shot --now")
+menu+=("Screenshot Area,shot --area")
+menu+=("Screenshot Window,shot --win")
+menu+=("Screenshot In 5s,shot --in5")
 menu+=("^sep()")
-menu+=("Upload to Imgur,screenshot --imgur")
-menu+=("QR Scanner,screenshot --qr")
-menu+=("Extract Text,screenshot --extract")
+menu+=("Upload to Imgur,shot --imgur")
+menu+=("QR Scanner,shot --qr")
+menu+=("Extract Text,shot --extract")
 
 printf '%s\n' "${menu[@]}"
