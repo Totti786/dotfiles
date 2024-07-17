@@ -34,6 +34,7 @@ let configOptions = {
         'bluetooth': "blueman-manager",
         'volume': "pavucontrol",
         'imageViewer': "viewnoir",
+        'vpn': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center network",
         'network': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
         'settings': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
         'taskManager': "gnome-usage",
@@ -135,7 +136,7 @@ let configOptions = {
         'dateFormat': "%d/%m", // On notif time
     },
     'weather': {
-        'city': "",
+        'city': "Idlib",
         'preferredUnit': "C", // Either C or F
     },
     'workspaces': {
