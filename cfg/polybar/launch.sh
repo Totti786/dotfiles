@@ -101,7 +101,7 @@ launch_bar() {
 	if [[ "$bar_style" == "base" ]]; then 
 		killall -q -9 updates.sh zscroll playerctl-scroll.sh
 		polybar -q top -c "$config_file" &
-		polybar -q bottom -c "$config_file" &
+		polybar -q main -c "$config_file" &
 	else
 		polybar -q main -c "$config_file" &
 	fi
