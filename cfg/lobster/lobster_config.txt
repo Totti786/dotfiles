@@ -1,9 +1,17 @@
+lobster_editor=${VISUAL:-${EDITOR:-vim}}
+player=mpv
+download_dir="$PWD"
+provider="Vidcloud"
+quality=1080
+history=1
+subs_language="english"
+image_config_path=~/.config/rofi/themes/rofi-media.rasi
+histfile="$HOME/.local/share/lobster/lobster_history.txt"
 use_external_menu=1
 image_preview=1
-image_config_path=~/.config/rofi/themes/rofi-media.rasi
-quality=720
-history=1
-provider="Vidcloud"
+debug=0
+quiet_output=0
+preview_window_size=50%
 ueberzug_max_width=10
 ueberzug_max_height=10
 
