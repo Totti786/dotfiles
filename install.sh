@@ -245,8 +245,7 @@ update(){
 	install_minimal
 	progressBar "Updating... "
 	## backup weather info file
-	[ -f "$HOME/.config/polybar/scripts/info" ] &&
-		cp "$HOME"/.config/polybar/scripts/info "$HOME"/.cache/info
+	cp "$HOME"/.local/bin/info "$HOME"/.cache/info
 	#[ ! -f "$HOME/.zprofile" ] && 
 	cp "$dir"/deps/.zprofile "$HOME"/
 	cp "$dir"/deps/.gtkrc-2.0 "$HOME"/
@@ -256,7 +255,7 @@ update(){
 	cp -r "$dir"/cfg/* "$HOME"/.config/
 	cp -r "$dir"/bin/.local/ "$HOME"/
 	# restore weather info file
-	cp "$HOME"/.cache/info "$HOME"/.config/polybar/scripts/info
+	cp "$HOME"/.cache/info "$HOME"/.local/bin/info
 	sh "$dir/bin/.scripts/file-check"
 }
 
