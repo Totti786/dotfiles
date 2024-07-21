@@ -93,7 +93,6 @@ main(){
 		
 		if [[ "$1" == "--del" ]];then
 			desktop_command="sqlite3 ${delete_command} '$line';\"" 
-			echo $desktop_command
 		else
 			desktop_command="$reader '$line'"
 		fi
