@@ -41,7 +41,7 @@ segment_number="$(cat $ffmpeg_lock 2>/dev/null | wc -l)"
 file="recording_${time}_segment_${segment_number}.$file_type"
 
 # Get screen dimensions
-#screen=$(xdpyinfo | awk '/dimensions/{print $2}')
+screen=$(xdpyinfo | awk '/dimensions/{print $2}')
 
 # Get default audio sink and source
 audio_sink=$(pactl info | grep 'Default Sink' | awk '{print $3}')
@@ -87,6 +87,11 @@ countdown() {
 	done
 }
 
+pre_notify () {
+  notify-send -u low -a "Recorder" -t 1000 -r 699  "Recording Now!"
+  sleep 1
+}
+
 # Function to notify user about recording status
 notify_user() {
 	if [[ -e "$1" ]]; then
@@ -100,15 +105,15 @@ notify_user() {
 	        #fi
 	    ffmpegthumbnailer -i "$file_name" -o /tmp/"${file_name##*/}".jpg -s 500
 		notify_action=$(notify-send -a "Recorder" -u low -r 699 "Recording Saved" "Click to open" -i /tmp/"${file_name##*/}".jpg \
-		--action="Open" --action="Delete")
+		--action="Delete" --action="Open")
 		
 		case "$notify_action" in
 		"0")
-		    exo-open "$file_name"
+		    rm "$file_name"
    		    #exo-open --launch FileManager "$file_name"
 		    ;;
 		"1")
-		    rm "$file_name"
+		    exo-open "$file_name"
 		    ;;
 		esac
 	else
@@ -253,7 +258,7 @@ toggle_recording() {
 
 # Function to signal the start of recording
 signal_start(){
-	countdown 2
+	pre_notify
 	[[ $(pidof polybar) ]] && polybar-msg action "#recorder.hook.1"
 	echo "file '${dir}/${file}'" >> "$ffmpeg_lock"
 }
