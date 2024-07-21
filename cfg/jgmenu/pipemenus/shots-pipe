@@ -5,10 +5,13 @@
 menu+=("Screenshot Now,shot --now")
 menu+=("Screenshot Area,shot --area")
 menu+=("Screenshot Window,shot --win")
-menu+=("Screenshot In 5s,shot --in5")
+menu+=("Screenshot In 3s,shot --in3")
+menu+=("Screenshot Blur Area,shot --blur")
 menu+=("^sep()")
 menu+=("Upload to Imgur,shot --imgur")
 menu+=("QR Scanner,shot --qr")
 menu+=("Extract Text,shot --extract")
+menu+=("Translate Text,shot --translate")
+menu+=("Read Text,shot --read")
 
 printf '%s\n' "${menu[@]}"
