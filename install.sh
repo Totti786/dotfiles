@@ -11,27 +11,28 @@ fi
 #---- Programs List ----------------------
 
 declare -a minimal=(
-	acpi acpilight alacritty appimagelauncher autotiling axel base-devel bc blueman bluez bluez-utils \
-	brightnessctl bspwm conky copyq dmenu drawing dunst envycontrol evince eww fd feh file-roller firefox \
-	flameshot fluent-cursor-theme-git font-manager fzf gammastep geany gnome-calculator gnome-disk-utility \
-	gnome-epub-thumbnailer jq gpick grep htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma \
-	linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn \
-	noto-fonts noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol \
-	qt5ct rhythmbox	rofi-wayland rtorrent scrot stalonetray snapshot sxhkd termdown thunar thunar-archive-plugin \
-	perl plank playerctl plasma-browser-integration	polkit-gnome polybar python-pipx python-wheel qbittorrent \
-	thunar-media-tags-plugin thunar-volman ttf-icomoon-feather ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
-	ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-commontimeshift tumbler \
-	viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool \
-	xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo \
-	xss-lock yad ytfzf youtube-dl zathura zathura-cb zathura-pdf-mupdf zenity zsh
+	acpi acpilight alacritty appimagelauncher autotiling axel base-devel bc blueman bluez \
+	bluez-utils brightnessctl bspwm conky copyq dmenu drawing dunst envycontrol evince eww \
+	fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep \
+	geany gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep python-gtts \
+	htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot man \
+	moreutils mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn noto-fonts \
+	noto-fonts-emoji nsxiv nvtop obconf openbox openssh openvpn papirus-icon-theme pastel \
+	pavucontrol qt5ct rhythmbox rofi-wayland rtorrent scrot stalonetray snapshot sxhkd termdown \
+	thunar thunar-archive-plugin perl plank playerctl plasma-browser-integration polkit-gnome polybar \
+	python-pipx python-wheel qbittorrent thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono \
+	ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common \
+	timeshift tumbler translate-shell viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
+	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
+	xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf youtube-dl zathura zathura-cb zathura-pdf-mupdf \
+	zenity zsh
 )
 
 declare -a extra=(
-	anki audacity baobab blanket discord flatpak gimp github-desktop gnome-clocks \
-	gnome-system-monitor gnome-weather gparted gping handbrake heroic-games-launcher-bin \
-	jdk-openjdk telegram-desktop krita libreoffice-fresh lutris mangohud megatools \
-	mkvtoolnix-cli obs-studio openboard polychromatic scrcpy soundux spicetify-cli \
-	spotify stacer steam syncplay syncthing teamviewer trackma-git video-trimmer \
+	anki audacity baobab blanket discord flatpak gimp github-desktop gnome-clocks gnome-system-monitor \
+	gnome-weather gparted gping handbrake heroic-games-launcher-bin jdk-openjdk telegram-desktop krita \
+	libreoffice-fresh lutris mangohud megatools mkvtoolnix-cli obs-studio openboard polychromatic scrcpy \
+	soundux spicetify-cli spotify stacer steam syncplay syncthing teamviewer trackma-git video-trimmer \
 	virtualbox visual-studio-code-bin wine winetricks
 )
 
