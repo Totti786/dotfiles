@@ -5,6 +5,7 @@
 	# grim, wl-clipboard (for Wayland) 
 	#slurp, tesseract, zbarimg, xdg-open (optional) 
 	#magick (from ImageMagick), curl (for imgur upload)
+	#python-gtts (for TTS), translate-shell (for translation and langauge detection)
 
 time="$(date +%Y-%m-%d-%I-%M-%S)"
 geometry="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
@@ -24,6 +25,7 @@ fi
 
 notify_user() {
 	if [[ -e "$file" ]]; then
+	paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga
 		action=$(notify-send -a "Screenshot" -r 83 -u low -i "$file" "Screenshot Saved" "Click to open" --action="Delete" --action="Open")
 		if [[ "$action"  == "0" ]]; then
 			rm "$file"
@@ -37,7 +39,7 @@ notify_user() {
 
 countdown() {
 	for sec in $(seq $1 -1 1); do
-		notify-send -a 'Screenshot' -t 1020 -u low -r 83 "Countdown" "Taking shot in : $sec"
+		notify-send -a 'Screenshot' -u low -r 83 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
 }
@@ -79,7 +81,8 @@ shot_window() {
 
 shot_area() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		grim -g "$(slurp -c "$color" -b 00000055)" "$file" && wl-copy < "$file"
+		geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
+		grim -g "$geometry" "$file" && wl-copy < "$file"
 	else
 		read -r X Y W H < <("${slop_command[@]}")
 		scrot -a ${X},${Y},${W},${H} "$file" && xclip -selection clipboard -t image/png -i "$file"
@@ -87,21 +90,72 @@ shot_area() {
 	notify_user
 }
 
+blur_area() {
+    # Take a full screenshot and select the region to blur
+    if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+		grim "$file"
+		read -r X Y W H < <(slurp -c "$color" -b 00000055 -f "%x %y %w %h")
+	else
+		scrot "$file"
+		read -r X Y W H < <("${slop_command[@]}")
+	fi
+    
+    # Blur the selected region and save back to the original file
+    magick "$file" -region ${W}x${H}+${X}+${Y} -blur 0x8 "$file"
+    
+    # Copy the modified image to the clipboard
+    if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+        wl-copy < "$file"
+    else
+        xclip -selection clipboard -t image/png -i "$file"
+    fi
+    
+    notify_user
+}
+
+
 shot_extract_text() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		text="$(grim -g "$(slurp -c "$color" -b 00000055)" - | tesseract - -)"
+		geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
+		text="$(grim -g "$geometry" - | magick - -colorspace Gray -normalize -sharpen 0x1 -contrast-stretch 2%x2% - | tesseract --dpi 200 - - -l eng+deu)"
 		echo "$text" | wl-copy
 	else
 		read -r X Y W H < <("${slop_command[@]}")
-		text="$(scrot -a ${X},${Y},${W},${H} - | tesseract - -)"
+		text="$(scrot -a ${X},${Y},${W},${H} - | magick - -colorspace Gray -normalize -sharpen 0x1 -contrast-stretch 2%x2% - | tesseract --dpi 200 - - -l eng+deu)"
 		echo "$text" | xclip -selection clipboard
 	fi
 	
 	if [[ -z "$text" ]]; then  
 		notify-send -a "Screenshot" -r 83 -u low "No Text Found" "Couldn't extract text"
 	else
-		notify-send -a "Screenshot" -r 83 -u low "Extracted Text" "Text copied to clipboards"
+		notify-send -a "Screenshot" -r 83 -u low "Extracted Text" "Text copied to clipboard"
 	fi
+}
+
+shot_translate() {
+	shot_extract_text
+	
+	if [[ -z "$text" ]]; then exit 1 ;fi
+	original_text="$(echo "$text" | tr -d '\n' | sed 's/\. /.\n/g')"
+	
+	lang="$(echo $original_text | trans -b -identify)"
+
+	target_lang="de"
+
+	translated_text="$(echo "$original_text" | trans -b "$lang":"$target_lang")"
+	
+	zenity --info --title="Original Text" --text="$original_text" >/dev/null 2>&1 & disown
+	zenity --info --title="Translated Text" --text="$translated_text" >/dev/null 2>&1 & disown
+	
+	echo "$translated_text" | gtts-cli - -l "$target_lang" | mpv --force-media-title="Text to Speech" --speed=1.2 -
+}
+
+shot_read() {
+	shot_extract_text
+	
+	lang="$(echo $text | trans -b -identify)"
+	
+	echo "$text" | tr -d '\n' | sed 's/\. /.\n/g' | gtts-cli - -l "$lang" | mpv --force-media-title="Text to Speech" --speed=1.1 - > /dev/null 2>&1
 }
 
 shot_qr() {
@@ -111,7 +165,8 @@ shot_qr() {
 	fi
 	
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		link=$(grim -g "$(slurp -c "$color" -b 00000055)" - | zbarimg -q --raw -)
+		geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
+		link=$(grim -g "$geometry" - | zbarimg -q --raw -)
 		echo "$link" | wl-copy 
 	else
 		read -r X Y W H < <("${slop_command[@]}")
@@ -215,6 +270,15 @@ case "$1" in
     "--extract")
 	    shot_extract_text
     ;;
+    "--trans")
+	    shot_translate
+    ;;
+    "--read")
+	    shot_read
+    ;;
+    "--blur")
+	    blur_area
+    ;;
     "--imgur")
 		if [[ "$2" ]]; then
 			upload_to_imgur "$2"
@@ -226,8 +290,8 @@ case "$1" in
     "--qr")
 	    shot_qr
     ;;
-	"--in5")
-		countdown '5'
+	"--in3")
+		countdown '3'
 	    shot
     ;;
     "--help" | "-h" | "")
