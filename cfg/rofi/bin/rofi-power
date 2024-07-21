@@ -6,16 +6,16 @@
 rofi_command="rofi -theme power-screen"
 
 # Options
-shutdown=""
-reboot=""
-lock=""
-suspend=""
-hibernate=""
-logout=""
-confirm=""
+shutdown=""
+reboot=""
+lock=""
+suspend=""
+hibernate=""
+logout=""
+confirm=""
 
 confirm(){
-	local options="\n"
+	local options="\n"
 	echo -e "$options" | rofi -dmenu -i \
 	     -no-fixed-num-lines \
 	     -p "Are You Sure? : " \
