@@ -2,15 +2,14 @@
 
 # Screenshot utility script with various capture options and functionality
 # Dependencies: scrot, xclip, notify-send (libnotify) 
-	# grim, wl-clipboard (for Wayland) 
+	#grim, wl-clipboard (for Wayland) 
 	#slurp, tesseract, zbarimg, xdg-open (optional) 
 	#magick (from ImageMagick), curl (for imgur upload)
 	#python-gtts (for TTS), translate-shell (for translation and langauge detection)
 
-time="$(date +%Y-%m-%d-%I-%M-%S)"
-geometry="$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)"
+time="$(date +%Y-%m-%d-%H-%M-%S)"
 dir="$(xdg-user-dir PICTURES)/Screenshots"
-file="$dir/Screenshot_${time}_${geometry}.png"
+file="$dir/Screenshot_${time}.png"
 
 [ ! -d "$dir" ] && mkdir -p "$dir"
 
@@ -25,8 +24,8 @@ fi
 
 notify_user() {
 	if [[ -e "$file" ]]; then
-	paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga
-		action=$(notify-send -a "Screenshot" -r 83 -u low -i "$file" "Screenshot Saved" "Click to open" --action="Delete" --action="Open")
+	paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga & disown
+		action=$(notify-send -a "Screenshot" -r 83 -i "$file" "Screenshot Saved" "Click to open" --action="Delete" --action="Open")
 		if [[ "$action"  == "0" ]]; then
 			rm "$file"
 		elif [[ "$action"  == "1" ]]; then
@@ -34,12 +33,12 @@ notify_user() {
 		fi
 	else
 		notify-send -a "Screenshot" -t 1000 -r 83 -u low "Screenshot Canceled"
-	fi
+	fi & disown
 }
 
 countdown() {
 	for sec in $(seq $1 -1 1); do
-		notify-send -a 'Screenshot' -u low -r 83 "Countdown" "Taking shot in : $sec"
+		notify-send -a "Screenshot" -u low -r 83 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
 }
@@ -113,7 +112,6 @@ blur_area() {
     notify_user
 }
 
-
 shot_extract_text() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 		geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
@@ -140,7 +138,7 @@ shot_translate() {
 	
 	lang="$(echo $original_text | trans -b -identify)"
 
-	target_lang="de"
+	target_lang="en"
 
 	translated_text="$(echo "$original_text" | trans -b "$lang":"$target_lang")"
 	
@@ -233,6 +231,58 @@ upload_to_imgur(){
 fi
 }
 
+# Notify user about GIF creation
+notify_user_gif() {
+    local file="$1"
+    if [[ -e "$file" ]]; then
+        action=$(notify-send -a "Screenshot" -r 83 -u low -i "$file" "GIF Saved" "Click to open" --action="Delete" --action="Open")
+        if [[ "$action"  == "0" ]]; then
+            rm "$file"
+        elif [[ "$action"  == "1" ]]; then
+            xdg-open "$file"
+        fi
+    else
+        notify-send -a "Screenshot" -t 1000 -r 83 -u low "GIF Creation Canceled"
+    fi
+}
+
+# Function to capture a series of screenshots
+capture_series() {
+    local interval="$1"
+    local count="$2"
+    local tmp_dir="/tmp/screenshots_series"
+    mkdir -p "$tmp_dir"
+    
+    if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+        geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
+        [[ -z "$geometry" ]] && exit 1
+    else
+        read -r X Y W H < <("${slop_command[@]}") || exit 1
+    fi
+
+    for i in $(seq -f "%03g" 1 $count); do
+        if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
+            grim -g "$geometry" "$tmp_dir/screenshot_$i.png"
+        else
+            scrot -a ${X},${Y},${W},${H} "$tmp_dir/screenshot_$i.png"
+        fi
+        sleep "$interval"
+    done
+    create_gif "$tmp_dir"
+    rm -rf "$tmp_dir"
+}
+
+# Function to create a GIF from the captured screenshots
+create_gif() {
+    local input_dir="$1"
+    local output_file="${file%.*}.gif"
+    
+    # Convert images to GIF
+    convert -delay 10 -loop 0 "$input_dir/screenshot_*.png" -fuzz 10% -dither FloydSteinberg "$output_file"
+
+    notify_user_gif "$output_file"
+}
+
 # Check dependencies
 check_dependencies() {
     command -v scrot >/dev/null 2>&1 || { echo >&2 "scrot is required but not installed. Aborting."; exit 1; }
@@ -247,7 +297,8 @@ show_help() {
     echo "  --now            Take screenshot of the desktop"
     echo "  --win            Take screenshot of the focused window"
     echo "  --area           Take screenshot of the selected area"
-    echo "  --in5            Take screenshot in 5 seconds"
+    echo "  --in3            Take screenshot in 3 seconds"
+    echo "  --blur           Take screenshot and blur selected area"
     echo "  --extract        Extract Text from the selected area"
     echo "  --imgur          Take a screenshot and upload to imgur"
     echo "  --qr             Decode QR code"
@@ -289,6 +340,11 @@ case "$1" in
     ;;
     "--qr")
 	    shot_qr
+    ;;
+    "--gif")
+        interval="${2:-0.5}" # Default interval of 0.5 second if not provided
+        count="${3:-20}"   # Default count of 10 screenshots if not provided
+        capture_series "$interval" "$count"
     ;;
 	"--in3")
 		countdown '3'
