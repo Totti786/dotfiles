@@ -36,10 +36,10 @@ dec_volume() {
 toggle_mute() {
 	if wpctl get-volume @DEFAULT_SINK@ | grep -q '\[MUTED\]'; then
 		wpctl set-mute @DEFAULT_SINK@ toggle
-		notify-send -a "Volume" -t 1000 -r 69 "  Mute"
+		notify
 	else
 		wpctl set-mute @DEFAULT_SINK@ toggle
-		notify-send -a "Volume" -t 1000 -r 69 "󰕾  $(get_volume)"
+		notify-send -a "Volume" -t 1000 -r 69 "  Mute"
 	fi
 }
 
