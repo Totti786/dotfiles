@@ -14,9 +14,10 @@ upload=""
 trans=""
 read=""
 blur=""
+gif=""
 
 # Variable passed to rofi
-options="$screen\n$area\n$window\n$inthree\n$text\n$qr\n$upload\n$trans\n$read\n$blur"
+options="$screen\n$area\n$window\n$inthree\n$text\n$qr\n$upload\n$trans\n$read\n$blur\n$gif"
 
 chosen="$(echo -e "$options" | $rofi_command -p 'Take Screenshot' -dmenu -selected-row 0)"
 case "$chosen" in
@@ -49,6 +50,9 @@ case "$chosen" in
         ;;
     "$blur")
 		shot --blur
+        ;;
+    "$gif")
+		shot --gif
         ;;
 esac
 
