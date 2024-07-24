@@ -2,17 +2,23 @@
 
 # Generates zathura or sioyek configuration file
 
-source "$HOME"/.cache/wal/colors.sh
+# Retrieve all color values at once and assign them to variables
+eval $(xrdb -query | awk '
+    /^*\.foreground:/ {print "FG="$2}
+    /^*\.color0:/ {print "color0="$2}
+    /^*\.color8:/ {print "color8="$2}
+    /^*\.color9:/ {print "color9="$2}
+    /^*\.color11:/ {print "color11="$2}
+')
 
-if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
-	source "$HOME/.cache/wal/colors.sh"
-	background="$(pastel mix -f 0.1 $color8 $color0 | pastel format hex)"
-else
-	background="#000000"
-	foreground="#F7F7F6"
-	color11="#AC4142"
-	color9="#7ba5dd"
-fi
+background="$(pastel mix -f 0.1 $color8 $color0 | pastel format hex)"
+
+# Fallback colors in case xrdb does not return a value
+: ${background:="#000000"}
+: ${foreground:="#F7F7F6"}
+: ${color9:="#7ba5dd"}
+: ${color11:="#AC4142"}
+
 
 zathura_config(){
 cat > "$HOME"/.config/zathura/zathurarc <<CONF
