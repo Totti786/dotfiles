@@ -12,7 +12,7 @@ fi
 
 declare -a minimal=(
 	acpi acpilight alacritty appimagelauncher autotiling axel base-devel bc blueman bluez \
-	bluez-utils brightnessctl bspwm conky copyq dmenu drawing dunst envycontrol evince eww \
+	bluez-utils brightnessctl bspwm conky copyq dmenu drawing dunst envycontrol evince \
 	fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep \
 	geany gnome-calculator gnome-disk-utility gnome-epub-thumbnailer jq gpick grep python-gtts \
 	htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot man \
@@ -24,8 +24,7 @@ declare -a minimal=(
 	ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common \
 	timeshift tumbler translate-shell viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
 	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
-	xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf youtube-dl zathura zathura-cb zathura-pdf-mupdf \
-	zenity zsh
+	xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh
 )
 
 declare -a extra=(
@@ -38,7 +37,7 @@ declare -a extra=(
 
 declare -a wayland=(
 	aylurs-gtk-shell-git dart-sass gnome-control-center grim hypridle hyprland \
-	hyprlock hyprpicker-git lexend-fonts-git nwg-displays slurp swww wf-recorder \
+	hyprlock aur/hyprpicker lexend-fonts-git nwg-displays slurp swww wf-recorder \
 	xdg-desktop-portal-hyprland python-pywayland wl-clipboard
 )
 
