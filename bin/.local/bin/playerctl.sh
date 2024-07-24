@@ -18,7 +18,6 @@ metadata(){
 	playerctl metadata --format "$1" 2>/dev/null
 }
 
-# 
 player_icon(){
 	player_name="$(playerctl -l | head -n1 | cut -f1 -d ".")"
 	declare -A player_icons=(
@@ -78,10 +77,9 @@ cover_art(){
 	    eval $(xrdb -query | awk '/color0/{print "color0="$NF} /color7/{print "color7="$NF}')
 	    magick -size 128x128 xc:"$color0" png:"$fallback_cover"
 	    magick "$fallback_cover" -gravity center -fill "$color7" \
-	    -font /usr/share/fonts/TTF/SymbolsNerdFont-Regular.ttf \
+	    -font /usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf \
 	    -pointsize 50 -annotate 0 "󰎇" "$fallback_cover"
 	fi
-	
 	
 	# Check if the URL is empty
 	if [ -n "$url" ]; then
@@ -109,7 +107,6 @@ cover_art(){
 	    fi
 	fi
 }
-
 
 case "$1" in
     "--status")
