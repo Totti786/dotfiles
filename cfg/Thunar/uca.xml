@@ -129,7 +129,7 @@
 	<submenu></submenu>
 	<unique-id>1713659756832081-1</unique-id>
 	<command>gpg -c %f</command>
-	<description>Encrypts files using gpg </description>
+	<description>Encrypts files using gpg</description>
 	<range>*</range>
 	<patterns>*</patterns>
 	<text-files/>
