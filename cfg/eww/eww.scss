@@ -2,10 +2,6 @@
   all: unset;
 }
 
-@import "colors.scss";
+@import "./colors.scss";
 @import "controls/controls.scss";
 @import "controls/music.scss";
-@import "bar/bar.scss";
-@import "notifications/notification-box.scss";
-@import "notifications/notification-card.scss";
-

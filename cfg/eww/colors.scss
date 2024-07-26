@@ -1,20 +1,20 @@
 // Colors
 
-$background: #0f140f;
-$bg-alt: #090d09;
-$fg: #ffffe0;
-$fg-alt: #d1d6ab;
-$red: #bca162;
-$green: #91ba42;
-$yellow: #cce06c;
-$blue: #326063;
-$purple: #859856;
-$cyan: #94c95b;
-$gray: #1d2b1d;
-$gray-alt: #1d2b1d;
+$background: #181318;
+$bg-alt: #120e12;
+$fg: #fffdee;
+$fg-alt: #edddd0;
+$red: #ffd19b;
+$green: #edc9ad;
+$yellow: #ffff71;
+$blue: #7d9cb5;
+$purple: #ffd5a3;
+$cyan: #5fd4cc;
+$gray: #2e232e;
+$gray-alt: #2e232e;
 
 $accent: $red;
-$bg: rgba($background, $alpha: 1.0);;
+$bg: rgba($background, $alpha: 0.3);;
 $fg-alt: rgba($fg, $alpha: 0.6);;
 $bgCal: rgba($color: #0a0c0e, $alpha: 0.2);
 

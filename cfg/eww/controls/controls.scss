@@ -36,17 +36,17 @@
 		background-color: $bg;
 		font-family: 'JetBrainsMono Nerd Font';
 		font-size: 16px;
-		padding: 4px 10px 4px 10px;
+		padding: 5px 10px 5px 10px;
 		border-radius: 20px;
 		transition: all ease .2s;
 		&:hover { 
 			background-color: $green; 
+			padding: 5px 10px 5px 10px;
 		}
 	}
 	.active{ 
 		background-color: $accent; 
 		color: $background;
-
 	}
 	}
 }

@@ -31,7 +31,7 @@ br_percent() {
 
 br_icon () {
   local br=$(br_get)
-  echo $(br_percentage "$br" "" "" "" "")
+  echo $(br_percentage "$br" "󰃞" "󰃟" "󰃟" "󰃠")
 }
 
 case $1 in

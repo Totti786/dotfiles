@@ -3,7 +3,7 @@
 # @requires: pamixer
 
 percentage () {
-  local val=$(echo $1 | tr '%' ' ' | awk '{print $1}')
+  local val=$(echo $1)
   local icon1=$2
   local icon2=$3
   local icon3=$4
@@ -20,26 +20,25 @@ percentage () {
 }
 
 get_percentage() {
-  local muted=$(pamixer --get-mute)
-  if [[ $muted == 'true' ]]; then
+  if wpctl get-volume @DEFAULT_SINK@ | grep -q '\[MUTED\]'; then
     echo "muted"
   else
-    pamixer --get-volume-human
+    wpctl get-volume @DEFAULT_SINK@ | awk '{print $2 * 100}'
   fi
 }
 
 get_icon () {
   local vol=$(get_percentage)
   if [[ $vol == "muted" ]]; then
-    echo "婢"
+    echo ""
   else
-    echo $(percentage "$vol" "" "" "墳" "")
+    echo $(percentage "$vol" "" "" "" "")
   fi
 }
 
 get_vol () {
   local percent=$(get_percentage)
-  echo $percent | tr -d '%'
+  echo $percent
 }
 
 case $1 in
@@ -50,6 +49,6 @@ case $1 in
         get_vol 
         ;;
 	set)
-		pamixer --set-volume $2
+		wpctl set-volume @DEFAULT_SINK@ ${2}%
         ;;
 esac

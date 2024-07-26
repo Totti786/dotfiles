@@ -91,14 +91,14 @@
 				""
 			)
 			(button
-				:class "button ${redshift_state == 'on' ? 'active' : ''}"
-				:onclick "~/.local/bin/redshift.sh toggle"
-				"ﯧ"
+				:class "button ${gamma_state == 'on' ? 'active' : ''}"
+				:onclick "gamma.sh toggle"
+				"󰌵"
 			)
 			(button
 				:class "button"
 				:onclick "./scripts/apps settings"
-				"漣"
+				""
 			)
 			(button
 				:class "button"
@@ -142,7 +142,7 @@
 			        :orientation "h"
 					:space-evenly true
 			        (sysblock
-						:icon "${bluetooth_state == 'on' ? '' : ''}"
+						:icon "${bluetooth_state == 'on' ? '' : '󰂲'}"
 						:onclick "./scripts/bluetooth toggle"
 						:onrightclick "rofi-bluetooth --connect"
 						:active "${bluetooth_state == 'on' ? true : false}"
@@ -188,7 +188,7 @@
 					:orientation "h"
 					:space-evenly true
 					(sysblock
-						:icon "${timer == 'Timer' ? '' : ''}"
+						:icon "${timer == 'Timer' ? '󱎫' : '󱫪'}"
 						:onclick "./scripts/timer.sh toggle"
 						:onrightclick "./scripts/timer.sh toggle"
 						:active "${timer == 'Timer' ? false : true}"
@@ -200,7 +200,7 @@
 					:orientation "h"
 					:space-evenly true
 					(sysblock
-						:icon "${vpn_status == 'On' ? '旅' : 'ﯳ'}"
+						:icon "${vpn_status == 'On' ? '󰖂' : '󰖂'}"
 						:onclick "./scripts/vpn.sh toggle"
 						:onrightclick "./scripts/vpn.sh toggle"
 						:active "${vpn_status == 'On' ? true : false}"
@@ -378,11 +378,11 @@
 								:halign "center"
 								(button
 									:class "music-controls ${play_shuffle == 'On' ? 'active' : ''}"
-									:onclick "playerctl -p ${players} shuffle toggle" "列"
+									:onclick "playerctl -p ${players} shuffle toggle" ""
 								)
 								(button
 									:class "music-controls"
-									:onclick "playerctl -p ${players} previous" "玲"
+									:onclick "playerctl -p ${players} previous" "󰼨"
 								)
 								(button
 									:class "music-play"
@@ -390,7 +390,7 @@
 								)
 								(button
 									:class "music-controls"
-									:onclick "playerctl -p ${players} next" "怜"
+									:onclick "playerctl -p ${players} next" "󰼧"
 								)
 								(button
 									:class "music-controls ${play_loop == 'Playlist' || play_loop == 'Track' ? 'active' : ''}"
@@ -423,24 +423,11 @@
 	)
 )
 
-(defwindow controls-x11
+(defwindow controls
 	:geometry
 		(geometry
 			:x "-10"
-			:y "45"
-			:anchor "top right"
-		)
-	:monitor 0
-	:windowtype "dialog"
-	:wm-ignore true
-	(control-panel)
-)
-
-(defwindow controls-wayland
-	:geometry
-		(geometry
-			:x "1"
-			:y "45"
+			:y "33"
 			:anchor "top right"
 		)
 	:monitor 0
