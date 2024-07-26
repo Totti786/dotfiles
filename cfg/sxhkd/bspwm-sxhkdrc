@@ -10,9 +10,6 @@
 # Right click menu
 ~button3
 	xqp 0 $(xdo id -N Bspwm -n root) && jgmenu_run 
-
-alt + space
-	jgmenu_run
 	
 ~button2
 	xqp 0 $(xdo id -N Bspwm -n root) && \

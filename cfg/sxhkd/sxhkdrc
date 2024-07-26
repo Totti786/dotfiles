@@ -6,6 +6,11 @@
 #
 
 
+##------ Menus -------##
+
+alt + space
+	jgmenu_run
+
 ##------- Keybindings -------##
 
 # Terminal (alacritty)
@@ -74,11 +79,11 @@ shift + Print
 
 # Take screenshot using flameshot
 ctrl + Print
-	flameshot gui
+	shot --edit
 	
 # Take screenshot using flameshot
 alt + Print
-	shot --extract
+	shot --text
 
 # Brighness control
 XF86MonBrightness{Up,Down}

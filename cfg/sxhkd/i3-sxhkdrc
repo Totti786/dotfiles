@@ -11,9 +11,6 @@
 ~button3
 	xqp 0 $(xdo id -N seat0 -n root) && jgmenu_run
 
-alt + space
-	jgmenu_run
-
 ~button2
 	xqp 0 $(xdo id -N seat0 -n root) && \
 	windowswitch window "-monitor -3"
