@@ -11,6 +11,7 @@ let configOptions = {
         'defaultTemperature': 0.9,
         'enhancements': true,
         'useHistory': true,
+        'safety': true,
         'writingCursor': " ...", // Warning: Using weird characters can mess up Markdown rendering
         'proxyUrl': null, // Can be "socks5://127.0.0.1:9050" or "http://127.0.0.1:8080" for example. Leave it blank if you don't need it.
     },
@@ -136,7 +137,7 @@ let configOptions = {
         'dateFormat': "%d/%m", // On notif time
     },
     'weather': {
-        'city': "Idlib",
+        'city': "",
         'preferredUnit': "C", // Either C or F
     },
     'workspaces': {
@@ -221,6 +222,7 @@ let configOptions = {
             },
             'nextTab': "Ctrl+Page_Down",
             'prevTab': "Ctrl+Page_Up",
+            'cycleTab': "Ctrl+Tab",
         }
     },
 }

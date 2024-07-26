@@ -73,9 +73,9 @@ const Utilities = () => Box({
     children: [
         UtilButton({
             name: 'Screen snip', icon: 'screenshot_region', onClicked: () => {
-                Utils.execAsync('screenshot --area').catch(print)
+                Utils.execAsync('shot --area').catch(print)
             }, onSecondaryClick: () => {
-                Utils.execAsync('screenshot --now').catch(print)
+                Utils.execAsync('shot --now').catch(print)
             }
         }),
         UtilButton({
