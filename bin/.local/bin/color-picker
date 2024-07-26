@@ -11,7 +11,7 @@ pick_color() {
         fi
 
         convert -size 48x48 xc:"$color" "$image"
-        notify-send -a 'Color Picker' -u low -r 70 -i "$image" "$color"
+        notify-send -a 'Color Picker' -u low -i "$image" "$color"
     fi
 }
 
