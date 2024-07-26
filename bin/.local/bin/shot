@@ -31,16 +31,29 @@ notify_user() {
 		elif [[ "$action"  == "1" ]]; then
 			xdg-open "$file"
 		fi
-	else
-		notify-send -a "Screenshot" -t 1000 -r 83 -u low "Screenshot Canceled"
 	fi & disown
 }
 
 countdown() {
 	for sec in $(seq $1 -1 1); do
-		notify-send -a "Screenshot" -u low -r 83 "Countdown" "Taking shot in : $sec"
+		notify-send -a "Screenshot" -t 1000 -u low -r 83 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
+	sleep 0.2
+}
+
+get_wayland_selection() {
+	if [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+		geometry="$(echo "$(hyprctl clients -j)" \
+			| jq -r ".[] | select(.workspace.id == "$(hyprctl activewindow -j | jq -r '.workspace.id')\)"" \
+			| jq -r ".at,.size" | jq -s "add" | jq '_nwise(4)' \
+			| jq -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' \
+			| slurp -w 3 -c "$color" -b 00000090 -B 00000090 -o; sleep 0.2)"
+	else
+		geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
+	fi
+	
+	[[ "$geometry" ]] || exit 0
 }
 
 magic() {
@@ -58,33 +71,42 @@ magic() {
 
 shot() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
-		grim "$file" && wl-copy < "$file"
+		grim "$file"
+		wl-copy < "$file"
 	else
-		scrot "$file" && xclip -selection clipboard -t image/png -i "$file"
+		scrot "$file"
+		xclip -selection clipboard -t image/png -i "$file"
 	fi
 	notify_user
 }
 
-shot_window() {
-	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
-		if [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
-			grim -g "$(hyprctl -j activewindow | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')" "$file" && wl-copy < "$file"
-		else
-			grim "$file" && wl-copy < "$file"
-		fi
-	else
-		scrot -u "$file" && xclip -selection clipboard -t image/png -i "$file"
-	fi	
-	notify_user	
-}
-
 shot_area() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
-		grim -g "$geometry" "$file" && wl-copy < "$file"
+		get_wayland_selection
+		grim -g "$geometry" "$file"
+		wl-copy < "$file"
 	else
 		read -r X Y W H < <("${slop_command[@]}")
-		scrot -a ${X},${Y},${W},${H} "$file" && xclip -selection clipboard -t image/png -i "$file"
+		scrot -a ${X},${Y},${W},${H} "$file"
+		xclip -selection clipboard -t image/png -i "$file"
+	fi
+	notify_user
+}
+
+shot_edit() {
+	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+		get_wayland_selection
+		grim -g "$geometry" - | swappy -f - -o "$file"
+		wl-copy "$file"
+	else
+		if command -v flameshot > /dev/null 2>&1; then 
+			flameshot gui -p "$file"
+			xclip -selection clipboard -t image/png -i "$file"
+		else
+			read -r X Y W H < <("${slop_command[@]}")
+			scrot -a ${X},${Y},${W},${H} - | swappy -f - -o "$file"
+			xclip -selection clipboard -t image/png -i "$file"
+		fi
 	fi
 	notify_user
 }
@@ -114,7 +136,7 @@ blur_area() {
 
 shot_extract_text() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
+		get_wayland_selection
 		text="$(grim -g "$geometry" - | magick - -colorspace Gray -normalize -sharpen 0x1 -contrast-stretch 2%x2% - | tesseract --dpi 200 - - -l eng+deu)"
 		echo "$text" | wl-copy
 	else
@@ -163,7 +185,7 @@ shot_qr() {
 	fi
 	
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-		geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
+		get_wayland_selection
 		link=$(grim -g "$geometry" - | zbarimg -q --raw -)
 		echo "$link" | wl-copy 
 	else
@@ -254,7 +276,7 @@ capture_series() {
     mkdir -p "$tmp_dir"
     
     if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
-        geometry="$(slurp -c "$color" -b 00000055; sleep 0.2)"
+        get_wayland_selection
         [[ -z "$geometry" ]] && exit 1
     else
         read -r X Y W H < <("${slop_command[@]}") || exit 1
@@ -295,12 +317,14 @@ show_help() {
     echo "Usage: ${0##*/} [Options]"
     echo "Options:"
     echo "  --now            Take screenshot of the desktop"
-    echo "  --win            Take screenshot of the focused window"
     echo "  --area           Take screenshot of the selected area"
-    echo "  --in3            Take screenshot in 3 seconds"
+    echo "  --in5            Take screenshot in 5 seconds"
     echo "  --blur           Take screenshot and blur selected area"
-    echo "  --extract        Extract Text from the selected area"
-    echo "  --imgur          Take a screenshot and upload to imgur"
+    echo "  --text           Extract text from the selected area"
+    echo "  --read           Read text from the selected area"
+    echo "  --trans          Translate and read text from the selected area"
+    echo "  --upload          Take a screenshot and upload to imgur"
+    echo "  --gif            Capture a 10 seconds gif"
     echo "  --qr             Decode QR code"
     echo "  --help           Show this help message"
 }
@@ -312,13 +336,13 @@ case "$1" in
     "--now")
 		shot
     ;;
-	"--win")
-    	shot_window
-    ;;
 	"--area")
     	shot_area
     ;;
-    "--extract")
+	"--edit")
+    	shot_edit
+    ;;
+    "--text")
 	    shot_extract_text
     ;;
     "--trans")
@@ -330,7 +354,7 @@ case "$1" in
     "--blur")
 	    blur_area
     ;;
-    "--imgur")
+    "--upload")
 		if [[ "$2" ]]; then
 			upload_to_imgur "$2"
 		else
@@ -346,8 +370,8 @@ case "$1" in
         count="${3:-20}"   # Default count of 10 screenshots if not provided
         capture_series "$interval" "$count"
     ;;
-	"--in3")
-		countdown '3'
+	"--in5")
+		countdown '5'
 	    shot
     ;;
     "--help" | "-h" | "")

@@ -1,58 +1,32 @@
 #!/usr/bin/env bash
 
+# Required Font: Material Symbols
+
 rofi_command="rofi -theme power-screen"
 
 # Buttons
-screen=""
-area=""
-window=""
-inthree=""
-inten=""
-text=""
-qr=""
-upload=""
-trans=""
-read=""
-blur=""
-gif=""
+declare -A options
+options=(
+  [""]="now"
+  [""]="area"
+  [""]="in5"
+  [""]="text"
+  [""]="qr"
+  [""]="trans"
+  [""]="upload"
+  [""]="read"
+  [""]="blur"
+  [""]="gif"
+  [""]="edit"
+)
+
+# Order of the options
+order=("" "" "" "" "" "" "" "" "" "" "")
+
+# Prepare the options string for rofi
+options_str=$(printf "%s\n" "${order[@]}")
 
 # Variable passed to rofi
-options="$screen\n$area\n$window\n$inthree\n$text\n$qr\n$upload\n$trans\n$read\n$blur\n$gif"
+selection=$(echo -e "$options_str" | $rofi_command -p 'Take Screenshot' -dmenu -selected-row 0)
 
-chosen="$(echo -e "$options" | $rofi_command -p 'Take Screenshot' -dmenu -selected-row 0)"
-case "$chosen" in
-    "$screen")
-		shot --now
-        ;;
-    "$area")
-		shot --area
-        ;;
-    "$window")
-		shot --win
-		;;
-    "$inthree")
-		shot --in3
-		;;
-    "$text")
-		shot --extract
-        ;;
-    "$qr")
-		shot --qr
-        ;;
-    "$upload")
-		shot --imgur
-        ;;
-    "$trans")
-		shot --trans
-        ;;
-    "$read")
-		shot --read
-        ;;
-    "$blur")
-		shot --blur
-        ;;
-    "$gif")
-		shot --gif
-        ;;
-esac
-
+[[ -n "$selection" ]] && shot "--${options[$selection]}"
