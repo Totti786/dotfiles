@@ -383,47 +383,47 @@
       </action>
     </keybind>
     <!-- Move -->
-    <keybind key="W-A-Up">
+    <keybind key="W-S-Up">
       <action name="MoveRelative">
         <x>0</x>
         <y>-20</y>
       </action>
     </keybind>
-    <keybind key="W-A-Down">
+    <keybind key="W-S-Down">
       <action name="MoveRelative">
         <x>0</x>
         <y>20</y>
       </action>
     </keybind>
-    <keybind key="W-A-Left">
+    <keybind key="W-S-Left">
       <action name="MoveRelative">
         <x>-20</x>
         <y>0</y>
       </action>
     </keybind>
-    <keybind key="W-A-Right">
+    <keybind key="W-S-Right">
       <action name="MoveRelative">
         <x>20</x>
         <y>0</y>
       </action>
     </keybind>
     <!-- Resize -->
-    <keybind key="C-A-Right">
+    <keybind key="W-A-Right">
       <action name="ResizeRelative">
         <right>20</right>
       </action>
     </keybind>
-    <keybind key="C-A-Left">
+    <keybind key="W-A-Left">
       <action name="ResizeRelative">
         <right>-20</right>
       </action>
     </keybind>
-    <keybind key="C-A-Down">
+    <keybind key="W-A-Down">
       <action name="ResizeRelative">
         <bottom>20</bottom>
       </action>
     </keybind>
-    <keybind key="C-A-Up">
+    <keybind key="W-A-Up">
       <action name="ResizeRelative">
         <bottom>-20</bottom>
       </action>
@@ -517,20 +517,15 @@
     </keybind>
     <keybind key="A-Print">
       <action name="Execute">
-        <command>flameshot gui</command>
+        <command>shot --text</command>
       </action>
     </keybind>
     <keybind key="C-Print">
       <action name="Execute">
-        <command>flameshot full -c</command>
+        <command>shot --edit</command>
       </action>
     </keybind>
     <keybind key="S-Print">
-      <action name="Execute">
-        <command>shot --win</command>
-      </action>
-    </keybind>
-    <keybind key="C-A-Print">
       <action name="Execute">
         <command>shot --area</command>
       </action>
@@ -614,11 +609,6 @@
         <command>alacritty -e vim</command>
       </action>
     </keybind>
-    <keybind key="C-A-n">
-      <action name="Execute">
-        <command>alacritty -e nvim</command>
-      </action>
-    </keybind>
     <keybind key="C-A-r">
       <action name="Execute">
         <command>alacritty -e yazi</command>
@@ -645,13 +635,7 @@
         <command>loginctl lock-session</command>
       </action>
     </keybind>
-    <!-- CLI Apps -->
-    <!-- Zathura -->
-    <keybind key="W-g">
-      <action name="Execute">
-        <command>zathura</command>
-      </action>
-    </keybind>
+    <!-- Cool Applets -->
     <!-- ytfzf -->
     <keybind key="W-y">
       <action name="Execute">
@@ -674,6 +658,11 @@
     <keybind key="W-l">
       <action name="Execute">
         <command>lobster</command>
+      </action>
+    </keybind>
+    <keybind key="W-S-l">
+      <action name="Execute">
+        <command>lobster -c</command>
       </action>
     </keybind>
     <!-- jerry -->
