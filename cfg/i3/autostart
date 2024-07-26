@@ -29,6 +29,9 @@ xfsettingsd &
 # Compositor 
 compositor --start &
 
+# Power manager
+[[ ! "$(pgrep xfce4-power-man)" ]] && xfce4-power-manager &
+
 # Ambient light manager
 clight &
 

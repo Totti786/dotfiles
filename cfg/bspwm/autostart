@@ -26,6 +26,9 @@ xfsettingsd &
 # Compositor 
 compositor --start &
 
+# Power manager
+[[ ! "$(pgrep xfce4-power-man)" ]] && xfce4-power-manager &
+
 # Ambient light manager
 clight &
 
@@ -53,3 +56,9 @@ plank &
 
 # Conky
 conky.sh &
+
+# Fix Plank
+bspc subscribe node_add | while read -r _
+do
+	xdo raise -N Plank
+done &
