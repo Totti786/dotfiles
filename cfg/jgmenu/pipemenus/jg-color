@@ -73,7 +73,7 @@ notify_color(){
 	image=/tmp/$1.png
     echo "$1" | tr -d "\n" | xclip -selection clipboard
     convert -size 48x48 xc:"$1" "$image"
-    notify-send -a 'Color Picker' -u low -r 70 -i "$image" "$1"
+    notify-send -a 'Color Picker' -u low -i "$image" "$1"
 }
 
 saved(){
@@ -181,7 +181,7 @@ menu+=("^sep(${CURRENT_WALL##*/})")
 
 alone() {
     # Output combined entries to Jgmenu
-    printf '%s\n' "${menu[@]}" "${submenu[@]}" "${submenu1[@]}" "${submenu2[@]}" | jgmenu --simple
+    printf '%s\n' "${menu[@]}" "${submenu[@]}" "${submenu1[@]}" "${submenu2[@]}" | jgmenu --at-pointer --simple
 }
 
 # Define main function to output results
