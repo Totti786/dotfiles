@@ -5,6 +5,9 @@
 # XDG Autostart 
 [[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && xdg-autostart & 
 
+# Restore Wallpaper
+wpgtk restore
+
 # Screenlocker
 xss-lock -l lockscreen &
 
@@ -46,9 +49,6 @@ autotiling &
 
 # Dunst
 dunst &
-
-# Restore Wallpaper
-wpgtk restore &
 
 # Fix the i3 colors
 "$HOME"/.config/i3/i3-reload

@@ -5,6 +5,9 @@
 # XDG Autostart 
 [[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && xdg-autostart
 
+# Restore Wallpaper
+wpgtk restore
+
 # Screenlocker
 xss-lock -l lockscreen &
 
@@ -40,9 +43,6 @@ fi
 
 # Dunst
 dunst &
-
-# Restore Wallpaper
-wpgtk restore &
 
 # Launch Polybar
 "$HOME"/.config/polybar/launch.sh &
