@@ -19,6 +19,7 @@ metadata(){
 }
 
 player_icon(){
+	if [[ "$playerctl_status" == "No players found" ]]; then exit 0 ;fi
 	player_name="$(playerctl -l | head -n1 | cut -f1 -d ".")"
 	declare -A player_icons=(
 		["spotify"]="󰓇"
@@ -35,6 +36,7 @@ player_icon(){
 }
 
 player_name(){
+	if [[ "$playerctl_status" == "No players found" ]]; then exit 0 ;fi
 	player_name="$(playerctl -l | head -n1 | cut -f1 -d ".")"
 	declare -A player_icons=(
 		["spotify"]="Spotify "
