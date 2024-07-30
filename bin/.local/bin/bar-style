@@ -6,7 +6,7 @@
 
 toggle_transparency(){
 	wpgtk_dir="$HOME/.local/bin/wpgtk"
-	
+	pipe_dir="$HOME/.config/jgmenu/pipemenus"
 	if [[ "$1" == "off" ]]; then 
 		compositor --disable-opacity
 		compositor --enable-shadows
