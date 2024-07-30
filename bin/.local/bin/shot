@@ -194,18 +194,18 @@ shot_qr() {
 		echo "$link" | xclip -selection clipboard
 	fi
 
-	if [[ -z "$link" ]]; then 
+	if [ -z "$link" ]; then 
 		notify-send -a Screenshot -r 83 -u low "No QR Code Found"
 		exit 1
 	fi 
 	
-	if [[ "$(notify-send -a Screenshot -r 83 -u low "QR Code Scanned" "$link" --action="Open Link")"  == "0" ]]; then 
+	if [ "$(notify-send -a Screenshot -r 83 -u low "QR Code Scanned" "$link" --action="Open Link")"  == "0" ]; then 
 		xdg-open "$link" 
 	fi
 }
 
 upload_to_imgur(){
-	if [[ -e "$1" ]]; then
+	if [ -e "$1" ]; then
 	client_id="${IMGUR_CLIENT_ID:-c9a6efb3d7932fd}"
 	
 	upload() {
