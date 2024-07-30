@@ -1,0 +1,274 @@
+#!/usr/bin/env bash
+
+## Record Screen and Audio with ffmpeg with support for intel and nvidia gpu encoding 
+# Dependencies: gpu-screen-recorder, ffmpeg, xdpyinfo, awk, grep, pactl, pciutils, vainfo, zenity
+#				ffmpegthumbnailer, notify-send, slop, pkill, polybar-msg
+
+## TODO
+## Add a config file
+
+# Define directory and file extension based on what needs to be recorded
+user="$(whoami)"
+backend="$XDG_SESSION_TYPE"
+recorder_log="$HOME/.recorder.log"
+recorder_lock="/tmp/recorder-$user.lock"
+recorder_lock_slop="/tmp/recorder-$user-slop.lock"
+recorder_lock_audio="/tmp/recorder-$user-audio.lock"
+
+if [[ "$1" == "--audio" ]] || [[ -e "$recorder_lock_audio" ]]; then 
+	file_type="m4a"
+	dir="$HOME/Music/Recordings"
+else
+	file_type="mp4"
+	dir="$HOME/Videos/Recordings"
+fi
+
+# Determine border size and slop command based on file existence
+if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]] && [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then 
+	slop_command=(slop -r highlight -b 5000 -f "%x %y %w %h") 
+else
+	color=$(xrdb -query | awk '/color13/{print $NF; exit}' | pastel format rgb-float | awk -F'[()]' '{print $2}')
+	slop_command=(slop -c "$color" -b 3 -f "%x %y %w %h")
+fi
+
+# Get current timestamp
+time="$(date +%Y-%m-%d-%H-%M-%S)"
+
+# Get segment number for generating filenames
+segment_number="$(cat $recorder_lock 2>/dev/null | wc -l)" 
+file="recording_${time}_segment_${segment_number}.$file_type"
+
+# Set frames per second for recording
+fps="60"
+
+# Set the logging level for ffmpeg to reduce clutter
+ffmpeg_command=(ffmpeg -hide_banner -loglevel error)
+
+if [[ "$2" == "--noaudio" ]]; then  
+	audio_command=()
+else
+	# Get default audio sink and source
+	audio_sink=$(pactl info | grep 'Default Sink' | awk '{print $3}')
+	audio_source=$(pactl info | grep 'Default Source' | awk '{print $3}')
+
+	audio_command=(-a "${audio_sink}.monitor|${audio_source}" -a "${audio_sink}.monitor" -a "${audio_source}")
+fi
+
+# Check if ffmpeg is running or paused
+if [[ $(pidof gpu-screen-recorder) ]] || [[ $(pidof ffmpeg) ]]; then
+    state="on"
+elif [[ -e "$recorder_lock" ]]; then 
+    state="paused"
+else
+    state="off"
+fi
+
+# Create directory if it doesn't exist
+if [[ ! -d "$dir" ]]; then
+	mkdir -p "$dir"
+fi
+
+# Function for countdown before starting recording
+countdown() {
+	for sec in $(seq $1 -1 1); do
+		notify-send -e -a "Recorder" -t 1000 -r 699 "Starting in : $sec"
+		sleep 1
+	done
+}
+
+pre_notify () {
+	notify-send -u low -a "Recorder" -t 1000 -r 699  "Recording Now!"
+	
+	# Logging
+	echo "-----------------$time-----------------" >> "$recorder_log"
+	
+	sleep 1
+}
+
+# Function to notify user about recording status
+notify_user() {
+	if [[ -e "$1" ]]; then
+		local file_name="$1"
+		#zenity --question --title="Rename Recording" --text="Do you want to rename the recorded file?" &&
+	    #new_filename=$(zenity --entry --title="Rename Recording" --text="Enter a new filename")
+	        #if [[ -n "$new_filename" ]]; then
+	            ## Rename the file if a new filename is provided
+	            #mv "${dir}/${file_name##*/}" "${dir}/${new_filename}.mp4"
+	            #local file_name="${dir}/${new_filename}.mp4"
+	        #fi
+	    ffmpegthumbnailer -i "$file_name" -o /tmp/"${file_name##*/}".jpg -s 500
+		notify_action=$(notify-send -a "Recorder" -u low -r 699 "Recording Saved" "Click to open" -i /tmp/"${file_name##*/}".jpg \
+		--action="Delete" --action="Open")
+		
+		case "$notify_action" in
+		"0")
+		    rm "$file_name"
+		    ;;
+		"1")
+		    exo-open "$file_name"
+		    ;;
+		esac
+	else
+		notify-send -a "Recorder" -u low -r 699 "Recording Canceled"
+	fi
+}
+
+# Function to cancel the recording if ffmpeg fails to record
+catch_error(){
+	exit_code="$?"
+	if [[ -e "$recorder_lock_audio" ]]; then
+		[[ "$exit_code" != 255 ]] && cancel_recording
+	else
+		[[ "$exit_code" != 0 ]] && cancel_recording
+	fi
+}
+
+# Function to capture screen recording with or without audio
+record_screen() {		
+	signal_start
+	
+	gpu-screen-recorder -w screen -f "$fps" -cr "full" -c "$file_type" "${audio_command[@]}" -o ${dir}/${file}
+	
+	catch_error # Check execution status after the command
+}
+
+# Function to capture area recording with or without audios
+record_area() {
+	signal_start
+	
+	gpu-screen-recorder -f "$fps" -c "$file_type" "${session_command[@]}"  "${audio_command[@]}" -o ${dir}/${file}
+		
+	catch_error  # Check execution status after the command
+}
+
+# Function to capture audio only
+record_audio() {
+	touch "$recorder_lock_audio"
+		
+	signal_start
+	
+	"${ffmpeg_command[@]}" -f pulse -i ${audio_sink}.monitor -f pulse -i ${audio_source} \
+	-filter_complex "[1:a][0:a]amerge=inputs=2[out]" \
+	-map "[out]" -map 0:a -map 1:a -c:a aac -b:a 256k \
+	${dir}/${file}
+	
+	catch_error # Check execution status after the command
+}
+
+# Function to stop ongoing recording and merge segments
+toggle_recording() {
+    #if [[ ! -e "$recorder_lock" ]]; then exit 0 ;fi
+	
+	if [[ "$state" == "on" ]]; then
+		# Pause recording
+        [[ -e "$recorder_lock_audio" ]] &&  pkill ffmpeg || pkill -SIGINT gpu-screen-reco
+        [[ $(pidof polybar) ]] && polybar-msg action "#recorder.hook.2"
+	else
+        # Resume recording
+   		[[ $(pidof polybar) ]] && polybar-msg action "#recorder.hook.1"
+   		if [[ -e "$recorder_lock_audio" ]]; then
+			record_audio &
+   		else
+			record_screen &
+		fi
+	fi
+
+}
+
+# Function to signal the start of recording
+signal_start(){
+	pre_notify
+	[[ $(pidof polybar) ]] && polybar-msg action "#recorder.hook.1"
+	echo "file '${dir}/${file}'" >> "$recorder_lock"
+}
+
+# Function to signal the stop of recording
+signal_stop(){
+	[[ $(pidof polybar) ]] && polybar-msg action "#recorder.hook.0"
+	rm /tmp/recorder*
+}
+
+stop_recording(){
+	if [[ ! -e "$recorder_lock" ]]; then exit 1 ;fi
+	
+	if [[ -e "$recorder_lock_audio" ]]; then
+		pkill ffmpeg && while pgrep -l ffmpeg; do sleep 0.5;done
+	else
+	    pkill -SIGINT gpu-screen-reco && while pgrep -l gpu-screen-reco; do sleep 0.5;done
+	fi
+	
+	# Merge all segments into a single file
+	merged_file="$(awk -F"'" 'NR==1 {gsub("_segment_0", "", $2); print $2}' "$recorder_lock")"
+	"${ffmpeg_command[@]}" -y -f concat -safe 0 -i "$recorder_lock" -c copy -map 0:v? -map 0:a? "${merged_file}"
+	if [[ "$?" == 0 ]]; then
+		# Remove individual segment files
+		rm "${dir}/recording_"*"_segment_"*.*
+	else
+		# Move segments to a different directory when merging fails
+		mkdir -p "${dir}/Corrupt"
+		for file in "${dir}"/recording_*_segment_*.*; do
+		    mv "$file" "${dir}/Corrupt/$(basename "$file")"
+		done
+	fi
+	signal_stop
+	notify_user "$merged_file" &
+}
+
+# Function to cancel ongoing recording
+cancel_recording() {
+	if [[ ! -e "$recorder_lock" ]]; then exit 1 ;fi
+	[[ -e "$recorder_lock_audio" ]] && pkill -9 ffmpeg || pkill -9 gpu-screen-reco
+	rm "${dir}/recording_"*"_segment_"*.*
+	signal_stop
+	notify_user
+}
+
+# Help section
+show_help() {
+    echo "Usage: ${0##*/} [ -- ]"
+    echo "Options:"
+    echo "  --screen        Start screen recording"
+    echo "  --area          Start area recording"
+    echo "  --audio         Start audio recording"
+    echo "  --toggle        Pause/resume ongoing recording"
+    echo "  --stop          Stop ongoing recording"
+    echo "  --cancel        Cancel ongoing recording"
+    echo "  --status        Check recording status"
+    echo "  --help          Show this help message"
+}
+
+# Command-line argument handling
+case "$1" in
+    "--status")
+        echo "$state"
+        ;;
+    "--screen")
+		if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+        record_screen "$2" >> "$recorder_log" 2>&1 & disown
+        ;;
+    "--area")
+    	if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+    	[[ "$backend" == "wayland" ]] && session_command=(-w portal) ||	session_command=(-w $(xdotool selectwindow))
+        record_area "$2" >> "$recorder_log" 2>&1 & disown
+        ;;
+    "--audio")
+    	if [[ "$state" == "on" ]]; then echo "Already Recording" ;exit 0 ;fi
+        record_audio >> "$recorder_log" 2>&1 & disown
+        ;;
+    "--stop")
+        stop_recording >> "$recorder_log" 2>&1 & disown
+        ;;
+    "--cancel")
+       	[[ -e "$recorder_lock_audio" ]] && pkill -9 ffmpeg || pkill -9 gpu-screen-reco
+        #cancel_recording >> "$recorder_log" 2>&1 & disown
+        ;;
+    "--toggle")
+        toggle_recording >> "$recorder_log" 2>&1 & disown
+        ;;
+    "--help" | "-h" | "")
+        show_help
+        ;;
+    *)
+        echo "Invalid option. Use --help for usage instructions."
+        exit 1 ;;
+esac

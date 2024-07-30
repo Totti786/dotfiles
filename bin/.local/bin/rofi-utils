@@ -8,6 +8,7 @@ show_help() {
     echo "Options:"
     echo "  --launch     App launcher"
     echo "  --shot       Screenshot menu"
+    echo "  --record     Recorder menu"
     echo "  --power      Power menu"
     echo "  --network    Netowrk menu"
     echo "  --help       Show this help message"
@@ -20,6 +21,9 @@ case "$1" in
 		;;
     "--shot")
         "$rofi_dir"/rofi-shot
+		;;
+    "--record")
+        "$rofi_dir"/rofi-recorder
 		;;
     "--power")
         "$rofi_dir"/rofi-power

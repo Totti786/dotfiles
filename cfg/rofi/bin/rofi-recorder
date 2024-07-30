@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# Required Font: Material Symbols
+
+rofi_command="rofi -theme power-screen"
+
+# Buttons
+state=$(recorder --status)
+
+if [[ "$state" == "off" ]]; then 
+	lines="4"
+	declare -A options
+	options=(
+	  [""]="screen"
+	  [""]="screen --noaudio"
+	  [""]="area"
+	  [""]="audio"
+	)
+	order=("" "" "" "")
+else
+	lines="3"
+	declare -A options
+	options=(
+	  [""]="toggle"
+	  [""]="toggle"
+	  [""]="stop"
+	  [""]="cancel"
+	)
+	if [[ "$state" == "on" ]]; then 
+		order=("" "" "")
+	else
+		order=("" "" "")
+	fi
+fi
+
+# Prepare the options string for rofi
+options_str=$(printf "%s\n" "${order[@]}")
+
+# Variable passed to rofi
+selection=$(echo -e "$options_str" | $rofi_command -p 'Take Screenshot' -dmenu -selected-row 0 -theme-str "#listview { lines: $lines; }")
+
+[[ -n "$selection" ]] && recorder "--${options[$selection]}"

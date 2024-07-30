@@ -49,7 +49,7 @@ super + {e,f,w,o,v,p,z}
 	{exo-open --launch FileManager,exo-open --launch WebBrowser,geany,obs,copyq toggle,color-picker,discord --enable-gpu-rasterization}
 
 super + shift + {s,w,r,d,l}
-	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk pick,rhythmbox,dmenu.sh,lobster -c}
+	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk pick,rofi-utils --record,dmenu.sh,lobster -c}
 
 # Terminal Apps
 ctrl + alt + {v,e,h}

@@ -86,9 +86,9 @@ tray_reload(){
 	}
 
 check_recording() {
-	if [[ "$(ffmpeg-recorder --status)"  == "on" ]]; then 
+	if [[ "$(recorder --status)"  == "on" ]]; then 
 		polybar-msg action "#recorder.hook.1"
-	elif [[ "$(ffmpeg-recorder --status)"  == "paused" ]]; then 
+	elif [[ "$(recorder --status)"  == "paused" ]]; then 
 		polybar-msg action "#recorder.hook.2"
 	fi
 }

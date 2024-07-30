@@ -2,23 +2,23 @@
 
 # Pipemenu for Screen Recording with ffmpeg
 
-state=$(ffmpeg-recorder --status)
+state=$(recorder --status)
 
 if [[ "$state" == "paused" ]]; then 
-    menu+=("Resume Recording,ffmpeg-recorder --toggle")
+    menu+=("Resume Recording,recorder --toggle")
 elif [[ "$state" == "on" ]]; then 
-	menu+=("Pause Recording,ffmpeg-recorder --toggle")
+	menu+=("Pause Recording,recorder --toggle")
 fi
 
 if [[ "$state" == "paused" || "$state" == "on" ]]; then
-    menu+=("Stop Recording,ffmpeg-recorder --stop")
-	menu+=("Discard Recording,ffmpeg-recorder --cancel")
+    menu+=("Stop Recording,recorder --stop")
+	menu+=("Discard Recording,recorder --cancel")
 else
-    menu+=("Record Desktop,ffmpeg-recorder --screen")
-    menu+=("Record Desktop (No Audio),ffmpeg-recorder --screen-na")
-    menu+=("Record Area,ffmpeg-recorder --area")
-    menu+=("Record Area (No Audio),ffmpeg-recorder --area-na")
-    menu+=("Record Audio Only,ffmpeg-recorder --audio")
+    menu+=("Record Desktop,recorder --screen")
+    menu+=("Record Desktop (No Audio),recorder --screen-na")
+    menu+=("Record Area,recorder --area")
+    menu+=("Record Area (No Audio),recorder --area-na")
+    menu+=("Record Audio Only,recorder --audio")
 fi
 
 printf '%s\n' "${menu[@]}"
