@@ -63,6 +63,17 @@
 	<video-files/>
 </action>
 <action>
+	<icon>cloud-upload</icon>
+	<name>Upload Image</name>
+	<submenu></submenu>
+	<unique-id>1722377509428801-1</unique-id>
+	<command>shot --upload %f</command>
+	<description>Uploads the image to imgur</description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
+<action>
 	<icon>view-preview</icon>
 	<name>Set as wallpaper</name>
 	<submenu></submenu>
@@ -79,7 +90,7 @@
 	<name>Convert to jpg</name>
 	<submenu></submenu>
 	<unique-id>1669732092996674-1</unique-id>
-	<command>convert %f -quality 90  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jpg&quot;</command>
+	<command>magick %F -quality 90  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jpg&quot;</command>
 	<description>Convert to JPG</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -90,10 +101,10 @@
 	<name>Convert to png</name>
 	<submenu></submenu>
 	<unique-id>1686859468146406-1</unique-id>
-	<command>convert %f -quality 80  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).png&quot;</command>
+	<command>magick %f -quality 80  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).png&quot;</command>
 	<description>Convert to PNG</description>
 	<range></range>
-	<patterns>*.webp</patterns>
+	<patterns>*</patterns>
 	<image-files/>
 </action>
 <action>
@@ -116,7 +127,6 @@
 	<description>Bulk rename for a single file</description>
 	<range>1-1</range>
 	<patterns>*</patterns>
-	<directories/>
 	<audio-files/>
 	<image-files/>
 	<other-files/>
@@ -129,7 +139,7 @@
 	<submenu></submenu>
 	<unique-id>1713659756832081-1</unique-id>
 	<command>gpg -c %f</command>
-	<description>Encrypts files using gpg</description>
+	<description>Encrypts files using gpg </description>
 	<range>*</range>
 	<patterns>*</patterns>
 	<text-files/>
