@@ -23,14 +23,6 @@ else
 	dir="$HOME/Videos/Recordings"
 fi
 
-# Determine border size and slop command based on file existence
-if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]] && [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then 
-	slop_command=(slop -r highlight -b 5000 -f "%x %y %w %h") 
-else
-	color=$(xrdb -query | awk '/color13/{print $NF; exit}' | pastel format rgb-float | awk -F'[()]' '{print $2}')
-	slop_command=(slop -c "$color" -b 3 -f "%x %y %w %h")
-fi
-
 # Get current timestamp
 time="$(date +%Y-%m-%d-%H-%M-%S)"
 
@@ -40,6 +32,9 @@ file="recording_${time}_segment_${segment_number}.$file_type"
 
 # Set frames per second for recording
 fps="60"
+
+# Video quality. Should be either 'medium', 'high', 'very_high' or 'ultra'.
+quality="very_high"
 
 # Set the logging level for ffmpeg to reduce clutter
 ffmpeg_command=(ffmpeg -hide_banner -loglevel error)
@@ -77,12 +72,12 @@ countdown() {
 }
 
 pre_notify () {
-	notify-send -u low -a "Recorder" -t 1000 -r 699  "Recording Now!"
+	notify-send -u low -a "Recorder" -t 500 -r 699  "Recording Now!"
 	
 	# Logging
 	echo "-----------------$time-----------------" >> "$recorder_log"
 	
-	sleep 1
+	sleep 0.5
 }
 
 # Function to notify user about recording status
@@ -127,7 +122,7 @@ catch_error(){
 record_screen() {		
 	signal_start
 	
-	gpu-screen-recorder -w screen -f "$fps" -cr "full" -c "$file_type" "${audio_command[@]}" -o ${dir}/${file}
+	gpu-screen-recorder -w screen -f "$fps" -cr "full" -q "$quality" -c "$file_type" "${audio_command[@]}" -o ${dir}/${file}
 	
 	catch_error # Check execution status after the command
 }
@@ -136,7 +131,7 @@ record_screen() {
 record_area() {
 	signal_start
 	
-	gpu-screen-recorder -f "$fps" -c "$file_type" "${session_command[@]}"  "${audio_command[@]}" -o ${dir}/${file}
+	gpu-screen-recorder -f "$fps" -cr "full" -q "$quality" -c "$file_type" "${session_command[@]}"  "${audio_command[@]}" -o ${dir}/${file}
 		
 	catch_error  # Check execution status after the command
 }
