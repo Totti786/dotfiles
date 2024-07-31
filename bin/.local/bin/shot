@@ -24,7 +24,7 @@ fi
 
 notify_user() {
 	if [[ -e "$file" ]]; then
-	paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga & disown
+	#paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga & disown
 		action=$(notify-send -a "Screenshot" -r 83 -i "$file" "Screenshot Saved" "Click to open" --action="Delete" --action="Open")
 		if [[ "$action"  == "0" ]]; then
 			rm "$file"
