@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ## Record Screen and Audio with ffmpeg with support for intel and nvidia gpu encoding 
-# Dependencies: gpu-screen-recorder, ffmpeg, xdpyinfo, awk, grep, pactl, pciutils, vainfo, zenity
+# Dependencies: gpu-screen-recorder, ffmpeg, xdpyinfo, awk, grep, pactl, zenity
 #				ffmpegthumbnailer, notify-send, slop, pkill, polybar-msg
 
 ## TODO
@@ -10,9 +10,8 @@
 # Define directory and file extension based on what needs to be recorded
 user="$(whoami)"
 backend="$XDG_SESSION_TYPE"
-recorder_log="$HOME/.recorder.log"
+recorder_log="/tmp/.recorder-$user.log"
 recorder_lock="/tmp/recorder-$user.lock"
-recorder_lock_slop="/tmp/recorder-$user-slop.lock"
 recorder_lock_audio="/tmp/recorder-$user-audio.lock"
 
 if [[ "$1" == "--audio" ]] || [[ -e "$recorder_lock_audio" ]]; then 
@@ -122,7 +121,7 @@ catch_error(){
 record_screen() {		
 	signal_start
 	
-	gpu-screen-recorder -w screen -f "$fps" -cr "full" -q "$quality" -c "$file_type" "${audio_command[@]}" -o ${dir}/${file}
+	gpu-screen-recorder -v no -w screen -f "$fps" -cr "full" -q "$quality" -c "$file_type" "${audio_command[@]}" -o ${dir}/${file}
 	
 	catch_error # Check execution status after the command
 }
@@ -131,7 +130,7 @@ record_screen() {
 record_area() {
 	signal_start
 	
-	gpu-screen-recorder -f "$fps" -cr "full" -q "$quality" -c "$file_type" "${session_command[@]}"  "${audio_command[@]}" -o ${dir}/${file}
+	gpu-screen-recorder -v no -f "$fps" -cr "full" -q "$quality" -c "$file_type" "${session_command[@]}"  "${audio_command[@]}" -o ${dir}/${file}
 		
 	catch_error  # Check execution status after the command
 }
