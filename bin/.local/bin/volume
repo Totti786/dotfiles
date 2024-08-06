@@ -22,13 +22,13 @@ notify(){
 
 # Increase Volume
 inc_volume() {
-	wpctl set-volume @DEFAULT_SINK@ 5%+
+	wpctl set-volume -l 1.5 @DEFAULT_SINK@ 5%+
 	notify
 }
 
 # Decrease Volume
 dec_volume() {
-	wpctl set-volume @DEFAULT_SINK@ 5%-
+	wpctl set-volume -l 1.5 @DEFAULT_SINK@ 5%-
 	notify
 }
 
