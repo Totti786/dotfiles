@@ -4,6 +4,6 @@ rofi \
 	-no-lazy-grab \
 	-show drun \
 	-selected-row 0 \
-	-modi "drun,filebrowser,recursivebrowser" \
+	-modi "drun,recursivebrowser,filebrowser" \
 	-drun-display-format "{name}" \
 	-theme launcher
