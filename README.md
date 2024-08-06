@@ -30,19 +30,21 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | --------------------   | ------------------------------------------------------- |
 | Floating Window Manager| [`openbox`](https://github.com/danakj/openbox)          |
 | Tiling Window Manager  | [`bspwm`](https://github.com/baskerville/bspwm)         |
+| Tiling Window Manager  | [`i3`](https://github.com/i3/i3)					       |
+| Hyprland Window Manager| [`Hyprland`](https://github.com/hyprwm/Hyprland)		   |
+| Aylur's Gtk Shell		 | [`ags`](https://github.com/Aylur/ags)				   |
 | Compositor             | [`FT-labs's/picom`](https://github.com/FT-labs/picom)   |
 | Terminal               | [`alacritty`](https://github.com/alacritty/alacritty)   |
 | Shell                  | [`zsh`](https://www.zsh.org/)                           |
-| Terminal Editor        | [`neovim`](https://github.com/neovim/neovim)            |
-| GUI Editor      		 | [`geany`](https://github.com/geany/geany)               |
+| Text Editor      		 | [`geany`](https://github.com/geany/geany)               |
 | File Manager    		 | [`thunar`](https://github.com/xfce-mirror/thunar)       |
 | Panel                  | [`polybar`](https://github.com/polybar/polybar)         |
 | System Tray            | [`stalonetray`](https://github.com/kolbusa/stalonetray) |
 | Dock                   | [`plank`](https://github.com/ricotz/plank)              |
-| Widgets                | [`eww`](https://github.com/elkowar/eww)              |
-| Notification Manager   | [`dunst`](https://github.com/dunst-project/dunst)       |
-| Application Launcher   | [`rofi`](https://github.com/davatorium/rofi)            |
-| Application Menu       | [`jgmenu`](https://github.com/johanmalm/jgmenu)         |
+| Widgets                | [`eww`](https://github.com/elkowar/eww)       	       |
+| Notification Daemon    | [`dunst`](https://github.com/dunst-project/dunst)       |
+| Application Launcher   | [`rofi-wayland`](https://github.com/lbonn/rofi)         |
+| Right Click Menu       | [`jgmenu`](https://github.com/johanmalm/jgmenu)         |
 
 
 
@@ -50,8 +52,9 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 
 | Font List                                                                                                | Use                 |
 | -------------------------------------------------------------------------------------------------------- | ------------------- |
-| [`Noto Sans`](https://fonts.google.com/noto)                                                       	   | GTK and QT Font        |
-| [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)                              | Primary Font     |
+| [`Noto Sans`](https://fonts.google.com/noto)                                                       	   | GTK and QT Font     |
+| [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)                              | Primary Font        |
+| [`Material Symbols`](https://github.com/google/material-design-icons)                           		   | Icons Font  	     |
 
 ## Configuration
 
@@ -70,25 +73,29 @@ These configs are tested on Arch Linux, with 1920x1080 resolution.
 :warning: **The following instructions have only been written for arch-based distros**
 Install an [AUR helper](https://wiki.archlinux.org/title/AUR_helpers) of your choice
 You are required to have the [Chaotic-AUR](https://aur.chaotic.cx/) repo added on your system
-- Using `pacman` with the Chaotic-AUR enabled
+- Using `yay` with the Chaotic-AUR enabled
 
 ```bash
-sudo pacman -Syu --needed \
-acpi alacritty autotiling bc bluez bluez-utils brightnessctl \
-bspwm conky copyq dmenu dunst fd feh firefox flameshot geany \
-gpick grep htop i3lock-color i3-wm imagemagick jgmenu jq \
-light maim man moreutils mpv mpv-mpris mugshot ncdu \
-network-manager-applet networkmanager-openvpn noto-fonts \
-noto-fonts-emoji obconf openbox pamixer pastel pavucontrol \
-perl plank playerctl polybar qt5ct qt5-styleplugins ranger \
-redshift rofi-lbonn-wayland-git stalonetray sxhkd sxiv thunar \
-tumbler viewnior wget wmctrl xarchiver xcape xclip xdg-autostart \
-xdg-user-dirs xdg-user-dirs-gtk xdotool xfce4-power-manager \
-xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb \
-xorg-xsetroot xorg-xwininfo zathura zathura-cb zathura-pdf-mupdf \
-zenity zsh
+yay -Syu --needed \
+acpi acpilight alacritty appimagelauncher autotiling axel base-devel bc blueman bluez \
+bluez-utils brightnessctl bspwm clight conky copyq dmenu drawing dunst envycontrol evince \
+fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep \
+geany gnome-bluetooth-3.0 gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
+gpu-screen-recorder-git jq gpick grep python-gtts htop i3lock-color i3-wm imagemagick jgmenu \
+kdeconnect libplasma linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu \
+network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-emoji nsxiv nvtop obconf \
+openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct rhythmbox rofi-wayland \
+rtorrent scrot stalonetray snapshot sxhkd termdown thunar thunar-archive-plugin perl plank \
+playerctl plasma-browser-integration polkit-gnome polybar python-pipx python-wheel \
+thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
+ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift \
+tumbler translate-shell viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
+xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
+xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh
 ```
 
 ## Credits
-- [beyond9thousand](https://github.com/beyond9thousand) for his Readme and the system tray
+- [end-4](https://github.com/end-4) for his amazing ags configs
+- [beyond9thousand](https://github.com/beyond9thousand) for his Readme and the system tray script idea
 - [adi1090x](https://github.com/adi1090x) for his awesome rofi themes and some other scripts from Archcraft
+- [vaxerski](https://github.com/vaxerski) for all of his awesome work on Hyprland
