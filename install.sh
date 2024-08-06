@@ -38,7 +38,7 @@ declare -a extra=(
 
 declare -a wayland=(
 	aylurs-gtk-shell-git dart-sass gnome-control-center grim hypridle hyprland \
-	hyprlock aur/hyprpicker lexend-fonts-git nwg-displays slurp swww wf-recorder \
+	hyprlock aur/hyprpicker nwg-displays slurp swww ttf-readex-pro \
 	xdg-desktop-portal-hyprland python-pywayland wl-clipboard
 )
 
@@ -50,7 +50,7 @@ declare -a aur=(
 )
 
 declare -a additional=(
-	2048.c ookla-speedtest-bin tty-clock-git typioca-git unimatrix-git yetris
+	2048.c ookla-speedtest-bin tty-clock typioca-git unimatrix-git
 )
 
 #---- Core functions ---------------------
