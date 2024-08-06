@@ -93,6 +93,14 @@ tumbler translate-shell viewnior waypaper-git wget wmctrl xcape xclip xdg-autost
 xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
 xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh
 ```
+If you want to install hyprland configs to work, you need the following packages as well:
+
+```bash
+yay -Syu --needed \
+aylurs-gtk-shell-git dart-sass gnome-control-center grim hypridle hyprland \
+hyprlock aur/hyprpicker lexend-fonts-git nwg-displays slurp swww \
+xdg-desktop-portal-hyprland python-pywayland wl-clipboard
+```
 
 ## Credits
 - [end-4](https://github.com/end-4) for his amazing ags configs
