@@ -45,7 +45,7 @@ const BarClock = () => Widget.Box({
                 }),
                 Widget.Label({
                     className: 'txt-norm txt-onLayer1',
-                    label: '•',
+                    label: ' ',
                 }),
                 Widget.Label({
                     className: 'txt-smallie bar-date',

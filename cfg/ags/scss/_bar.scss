@@ -139,6 +139,9 @@ $bar_ws_width_focus_active: 2.045rem;
 }
 
 .bar-date {
+    @include titlefont;
+    font-size: 1.1rem;
+    margin-top: 0.2rem;
     color: $dateOnLayer1;
 }
 
