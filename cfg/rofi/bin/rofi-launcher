@@ -2,8 +2,10 @@
 
 rofi \
 	-no-lazy-grab \
-	-show drun \
+	-show combi \
+	-modes combi \
 	-selected-row 0 \
-	-modi "drun,recursivebrowser,filebrowser" \
 	-drun-display-format "{name}" \
+	-modi "filebrowser" \
+	-combi-modes "drun,recursivebrowser" \
 	-theme launcher
