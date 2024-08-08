@@ -34,7 +34,7 @@ toggle(){
 }
 
 restart(){
-	if [[ "$conky" == "On" ]]; then
+	if [[ "$(pgrep conky)" ]]; then
 		[[ -n "$(pgrep conky)" ]] && pkill -9 conky
 		conky -qc "$config"
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && xdo lower -N Conky
