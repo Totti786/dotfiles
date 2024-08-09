@@ -37,7 +37,7 @@ let configOptions = {
         'imageViewer': "viewnoir",
         'vpn': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center network",
         'network': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
-        'settings': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
+        'settings': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center",
         'taskManager': "gnome-usage",
         'terminal': "alacritty --hold -e", // This is only for shell actions
     },
@@ -56,7 +56,7 @@ let configOptions = {
         // 'eDP-1': "brightnessctl",
         // 'DP-1': "ddcutil",
         'controllers': {
-            'default': "auto",
+            'default': "brightnessctl",
         },
     },
     'cheatsheet': {
