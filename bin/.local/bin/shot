@@ -25,7 +25,7 @@ fi
 notify_user() {
 	if [[ -e "$file" ]]; then
 	#paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga & disown
-		action=$(notify-send -a "Screenshot" -r 83 -i "$file" "Screenshot Saved" "Click to open" --action="Delete" --action="Open")
+		action=$(notify-send -a "shot" -r 83 -i "$file" "Screenshot Saved" "Click to open" --action="Delete" --action="Open")
 		if [[ "$action"  == "0" ]]; then
 			rm "$file"
 		elif [[ "$action"  == "1" ]]; then
@@ -36,7 +36,7 @@ notify_user() {
 
 countdown() {
 	for sec in $(seq $1 -1 1); do
-		notify-send -a "Screenshot" -t 1000 -u low -r 83 "Countdown" "Taking shot in : $sec"
+		notify-send -a "shot" -t 1000 -u low -r 83 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
 	sleep 0.2
@@ -146,9 +146,10 @@ shot_extract_text() {
 	fi
 	
 	if [[ -z "$text" ]]; then  
-		notify-send -a "Screenshot" -r 83 -u low "No Text Found" "Couldn't extract text"
+		notify-send -a "shot" -r 83 -u low "No Text Found" "Couldn't extract text"
 	else
-		notify-send -a "Screenshot" -r 83 -u low "Extracted Text" "Text copied to clipboard"
+		notify-send -a "shot" -r 83 -u low "Extracted Text" "Text copied to clipboard"
+		echo 1
 	fi
 }
 
@@ -180,7 +181,7 @@ shot_read() {
 
 shot_qr() {
 	if ! command -v zbarimg >/dev/null 2>&1;then 
-		notify-send -a Screenshot -r 83 -u low "QR Code" "zbar is not installed"
+		notify-send -a "shot" -r 83 -u low "QR Code" "zbar is not installed"
 		exit 1
 	fi
 	
@@ -195,11 +196,11 @@ shot_qr() {
 	fi
 
 	if [ -z "$link" ]; then 
-		notify-send -a Screenshot -r 83 -u low "No QR Code Found"
+		notify-send -a "shot" -r 83 -u low "No QR Code Found"
 		exit 1
 	fi 
 	
-	if [ "$(notify-send -a Screenshot -r 83 -u low "QR Code Scanned" "$link" --action="Open Link")"  == "0" ]; then 
+	if [ "$(notify-send -a shot -r 83 -u low "QR Code Scanned" "$link" --action="Open Link")"  == "0" ]; then 
 		xdg-open "$link" 
 	fi
 }
@@ -221,14 +222,16 @@ upload_to_imgur(){
 	    else
 	        if [ "$file" != "-" -a ! -f "$file" ]; then
 	            echo "File '$file' doesn't exist; skipping" >&2
-	            continue
+       	        notify-send -a "shot" -r 83 -u low "Image Upload" "File '$file' doesn't exist; skipping"
+	            exit 1
 	        fi
 	        response=$(upload "@$file" 2>/dev/null)
 	    fi
 	
 	    if [ $? -ne 0 ] || echo "$response" | grep -q 'success="0"'; then
 	        echo "Upload failed for '$file'" >&2
-	        continue
+	        notify-send -a "shot" -r 83 -u low "Image Upload" "Upload failed for '$file'"
+	        exit 1
 	    fi
 	
 	    url="${response##*<link>}"
@@ -247,7 +250,7 @@ upload_to_imgur(){
 		sleep 0.1
 		echo "$url" | xclip -selection clipboard
 	fi 
-	if [[ "$(notify-send -a 'Screenshot' -r 83 -u low "Imgur" "$url" --action="Open Link")"  == "0" ]]; then 
+	if [[ "$(notify-send -a shot -r 83 -u low "Image Upload" "$url" --action="Open Link")"  == "0" ]]; then 
 		xdg-open "$url" 
 	fi
 fi
@@ -257,14 +260,14 @@ fi
 notify_user_gif() {
     local file="$1"
     if [[ -e "$file" ]]; then
-        action=$(notify-send -a "Screenshot" -r 83 -u low -i "$file" "GIF Saved" "Click to open" --action="Delete" --action="Open")
+        action=$(notify-send -a shot -r 83 -u low -i "$file" "GIF Saved" "Click to open" --action="Delete" --action="Open")
         if [[ "$action"  == "0" ]]; then
             rm "$file"
         elif [[ "$action"  == "1" ]]; then
             xdg-open "$file"
         fi
     else
-        notify-send -a "Screenshot" -t 1000 -r 83 -u low "GIF Creation Canceled"
+        notify-send -a "shot" -t 1000 -r 83 -u low "GIF Creation Canceled"
     fi
 }
 
