@@ -10,7 +10,7 @@
 # Define directory and file extension based on what needs to be recorded
 user="$(whoami)"
 backend="$XDG_SESSION_TYPE"
-recorder_log="/tmp/.recorder-$user.log"
+recorder_log="/tmp/recorder-$user.log"
 recorder_lock="/tmp/recorder-$user.lock"
 recorder_lock_audio="/tmp/recorder-$user-audio.lock"
 
