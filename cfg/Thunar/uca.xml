@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
 <action>
+	<icon>image-straighten</icon>
+	<name>JXL</name>
+	<submenu>Convert to</submenu>
+	<unique-id>1723053614774156-1</unique-id>
+	<command>magick %f  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jxl&quot;</command>
+	<description>Convert to JXL</description>
+	<range></range>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>image-straighten</icon>
+	<name>JPG</name>
+	<submenu>Convert to</submenu>
+	<unique-id>1669732092996674-1</unique-id>
+	<command>magick %f  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jpg&quot;</command>
+	<description>Convert to JPG</description>
+	<range></range>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>image-straighten</icon>
+	<name>PNG</name>
+	<submenu>Convert to</submenu>
+	<unique-id>1686859468146406-1</unique-id>
+	<command>magick %f -quality 80  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).png&quot;</command>
+	<description>Convert to PNG</description>
+	<range></range>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
+<action>
 	<icon>cm_runterm</icon>
 	<name>Open Terminal Here</name>
 	<submenu></submenu>
@@ -84,28 +117,6 @@
 	<patterns>*</patterns>
 	<image-files/>
 	<video-files/>
-</action>
-<action>
-	<icon>image-straighten</icon>
-	<name>Convert to jpg</name>
-	<submenu></submenu>
-	<unique-id>1669732092996674-1</unique-id>
-	<command>magick %F -quality 90  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jpg&quot;</command>
-	<description>Convert to JPG</description>
-	<range></range>
-	<patterns>*</patterns>
-	<image-files/>
-</action>
-<action>
-	<icon>image-straighten</icon>
-	<name>Convert to png</name>
-	<submenu></submenu>
-	<unique-id>1686859468146406-1</unique-id>
-	<command>magick %f -quality 80  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).png&quot;</command>
-	<description>Convert to PNG</description>
-	<range></range>
-	<patterns>*</patterns>
-	<image-files/>
 </action>
 <action>
 	<icon>documentation</icon>
