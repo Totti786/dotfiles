@@ -44,9 +44,8 @@ declare -a wayland=(
 
 declare -a aur=(
 	i3-resurrect picom-simpleanims-next-git aur/qt5gtk2 aur/qt6gtk2 \
-	python-materialyoucolor-git ruby-fusuma ruby-fusuma-plugin-appmatcher \
-	ruby-fusuma-plugin-keypress ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl \
-	sioyek-git xiccd xqp zscroll-git
+	python-materialyoucolor-git ruby-fusuma ruby-fusuma-plugin-sendkey \
+	ruby-fusuma-plugin-wmctrl sioyek-git xiccd xqp zscroll-git
 )
 
 declare -a additional=(
