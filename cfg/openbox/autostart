@@ -9,7 +9,7 @@
 wpgtk restore &
 
 # Screenlocker
-xss-lock -l lockscreen &
+xss-lock --ignore-xss -l lockscreen &
 
 # xfce4-settings daemon
 xfsettingsd &
