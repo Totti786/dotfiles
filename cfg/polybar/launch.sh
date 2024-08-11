@@ -85,11 +85,19 @@ tray_reload(){
 	"$dir"/scripts/systray
 	}
 
-check_recording() {
+check_recording(){
 	if [[ "$(recorder --status)"  == "on" ]]; then 
 		polybar-msg action "#recorder.hook.1"
 	elif [[ "$(recorder --status)"  == "paused" ]]; then 
 		polybar-msg action "#recorder.hook.2"
+	fi
+}
+
+check_clight(){
+	if [[ "$(clight.sh --inhibit-status)" == "false" ]]; then
+	    [[ $(pidof polybar) ]] && polybar-msg action "#autobr.hook.0"
+	else
+		[[ $(pidof polybar) ]] && polybar-msg action "#autobr.hook.1"
 	fi
 }
 
@@ -110,5 +118,6 @@ launch_bar() {
 set_values
 fix_modules
 launch_bar &&
+check_clight
 check_recording
 tray_reload

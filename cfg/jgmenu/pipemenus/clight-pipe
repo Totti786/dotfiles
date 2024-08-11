@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+clight_conf="$HOME/.config/clight.conf"
+state="$(clight.sh --inhibit-status)"
+
+if [[ "$state" == "true" ]]; then 
+	status="Inhibited"
+elif [[ "$state" == "false" ]]; then 
+	status="Running"
+else
+	status="Off"
+fi
+
+menu+=("^sep(Clight ($status))")
+if [[ "$status" == "Off" ]]; then
+	menu+=("Start Clight,clight & disown")
+else
+menu+=("Force Capture,clight.sh --capture")
+menu+=("Toggle Inhibit,clight.sh --toggle-inhibit")
+menu+=("Increase Brightness,clight.sh --increase")
+menu+=("Decrease Brightness,clight.sh --decrease")
+menu+=("Edit config file,exo-open $clight_conf")
+fi
+
+printf '%s\n' "${menu[@]}"
