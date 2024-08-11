@@ -5,7 +5,7 @@
 	<name>JXL</name>
 	<submenu>Convert to</submenu>
 	<unique-id>1723053614774156-1</unique-id>
-	<command>magick %f  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jxl&quot;</command>
+	<command>magick %f -quality 90 &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jxl&quot;</command>
 	<description>Convert to JXL</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -16,7 +16,7 @@
 	<name>JPG</name>
 	<submenu>Convert to</submenu>
 	<unique-id>1669732092996674-1</unique-id>
-	<command>magick %f  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jpg&quot;</command>
+	<command>magick %f -quality 90 &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jpg&quot;</command>
 	<description>Convert to JPG</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -29,6 +29,17 @@
 	<unique-id>1686859468146406-1</unique-id>
 	<command>magick %f -quality 80  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).png&quot;</command>
 	<description>Convert to PNG</description>
+	<range></range>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>image-straighten</icon>
+	<name>AVIF</name>
+	<submenu>Convert to</submenu>
+	<unique-id>1686859468146406-1</unique-id>
+	<command>magick %f -quality 90 &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).avif&quot;</command>
+	<description>Convert to AVIF</description>
 	<range></range>
 	<patterns>*</patterns>
 	<image-files/>
