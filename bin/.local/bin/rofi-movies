@@ -2,10 +2,10 @@
 
 # Define cache and file paths
 movies_directory="$HOME/Videos/Movies"
-#shows_directory="$HOME/Videos/TV-Shows"
-cached="$HOME/.cache/rofi-movies"
-shortcuts="$HOME/.local/share/applications/movies"
-fallback_poster="$HOME/.cache/rofi-movies/cover.jpg"  # Define the path to your fallback poster image
+shows_directory="$HOME/Videos/Shows"
+cached="$HOME/.cache/rofi-media"
+shortcuts="$HOME/.local/share/applications/media"
+fallback_poster="$cached/cover.jpg"  # Define the path to your fallback poster image
 
 # Create necessary directories if they don't exist
 mkdir -p "$shortcuts"
@@ -13,10 +13,10 @@ mkdir -p "$cached"
 
 if [[ ! -f "$fallback_poster" ]]; then
     eval $(xrdb -query | awk '/color0/{print "color0="$NF} /color7/{print "color7="$NF}')
-	magick -size 300x445 xc:"$color0" "$fallback_poster"
-	magick "$fallback_poster" -gravity center -fill "$color7" \
-	-font /usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf \
-	-pointsize 90 -annotate 0 "󰿎" "$fallback_poster"
+    magick -size 300x445 xc:"$color0" "$fallback_poster"
+    magick "$fallback_poster" -gravity center -fill "$color7" \
+    -font /usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf \
+    -pointsize 90 -annotate 0 "󰿎" "$fallback_poster"
 fi
 
 get_poster(){
@@ -30,11 +30,11 @@ get_poster(){
     fi
     
     # Prepare the movie title argument for the API request
-    movie_title="$1"
-    encoded_title=$(echo "$movie_title" | tr ' ' '+')
+    title="$1"
+    encoded_title=$(echo "$title" | tr ' ' '+')
     
     # Fetch movie data from OMDB API
-    response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&apikey=$API_KEY")
+    response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&type=movie&apikey=$API_KEY")
     
     # Check if the response contains an error message
     error_message=$(echo "$response" | jq -r '.Error')
@@ -48,8 +48,8 @@ get_poster(){
     
     # Check if the poster URL is available
     if [ "$poster_url" == "N/A" ]; then
-        echo "No poster available for '$movie_title', using fallback image."
-        cp "$fallback_poster" "$directory_path/$movie_title.jpg"
+        echo "No poster available for '$title', using fallback image."
+        cp "$fallback_poster" "$cached/$title.jpg"
     else
         # Extract the directory path provided as an argument
         directory_path="$2"
@@ -60,47 +60,57 @@ get_poster(){
         fi
     
         # Use 'wget' to download the poster image
-        wget -q "$poster_url" -O "$directory_path/$movie_title.jpg"
-        echo "Poster downloaded as '$directory_path/$movie_title.jpg'"
+        wget -q "$poster_url" -O "$directory_path/$title.jpg"
+        echo "Poster downloaded as '$directory_path/$title.jpg'"
     fi
 }
 
-#get_show(){
-    #name=$(echo $1 | tr ' ' '-')
-    #url=$(curl -s "https://flixhq.to/search/$name" | sed ':a;N;$!ba;s/\n//g;s/class="flw-item"/\n/g' | sed -nE 's@.*img data-src="([^"]*)".*@\1@p' | tail -n1)
-    #wget "$url" -O "$cached/$1"
-#}
-
-#shows(){
-    #readarray -t lines < <(find "$shows_directory" -mindepth 1 \( -type l -o -type d \))
+get_show_poster(){
+    API_KEY="497fd34e"
     
-    #for line in "${lines[@]}"; do
-        #[[ -d "$line" ]] && name="$(echo ${line##*/} | awk -F' -' '{print $1}' | tr ' ' '-')"
-        #if ! [[ -f "$cached/$name.jpg" ]]; then
-            #get_show "$name" "$cached"
-        #fi        
-    #done
-#}
+    if [ -z "$1" ] || [ -z "$2" ]; then
+        echo "Usage: $0 <show_title> <directory_path>"
+        exit 1
+    fi
+    
+    title="$1"
+    encoded_title=$(echo "$title" | tr ' ' '+')
+    
+    response=$(curl -s "http://www.omdbapi.com/?s=$encoded_title&type=series&apikey=$API_KEY")
 
-# Function to generate thumbnails and create shortcut desktop entries
+    error_message=$(echo "$response" | jq -r '.Error')
+    if [ "$error_message" != "null" ]; then
+        echo "Error: $error_message"
+        poster_url="N/A"
+    else
+        poster_url=$(echo "$response" | jq -r '.Search[0].Poster')
+    fi
+    
+    if [ "$poster_url" == "N/A" ]; then
+        echo "No poster available for '$title', using fallback image."
+        cp "$fallback_poster" "$directory_path/$title.jpg"
+    else
+        directory_path="$2"
+        if [ ! -d "$directory_path" ]; then
+            mkdir -p "$directory_path"
+        fi
+        wget -q "$poster_url" -O "$directory_path/$title.jpg"
+        echo "Poster downloaded as '$directory_path/$title.jpg'"
+    fi
+}
+
 movies(){
-    # List the movies in the directory
     readarray -t lines < <(find "$movies_directory" \( -type l -o -type f \) -name "*.mp4" -o -name "*.mkv")
 
-    # Loop through each line in 'lines'
     for line in "${lines[@]}"; do
-        # Extract the file name and remove the extension to use as the shortcut name
         [[ -f "$line" ]] && name="${line##*/}" name="${name%.*}"
         
-        # Check if the poster exists in the cache directory and if not download it
         if ! [[ -f "$cached/$name.jpg" ]]; then
             get_poster "$name" "$cached"
         fi
 
-        # Define the shortcut desktop entry file path
         movie="$shortcuts/$name.desktop"
         
-        # If the shortcut desktop entry doesn't exist, create it with appropriate details
         if [[ ! -f "$movie" ]]; then
             cat > "$movie" <<- EOF
             [Desktop Entry]
@@ -113,16 +123,40 @@ movies(){
         fi
     done
 
-    # Show the rofi application launcher with the 'Movies' category
     rofi -show drun -drun-categories Movies -theme rofi-media
 }
 
-# Check if the directory has any movies
+shows(){
+    readarray -t lines < <(find "$shows_directory" \( -type l -o -type f \) -name "*.mp4" -o -name "*.mkv")
+
+    for line in "${lines[@]}"; do
+        [[ -f "$line" ]] && name="${line##*/}" name="${name%.*}"
+        
+        if ! [[ -f "$cached/$name.jpg" ]]; then
+            get_show_poster "$name" "$cached"
+        fi
+
+        show="$shortcuts/$name.desktop"
+        
+        if [[ ! -f "$show" ]]; then
+            cat > "$show" <<- EOF
+            [Desktop Entry]
+            Name=$name
+            Exec=mpv '$line'
+            Icon=$cached/$name.jpg
+            Type=Application
+            Categories=Shows;
+			EOF
+        fi
+    done
+
+    rofi -show drun -drun-categories Shows -theme rofi-media
+}
+
 if [[ "$(ls "$movies_directory" | grep -e "\.mp4$" -e "\.mkv$")" ]] ; then 
-    # If the cache directory is empty, notify the user and generate thumbnails and shortcuts
     [[ -z "$(ls -A $cached)" ]] && notify-send -a Rofi-Movies -t 2000 -r 40 "Rofi-Movies" "Getting Covers..."
-    movies && rm -r "$shortcuts"  # After generating thumbnails and creating shortcuts, remove the shortcuts directory
+    movies && rm -r "$shortcuts"
 else
-    # If no matching documents were found, notify the user
     notify-send -t 2000 -r 41 "Rofi-Movies" "No Movies Were Found"
 fi
+
