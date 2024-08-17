@@ -2,6 +2,8 @@ import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Brightness from '../../../services/brightness.js';
 import Indicator from '../../../services/indicator.js';
+import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
+const { exec, execAsync } = Utils;
 
 const WindowTitle = async () => {
     try {
@@ -53,6 +55,12 @@ export default async (monitor = 0) => {
 		},
         onPrimaryClick: () => {
             App.toggleWindow('sideleft');
+        },
+        onSecondaryClick: () => {
+            Utils.execAsync('clight.sh --capture').catch(print);
+        },
+        onMiddleClick: () => {
+            Utils.execAsync('clight.sh --toggle-pause').catch(print);
         },
         child: Widget.Box({
             homogeneous: false,

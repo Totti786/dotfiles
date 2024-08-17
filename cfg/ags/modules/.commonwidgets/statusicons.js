@@ -277,6 +277,19 @@ const OptionalKeyboardLayout = async () => {
         return null;
     }
 };
+
+const createKeyboardLayoutInstances = async () => {
+    const Hyprland = (await import('resource:///com/github/Aylur/ags/service/hyprland.js')).default;
+    const monitorsCount = Hyprland.monitors.length
+    const instances = await Promise.all(
+        Array.from({ length: monitorsCount }, () => OptionalKeyboardLayout())
+    );
+
+    return instances;
+};
+const optionalKeyboardLayoutInstances = await createKeyboardLayoutInstances()
+
+
 const optionalKeyboardLayoutInstance = await OptionalKeyboardLayout();
 
 const VPNIndicator = () => Widget.Revealer({
@@ -289,13 +302,13 @@ const VPNIndicator = () => Widget.Revealer({
     })
 })
 
-export const StatusIcons = (props = {}) => Widget.Box({
+export const StatusIcons = (props = {}, monitor = 0) => Widget.Box({
     ...props,
     child: Widget.Box({
         className: 'spacing-h-15',
         children: [
             MicMuteIndicator(),
-            optionalKeyboardLayoutInstance,
+            optionalKeyboardLayoutInstances[monitor],
             NotificationIndicator(),
             VPNIndicator(),
             NetworkIndicator(),
