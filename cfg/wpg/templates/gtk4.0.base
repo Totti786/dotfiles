@@ -27,11 +27,11 @@
 @define-color card_shade_color #000000;
 @define-color dialog_bg_color {color0};
 @define-color dialog_fg_color {color15};
-@define-color popover_bg_color {color0};
+@define-color popover_bg_color mix({color0}, {color8}, 0.2);
 @define-color popover_fg_color {color15};
 @define-color shade_color #000000;
 @define-color scrollbar_outline_color {color4};
-@define-color sidebar_bg_color {color0};
+@define-color sidebar_bg_color mix({color0}, {color8}, 0.2);
 @define-color sidebar_fg_color {color15};
 @define-color sidebar_backdrop_color {color0};
 @define-color secondary_sidebar_bg_color #e01b24;
@@ -84,5 +84,19 @@
 @define-color dark_5 #000000;
 
 .navigation-sidebar {{
-	background-color: {color0};
+	background-color: mix({color0}, {color8}, 0.2);
+}}
+
+popover contents {{
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	box-shadow: none;
+	margin-top: -12px;
+}}  
+
+popover arrow {{
+	background: transparent;
+	border-color: transparent;
 }}
