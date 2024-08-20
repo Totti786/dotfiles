@@ -246,12 +246,12 @@ update(){
 	progressBar "Updating... "
 	## backup weather info file
 	cp "$HOME"/.local/bin/info "$HOME"/.cache/info
-	#[ ! -f "$HOME/.zprofile" ] && 
+	ln -sfr ~/.themes/FlatColor ~/.themes/dummy
 	cp "$dir"/deps/.zprofile "$HOME"/
 	cp "$dir"/deps/.gtkrc-2.0 "$HOME"/
 	cp "$dir"/deps/.theme "$HOME"/
 	## move udpated scripts and configs
-	cp -r "$dir"/bin/.scripts/ "$HOME"/ 
+	cp -r "$dir"/bin/.scripts/ "$HOME"/
 	cp -r "$dir"/cfg/* "$HOME"/.config/
 	cp -r "$dir"/bin/.local/ "$HOME"/
 	# restore weather info file
