@@ -48,7 +48,7 @@
      +---+---+---+---+---+---+---*/
 
     /* global border radius */
-    --uc-border-radius: 0;
+    --uc-border-radius: 10px;
 
     /* dynamic url bar width settings */
     --uc-urlbar-width: clamp(200px, 40vw, 500px);
