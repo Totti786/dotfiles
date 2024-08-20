@@ -18,10 +18,8 @@ get_state(){
 toggle_inhibit() {
 	# Determine the new state
 	if [[ "$(get_state Inhibited)" =~ "true" ]]; then
-	    [[ $(pidof polybar) ]] && polybar-msg action "#autobr.hook.0"
 	    new_state="false"
 	else
-	    [[ $(pidof polybar) ]] && polybar-msg action "#autobr.hook.1"
 	    new_state="true"	    
 	fi
 	
@@ -36,8 +34,10 @@ toggle_inhibit() {
 toggle_pause() {
 	# Determine the new state
 	if [[ "$(get_state Suspended)" =~ "true" ]]; then
+		[[ $(pidof polybar) ]] && polybar-msg action "#autobr.hook.0"
 	    new_state="false"
 	else
+	    [[ $(pidof polybar) ]] && polybar-msg action "#autobr.hook.1"
 	    new_state="true"	    
 	fi
 

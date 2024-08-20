@@ -94,7 +94,7 @@ check_recording(){
 }
 
 check_clight(){
-	if [[ "$(clight.sh --inhibit-status)" == "false" ]]; then
+	if [[ "$(clight.sh --pause-status)" == "false" ]]; then
 	    [[ $(pidof polybar) ]] && polybar-msg action "#autobr.hook.0"
 	else
 		[[ $(pidof polybar) ]] && polybar-msg action "#autobr.hook.1"
