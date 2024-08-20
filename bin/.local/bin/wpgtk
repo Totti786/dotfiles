@@ -234,23 +234,6 @@ transparent(){
 	fi
 }
 
-# change the waypaper config file so this script can run whenever wpg is invoked 
-fix_configs(){
-	mkdir -p "$HOME"/.config/waypaper
-	cat > "$HOME"/.config/waypaper/config.ini <<- EOF  
-	[Settings]
-	language = en
-	folder = /home/$(whoami)/Pictures/Wallpapers
-	wallpaper = 
-	backend = feh
-	monitors = All
-	fill = Fill
-	sort = daterev
-	subfolders = True
-	post_command = wpgtk wall \$wallpaper
-	EOF
-}
-
 # this functions should only be used if you have a system with a seperate home partition 
 # (this is bad)
 lockPerms(){
@@ -427,7 +410,7 @@ misc(){
 			"$HOME"/.config/ags/scripts/color_generation/colorgen.sh "$wallpaper" --apply --smart >/dev/null 2>&1
 	    fi
 	    
-		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor1'
+		gsettings set org.gnome.desktop.interface gtk-theme 'dummy'
 		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor'
 		gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 		gsettings set org.gnome.desktop.interface color-scheme prefer-light
