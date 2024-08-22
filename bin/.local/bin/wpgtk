@@ -401,6 +401,9 @@ phone(){
 	
 misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
+		xfconf-query -c xsettings -p /Net/ThemeName -s "Dummy" &&
+		xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
+	
 		conky.sh restart &
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
@@ -410,8 +413,8 @@ misc(){
 			"$HOME"/.config/ags/scripts/color_generation/colorgen.sh "$wallpaper" --apply --smart >/dev/null 2>&1
 	    fi
 	    
-		gsettings set org.gnome.desktop.interface gtk-theme 'dummy'
-		gsettings set org.gnome.desktop.interface gtk-theme 'FlatColor'
+		gsettings set org.gnome.desktop.interface gtk-theme "Dummy"
+		gsettings set org.gnome.desktop.interface gtk-theme "FlatColor"
 		gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 		gsettings set org.gnome.desktop.interface color-scheme prefer-light
 	fi
