@@ -52,9 +52,14 @@ check_border=$(get_value 'round-borders =')
 check_shadow=$(get_value 'shadow =')
 check_fading=$(get_value 'fading =')
 check_blur=$(get_value 'method =')
-check_animations=$(get_value 'animations = ')
 check_opacity=$(echo "$config_content" | grep '^#.*opacity-rule =')
 check_corners_exclude=$(echo "$config_content" | grep '^#.*rounded-corners-exclude =')
+
+if [[ -z "$(grep -E '^\s*#.*animations\s*=\s*\(' $config)" ]]; then
+	check_animations="true"
+else
+	check_animations="false"
+fi
 
 ## Kill compositor
 forcekill_picom() {
@@ -238,8 +243,8 @@ elif [ "$1" = '--update-blur' ]; then
 ##-- animations ---------------
 
 elif [ "$1" = '--enable-animations' ]; then
-	sed -i -e "s/animations = .*/animations = true;/g" "$config"
+	sed -i '/animations = (/,/);/ s/^#//' "$config"
 	
 elif [ "$1" = '--disable-animations' ]; then
-	sed -i -e "s/animations =.*/animations = false;/g" "$config"
+	sed -i '/animations = (/ {:a; N; /\n)/!ba; s/^/#/gm }' "$config"
 fi
