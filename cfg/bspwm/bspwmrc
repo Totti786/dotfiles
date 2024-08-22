@@ -38,7 +38,7 @@ declare -a floating=(Lxappearance obs mpv float pop-up
 	KotatogramDesktop gnome-calculator syncplay
 	Xfce4-power-manager-settings '*:*:AudioRelay'
 	Blueman-manager Trackma-gtk Waypaper zenity
-	clight-gui)
+	clight-gui file-roller)
 	
 for i in "${floating[@]}"; do
    bspc rule -a "$i" state=floating follow=on focus=on
