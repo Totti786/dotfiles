@@ -17,8 +17,8 @@ declare -a minimal=(
 	geany gnome-bluetooth-3.0 gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
 	gpu-screen-recorder-git jq gpick grep python-gtts htop i3lock-color i3-wm imagemagick jgmenu \
 	kdeconnect libplasma linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu \
-	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-emoji nsxiv nvtop obconf \
-	openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct rhythmbox rofi-wayland \
+	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv \
+	nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct rhythmbox rofi-wayland \
 	rtorrent scrot stalonetray snapshot sxhkd termdown thunar thunar-archive-plugin perl plank \
 	playerctl plasma-browser-integration polkit-gnome polybar python-pipx python-wheel qbittorrent \
 	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
@@ -43,7 +43,7 @@ declare -a wayland=(
 )
 
 declare -a aur=(
-	i3-resurrect picom-simpleanims-next-git aur/qt5gtk2 aur/qt6gtk2 \
+	i3-resurrect picom-git aur/qt5gtk2 aur/qt6gtk2 \
 	python-materialyoucolor-git ruby-fusuma ruby-fusuma-plugin-sendkey \
 	ruby-fusuma-plugin-wmctrl sioyek-git xiccd xqp zscroll-git
 )
@@ -246,7 +246,7 @@ update(){
 	progressBar "Updating... "
 	## backup weather info file
 	cp "$HOME"/.local/bin/info "$HOME"/.cache/info
-	ln -sfr ~/.themes/FlatColor ~/.themes/dummy
+	ln -sfr ~/.themes/FlatColor ~/.themes/Dummy
 	cp "$dir"/deps/.zprofile "$HOME"/
 	cp "$dir"/deps/.gtkrc-2.0 "$HOME"/
 	cp "$dir"/deps/.theme "$HOME"/
