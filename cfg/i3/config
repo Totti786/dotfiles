@@ -4,7 +4,7 @@ include ~/.config/i3/border
 
 ##-- Autostart ---------------------------
 
-exec_always --no-startup-id 	~/.config/i3/autostart
+exec_always --no-startup-id  ~/.config/i3/autostart
 
 ##-- Fonts (Global) ----------------------
 
@@ -15,8 +15,8 @@ font pango:JetBrains Mono Medium 9
 # Gaps (Outer gaps are added to the inner gaps)
 gaps inner 10
 gaps outer 0
-gaps top 0
-gaps bottom 25
+gaps top 35
+gaps bottom 0
 
 # Uncomment this to enable title bars
 #for_window [class=".*"] border normal 0
@@ -43,8 +43,8 @@ for_window [title="Picture-in-Picture"] floating enable sticky enable
 for_window [class="drop"] floating enable sticky enable
 for_window [class="Xfce4-.*|org.gnome.Weather|copyq|Nsxiv|Music|syncplay"] floating enable
 for_window [class="Viewnior|Gpicview|Gimp|MPlayer|TelegramDesktop|zenity"] floating enable
-for_window [class="Kvantum Manager|qt5ct|Nm-connection-editor|Anki"] floating enable
+for_window [class="Kvantum Manager|qt5ct|Nm-connection-editor|Anki|file-roller"] floating enable
 for_window [class="Lxappearance|Nitrogen|loupe|Yad|float|mpv|gamescope"] floating enable
-for_window [class="steam|Trackma-gtk|obs|Pavucontrol|feh|scrcpy|Wpg|clight-gui"] floating enable
+for_window [class="steam|Trackma-gtk|obs|pavucontrol|feh|scrcpy|Wpg|clight-gui"] floating enable
 for_window [class="KotatogramDesktop|gnome-calculator|Blueman-manager"] floating enable
 for_window [window_role="pop-up|bubble|task_dialog|Preferences|dialog"] floating enable
