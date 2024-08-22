@@ -29,12 +29,23 @@ get_poster(){
         exit 1
     fi
     
-    # Prepare the movie title argument for the API request
     title="$1"
-    encoded_title=$(echo "$title" | tr ' ' '+')
+   
+	# Check for a year in the title and store it in the year variable
+	if [[ "$title" =~ ([1-2][0-9]{3}) ]]; then
+		year="${BASH_REMATCH[1]}"
+		title_without_year="${title//$year/}"
+		#title_without_year="${title_without_year//[[:space:]]/}" # Remove any extra spaces
+	else
+		year=""
+		title_without_year="$title"
+	fi
+
+	# Prepare the movie title argument for the API request
+    encoded_title=$(echo "$title_without_year" | tr ' ' '+')
     
     # Fetch movie data from OMDB API
-    response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&type=movie&apikey=$API_KEY")
+    response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&y=$year&type=movie&apikey=$API_KEY")
     
     # Check if the response contains an error message
     error_message=$(echo "$response" | jq -r '.Error')
@@ -65,46 +76,16 @@ get_poster(){
     fi
 }
 
-get_show_poster(){
-    API_KEY="497fd34e"
-    
-    if [ -z "$1" ] || [ -z "$2" ]; then
-        echo "Usage: $0 <show_title> <directory_path>"
-        exit 1
-    fi
-    
-    title="$1"
-    encoded_title=$(echo "$title" | tr ' ' '+')
-    
-    response=$(curl -s "http://www.omdbapi.com/?s=$encoded_title&type=series&apikey=$API_KEY")
-
-    error_message=$(echo "$response" | jq -r '.Error')
-    if [ "$error_message" != "null" ]; then
-        echo "Error: $error_message"
-        poster_url="N/A"
-    else
-        poster_url=$(echo "$response" | jq -r '.Search[0].Poster')
-    fi
-    
-    if [ "$poster_url" == "N/A" ]; then
-        echo "No poster available for '$title', using fallback image."
-        cp "$fallback_poster" "$directory_path/$title.jpg"
-    else
-        directory_path="$2"
-        if [ ! -d "$directory_path" ]; then
-            mkdir -p "$directory_path"
-        fi
-        wget -q "$poster_url" -O "$directory_path/$title.jpg"
-        echo "Poster downloaded as '$directory_path/$title.jpg'"
-    fi
-}
-
 movies(){
     readarray -t lines < <(find "$movies_directory" \( -type l -o -type f \) -name "*.mp4" -o -name "*.mkv")
 
     for line in "${lines[@]}"; do
-        [[ -f "$line" ]] && name="${line##*/}" name="${name%.*}"
+        [[ -f "$line" ]] || continue
         
+        name="${line##*/}"
+        name="${name%.*}"
+
+        # Fetch the poster using the name without the year
         if ! [[ -f "$cached/$name.jpg" ]]; then
             get_poster "$name" "$cached"
         fi
@@ -119,12 +100,14 @@ movies(){
             Icon=$cached/$name.jpg
             Type=Application
             Categories=Movies;
+            Comment=Year: $year
 			EOF
         fi
     done
 
     rofi -show drun -drun-categories Movies -theme rofi-media
 }
+
 
 shows(){
     readarray -t lines < <(find "$shows_directory" \( -type l -o -type f \) -name "*.mp4" -o -name "*.mkv")
@@ -153,10 +136,11 @@ shows(){
     rofi -show drun -drun-categories Shows -theme rofi-media
 }
 
-if [[ "$(ls "$movies_directory" | grep -e "\.mp4$" -e "\.mkv$")" ]] ; then 
-    [[ -z "$(ls -A $cached)" ]] && notify-send -a Rofi-Movies -t 2000 -r 40 "Rofi-Movies" "Getting Covers..."
-    movies && rm -r "$shortcuts"
-else
-    notify-send -t 2000 -r 41 "Rofi-Movies" "No Movies Were Found"
-fi
+#if [[ "$(ls "$movies_directory" | grep -e "\.mp4$" -e "\.mkv$")" ]] ; then 
+    #[[ -z "$(ls -A $cached)" ]] && notify-send -a Rofi-Movies -t 2000 -r 40 "Rofi-Movies" "Getting Covers..."
+    #movies && rm -r "$shortcuts"
+#else
+    #notify-send -t 2000 -r 41 "Rofi-Movies" "No Movies Were Found"
+#fi
 
+get_poster "Pirates of the Caribbean Curse of the Black Pearl  " "$cached"
