@@ -74,6 +74,7 @@ export default (props) => {
                                     .catch(print);
                             },
                         }),
+                        HyprlandToggle({ icon: 'ev_shadow', name: 'Shadows', desc: "[Hyprland]\nEnable Shadows", option: "decoration:drop_shadow" }),
                         HyprlandToggle({ icon: 'blur_on', name: 'Blur', desc: "[Hyprland]\nEnable blur on transparent elements\nDoesn't affect performance/power consumption unless you have transparent windows.", option: "decoration:blur:enabled" }),
                         Subcategory([
                             HyprlandToggle({ icon: 'stack_off', name: 'X-ray', desc: "[Hyprland]\nMake everything behind a window/layer except the wallpaper not rendered on its blurred surface\nRecommended to improve performance (if you don't abuse transparency/blur) ", option: "decoration:blur:xray" }),
