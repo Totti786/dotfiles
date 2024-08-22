@@ -87,7 +87,12 @@
 	background-color: mix({color0}, {color8}, 0.2);
 }}
 
+popover contents {{
+	box-shadow: none;
+	margin-top: 0;
+}}  
+
 popover arrow {{
-	background: transparent;
-	border-color: transparent;
+	background: none;
+	border-color: none;
 }}
