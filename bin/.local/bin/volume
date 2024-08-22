@@ -4,7 +4,6 @@
 
 # Dependencies: `wpctl` `notify-send`
 
-icons="$HOME/.local/share/icons/Papirus/symbolic/status"
 bar_color="$(xrdb -get color13)"
 
 # Get Volume
