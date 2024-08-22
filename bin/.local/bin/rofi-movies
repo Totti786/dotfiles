@@ -136,11 +136,9 @@ shows(){
     rofi -show drun -drun-categories Shows -theme rofi-media
 }
 
-#if [[ "$(ls "$movies_directory" | grep -e "\.mp4$" -e "\.mkv$")" ]] ; then 
-    #[[ -z "$(ls -A $cached)" ]] && notify-send -a Rofi-Movies -t 2000 -r 40 "Rofi-Movies" "Getting Covers..."
-    #movies && rm -r "$shortcuts"
-#else
-    #notify-send -t 2000 -r 41 "Rofi-Movies" "No Movies Were Found"
-#fi
-
-get_poster "Pirates of the Caribbean Curse of the Black Pearl  " "$cached"
+if [[ "$(ls "$movies_directory" | grep -e "\.mp4$" -e "\.mkv$")" ]] ; then 
+    [[ -z "$(ls -A $cached)" ]] && notify-send -a Rofi-Movies -t 2000 -r 40 "Rofi-Movies" "Getting Covers..."
+    movies && rm -r "$shortcuts"
+else
+    notify-send -t 2000 -r 41 "Rofi-Movies" "No Movies Were Found"
+fi
