@@ -20,57 +20,41 @@ if [[ ! -f "$fallback_poster" ]]; then
 fi
 
 get_poster(){
-    # Replace 'YOUR_API_KEY' with your actual OMDB API key
     API_KEY="497fd34e"
-    
-    # Check if a movie title and directory path are provided as arguments
-    if [ -z "$1" ] || [ -z "$2" ]; then
-        echo "Usage: $0 <movie_title> <directory_path>"
+
+    if [ -z "$1" ]; then
+        echo "Usage: $0 <movie_title> <movie_year (optional)>"
         exit 1
     fi
-    
-    title="$1"
-   
-	# Check for a year in the title and store it in the year variable
-	if [[ "$title" =~ ([1-2][0-9]{3}) ]]; then
-		year="${BASH_REMATCH[1]}"
-		title_without_year="${title//$year/}"
-		#title_without_year="${title_without_year//[[:space:]]/}" # Remove any extra spaces
-	else
-		year=""
-		title_without_year="$title"
-	fi
+
+	title="$1"
+	year="$2"
 
 	# Prepare the movie title argument for the API request
-    encoded_title=$(echo "$title_without_year" | tr ' ' '+')
-    
+    encoded_title=$(echo "$1" | tr ' ' '+')
+
     # Fetch movie data from OMDB API
     response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&y=$year&type=movie&apikey=$API_KEY")
-    
+
     # Check if the response contains an error message
     error_message=$(echo "$response" | jq -r '.Error')
     if [ "$error_message" != "null" ]; then
         echo "Error: $error_message"
         poster_url="N/A"
     else
-        # Parse the JSON response using jq
         poster_url=$(echo "$response" | jq -r '.Poster')
     fi
-    
-    # Check if the poster URL is available
+
     if [ "$poster_url" == "N/A" ]; then
         echo "No poster available for '$title', using fallback image."
         cp "$fallback_poster" "$cached/$title.jpg"
     else
-        # Extract the directory path provided as an argument
-        directory_path="$2"
+        directory_path="$cached"
         
-        # Check if the directory exists; if not, create it
         if [ ! -d "$directory_path" ]; then
             mkdir -p "$directory_path"
         fi
     
-        # Use 'wget' to download the poster image
         wget -q "$poster_url" -O "$directory_path/$title.jpg"
         echo "Poster downloaded as '$directory_path/$title.jpg'"
     fi
@@ -84,10 +68,19 @@ movies(){
         
         name="${line##*/}"
         name="${name%.*}"
+   
+		# Extract the year and remove everything after it
+		if [[ "$name" =~ ([1-2][0-9]{3}) ]]; then
+			year="${BASH_REMATCH[1]}"
+			title="$(echo "${name%%$year*}" | tr -s '[:punct:]' ' ' | sed 's/[[:space:]]*$//')"
+    	else
+			year=""
+			title="$(echo "$name" | sed 's/[[:space:]]*$//')"
+		fi
 
         # Fetch the poster using the name without the year
         if ! [[ -f "$cached/$name.jpg" ]]; then
-            get_poster "$name" "$cached"
+            get_poster "$title" "$year"
         fi
 
         movie="$shortcuts/$name.desktop"
@@ -95,9 +88,9 @@ movies(){
         if [[ ! -f "$movie" ]]; then
             cat > "$movie" <<- EOF
             [Desktop Entry]
-            Name=$name
+            Name=$title
             Exec=mpv '$line'
-            Icon=$cached/$name.jpg
+            Icon=$cached/$title.jpg
             Type=Application
             Categories=Movies;
             Comment=Year: $year
