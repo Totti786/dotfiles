@@ -33,7 +33,7 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | Tiling Window Manager  | [`i3`](https://github.com/i3/i3)					       |
 | Hyprland Window Manager| [`Hyprland`](https://github.com/hyprwm/Hyprland)		   |
 | Aylur's Gtk Shell		 | [`ags`](https://github.com/Aylur/ags)				   |
-| Compositor             | [`FT-labs's/picom`](https://github.com/FT-labs/picom)   |
+| Compositor             | [`picom`](https://github.com/yshui/picom)  			   |
 | Terminal               | [`alacritty`](https://github.com/alacritty/alacritty)   |
 | Shell                  | [`zsh`](https://www.zsh.org/)                           |
 | Text Editor      		 | [`geany`](https://github.com/geany/geany)               |
@@ -46,15 +46,13 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | Application Launcher   | [`rofi-wayland`](https://github.com/lbonn/rofi)         |
 | Right Click Menu       | [`jgmenu`](https://github.com/johanmalm/jgmenu)         |
 
-
-
 ## Fonts
 
-| Font List                                                                                                | Use                 |
-| -------------------------------------------------------------------------------------------------------- | ------------------- |
-| [`Noto Sans`](https://fonts.google.com/noto)                                                       	   | GTK and QT Font     |
-| [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)                              | Primary Font        |
-| [`Material Symbols`](https://github.com/google/material-design-icons)                           		   | Icons Font  	     |
+| Font List																				| Use                 |
+| ------------------------------------------------------------------------------------- | ------------------- |
+| [`Noto Sans`](https://fonts.google.com/noto)											| GTK and QT Font     |
+| [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)			| Primary Font        |
+| [`Material Symbols`](https://github.com/google/material-design-icons)					| Icons Font          |
 
 ## Configuration
 
@@ -77,28 +75,31 @@ You are required to have the [Chaotic-AUR](https://aur.chaotic.cx/) repo added o
 
 ```bash
 yay -Syu --needed \
-acpi acpilight alacritty appimagelauncher autotiling axel base-devel bc blueman bluez \
-bluez-utils brightnessctl bspwm clight conky copyq dmenu drawing dunst envycontrol evince \
-fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep \
-geany gnome-bluetooth-3.0 gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
-gpu-screen-recorder-git jq gpick grep python-gtts htop i3lock-color i3-wm imagemagick jgmenu \
-kdeconnect libplasma linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu \
-network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-emoji nsxiv nvtop obconf \
-openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct rhythmbox rofi-wayland \
-rtorrent scrot stalonetray snapshot sxhkd termdown thunar thunar-archive-plugin perl plank \
-playerctl plasma-browser-integration polkit-gnome polybar python-pipx python-wheel \
-thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
-ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift \
-tumbler translate-shell viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
-xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
-xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh
+acpi acpilight alacritty appimagelauncher aur/qt5gtk2 aur/qt6gtk2 autotiling axel base-devel \
+bc blueman bluez bluez-utils brightnessctl bspwm clight conky copyq dmenu drawing dunst \
+envycontrol fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf \
+gammastep geany gnome-bluetooth-3.0 gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
+gpick gpu-screen-recorder-git grep htop i3lock-color i3-resurrect i3-wm imagemagick jgmenu jq \
+kdeconnect libplasma linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet \
+networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv nvtop obconf openbox openssh \
+openvpn paper papirus-icon-theme pastel pavucontrol perl picom-git plank plasma-browser-integration \
+playerctl polkit-gnome polybar python-gtts python-materialyoucolor-git python-pipx python-wheel \
+qbittorrent qt5ct rhythmbox rofi-wayland rtorrent ruby-fusuma ruby-fusuma-plugin-sendkey \
+ruby-fusuma-plugin-wmctrl scrot sioyek-git snapshot stalonetray sxhkd termdown thunar \
+thunar-archive-plugin thunar-media-tags-plugin thunar-volman timeshift translate-shell \
+ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols \
+ttf-nerd-fonts-symbols-common tumbler viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart \
+xdg-user-dirs xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xiccd xorg-xdpyinfo \
+xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo xqp xss-lock yad ytfzf zathura zathura-cb \
+zathura-pdf-mupdf zenity zscroll-git zsh 
+
 ```
 If you want to install hyprland configs to work, you need the following packages as well:
 
 ```bash
 yay -Syu --needed \
 aylurs-gtk-shell-git dart-sass gnome-control-center grim hypridle hyprland \
-hyprlock aur/hyprpicker lexend-fonts-git nwg-displays slurp swww \
+hyprlock aur/hyprpicker nwg-displays slurp swww ttf-readex-pro \
 xdg-desktop-portal-hyprland python-pywayland wl-clipboard
 ```
 
