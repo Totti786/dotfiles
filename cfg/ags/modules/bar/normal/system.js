@@ -300,9 +300,7 @@ const BatteryModule = () => Stack
 	            ]
 	        }),
 	        'desktop': BarGroup({
-	            lassName: 'spacing-h-4', children: [
-	                BarGroup({ child: WeatherModule() }),
-	            ]
+	            className: 'spacing-h-4', child: BarGroup({ child: WeatherModule() }),
 	        }),
 	    },
 	    setup: (stack) => Utils.timeout(10, () => {

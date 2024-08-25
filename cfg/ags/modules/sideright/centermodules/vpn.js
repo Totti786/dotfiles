@@ -81,7 +81,7 @@ export default (props) => {
             vertical: true,
             className: 'spacing-v-5 txt-subtext',
             children: [
-              MaterialIcon('vpn_key_off', 'gigantic'),
+              MaterialIcon('vpn_key', 'gigantic'),
               Label({ label: 'No VPN configured', className: 'txt-small' })
             ]
           })

@@ -52,7 +52,7 @@ const centerWidgets = [
     },
     {
         name: "VPN",
-        materialIcon: 'lock',
+        materialIcon: 'vpn_lock',
         contentWidget: ModuleVPN,
     },
     {

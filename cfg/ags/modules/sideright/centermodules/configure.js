@@ -61,6 +61,7 @@ export default (props) => {
             children: [
                 ConfigSection({
                     name: 'Effects', children: [
+						HyprlandSpinButton({ icon: 'line_curve', name: 'Rounding', desc: '[Hyprland]\nRounded corners’ radius (in layout px)', option: 'decoration:rounding', minValue: 0, maxValue: 30 }),
                         ConfigToggle({
                             icon: 'border_clear',
                             name: 'Transparency',
@@ -75,6 +76,10 @@ export default (props) => {
                             },
                         }),
                         HyprlandToggle({ icon: 'ev_shadow', name: 'Shadows', desc: "[Hyprland]\nEnable Shadows", option: "decoration:drop_shadow" }),
+                        Subcategory([
+                            HyprlandSpinButton({ icon: 'stroke_partial', name: 'Range', desc: '[Hyprland]\nShadow range (“size”) in layout px', option: 'decoration:shadow_range', minValue: 1, maxValue: 20 }),
+                            HyprlandSpinButton({ icon: 'shadow', name: 'Render Power', desc: '[Hyprland]\nIn what power to render the falloff (more power, the faster the falloff))', option: 'decoration:shadow_render_power', minValue: 1, maxValue: 4 }),
+                        ]),
                         HyprlandToggle({ icon: 'blur_on', name: 'Blur', desc: "[Hyprland]\nEnable blur on transparent elements\nDoesn't affect performance/power consumption unless you have transparent windows.", option: "decoration:blur:enabled" }),
                         Subcategory([
                             HyprlandToggle({ icon: 'stack_off', name: 'X-ray', desc: "[Hyprland]\nMake everything behind a window/layer except the wallpaper not rendered on its blurred surface\nRecommended to improve performance (if you don't abuse transparency/blur) ", option: "decoration:blur:xray" }),
