@@ -2,7 +2,7 @@
 
 . "$HOME/.cache/wal/colors.sh"
 
-apps=(hypr ags polybar openbox zathura dunst alacritty picom rofi bspwm sxhkd jgmenu conky i3) 
+apps=(hypr polybar openbox zathura dunst alacritty picom rofi bspwm sxhkd jgmenu conky i3) 
 DIR="$HOME/.dots/.config/"
 BackupDir="$HOME/.dotfiles/"
 

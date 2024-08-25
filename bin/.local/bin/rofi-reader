@@ -22,8 +22,14 @@ mkdir -p "$shortcuts"
 mkdir -p "$cached"
 [[ -f "$config_file" ]] && . "$config_file"
 
+if command -v "papers" >/dev/null 2>&1; then
+	pdf="papers"
+else
+	pdf="evince"
+fi
+
 # List of required commands
-required_commands=("evince-thumbnailer" "gnome-epub-thumbnailer" "sqlite3" "rofi")
+required_commands=("$pdf-thumbnailer" "gnome-epub-thumbnailer" "sqlite3" "rofi")
 
 # Check dependencies
 for cmd in "${required_commands[@]}"; do
@@ -81,13 +87,13 @@ main(){
 		
 		# If the file is a PDF and its thumbnail doesn't exist, generate the thumbnail using 'evince-thumbnailer'
 		if [ "$type" == "pdf" ] && ! [ -f "$cached/$name.png" ]; then
-			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
+			papers-thumbnailer -s 300 "$line" "$cached/$name.png"
 		# If the file is an EPUB and its thumbnail doesn't exist, generate the thumbnail using 'gnome-epub-thumbnailer'
 		elif [ "$type" == "epub" ] && ! [ -f "$cached/$name.png" ]; then
 			gnome-epub-thumbnailer -s 200 "$line" "$cached/$name.png"
 		# If the file is a CBZ (Comic Book Archive) and its thumbnail doesn't exist, generate the thumbnail using 'evince-thumbnailer'
 		elif [ "$type" == "cbz" ]] && ! [ -f "$cached/$name.png" ]; then
-			evince-thumbnailer -s 300 "$line" "$cached/$name.png"
+			papers-thumbnailer -s 300 "$line" "$cached/$name.png"
 		fi &> /dev/null  # Redirect output (stdout and stderr) to /dev/null to suppress any messages
 		
 		

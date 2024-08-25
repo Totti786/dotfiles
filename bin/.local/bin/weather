@@ -1,54 +1,88 @@
 #!/bin/bash
 
-## Get the API keys and city from a different file
-source "$HOME"/.local/bin/info
+## Description:
+# This script provides weather information by fetching data from OpenWeather and WeatherBit APIs.
+# It can display current weather statistics, temperature, icons, and additional weather details in a rofi menu.
+# If API keys are not available or if API requests fail, it falls back to using `wttr.in` for weather information.
+# The script requires API keys from OpenWeather and WeatherBit, which need to be configured in the info file.
 
-## Collect data
+## Dependencies:
+# - `wget` for fetching data from APIs
+# - `jq` for parsing JSON data
+# - `curl` for fallback weather information and city detection
+# - `rofi` for displaying weather details in a rofi menu
+
+# Path to the file containing API keys and city information
+info_file="$HOME/.local/bin/info"
+
+# Check if the info file exists and source it, or create a new one with placeholders
+if [[ -f "$info_file" ]]; then
+    source "$info_file"
+else
+    cat > "$info_file" <<- EOF
+    ## Weather data
+    # You need to get a free API key from https://home.openweathermap.org for the script to be functional 
+    KEY=""  # Put your OpenWeather API key here
+    
+    # You also need to sign up on https://www.weatherbit.io/account/create  
+    # In order to use all the features of this script, you need to sign up for an API key
+    WBKEY=""  # Put your WeatherBit API key here 
+    
+    UNIT="metric"    # Available options: 'metric' or 'imperial'
+    COUNTRY=""       # Put your country name here 
+    CITY=""          # Put your city name here
+	EOF
+fi
+
+# Directory for caching weather data
 cache_dir="$HOME/.cache/weather"
-cache_weather_stat=${cache_dir}/weather-stat
-cache_weather_degree=${cache_dir}/weather-degree
-cache_weather_icon=${cache_dir}/weather-icon
-cache_weather_rofi=${cache_dir}/weather-rofi
+cache_weather_stat="${cache_dir}/weather-stat"
+cache_weather_degree="${cache_dir}/weather-degree"
+cache_weather_icon="${cache_dir}/weather-icon"
+cache_weather_rofi="${cache_dir}/weather-rofi"
 
-## Make cache dir
-[[ ! -d "$cache_dir" ]] &&
-	mkdir -p "${cache_dir}"
+# Create the cache directory if it doesn't exist
+[[ ! -d "$cache_dir" ]] && mkdir -p "${cache_dir}"
 
-## Get City
-[[ -z "$CITY" ]] &&
-	CITY=$(curl ifconfig.co/city)
+# Get the city name from the info file or use the IP-based city detection
+[[ -z "$CITY" ]] && CITY=$(curl ifconfig.co/city)
 
-## Get data
+# Function to fetch weather data from OpenWeather and WeatherBit APIs
 get_weather_data() {
-		weather=$(wget -qO- "https://api.openweathermap.org/data/2.5/weather?q=$CITY,$COUNTRY&appid=$KEY&units=$UNIT")
-		echo "${weather}"
+    # Fetch weather data from OpenWeather API
+    weather=$(wget -qO- "https://api.openweathermap.org/data/2.5/weather?q=$CITY,$COUNTRY&appid=$KEY&units=$UNIT")
+    echo "${weather}"
 
-	if [ -n "$weather" ]; then
-		weather_temp=$(echo "$weather" | jq ".main.temp" | cut -d "." -f 1)
-		weather_icon_code=$(echo "$weather" | jq -r ".weather[].icon" | head -1)
-		weather_description=$(echo "$weather" | jq -r ".weather[].description" | head -1 | sed -e "s/\b\(.\)/\u\1/g")
-		if [[ "$(( $(date +%M) % 30))" == 0 ]]; then
-		  altweather=$(wget -qO- --header='Accept: application/json' "https://api.weatherbit.io/v2.0/current?city=$CITY&country=$COUNTRY&key=$WBKEY")
-			city=$(echo "$weather" | jq -r ".name") 
-			humidity=$(echo "$weather" | jq -r ".main.humidity") 
-			windspeed=$(echo "$weather" | jq -r ".wind.speed") 
-			uv=$(echo "$altweather" | jq -r ".data[].uv" | cut -c 1-4)
-			aqi=$(echo "$altweather" | jq -r ".data[].aqi")
-			dewpt=$(echo "$altweather" | jq -r ".data[].dewpt")
-			precipitation=$(echo "$altweather" | jq -r ".data[].precip")
-			
-			cat > "$cache_weather_rofi" <<- EOF
-			City: $city 
-			Dew Point: $dewpt°C 
-			Humidity: $humidity% 
-			UV Index: $uv 
-			Air Quality: $aqi
-			Precipitation: $(printf "%.2f" "$precipitation")%
-			Windspeed: $windspeed m/s
+    if [ -n "$weather" ]; then
+        # Parse weather data
+        weather_temp=$(echo "$weather" | jq ".main.temp" | cut -d "." -f 1)
+        weather_icon_code=$(echo "$weather" | jq -r ".weather[].icon" | head -1)
+        weather_description=$(echo "$weather" | jq -r ".weather[].description" | head -1 | sed -e "s/\b\(.\)/\u\1/g")
+
+        # Fetch additional weather data from WeatherBit API every 30 minutes
+        if [[ "$(( $(date +%M) % 30))" == 0 ]]; then
+            altweather=$(wget -qO- --header='Accept: application/json' "https://api.weatherbit.io/v2.0/current?city=$CITY&country=$COUNTRY&key=$WBKEY")
+            city=$(echo "$weather" | jq -r ".name")
+            humidity=$(echo "$weather" | jq -r ".main.humidity")
+            windspeed=$(echo "$weather" | jq -r ".wind.speed")
+            uv=$(echo "$altweather" | jq -r ".data[].uv" | cut -c 1-4)
+            aqi=$(echo "$altweather" | jq -r ".data[].aqi")
+            dewpt=$(echo "$altweather" | jq -r ".data[].dewpt")
+            precipitation=$(echo "$altweather" | jq -r ".data[].precip")
+            
+            # Save additional weather data to cache
+            cat > "$cache_weather_rofi" <<- EOF
+            City: $city 
+            Dew Point: $dewpt°C 
+            Humidity: $humidity% 
+            UV Index: $uv 
+            Air Quality: $aqi
+            Precipitation: $(printf "%.2f" "$precipitation")%
+            Windspeed: $windspeed m/s
 			EOF
-		fi
-		
-        ## Determine weather icon
+        fi
+        
+        # Determine the weather icon based on the icon code
         case "$weather_icon_code" in
             50d|50n) weather_icon=" " ;;
             01d) weather_icon="󰖨 " ;;
@@ -66,23 +100,25 @@ get_weather_data() {
             *) weather_icon=" " ;;
         esac
         
-		echo "$weather_icon" > "${cache_weather_icon}"
-		echo "$weather_description" > "${cache_weather_stat}"
-		echo "$weather_temp""° " > "${cache_weather_degree}"
+        # Save parsed weather data to cache
+        echo "$weather_icon" > "${cache_weather_icon}"
+        echo "$weather_description" > "${cache_weather_stat}"
+        echo "$weather_temp""° " > "${cache_weather_degree}"
 
-	else
-		wttr=$(curl wttr.in/"$CITY"?format="%t+%C\n")
-		if [[ -n "$wttr" ]]; then
-			echo "$wttr" > "${cache_weather_stat}"
-		else 
-			echo "Weather Unavailable" > "${cache_weather_stat}"
-		fi
-		echo "  " > "${cache_weather_icon}"
-		echo " " > "${cache_weather_degree}"
-	fi
+    else
+        # Fetch fallback weather data from wttr.in if OpenWeather API fails
+        wttr=$(curl wttr.in/"$CITY"?format="%t+%C\n")
+        if [[ -n "$wttr" ]]; then
+            echo "$wttr" > "${cache_weather_stat}"
+        else 
+            echo "Weather Unavailable" > "${cache_weather_stat}"
+        fi
+        echo "  " > "${cache_weather_icon}"
+        echo " " > "${cache_weather_degree}"
+    fi
 }
 
-## Execute based on argument
+# Execute commands based on the provided argument
 case "$1" in
     --getdata) get_weather_data ;;
     --icon) cat "${cache_weather_icon}" ;;

@@ -1,29 +1,45 @@
 #!/usr/bin/env bash
 
-# Screenshot utility script with various capture options and functionality
-# Dependencies: scrot, xclip, notify-send (libnotify) 
-	#grim, wl-clipboard (for Wayland) 
-	#slurp, tesseract, zbarimg, xdg-open (optional) 
-	#magick (from ImageMagick), curl (for imgur upload)
-	#python-gtts (for TTS), translate-shell (for translation and langauge detection)
+## Description:
+# This script is a versatile screenshot utility that supports capturing full-screen, selected areas, 
+# and creating GIFs from multiple screenshots. It offers additional functionalities such as text 
+# extraction with OCR, translation of extracted text, QR code scanning, and uploading images to Imgur. 
+# The script is compatible with both X11 and Wayland environments, including specific features for 
+# Hyprland. It includes options for countdown timers, image editing, and notifications with actionable choices.
 
+## Dependencies:
+# - For X11: scrot, xclip, notify-send (libnotify)
+# - For Wayland: grim, wl-clipboard, slurp, swappy
+# - Optional: tesseract (OCR), zbarimg (QR code scanning), xdg-open, ImageMagick (magick), curl (for Imgur upload)
+# - Optional (for extra features): python-gtts (TTS), translate-shell (translation and language detection)
+
+# Set the current time for naming the screenshot file
 time="$(date +%Y-%m-%d-%H-%M-%S)"
+
+# Define the directory to save screenshots
 dir="$(xdg-user-dir PICTURES)/Screenshots"
+
+# Define the full file path for the screenshot
 file="$dir/Screenshot_${time}.png"
 
+# Create the screenshots directory if it doesn't exist
 [ ! -d "$dir" ] && mkdir -p "$dir"
 
+# Fetch the color from xrdb for customizing slop command (if used for area selection)
 color=$(xrdb -query | awk '/color4/{print $NF; exit}')
-# Determine border size and slop command based on file existence
+
+# Determine slop command options based on the existence of certain files and running compositors
 if [[ -e "$HOME"/.config/slop/highlight.frag && -e "$HOME"/.config/slop/highlight.vert ]] && [[ "$(pgrep -f 'compton|xcompmgr|picom|compfy')" ]]; then 
 	slop_command=(slop -r highlight -b 5000 -f "%x %y %w %h") 
 else
-	color_slop=$( echo $color | pastel format rgb-float | awk -F'[()]' '{print $2}')
+	color_slop=$(echo $color | pastel format rgb-float | awk -F'[()]' '{print $2}')
 	slop_command=(slop -c "$color_slop" -b 3 -f "%x %y %w %h")
 fi
 
+# Function to notify the user about the screenshot with options to delete or open it
 notify_user() {
 	if [[ -e "$file" ]]; then
+	# Play sound and send notification with options to delete or open the screenshot
 	#paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga & disown
 		action=$(notify-send -a "shot" -r 83 -i "$file" "Screenshot Saved" "Click to open" --action="Delete" --action="Open")
 		if [[ "$action"  == "0" ]]; then
@@ -34,6 +50,7 @@ notify_user() {
 	fi & disown
 }
 
+# Function to provide a countdown timer before taking a screenshot
 countdown() {
 	for sec in $(seq $1 -1 1); do
 		notify-send -a "shot" -t 1000 -u low -r 83 "Countdown" "Taking shot in : $sec"
@@ -42,6 +59,7 @@ countdown() {
 	sleep 0.2
 }
 
+# Function to capture a selected area in Wayland using slurp or Hyprland-specific logic
 get_wayland_selection() {
 	if [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
 		geometry="$(echo "$(hyprctl clients -j)" \
@@ -56,6 +74,7 @@ get_wayland_selection() {
 	[[ "$geometry" ]] || exit 0
 }
 
+# Function to apply ImageMagick effects for enhancing the screenshot
 magic() {
 	magick "$file" +antialias \
 	\( +clone  -alpha extract \
@@ -69,6 +88,7 @@ magic() {
 	+swap -background none -layers merge +repage "$file"
 }
 
+# Function to take a screenshot of the full screen
 shot() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then 
 		grim "$file"
@@ -80,6 +100,7 @@ shot() {
 	notify_user
 }
 
+# Function to take a screenshot of a selected area
 shot_area() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 		get_wayland_selection
@@ -93,6 +114,7 @@ shot_area() {
 	notify_user
 }
 
+# Function to take a screenshot and open it for editing
 shot_edit() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 		get_wayland_selection
@@ -111,6 +133,7 @@ shot_edit() {
 	notify_user
 }
 
+# Function to take a screenshot and blur a selected area
 blur_area() {
     # Take a full screenshot and select the region to blur
     if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
@@ -134,6 +157,7 @@ blur_area() {
     notify_user
 }
 
+# Function to extract text from a screenshot using OCR
 shot_extract_text() {
 	if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 		get_wayland_selection
@@ -153,6 +177,7 @@ shot_extract_text() {
 	fi
 }
 
+# Function to translate the extracted text and read it aloud
 shot_translate() {
 	shot_extract_text
 	
@@ -171,6 +196,7 @@ shot_translate() {
 	echo "$translated_text" | gtts-cli - -l "$target_lang" | mpv --force-media-title="Text to Speech" --speed=1.2 -
 }
 
+# Function to read the extracted text aloud
 shot_read() {
 	shot_extract_text
 	
@@ -179,6 +205,7 @@ shot_read() {
 	echo "$text" | tr -d '\n' | sed 's/\. /.\n/g' | gtts-cli - -l "$lang" | mpv --force-media-title="Text to Speech" --speed=1.1 - > /dev/null 2>&1
 }
 
+# Function to scan a QR code from a screenshot
 shot_qr() {
 	if ! command -v zbarimg >/dev/null 2>&1;then 
 		notify-send -a "shot" -r 83 -u low "QR Code" "zbar is not installed"
@@ -205,6 +232,7 @@ shot_qr() {
 	fi
 }
 
+# Function to upload a screenshot to Imgur and copy the link to the clipboard
 upload_to_imgur(){
 	if [ -e "$1" ]; then
 	client_id="${IMGUR_CLIENT_ID:-c9a6efb3d7932fd}"

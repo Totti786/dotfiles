@@ -1,51 +1,66 @@
 #!/usr/bin/env bash
 
-# This script retrieves Islamic prayer times based on the user's location, using the ipinfo.io and api.aladhan.com APIs.
-# It can display the prayer times in a rofi window or the remaining time until the next prayer. 
-# The script depends on wget, jq, and rofi, and requires an internet connection when first used.
-# for more info, visit https://aladhan.com/prayer-times-api
+## Description:
+# This script retrieves Islamic prayer times based on the user's location using the ipinfo.io and api.aladhan.com APIs.
+# It displays prayer times in a rofi menu or outputs the remaining time until the next prayer to stdout.
+# The script caches prayer times to avoid frequent API requests and falls back to displaying remaining prayer time when the rofi menu is not shown.
+# Dependencies: wget, jq, rofi
+# For more info, visit https://aladhan.com/prayer-times-api
 
-## Get city and country from a differnt file
+## Dependencies:
+# - `wget` for fetching data from APIs
+# - `jq` for parsing JSON data
+# - `rofi` for displaying prayer times in a rofi menu
+
+# Source user-specific location information from a separate file
 source "$HOME"/.local/bin/info
 
+# Set the day, month, and year variables
 DAY="$(( 10#$(date '+%d') - 1 ))"
 MONTH="$(date +"%m")"
 YEAR="$(date +"%Y")"
 
-## Get City if the file doesn't have it
+# Retrieve the city name if it is not already defined in the sourced file
 [ -z "$CITY" ] && CITY=$(curl ifconfig.co/city)
 
-## Get Country if the file doesn't have it
+# Retrieve the country name if it is not already defined in the sourced file
 [ -z "$COUNTRY" ] && COUNTRY=$(curl ifconfig.co/country)
 
+# Define file paths for caching prayer times and rofi output based on location and date
 prayer_rofi="$HOME/.cache/prayer_rofi_$CITY_$DAY:$MONTH"
 prayer_cache="$HOME/.cache/prayertimes_$CITY_$MONTH:$YEAR"
 
-## Get data from the prayer API in JSON form
+# Fetch prayer times from the API and cache them if not already cached or if the cache is empty
 [ ! -f "$prayer_cache" ] || [ ! -s "$prayer_cache" ] && wget -qO- \
 	"http://api.aladhan.com/v1/calendarByCity?city=$CITY&country=$COUNTRY&month=$MONTH&year=$YEAR&method=5" > "${prayer_cache}"
 
+# Convert prayer times to Unix timestamps
 make_unix(){
-	names=("Fajr" "Sunrise" "Dhuhr" "Asr" "Maghrib" "Isha")
-	times=() # Initialize the times array outside of the loop
+	names=("Fajr" "Sunrise" "Dhuhr" "Asr" "Maghrib" "Isha")  # Prayer names
+	times=()  # Initialize the times array
+
 	for n in "${names[@]}"; do 
-	    time=$( < "$prayer_cache"  jq -r ".data[$DAY].timings.$n" | cut -d " " -f1)
-	    times+=("$time") # Append the new time to the times array
+	    time=$( < "$prayer_cache" jq -r ".data[$DAY].timings.$n" | cut -d " " -f1)
+	    times+=("$time")  # Append the time to the array
 	done
-	times_unix=() # Initialize the times array outside of the loop
+
+	times_unix=()  # Initialize the Unix time array
+
 	for t in "${times[@]}"; do
 	    time_unix=$(date -d "$t" +%s)
-	    times_unix+=("$time_unix")
+	    times_unix+=("$time_unix")  # Append the Unix time to the array
 	done
-	}
+}
 
+# Calculate the remaining time until the next prayer and display a notification
 remaining(){
-	make_unix
-	current_time=$(date +%s)
+	make_unix  # Convert times to Unix format
+	current_time=$(date +%s)  # Get the current Unix timestamp
 	
-	# Determine the next prayer
+	# Determine the next prayer time
 	next_prayer=""
 	next_prayer_time=0
+
 	for (( i=0; i<${#times_unix[@]}; i++ )); do
 	    if (( times_unix[i] > current_time )); then
 	        next_prayer=${names[i]}
@@ -54,7 +69,7 @@ remaining(){
 	    fi
 	done
 	
-	# Calculate the remaining time to the next prayer
+	# Calculate the remaining time until the next prayer
 	if [[ -n "$next_prayer" ]]; then
 	    remaining_time_unix=$(( next_prayer_time - current_time ))
 	    remaining_time=$(date -u -d @${remaining_time_unix} +%H:%M:%S)
@@ -65,19 +80,23 @@ remaining(){
 	fi
 }
 
+# If prayer times are cached, create a rofi menu for displaying them
 if [ -f "$prayer_cache" ]; then
 	if [ ! -f "$prayer_rofi" ]; then
-	make_unix
-	cat > "$prayer_rofi" <<- EOF
-	City: $CITY
-	Fajr: $(date -d "@${times_unix[0]}" +"%-I:%M %p")
-	Sunrise: $(date -d "@${times_unix[1]}" +"%-I:%M %p")
-	Duhr: $(date -d "@${times_unix[2]}" +"%-I:%M %p")
-	Asr: $(date -d "@${times_unix[3]}" +"%-I:%M %p")
-	Maghrib: $(date -d "@${times_unix[4]}" +"%-I:%M %p")
-	Isha: $(date -d "@${times_unix[5]}" +"%-I:%M %p")
-	EOF
+		make_unix  # Convert times to Unix format
+		
+		# Create the rofi menu content
+		cat > "$prayer_rofi" <<- EOF
+		City: $CITY
+		Fajr: $(date -d "@${times_unix[0]}" +"%-I:%M %p")
+		Sunrise: $(date -d "@${times_unix[1]}" +"%-I:%M %p")
+		Duhr: $(date -d "@${times_unix[2]}" +"%-I:%M %p")
+		Asr: $(date -d "@${times_unix[3]}" +"%-I:%M %p")
+		Maghrib: $(date -d "@${times_unix[4]}" +"%-I:%M %p")
+		Isha: $(date -d "@${times_unix[5]}" +"%-I:%M %p")
+		EOF
 	fi
 fi
 
+# Display the rofi menu if no arguments are provided; otherwise, show the remaining time until the next prayer
 [ -z "$@" ] && < "$prayer_rofi" rofi -dmenu -p "Prayer Times" || remaining
