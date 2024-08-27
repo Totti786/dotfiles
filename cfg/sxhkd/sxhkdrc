@@ -35,12 +35,17 @@ super + t
 alt + F1
 	rofi-utils --launch
 
-# Rofi Menus/Applets
+# Rofi Menus
 super + {x,s}
 	rofi-utils --{power,shot}
 
-super + {r,b,l,m,j,y}	
-	{rofi-reader,rofi-bluetooth,lobster,rofi-movies,jerry,ytfzf -fD}
+# Rofi Media
+super + {a,n,m}
+	rofi-media --{anime,shows,movies}
+
+# Rofi Applets
+super + {r,b,l,j,y}	
+	{rofi-reader,rofi-bluetooth,lobster,jerry,ytfzf -fD}
 	
 ##------ Applications -------##
 

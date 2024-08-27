@@ -1,0 +1,269 @@
+#!/usr/bin/env bash
+
+# Define cache and file paths
+movies_directory="$HOME/Videos/Movies"
+shows_directory="$HOME/Videos/Shows"
+anime_directory="$HOME/Videos/Anime"
+cached="$HOME/.cache/rofi-media"
+shortcuts="$HOME/.local/share/applications/media"
+fallback_poster="$cached/cover.jpg"  # Define the path to your fallback poster image
+
+# Create necessary directories if they don't exist
+mkdir -p "$shortcuts"
+mkdir -p "$cached"
+
+if [[ ! -f "$fallback_poster" ]]; then
+    eval $(xrdb -query | awk '/color0/{print "color0="$NF} /color7/{print "color7="$NF}')
+    magick -size 300x445 xc:"$color0" "$fallback_poster"
+    magick "$fallback_poster" -gravity center -fill "$color7" \
+    -font /usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf \
+    -pointsize 90 -annotate 0 "󰿎" "$fallback_poster"
+fi
+
+get_poster(){
+    API_KEY="497fd34e"
+
+    if [ -z "$1" ]; then
+        echo "Usage: $0 <movie_title> <movie_year (optional)>"
+        exit 1
+    fi
+
+	title="$1"
+	year="$2"
+
+	# Prepare the movie title argument for the API request
+    encoded_title=$(echo "$1" | tr ' ' '+')
+	echo $encoded_title
+
+    # Fetch movie data from OMDB API
+    response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&year=$year&apikey=$API_KEY")
+
+    # Check if the response contains an error message
+    error_message=$(echo "$response" | jq -r '.Error')
+    if [ "$error_message" != "null" ]; then
+        echo "Error: $error_message"
+        poster_url="N/A"
+    else
+        poster_url=$(echo "$response" | jq -r '.Poster')
+    fi
+
+    if [ "$poster_url" == "N/A" ]; then
+        echo "No poster available for '$title', using fallback image."
+        cp "$fallback_poster" "$cached/$title.jpg"
+    else
+        directory_path="$cached"
+        
+        if [ ! -d "$directory_path" ]; then
+            mkdir -p "$directory_path"
+        fi
+    
+        wget -q "$poster_url" -O "$directory_path/$title.jpg"
+        echo "Poster downloaded as '$directory_path/$title.jpg'"
+    fi
+}
+
+get_anime_poster(){
+    if [ -z "$1" ]; then
+        echo "Usage: $0 <anime_title> <anime_year (optional)>"
+        exit 1
+    fi
+
+    title="$1"
+    year="$2"
+
+    # Prepare the anime title argument for the API request
+    encoded_title=$(echo "$title" | tr ' ' '+')
+
+    # Fetch anime data from Jikan API
+    response=$(curl -s "https://api.jikan.moe/v4/anime?q=$encoded_title&season=$year")
+
+    # Check if the response contains an error message or if no results were found
+    error_message=$(echo "$response" | jq -r '.error')
+    if [ "$error_message" != "null" ]; then
+        echo "Error: $error_message"
+        poster_url="N/A"
+    else
+        # Get the first result's poster URL
+        poster_url=$(echo "$response" | jq -r '.data[0].images.jpg.large_image_url')
+    fi
+
+    if [ "$poster_url" == "N/A" ]; then
+        echo "No poster available for '$title', using fallback image."
+        cp "$fallback_poster" "$cached/$title.jpg"
+    else
+        directory_path="$cached"
+        
+        if [ ! -d "$directory_path" ]; then
+            mkdir -p "$directory_path"
+        fi
+    
+        wget -q "$poster_url" -O "$directory_path/$title.jpg"
+        echo "Poster downloaded as '$directory_path/$title.jpg'"
+    fi
+}
+
+movies(){
+    readarray -t lines < <(find "$movies_directory" \( -type l -o -type f \) -name "*.mp4" -o -name "*.mkv")
+
+    for line in "${lines[@]}"; do
+        [[ -f "$line" ]] || continue
+        
+        name="${line##*/}"
+        name="${name%.*}"
+   
+		# Extract the year and remove everything after it
+		if [[ "$name" =~ ([1-2][0-9]{3}) ]]; then
+			year="${BASH_REMATCH[1]}"
+			title="$(echo "${name%%$year*}" | tr -s '[:punct:]' ' ' | sed 's/[[:space:]]*$//')"
+    	else
+			year=""
+			title="$(echo "$name" | sed 's/[[:space:]]*$//')"
+		fi
+
+        # Fetch the poster using the name without the year
+        if ! [[ -f "$cached/$title.jpg" ]]; then
+            get_poster "$title" "$year"
+        fi
+
+        movie="$shortcuts/$name.desktop"
+        
+        if [[ ! -f "$movie" ]]; then
+            cat > "$movie" <<- EOF
+            [Desktop Entry]
+            Name=$title
+            Exec=mpv '$line'
+            Icon=$cached/$title.jpg
+            Type=Application
+            Categories=Movies;
+            Comment=Year: $year
+			EOF
+        fi
+    done
+
+    rofi -show drun -drun-categories Movies -theme rofi-media
+}
+
+shows(){
+    for line in "${shows_directory}"/*; do
+		name="${line##*/}"
+
+		# Extract the year and remove everything after it
+		if [[ "$name" =~ ([1-2][0-9]{3}) ]]; then
+			year="${BASH_REMATCH[1]}"
+			title="$(echo "${name%%$year*}" | tr -s '[:punct:]' ' ' | sed 's/[[:space:]]*$//')"
+    	else
+			year=""
+			title="$(echo "$name" | sed 's/[[:space:]]*$//')"
+		fi
+
+        if ! [[ -f "$cached/$title.jpg" ]]; then
+            get_poster "$title" "$year"
+        fi
+
+        show="$shortcuts/$name.desktop"
+	
+		if [[ ! -f "$show" ]]; then
+			cat > "$show" <<- EOF
+			[Desktop Entry]
+			Name=$title
+			Exec= $0 --episode "$line"
+			Icon=$cached/$title.jpg
+			Type=Application
+			Categories=Shows;
+			EOF
+		fi
+    done
+
+    rofi -show drun -drun-categories Shows -theme rofi-media
+}
+
+anime(){
+    for line in "${anime_directory}"/*; do
+		name="${line##*/}"
+
+		# Extract the year and remove everything after it
+		if [[ "$name" =~ ([1-2][0-9]{3}) ]]; then
+			year="${BASH_REMATCH[1]}"
+			title="$(echo "${name%%$year*}" | tr -s '[:punct:]' ' ' | sed 's/[[:space:]]*$//')"
+    	else
+			year=""
+			title="$(echo "$name" | sed 's/[[:space:]]*$//')"
+		fi
+
+        if ! [[ -f "$cached/$title.jpg" ]]; then
+            get_anime_poster "$title" "$year"
+        fi
+
+        show="$shortcuts/$name.desktop"
+		
+		if [[ ! -f "$show" ]]; then
+			cat > "$show" <<- EOF
+			[Desktop Entry]
+			Name=$name
+			Exec= $0 --episode "$line"
+			Icon=$cached/$name.jpg
+			Type=Application
+			Categories=Anime;
+			EOF
+		fi
+    done
+
+    rofi -show drun -drun-categories Anime -theme rofi-media
+}
+
+select_episode(){
+    # Define a pattern to match typical season folder names
+    season_pattern='(Season [0-9]+|S[0-9]+|[0-9]+x[0-9]+|^S[0-9]+E[0-9]+)'
+
+    # Check if there are multiple season folders
+    season_dirs=$(find "$1" -mindepth 1 -maxdepth 1 -type d | grep -E "$season_pattern")
+
+    if [[ -n "$season_dirs" ]]; then
+        season=$(echo "$season_dirs" | sort | sed 's!.*/!!' | rofi -sort -dmenu -p "Select season:" -mesg "Select the season:")
+        [[ -z "$season" ]] && exit 1
+        selected_directory="$1/$season"
+    else
+        selected_directory="$1"
+    fi
+
+    # Extract episode numbers and titles, and format the selection
+    selection=$(ls -p "$selected_directory" | grep -v / | sort | sed -E 's/.*S[0-9]+E([0-9]+).*-\s*(.*)\..*$/Episode \1: \2/; t; s/.*S[0-9]+E([0-9]+).*$/Episode \1/; t; s/.* - ([0-9]+) - (.*)\..*$/Episode \1: \2/; t; s/.* - ([0-9]+)\..*$/Episode \1/' | rofi -sort -dmenu -p "Episode: " -mesg "Select the episode:")
+
+    # Map the selected "Episode X: Title" back to the corresponding file name
+    if [[ -n "$selection" ]]; then
+        episode_number=$(echo "$selection" | grep -o '[0-9]\+')
+        
+        # Handle both patterns
+        episode_file=$(ls -p "$selected_directory" | grep -E "S[0-9]+E$episode_number| - $episode_number - .*| - $episode_number\..*")
+
+        if [[ -n "$episode_file" ]]; then
+            mpv "$selected_directory/$episode_file"
+        else
+            notify-send -a rofi-media "Episode file not found"
+        fi
+    else
+        notify-send -a rofi-media "No episode selected"
+    fi	
+}
+
+
+if [[ "$1" == "--movies" ]]; then
+	if [[ "$(ls "$movies_directory" | grep -e "\.mp4$" -e "\.mkv$")" ]] ; then 
+	    [[ -z "$(ls -A $cached)" ]] && notify-send -a rofi-media -t 2000 -r 40 "rofi-media" "Getting Covers..."
+	    movies && rm -r "$shortcuts"
+	else
+	    notify-send -a rofi-media -t 2000 -r 41 "rofi-media" "No Movies Were Found"
+	fi
+elif [[ "$1"  == "--shows" ]]; then
+		if [[ "$(ls "$shows_directory")" ]] ; then 
+	    [[ -z "$(ls -A $cached)" ]] && notify-send -a rofi-media -t 2000 -r 40 "rofi-media" "Getting Covers..."
+	    shows && rm -r "$shortcuts"
+	else
+	    notify-send -a rofi-media -t 2000 -r 41 "rofi-media" "No Shows Were Found"
+	fi
+elif [[ "$1"  == "--anime" ]]; then
+	anime && rm -r "$shortcuts"
+elif [[ "$1" == "--episode" ]]; then
+	select_episode "$2"
+fi
+

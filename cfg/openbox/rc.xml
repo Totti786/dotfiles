@@ -649,9 +649,19 @@
       </action>
     </keybind>
     <!-- Rofi-movies -->
+    <keybind key="W-a">
+      <action name="Execute">
+        <command>rofi-media --anime</command>
+      </action>
+    </keybind>
+    <keybind key="W-n">
+      <action name="Execute">
+        <command>rofi-media --shows</command>
+      </action>
+    </keybind>
     <keybind key="W-m">
       <action name="Execute">
-        <command>rofi-movies</command>
+        <command>rofi-media --movies</command>
       </action>
     </keybind>
     <!-- lobster -->
