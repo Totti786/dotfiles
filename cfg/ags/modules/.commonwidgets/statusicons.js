@@ -293,7 +293,7 @@ const optionalKeyboardLayoutInstances = await createKeyboardLayoutInstances()
 const optionalKeyboardLayoutInstance = await OptionalKeyboardLayout();
 
 const VPNIndicator = () => Widget.Revealer({
-    child: MaterialIcon('lock', 'norm'),
+    child: MaterialIcon('vpn_key', 'norm'),
     transition: 'slide_left',
     revealChild: false,
     transitionDuration: userOptions.animations.durationSmall,

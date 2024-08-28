@@ -34,7 +34,7 @@ const VPNConfig = (vpn) => {
         label: vpn.id,
         xalign: 0,
         truncate: 'end',
-        className: 'txt-small',
+        className: 'txt-norm',
         maxWidthChars: 1,
       })
     ]
@@ -54,7 +54,7 @@ const VPNConfig = (vpn) => {
   })
 
   return Box({
-    className: 'spacing-h-10 sidebar-vpn-config',
+        className: 'sidebar-bluetooth-device spacing-h-10',
     children: [
       vpnIcon,
       vpnName,
@@ -82,7 +82,7 @@ export default (props) => {
             className: 'spacing-v-5 txt-subtext',
             children: [
               MaterialIcon('vpn_key', 'gigantic'),
-              Label({ label: 'No VPN configured', className: 'txt-small' })
+              Label({ label: 'No VPN configured', className: 'txt-norm' })
             ]
           })
         ]
