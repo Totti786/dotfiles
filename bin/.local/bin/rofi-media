@@ -227,7 +227,15 @@ select_episode(){
     fi
 
     # Extract episode numbers and titles, and format the selection
-    selection=$(ls -p "$selected_directory" | grep -v / | sort | sed -E 's/.*S[0-9]+E([0-9]+).*-\s*(.*)\..*$/Episode \1: \2/; t; s/.*S[0-9]+E([0-9]+).*$/Episode \1/; t; s/.* - ([0-9]+) - (.*)\..*$/Episode \1: \2/; t; s/.* - ([0-9]+)\..*$/Episode \1/' | rofi -sort -dmenu -p "Episode: " -mesg "Select the episode:")
+	selection=$(ls -p "$selected_directory" | grep -v / | sort | sed -E '
+	    s/.*S[0-9]+E([0-9]+).*-\s*(.*)\..*$/Episode \1: \2/; t;
+	    s/.*S[0-9]+E([0-9]+).*$/Episode \1/; t;
+	    s/.* - ([0-9]+) - (.*)\..*$/Episode \1: \2/; t;
+	    s/.* - ([0-9]+)\..*$/Episode \1/; t;
+	    s/.*S[0-9]+x([0-9]+).*-\s*(.*)\..*$/Episode \1: \2/; t;
+	    s/.*S[0-9]+x([0-9]+).*$/Episode \1/; t;
+	    s/.*S[0-9]+E([0-9]+)\..*$/Episode \1/'\
+	    | rofi -sort -dmenu -p "Episode: " -mesg "Select the episode:")
 
     # Map the selected "Episode X: Title" back to the corresponding file name
     if [[ -n "$selection" ]]; then
@@ -235,17 +243,30 @@ select_episode(){
         
         # Handle both patterns
         episode_file=$(ls -p "$selected_directory" | grep -E "S[0-9]+E$episode_number| - $episode_number - .*| - $episode_number\..*")
+        echo $episode_file
+		prompt_to_continue(){
+
+			next_episode_file=$(ls -p "$selected_directory" | grep -v / | sort | grep -E "S[0-9]+E$(printf '%02d' $((10#$episode_number + 1)))| - $(($episode_number + 1)) - .*| - $(($episode_number + 1))\..*| - $(printf '%02d' $((10#$episode_number + 1)))\..*|[_\.x-]$(printf '%02d' $((10#$episode_number + 1)))\.?[^/]*$")
+			echo $next_episode_file
+			if [[ -n "$next_episode_file" ]]; then
+            	binge="$(echo -e "Yes\nNo" | rofi -sort -dmenu -i -width 1500 -p "" -mesg "Play next episode")"
+            	if [[ "$binge"  == "Yes" ]]; then 
+					xdg-open "$selected_directory/$next_episode_file"
+					# Increment episode_number to move to the next episode
+					episode_number=$(($episode_number + 1))
+					prompt_to_continue
+            	fi
+            fi
+		}
 
         if [[ -n "$episode_file" ]]; then
-            mpv "$selected_directory/$episode_file"
+            xdg-open "$selected_directory/$episode_file"     
+            prompt_to_continue
         else
             notify-send -a rofi-media "Episode file not found"
         fi
-    else
-        notify-send -a rofi-media "No episode selected"
     fi	
 }
-
 
 if [[ "$1" == "--movies" ]]; then
 	if [[ "$(ls "$movies_directory" | grep -e "\.mp4$" -e "\.mkv$")" ]] ; then 
@@ -266,4 +287,3 @@ elif [[ "$1"  == "--anime" ]]; then
 elif [[ "$1" == "--episode" ]]; then
 	select_episode "$2"
 fi
-
