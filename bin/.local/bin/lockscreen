@@ -1,37 +1,33 @@
 #!/usr/bin/env bash
 
-image="$HOME/.config/wpg/templates/wallpaper.jpg"
-font="JetBrainsMono Nerd Font"
-
-# Retrieve all color values at once and assign them to variables
-eval $(xrdb -query | awk '
-    /^*\.foreground:/ {print "FG="$2}
-    /^*\.color1:/ {print "red="$2}
-    /^*\.color4:/ {print "blue="$2}
-    /^*\.color3:/ {print "yellow="$2}
-    /^*\.color2:/ {print "green="$2}
-    /^*\.color5:/ {print "magenta="$2}
-')
-
-# Fallback colors in case xrdb does not return a value
-: ${FG:="#FFFFFF"}
-: ${red:="#7ba5dd"}
-: ${blue:="#ee6a70"}
-: ${yellow:="#7ba5dd"}
-: ${green:="#7ba5dd"}
-: ${magenta:="#ee6a70"}
-
 if [ "$(playerctl -i kdeconnect -p %any status)" == "Playing" ]; then
 	playerctl -i kdeconnect -a pause
 fi
 
-pkill rofi
+[[ -n "$(pgrep rofi)" ]] && pkill rofi
 
-if [[ -n $(pgrep i3lock) ]] || [[ -n "$(pgrep hyprlock)" ]];then 
-	exit 0
-fi 
+if [[ "$XDG_SESSION_TYPE" == "x11" ]] && [[ -z $(pgrep i3lock) ]]; then 
+	image="$HOME/.config/wpg/templates/wallpaper.jpg"
+	font="JetBrainsMono Nerd Font"
+	
+	# Retrieve all color values at once and assign them to variables
+	eval $(xrdb -query | awk '
+	    /^*\.foreground:/ {print "FG="$2}
+	    /^*\.color1:/ {print "red="$2}
+	    /^*\.color4:/ {print "blue="$2}
+	    /^*\.color3:/ {print "yellow="$2}
+	    /^*\.color2:/ {print "green="$2}
+	    /^*\.color5:/ {print "magenta="$2}
+	')
+	
+	# Fallback colors in case xrdb does not return a value
+	: ${FG:="#FFFFFF"}
+	: ${red:="#7ba5dd"}
+	: ${blue:="#ee6a70"}
+	: ${yellow:="#7ba5dd"}
+	: ${green:="#7ba5dd"}
+	: ${magenta:="#ee6a70"}
 
-if [ "$XDG_SESSION_TYPE" == "x11" ]; then 
     i3lock -n -c 00000000 -F -e \
 		--pass-media-keys \
 		--pass-screen-keys \
@@ -82,7 +78,7 @@ if [ "$XDG_SESSION_TYPE" == "x11" ]; then
 		--greeter-color=${red:1} \
         --ind-pos="w-960:h-200"
 
-else
-	playerctl.sh --art
+elif [[ -z "$(pgrep hyprlock)" ]]; then
+	playerctl.sh --art & 
 	hyprlock
 fi
