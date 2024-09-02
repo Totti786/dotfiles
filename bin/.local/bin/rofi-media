@@ -68,16 +68,20 @@ process_media(){
             media_directory="$movies_directory"
             category="Movies"
             exec_command="mpv --keep-open=always"
+            # Find media files directly
+            readarray -t lines < <(find "$media_directory" -type f \( -iname "*.mp4" -o -iname "*.mkv" \))
             ;;
-        "shows")
-            media_directory="$shows_directory"
-            category="Shows"
+        "shows" | "anime")
+            media_directory="$([ "$media_type" = "shows" ] && echo "$shows_directory" || echo "$anime_directory")"
+            category="$([ "$media_type" = "shows" ] && echo "Shows" || echo "Anime")"
             exec_command="$0 --episode"
-            ;;
-        "anime")
-            media_directory="$anime_directory"
-            category="Anime"
-            exec_command="$0 --episode"
+            
+            # Find directories containing media files
+            readarray -t lines < <(find "$media_directory" -mindepth 1 -maxdepth 1 -type d -print0 | while IFS= read -r -d '' dir; do
+                if find "$dir" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -print -quit | grep -q .; then
+                    echo "$dir"
+                fi
+            done)
             ;;
         *)
             echo "Invalid media type specified."
@@ -85,25 +89,33 @@ process_media(){
             ;;
     esac
 
-    for line in "$media_directory"/*; do
+    if [ ${#lines[@]} -eq 0 ]; then
+        notify-send -r 12 -a rofi-media "rofi-media" "No files were found in $media_directory"
+        return
+    fi
+    
+    for line in "${lines[@]}"; do
         name="${line##*/}"
         name="${name%.*}"
-
+        
+        # Create a list of used cached images
+        used_images+=("$cached/$name.jpg")
+        
         # Extract the year and remove everything after it
         if [[ "$name" =~ ([1-2][0-9]{3}) ]]; then
             year="${BASH_REMATCH[1]}"
-            title="$(echo "${name%%$year*}" | tr -s '[:punct:]' ' ' | sed 's/[[:space:]]*$//')"
+            title=$(echo "$name" | sed -e "s/$year.*//" -e 's/[[:punct:]]/ /g' -e 's/[[:space:]]*$//')
         else
             year=""
             title="$(echo "$name" | sed 's/[[:space:]]*$//')"
         fi
-
+        
         if ! [[ -f "$cached/$title.jpg" ]]; then
-            get_poster "$media_type" "$title" "$year" 
+            get_poster "$media_type" "$title" "$year"
         fi
 
         desktop_file="$shortcuts/$name.desktop"
-		
+        
         if [[ ! -f "$desktop_file" ]]; then
             cat > "$desktop_file" <<- EOF
             [Desktop Entry]
@@ -116,8 +128,16 @@ process_media(){
         fi
     done
 
+	## Delete unused cached images
+    #for cached_image in "$cached"/*.jpg; do
+        #if [[ ! " ${used_images[@]} " =~ " ${cached_image} " ]]; then
+            #rm "$cached_image"
+        #fi
+    #done
+
     rofi -show drun -drun-categories "$category" -theme rofi-media
 }
+
 
 select_episode(){
     # Define a pattern to match typical season folder names
@@ -135,7 +155,7 @@ select_episode(){
     fi
 
     # Extract episode numbers and titles, and format the selection
-    selection=$(ls -p "$selected_directory" | grep -v / | sort | sed -E '
+       selection=$(ls -p "$selected_directory" | grep -v / | grep -E '\.mp4$|\.mkv$' | sort | sed -E '
         s/.*S[0-9]+E([0-9]+).*-\s*(.*)\..*$/Episode \1: \2/; t;
         s/.*S[0-9]+E([0-9]+).*$/Episode \1/; t;
         s/.* - ([0-9]+) - (.*)\..*$/Episode \1: \2/; t;
@@ -150,11 +170,12 @@ select_episode(){
         episode_number=$(echo "$selection" | grep -o '[0-9]\+')
 
         # Handle both patterns
-        episode_file=$(ls -p "$selected_directory" | grep -E "S[0-9]+E$episode_number| - $episode_number - .*| - $episode_number\..*")
-        prompt_to_continue(){
+		episode_file=$(ls -p "$selected_directory" | grep -E "S[0-9]+E$episode_number| - $episode_number - .*| - $episode_number\..*" | grep -E '\.mp4$|\.mkv$|\.avi$|\.mov$|\.flv$')
 
-            next_episode_file=$(ls -p "$selected_directory" | grep -v / | sort | grep -E "S[0-9]+E$(printf '%02d' $((10#$episode_number + 1)))| - $(($episode_number + 1)) - .*| - $(($episode_number + 1))\..*| - $(printf '%02d' $((10#$episode_number + 1)))\..*|[_\.x-]$(printf '%02d' $((10#$episode_number + 1)))\.?[^/]*$")
-            echo $next_episode_file
+        prompt_to_continue(){
+		next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
+		next_episode_file=$(ls -p "$selected_directory" | grep -v / | sort | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
+	            
             if [[ -n "$next_episode_file" ]]; then
                 binge="$(echo -e "Yes\nNo" | rofi -sort -dmenu -i -width 1500 -p "" -mesg "Play next episode")"
                 if [[ "$binge"  == "Yes" ]]; then 
