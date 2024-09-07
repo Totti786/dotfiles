@@ -13,7 +13,6 @@ configuration {
 
 }
 
-
 @import "colors.rasi"
 @import "fonts.rasi"
 
@@ -28,6 +27,11 @@ window {
     width:          640;
     y-offset:		0px;
     border-radius:  12;
+}
+
+mainbox {
+    enabled:	true;
+    children:	[ "inputbar", "message", "listview" ];
 }
 
 inputbar {
@@ -47,8 +51,7 @@ icon-search, entry, element-icon, element-text {
 }
 
 entry {
-    font:   inherit;
-
+    font:   			inherit;
     placeholder         : "Search";
     placeholder-color   : @foreground;
 }
@@ -66,9 +69,7 @@ textbox {
 listview {
     lines:      10;
     columns:    1;
-
     fixed-height:   false;
-    
     border-color:   @background-blur;
 }
 
