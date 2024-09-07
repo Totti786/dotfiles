@@ -199,7 +199,6 @@ prompt(){
 			prompt "$show"
 			;;
 		"Select")
-			path=""
 			select_episode "$show"
 			;;
 		"Exit")
@@ -218,7 +217,7 @@ prompt(){
             next_season_dir="$parent_directory/$next_season_dir"
             binge_next_season="$(echo -e "Yes\nNo" | rofi -sort -dmenu -i -width 1500 -p "" -mesg "Next season available. Play next season?" -theme-str "#mainbox { children: [ message, listview ]; } #textbox { padding: 24px; }")"
             if [[ "$binge_next_season" == "Yes" ]]; then
-                first_episode_file=$(ls -p "$next_season_dir" | grep -v / | sort | grep -E '\.mp4$|\.mkv$|\.avi$|\.mov$|\.flv$' | head -n1)
+                first_episode_file=$(ls -p "$next_season_dir" | grep -v / | sort | grep -E '\.mp4$|\.mkv$' | head -n1)
                 if [[ -n "$first_episode_file" ]]; then
                     play_media "$next_season_dir/$first_episode_file"
                     save_history "$show"
@@ -267,22 +266,22 @@ select_episode(){
     fi
 
     # Extract episode numbers and titles, and format the selection
-       selection=$(ls -p "$selected_directory" | grep -v / | grep -E '\.mp4$|\.mkv$' | sort | sed -E '
-        s/.*S[0-9]+E([0-9]+).*-\s*(.*)\..*$/Episode \1: \2/; t;
-        s/.*S[0-9]+E([0-9]+).*$/Episode \1/; t;
-        s/.* - ([0-9]+) - (.*)\..*$/Episode \1: \2/; t;
-        s/.* - ([0-9]+)\..*$/Episode \1/; t;
-        s/.*S[0-9]+x([0-9]+).*-\s*(.*)\..*$/Episode \1: \2/; t;
-        s/.*S[0-9]+x([0-9]+).*$/Episode \1/; t;
-        s/.*S[0-9]+E([0-9]+)\..*$/Episode \1/'\
-        | rofi -sort -dmenu -p "Episode: " -mesg "Select the episode:")
+	  selection=$(ls -p "$selected_directory" | grep -v / | grep -E '\.mp4$|\.mkv$' | sort | sed -E '
+		s/.*S[0-9]+E([0-9]+).*-\s*([^A-Z]*[a-z][^A-Z]*.*[a-zA-Z].*|[A-Z][a-z]+.*)\s*\..*$/Episode \1: \2/; t;
+	    s/.*S[0-9]+E([0-9]+).*$/Episode \1/; t;
+	    s/.* - ([0-9]+) - ([^A-Z]*[a-z][^A-Z]*.*[a-zA-Z].*|[A-Z][a-z]+.*)\s*\..*$/Episode \1: \2/; t;
+	    s/.* - ([0-9]+)\..*$/Episode \1/; t;
+	    s/.*S[0-9]+x([0-9]+).*-\s*([^A-Z]*[a-z][^A-Z]*.*[a-zA-Z].*|[A-Z][a-z]+.*)\s*\..*$/Episode \1: \2/; t;
+	    s/.*S[0-9]+x([0-9]+).*$/Episode \1/; t;
+	    s/.*S[0-9]+E([0-9]+)\..*$/Episode \1/'\
+	    | rofi -sort -dmenu -p "Episode: " -mesg "Select the episode:")
 
     # Map the selected "Episode X: Title" back to the corresponding file name
     if [[ -n "$selection" ]]; then
         episode_number=$(echo "$selection" | grep -o '[0-9]\+')
 
         # Handle both patterns
-		episode_file=$(ls -p "$selected_directory" | grep -E "S[0-9]+E$episode_number| - $episode_number - .*| - $episode_number\..*" | grep -E '\.mp4$|\.mkv$|\.avi$|\.mov$|\.flv$')
+		episode_file=$(ls -p "$selected_directory" | grep -E "S[0-9]+E$episode_number| - $episode_number - .*| - $episode_number\..*" | grep -E '\.mp4$|\.mkv$')
 
         if [[ -n "$episode_file" ]]; then
             play_media "$selected_directory/$episode_file"
