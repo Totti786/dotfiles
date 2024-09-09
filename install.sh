@@ -19,7 +19,7 @@ declare -a minimal=(
 	imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu \
 	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv \
 	nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct rhythmbox rofi-wayland \
-	rtorrent scrot stalonetray snapshot sxhkd termdown thunar thunar-archive-plugin paper perl plank \
+	rtorrent scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin paper perl plank \
 	playerctl plasma-browser-integration polkit-gnome polybar python-pipx python-wheel qbittorrent \
 	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
 	ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift \
