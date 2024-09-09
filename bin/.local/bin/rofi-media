@@ -71,7 +71,7 @@ process_media(){
             category="Movies"
             exec_command="mpv --keep-open=always --write-filename-in-watch-later-config --save-position-on-quit"
             # Find media files directly
-            readarray -t lines < <(find "$media_directory" -type f \( -iname "*.mp4" -o -iname "*.mkv" \))
+            readarray -t lines < <(find -L "$media_directory" -type f \( -iname "*.mp4" -o -iname "*.mkv" \))
             ;;
         "shows" | "anime")
             media_directory="$([ "$media_type" = "shows" ] && echo "$shows_directory" || echo "$anime_directory")"
@@ -79,8 +79,8 @@ process_media(){
             exec_command="$0 --episode"
 
             # Find directories containing media files
-            readarray -t lines < <(find "$media_directory" -mindepth 1 -maxdepth 1 -type d -print0 | while IFS= read -r -d '' dir; do
-                if find "$dir" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -print -quit | grep -q .; then
+            readarray -t lines < <(find "$media_directory" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 | while IFS= read -r -d '' dir; do
+                if find -L "$dir" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -print -quit | grep -q .; then
                     echo "$dir"
                 fi
             done)
@@ -101,13 +101,20 @@ process_media(){
         name="${name%.*}"
 
 		# Extract the year and remove everything after it
-        if [[ "$name" =~ ([1-2][0-9]{3}) ]]; then
-            year="${BASH_REMATCH[1]}"
-            title=$(echo "$name" | sed -e "s/$year.*//" -e 's/[[:punct:]]/ /g' -e 's/[[:space:]]*$//')
-        else
-            year=""
-            title="$(echo "$name" | sed 's/[[:space:]]*$//')"
-        fi
+		if [[ "$name" =~ ([1-2][0-9]{3}) ]]; then
+		    year="${BASH_REMATCH[1]}"
+		    title=$(echo "$name" | sed -e "s/$year.*//" -e 's/[[:punct:]]/ /g' -e 's/[[:space:]]*$//')
+		
+		    # Check if title is empty or only contains the year
+		    if [[ -z "$title" || "$title" =~ ^[[:space:]]*$ ]]; then
+		        # If title is empty or only contains spaces, set title to the year itself
+		        title="$year"
+		    fi
+		else
+		    year=""
+		    title="$(echo "$name" | sed 's/[[:space:]]*$//')"
+		fi
+	
 
         if ! [[ -f "$cached/$title.jpg" ]]; then
             get_poster "$media_type" "$title" "$year"
@@ -228,7 +235,7 @@ prompt(){
 
         next_season_dir=$(ls -v "$parent_directory" | grep -A1 "$current_season" | tail -n1)
 
-        if [[ -n "$next_season_dir" && "$next_season_dir" != "$current_season" ]]; then
+        if [[ -n "$next_season_dir" && "$next_season_dir" != "$current_season" && "$parent_directory" != "$shows_directory" ]]; then
             next_season_dir="$parent_directory/$next_season_dir"
             binge_next_season="$(echo -e "Yes\nNo" | rofi -sort -dmenu -i -width 1500 -p "" -mesg "Next season available. Play next season?" -theme-str "#mainbox { children: [ message, listview ]; } #textbox { padding: 24px; }")"
             if [[ "$binge_next_season" == "Yes" ]]; then
@@ -284,7 +291,8 @@ select_episode(){
     season_pattern='(Season[[:space:]]*[0-9]+|S[0-9]+|[0-9]+x[0-9]+|S[0-9]+E[0-9]+|^[0-9]+$|^[0-9]+x[0-9]+)'
 
     # Check if there are multiple season folders
-    season_dirs=$(find "$show" -mindepth 1 -maxdepth 1 -type d | grep -E "$season_pattern")
+    season_dirs=$(find -L "$show" -mindepth 1 -maxdepth 1 \( -type d -o -type l \))
+    #season_dirs=$(find -L "$show" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) | grep -E "$season_pattern")
 
     if [[ -n "$season_dirs" ]]; then
         season=$(echo "$season_dirs" | sort | sed 's!.*/!!' | rofi -sort -dmenu -p "Select season:" -mesg "Select the season:")
