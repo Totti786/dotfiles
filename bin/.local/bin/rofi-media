@@ -253,7 +253,7 @@ prompt(){
 play_history(){
 	local show="$1"
 	check_history "$show"
-
+	
 	if [[ "$progress" -gt 90 ]]; then
 		
 		local episode_number="$episode"
@@ -264,7 +264,6 @@ play_history(){
 	    next_episode_file=$(ls -p "$selected_directory" | grep -v / | sort | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
 	
 	    if [[ -n "$next_episode_file" ]]; then
-			echo $next_episode_file
 			path="$selected_directory/$next_episode_file"
 			position=""
 	    else 
@@ -272,15 +271,20 @@ play_history(){
 		fi		
 	fi
 	
-   	[[ -n "$path" ]] && history=$(echo -e "Yes\nNo" | rofi -sort -dmenu -mesg "Resume last episode?" -theme-str "#mainbox { children: [ message, listview ]; } #textbox { padding: 24px; }")
+   	[[ -n "$path" ]] && history=$(echo -e "Yes\nNo" | rofi -sort -dmenu -mesg "Resume from where you left off?" -theme-str "#mainbox { children: [ message, listview ]; } #textbox { padding: 24px; }")
 
 	if [[ "$history" == "Yes" ]]; then
 		play_media "$path" "$position"
 		save_history "$show"
-		prompt "$show"
+		[[ -d "$show" ]] &&  prompt "$show"
 		exit 0
 	else
-		select_episode "$show"
+		if [[ -f "$show" ]]; then
+			play_media "$show"
+			save_history "$show"
+		else
+			select_episode "$show"
+		fi
 	fi
 }
 
