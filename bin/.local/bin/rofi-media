@@ -6,7 +6,7 @@ shows_directory="$HOME/Videos/Shows"
 anime_directory="$HOME/Videos/Anime"
 cached="$HOME/.cache/rofi-media"
 shortcuts="$HOME/.local/share/applications/media"
-watchlater_dir="$HOME/.cache/rofi-media/watch_later"
+watchlater_dir="$cached/watch_later"
 fallback_poster="$cached/cover.jpg"  # Define the path to your fallback poster image
 
 # Create necessary directories if they don't exist
@@ -69,7 +69,7 @@ process_media(){
         "movies")
             media_directory="$movies_directory"
             category="Movies"
-            exec_command="mpv --keep-open=always --write-filename-in-watch-later-config --save-position-on-quit --keep-open=always"
+            exec_command="mpv --keep-open=always --write-filename-in-watch-later-config --save-position-on-quit"
             # Find media files directly
             readarray -t lines < <(find "$media_directory" -type f \( -iname "*.mp4" -o -iname "*.mkv" \))
             ;;
@@ -135,27 +135,41 @@ play_media() {
     local start_position="$2"
 
 	[[ -z "$start_position" ]] && start_position="0"
-
+	
+	get_duration &
+	
     mpv --quiet --keep-open=always --watch-later-dir="$watchlater_dir" \
         --write-filename-in-watch-later-config --save-position-on-quit \
-        --start="$start_position" "$file_path"
+        --start="$start_position" "$file_path" >/dev/null 2>&1
 }
+
+get_duration(){
+	sleep 2
+	duration="$([[ "$(pgrep mpv)" ]]  && echo '{"command": ["get_property", "duration"]}' | socat - /tmp/mpvsocket | jq -r '.data')"
+    printf "%.0f" "$duration" > "$watchlater_dir"/duration
+}
+
 
 save_history(){
 	media_history="$cached"/media_history.txt
 
 	local name="${1##*/}"
-
+	
+	local duration="$(cat $watchlater_dir/duration)"
+	
 	file="$(grep -hB1 "start=" $watchlater_dir/* 2>/dev/null | grep -A2 "$name")"
 
 	position="$(echo $file | awk -F= '/start/ {print int($2)}')"
 	path="$(echo $file | awk -F' start=' '/^# / {print substr($1, 3)}')"
 
+    local progress=$(($position * 100 / $duration))
+
+
 	if grep -qw "$name" "$media_history"; then
 		sed -i "/$name/d" "$media_history"
 	fi
 
-	printf "%s\t%s\t%s\n" "$name" "$position" "$path" >>"$media_history"
+	printf "%s\t%s\t%s\t%s\n" "$name" "$position" "$path" "$progress" >>"$media_history"
 
 	rm "$watchlater_dir"/*
 }
@@ -167,6 +181,7 @@ check_history(){
 
 	position="$(grep -hw "$name" $media_history | awk -F'\t' '{print $2}')"
 	path="$(grep -hw "$name" $media_history | awk -F'\t' '{print $3}')"
+	progress="$(grep -hw "$name" $media_history | awk -F'\t' '{print $4}')"
 	dir="${path%/*}"
 	episode=$(echo "${path##*/}" | sed -n -e 's/.*[eE]\([0-9]\{2\}\).*/\1/p' -e 's/.*\b\([0-9]\{2\}\)\b.*/\1/p' | head -n1)
 }
@@ -222,12 +237,8 @@ prompt(){
                     play_media "$next_season_dir/$first_episode_file"
                     save_history "$show"
                     prompt "$show"
-                else
-                    notify-send -a rofi-media "No episodes found in the next season"
                 fi
             fi
-        else
-            notify-send -a rofi-media "No more episodes or seasons available"
         fi
     fi
 }
@@ -236,6 +247,24 @@ play_history(){
 	local show="$1"
 	check_history "$show"
 
+	if [[ "$progress" -gt 90 ]]; then
+		
+		local episode_number="$episode"
+		local selected_directory="$dir"
+		
+		# Check for the next episode in the current season
+	    next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
+	    next_episode_file=$(ls -p "$selected_directory" | grep -v / | sort | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
+	
+	    if [[ -n "$next_episode_file" ]]; then
+			echo $next_episode_file
+			path="$selected_directory/$next_episode_file"
+			position=""
+	    else 
+			path=""
+		fi		
+	fi
+	
    	[[ -n "$path" ]] && history=$(echo -e "Yes\nNo" | rofi -sort -dmenu -mesg "Resume last episode?" -theme-str "#mainbox { children: [ message, listview ]; } #textbox { padding: 24px; }")
 
 	if [[ "$history" == "Yes" ]]; then
@@ -267,14 +296,12 @@ select_episode(){
 
     # Extract episode numbers and titles, and format the selection
 	  selection=$(ls -p "$selected_directory" | grep -v / | grep -E '\.mp4$|\.mkv$' | sort | sed -E '
-	    s/.*S[0-9]+E([0-9]+)[^A-Za-z]*-\s*([^\(\)]+?)\s*\(.*$/Episode \1: \2/; t;
-	    s/.*S[0-9]+E([0-9]+)[^A-Za-z]*-\s*([^\(\)]+?)\s*\..*$/Episode \1: \2/; t;
-	    s/.*S[0-9]+E([0-9]+).*$/Episode \1/; t;
-	    s/.* - ([0-9]+) - ([^\(\)]+?)\s*\(.*$/Episode \1: \2/; t;
+	    s/.*S[0-9]+[Eex]([0-9]+)[^A-Za-z0-9]*([^0-9]+\S[^0-9]+?)[. ]+[^.]+$/Episode \1: \2/; t;
+	    s/.*S[0-9]+[Eex]([0-9]+)[^A-Za-z0-9]*([^0-9]+\S[^0-9]+?)[. ]+.*$/Episode \1: \2/; t;
+	    s/.*S[0-9]+[Eex]([0-9]+).*$/Episode \1/; t;
+	    s/.* - ([0-9]+) - ([^0-9]+?)\..*$/Episode \1: \2/; t;
 	    s/.* - ([0-9]+)\..*$/Episode \1/; t;
-	    s/.*S[0-9]+x([0-9]+)[^A-Za-z]*-\s*([^\(\)]+?)\s*\(.*$/Episode \1: \2/; t;
-	    s/.*S[0-9]+x([0-9]+).*$/Episode \1/; t;
-	    s/.*S[0-9]+E([0-9]+)\..*$/Episode \1/'\
+	    s/.*S[0-9]+E([0-9]+)\..*$/Episode \1/' | sed -E 's/\./ /g' \
 	    | rofi -sort -dmenu -p "Episode: " -mesg "Select the episode:")
 
     # Map the selected "Episode X: Title" back to the corresponding file name
