@@ -7,6 +7,7 @@ anime_directory="$HOME/Videos/Anime"
 cached="$HOME/.cache/rofi-media"
 shortcuts="$HOME/.local/share/applications/media"
 watchlater_dir="$cached/watch_later"
+media_history="$cached"/media_history.txt
 fallback_poster="$cached/cover.jpg"  # Define the path to your fallback poster image
 
 # Create necessary directories if they don't exist
@@ -152,38 +153,32 @@ play_media() {
 
 get_duration(){
 	sleep 2
-	duration="$([[ "$(pgrep mpv)" ]]  && echo '{"command": ["get_property", "duration"]}' | socat - /tmp/mpvsocket | jq -r '.data')"
-    printf "%.0f" "$duration" > "$watchlater_dir"/duration
+	duration="$([[ "$(pgrep mpv)" ]]  && echo '{"command": ["get_property", "duration"]}' | socat - /tmp/mpvsocket 2> /dev/null | awk -F'"data":|,' '{print $2}')"
+    [[ -n "$duration" ]] && printf "%.0f" "$duration" > "$watchlater_dir"/duration
 }
 
-
 save_history(){
-	media_history="$cached"/media_history.txt
-
 	local name="${1##*/}"
 	
-	local duration="$(cat $watchlater_dir/duration)"
+	local duration="$(cat $watchlater_dir/duration 2> /dev/null)"
 	
 	file="$(grep -hB1 "start=" $watchlater_dir/* 2>/dev/null | grep -A2 "$name")"
 
 	position="$(echo $file | awk -F= '/start/ {print int($2)}')"
 	path="$(echo $file | awk -F' start=' '/^# / {print substr($1, 3)}')"
 
-    local progress=$(($position * 100 / $duration))
-
+    [[ -n "$duration" ]] && local progress=$(($position * 100 / $duration))
 
 	if grep -qw "$name" "$media_history"; then
 		sed -i "/$name/d" "$media_history"
 	fi
 
-	printf "%s\t%s\t%s\t%s\n" "$name" "$position" "$path" "$progress" >>"$media_history"
+	printf "%s\t%s\t%s\t%s\n" "$name" "$position" "$path" "$progress" >> "$media_history"
 
 	rm "$watchlater_dir"/*
 }
 
 check_history(){
-	media_history="$cached"/media_history.txt
-
 	local name="${1##*/}"
 
 	position="$(grep -hw "$name" $media_history | awk -F'\t' '{print $2}')"
@@ -339,6 +334,9 @@ case "$1" in
         ;;
     --episode)
         play_history "$2"
+        ;;
+    --clear)
+        rm "$media_history"
         ;;
     *)
         echo "Invalid option. Use --movies, --shows, --anime, or --episode."
