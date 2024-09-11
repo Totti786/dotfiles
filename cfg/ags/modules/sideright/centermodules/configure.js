@@ -62,6 +62,9 @@ export default (props) => {
                 ConfigSection({
                     name: 'Effects', children: [
 						HyprlandSpinButton({ icon: 'line_curve', name: 'Rounding', desc: '[Hyprland]\nRounded corners’ radius (in layout px)', option: 'decoration:rounding', minValue: 0, maxValue: 30 }),
+						HyprlandSpinButton({ icon: 'crop_square', name: 'Border', desc: '[Hyprland]\n\Size of the border around windows', option: 'general:border_size', minValue: 0, maxValue: 30 }),
+						HyprlandSpinButton({ icon: 'crop_square', name: 'Gaps in', desc: '[Hyprland]\n\Gaps between windows', option: 'general:gaps_in', minValue: 0, maxValue: 30 }),
+						HyprlandSpinButton({ icon: 'crop_square', name: 'Gaps out', desc: '[Hyprland]\n\Gaps between windows and monitor edges', option: 'general:gaps_out', minValue: 0, maxValue: 30 }),
                         ConfigToggle({
                             icon: 'border_clear',
                             name: 'Transparency',
