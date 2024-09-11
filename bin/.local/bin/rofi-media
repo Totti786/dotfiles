@@ -301,7 +301,7 @@ select_episode(){
 		    s!.*/!!')" \
 		    "Select the season:")
 		[[ -z "$season" ]] && exit 1
-		season_number=$(echo $season | grep -o '[0-9]\+')
+		    season_number=$(echo "$season" | grep -oE '(S0?[1-9][0-9]*|Season[[:space:]]*[1-9][0-9]*)' | grep -oE '[0-9]+')
 		[[ -n "$season_number" ]] && season=$(ls -v "$show" | grep -E -i "S0?$season_number|Season[[:space:]]*$season_number" | head -n 1)
 		selected_directory="$show/$season"
 	else
@@ -328,8 +328,11 @@ select_episode(){
 
 	# Map the selected "Episode X: Title" or title without episode number back to the corresponding file name
 	if [[ -n "$selection" ]]; then
-		episode_number=$(echo "$selection" | grep -o '[0-9]\+')  # Extract episode number if available
-		episode_title=$(echo "$selection" | sed -E 's/^Episode [0-9]+[^ ]*: (.+)/\1/; t; s/^Episode [0-9]+[^ ]*//; t')  # Extract title if it's prefixed with "Episode X:"
+		# Extract episode number if available
+		episode_number=$(echo "$selection" | grep -o '[0-9]\+[^: ]*')
+
+		# Extract title if it's prefixed with "Episode X:"
+		episode_title=$(echo "$selection" | sed -E 's/^Episode [0-9]+[^ ]*: (.+)/\1/; t; s/^Episode [0-9]+[^ ]*//; t')  
 
 		if [[ -n "$episode_title" ]] && ! [[ $selection =~ "Ep" ]]; then
 			# Handle patterns with no episode number, matching by title
