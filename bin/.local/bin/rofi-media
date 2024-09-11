@@ -148,7 +148,7 @@ play_media() {
 	[[ -z "$start_position" ]] && start_position="0"
 	get_duration &
 	
-	mpv --quiet --watch-later-dir="$watchlater_dir" \
+	mpv --quiet --keep-open=always --watch-later-dir="$watchlater_dir" \
 		--write-filename-in-watch-later-config --save-position-on-quit \
 		--start="$start_position" "$file_path" >/dev/null 2>&1
 }
