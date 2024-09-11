@@ -69,7 +69,7 @@ process_media(){
 		"movies")
 			media_directory="$movies_directory"
 			category="Movies"
-			exec_command="mpv --keep-open=always --write-filename-in-watch-later-config --save-position-on-quit"
+			exec_command="mpv --write-filename-in-watch-later-config --save-position-on-quit"
 			# Find media files directly
 			readarray -t lines < <(find -L "$media_directory" -type f \( -iname "*.mp4" -o -iname "*.mkv" \))
 			;;
@@ -148,7 +148,7 @@ play_media() {
 	[[ -z "$start_position" ]] && start_position="0"
 	get_duration &
 	
-	mpv --quiet --keep-open=always --watch-later-dir="$watchlater_dir" \
+	mpv --quiet --watch-later-dir="$watchlater_dir" \
 		--write-filename-in-watch-later-config --save-position-on-quit \
 		--start="$start_position" "$file_path" >/dev/null 2>&1
 }
