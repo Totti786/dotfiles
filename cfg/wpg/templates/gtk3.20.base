@@ -106,3 +106,60 @@
 @import url("widgets/csd.css");
 @import url("widgets/combobox.css");
 @import url("widgets/selection-mode.css");
+
+button {{
+    border-radius: 8px;
+}}
+
+entry {{
+    border-radius: 8px;
+}}
+
+check,radio {{
+    border-radius: 6px;
+}}
+
+.header-bar {{
+    border-radius: 8px;
+}}
+
+menubar,
+.menubar {{
+    padding: 2px 8px;
+}}
+
+menubar > menuitem,
+.menubar > menuitem {{
+    border-radius: 6px;
+}}
+
+menu,
+.menu {{
+    padding: 5px;
+    border-radius: 12px;
+}}
+
+.csd .menu {{
+    border-radius: 10px;
+}}
+
+menu menuitem,
+.menu menuitem {{
+    border-radius: 6px;
+}}
+
+menu > arrow,
+.menu > arrow {{
+    border-radius: 10px;
+}}
+csd.popup {{
+    border-radius: 12px;
+}}
+
+switch {{
+    border-radius: 10px;
+}}
+
+button.sidebar-button {{
+    border-radius: 12px;
+}}
