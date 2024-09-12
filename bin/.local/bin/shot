@@ -53,7 +53,7 @@ notify_user() {
 # Function to provide a countdown timer before taking a screenshot
 countdown() {
 	for sec in $(seq $1 -1 1); do
-		notify-send -a "shot" -t 1000 -u low -r 83 "Countdown" "Taking shot in : $sec"
+		notify-send -a "shot" -t 1050 -u low -r 83 "Countdown" "Taking shot in : $sec"
 		sleep 1
 	done
 	sleep 0.2
