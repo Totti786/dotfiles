@@ -117,6 +117,7 @@ process_media(){
 		fi
 
 		if ! [[ -f "$cached/$title.jpg" ]]; then
+			notify-send -r 12 -t 2000 -a rofi-media "Getting Posters..."
 			get_poster "$media_type" "$title" "$year"
 		fi
 	
