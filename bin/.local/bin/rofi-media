@@ -203,8 +203,13 @@ prompt(){
 	next_episode_file=$(ls -p "$selected_directory" | grep -v / | sort | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
 
 	if [[ -n "$next_episode_file" ]]; then
-
-		options="$(prompt_menu "Next\nReplay\nSelect\nExit" "Select an option:")"
+		
+		
+		if [[ "$progress" -ge 90 ]]; then 
+			options="$(prompt_menu "Next\nReplay\nSelect\nExit" "Select an option:")"
+		else
+			options="$(prompt_menu "Next\nResume\nReplay\nSelect\nExit" "Select an option:")"
+		fi
 
 		case "$options" in
 		"Next")
@@ -213,6 +218,11 @@ prompt(){
 			episode_number=$(($episode_number + 1))
 			prompt "$show"
 			;; 
+		"Resume")
+			play_media "$path" "$position"
+			save_history "$show"
+			prompt "$show"
+			;;
 		"Replay")
 			play_media "$path"
 			save_history "$show"
@@ -252,7 +262,7 @@ play_history(){
 	local show="$1"
 	check_history "$show"
 
-	if [[ "$progress" -gt 90 ]]; then
+	if [[ "$progress" -ge 90 ]]; then
 
 		local episode_number="$episode"
 		local selected_directory="$dir"
