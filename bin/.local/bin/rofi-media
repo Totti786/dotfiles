@@ -102,8 +102,9 @@ process_media(){
 		return
 	elif [ ${#lines[@]} -gt "$( ls -A "$data_dir/$media_type" | wc -l)" ]; then
 		notify-send -r 12 -u low -a rofi-media "rofi-media" "Getting posters..."
+		echo ${#lines[@]}
 	fi
-
+	
 	for line in "${lines[@]}"; do
 		# Extract the name of the file from the path
 		name="${line##*/}"
@@ -221,11 +222,10 @@ prompt(){
 
 	# Check for the next episode in the current season
 	next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
-	next_episode_file=$(ls -p "$selected_directory" | grep -v / | sort | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
+	next_episode_file=$(ls -v "$selected_directory" | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
 
 	if [[ -n "$next_episode_file" ]]; then
-		
-		
+
 		if [[ "$progress" -ge 90 ]]; then 
 			options="$(prompt_menu "Next\nReplay\nSelect\nExit" "Select an option:")"
 		else
@@ -261,14 +261,14 @@ prompt(){
 		# Check if there is another season available
 		parent_directory="${selected_directory%/*}"
 		current_season="${selected_directory##*/}"
-		
+
 		next_season_dir=$(ls -v "$parent_directory" | grep -A1 "$current_season" | tail -n1)
-	
+
 		if [[ -n "$next_season_dir" && "$next_season_dir" != "$current_season" && "$parent_directory" != "$shows_directory" && "$parent_directory" != "$anime_directory" ]]; then
 			next_season_dir="$parent_directory/$next_season_dir"
 			binge_next_season="$(prompt_menu "Yes\nNo" "Next season available. Play next season?")"
 			if [[ "$binge_next_season" == "Yes" ]]; then
-				first_episode_file=$(ls -p "$next_season_dir" | grep -v / | sort | grep -E '\.mp4$|\.mkv$' | head -n1)
+				first_episode_file=$(ls -v "$next_season_dir" | grep -E '\.mp4$|\.mkv$' | head -n1)
 				if [[ -n "$first_episode_file" ]]; then
 					play_media "$next_season_dir/$first_episode_file"
 					save_history "$show"
@@ -277,6 +277,7 @@ prompt(){
 			fi
 		fi
 	fi
+
 }
 
 play_history(){
@@ -290,7 +291,7 @@ play_history(){
 
 		# Check for the next episode in the current season
 		next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
-		next_episode_file=$(ls -p "$selected_directory" | grep -v / | sort | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
+		next_episode_file=$(ls -v "$selected_directory" | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
 
 		if [[ -n "$next_episode_file" ]]; then
 			path="$selected_directory/$next_episode_file"
@@ -318,24 +319,25 @@ play_history(){
 }
 
 select_episode(){
-	local show="$1"	
+	local show="$1"
 
 	# Check if there are multiple season directories, only if there are no video files in the directory
 	[[ -z "$(ls -p "$show" | grep -v / | grep -E '\.mp4$|\.mkv$')" ]] && season_dirs="$(ls -v "$show")"
 
 	if [[ -n "$season_dirs" ]]; then
 	  season=$(prompt_menu "$(echo "$season_dirs" | sed -E '
-		# Detect and format "Season X: Part Y" (e.g., S03P01 -> Season 3: Part 1)
-		s/.*S0?([1-9][0-9]*)P0?([1-9][0-9]*).*/Season \1: Part \2/; t;
-		# Detect and format "Season X Part Y" (e.g., Season 3 Part 1 -> Season 3: Part 1)
-		s/.*Season ([0-9]+) Part ([0-9]+).*/Season \1: Part \2/; t;
-		# Handle regular "Season X" without part (e.g., S01 -> Season 1)
-		s/.*S0?([1-9][0-9]*).*/Season \1/; t;
-		# Handle "Season X" in plain text (e.g., "Season 3")
-		s/.*Season ([0-9]+).*/Season \1/; t;
-		# If none of the above patterns match, just keep the name unchanged
-		s!.*/!!')" \
-		"Select the season:")
+	    # Handle "S01P01" -> "Season 1: Part 1" (case-insensitive)
+	    s/.*[sS]0?([1-9][0-9]*)[pP]0?([1-9][0-9]*).*/Season \1: Part \2/; t;
+	    # Handle "Season 3 Part 1" -> "Season 3: Part 1"
+	    s/.*[sS]eason[[:space:]]+([0-9]+)[[:space:]]*-[[:space:]]*Part[[:space:]]+([0-9]+).*/Season \1: Part \2/; t;
+	    # Handle "Season 3 - Part 1" -> "Season 3: Part 1"
+	    s/.*[sS]eason[[:space:]]+([0-9]+)[[:space:]]*-[[:space:]]*Part[[:space:]]+([0-9]+).*/Season \1: Part \2/; t;
+	    # Handle "S01" -> "Season 1" (case-insensitive)
+	    s/.*[sS]0?([1-9][0-9]*).*/Season \1/; t;
+	    # Handle "Season 3" -> "Season 3" (case-insensitive)
+	    s/.*[sS]eason[[:space:]]+([0-9]+).*/Season \1/; t;
+	    # Handle cases with extra information, just keep the name unchanged
+	    s!.*/!!')" "Select the season:")
 
 		[[ -z "$season" ]] && exit 1
 
@@ -343,9 +345,11 @@ select_episode(){
 	    part_number=$(echo "$season" | grep -oP '(?<=Part\s)\d+')
 
 		if [[ -n "$part_number" ]]; then
-			season_pattern="S0?$season_number+P0?$part_number+|S$season_number+P$part_number+"
+		    # Handle part and season combinations like S01P01, S1P1, Season 1 - Part 1, etc.
+		    season_pattern="([sS]0?$season_number[Pp]0?$part_number|[sS]$season_number[Pp]$part_number|Season[[:space:]]*$season_number[[:space:]]*[-]?[[:space:]]*Part[[:space:]]*$part_number)"
 		else
-			season_pattern="(S0?$season_number|Season[[:space:]]*$season_number|^0?$season_number$)"
+		    # Handle regular season formats like S01, Season 1, etc.
+		    season_pattern="([sS]0?$season_number|[sS]$season_number|Season[[:space:]]*$season_number|^0?$season_number$)"
 		fi
 
 		[[ -n "$season_number" ]] && season=$(ls -v "$show" | grep -E -i "$season_pattern" | head -n 1)
@@ -355,7 +359,7 @@ select_episode(){
 	fi
 
 	# Extract episode numbers and titles, and format the selection
-	  selection=$(ls -p "$selected_directory" | grep -v / | grep -E '\.mp4$|\.mkv$' | sort | sed -E '
+	  selection=$(ls -p "$selected_directory" | grep -v / | grep -E '\.mp4$|\.mkv$' | sed -E '
 		s/\[.*\] .* - S[0-9]+E([0-9]+).*$/Episode \1/; t;
 		# Handle standard episode formats with season and episode numbers
 		s/.*S[0-9]+[Eex]([0-9]+)[^A-Za-z0-9]*([^0-9]+\S[^0-9]+?)[. ]+[^.]+$/Episode \1: \2/; t;
@@ -370,7 +374,8 @@ select_episode(){
 		s/.*S[0-9]+E([0-9]+)\..*$/Episode \1/; t;
 		# Handle cases where title is complex and episode number is not in the format
 		s/.* - ([^-]+)\..*$/\1/; t;
-		s/.* - ([^-]+)\..*$/\1/' | sed -E 's/\./ /g' \
+		# Fallback for movies or files without episode or season numbers
+		s/.* ([^\/]+)\..*$/\1/' | sed -E 's/\./ /g' \
 		| rofi -sort -dmenu -p "Episode: " -mesg "Select the episode:")
 
 	# Map the selected "Episode X: Title" or title without episode number back to the corresponding file name
@@ -407,7 +412,10 @@ case "$1" in
 	--clear)
 		rm "$media_history"
 		;;
+	--edit | -e)
+		xdg-open "$config_file"
+		;;
 	*)
-		echo "Invalid option. Use --movies, --shows, --anime, or --episode."
+		echo "Invalid option. Use --movies, --shows, --anime, --episode, or --edit."
 		;;
 esac
