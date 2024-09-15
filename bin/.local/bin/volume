@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Script to manage Volume Using Pamixer
+## Script to manage volume for pipewire 
 
 # Dependencies: `wpctl` `notify-send`
 
