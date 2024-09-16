@@ -19,8 +19,8 @@ declare -a minimal=(
 	imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot loupe man moreutils mpv mpv-mpris mugshot ncdu \
 	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv \
 	nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct rhythmbox rofi-wayland \
-	rtorrent scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl plank \
-	playerctl plasma-browser-integration polkit-gnome polybar python-pipx python-wheel qbittorrent \
+	rtorrent scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
+	picom-git plank playerctl plasma-browser-integration polkit-gnome polybar python-pipx python-wheel qbittorrent \
 	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
 	ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift \
 	tumbler translate-shell viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
@@ -43,9 +43,10 @@ declare -a wayland=(
 )
 
 declare -a aur=(
-	i3-resurrect picom-git aur/qt5gtk2 aur/qt6gtk2 \
-	python-materialyoucolor-git ruby-fusuma ruby-fusuma-plugin-sendkey \
-	ruby-fusuma-plugin-wmctrl sioyek-git xiccd xqp zscroll-git
+	i3-resurrect aur/qt5gtk2 aur/qt6gtk2 \
+	python-materialyoucolor-git mpv-thumbfast-git mpv-uosc-git \
+	ruby-fusuma ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl \
+	sioyek-git xiccd xqp zscroll-git
 )
 
 declare -a additional=(
