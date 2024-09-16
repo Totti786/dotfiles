@@ -15,7 +15,6 @@ local languages = {
 --          other languages will NOT be downloaded,
 --          so put your preferred language first:
             { 'English', 'en', 'eng' },
-            { 'Arabic', 'ar', 'ara' },
 --          { 'Dutch', 'nl', 'dut' },
 --          { 'Spanish', 'es', 'spa' },
 --          { 'French', 'fr', 'fre' },
@@ -24,7 +23,8 @@ local languages = {
 --          { 'Portuguese', 'pt', 'por' },
 --          { 'Polish', 'pl', 'pol' },
 --          { 'Russian', 'ru', 'rus' },
---          { 'Chinese', 'zh', 'chi' },            
+--          { 'Chinese', 'zh', 'chi' },
+            { 'Arabic', 'ar', 'ara' },
 }
 --=============================================================================
 -->>    PROVIDER LOGINS:
@@ -36,7 +36,7 @@ local languages = {
 local logins = {
 --          { '--addic7ed', 'USERNAME', 'PASSWORD' },
 --          { '--legendastv', 'USERNAME', 'PASSWORD' },
-            { '--opensubtitles', 'random963', 'Temp@1234' },
+--          { '--opensubtitles', 'USERNAME', 'PASSWORD' },
 --          { '--subscenter', 'USERNAME', 'PASSWORD' },
 }
 --=============================================================================
