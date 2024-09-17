@@ -18,7 +18,7 @@ mkdir -p "$watchlater_dir"
 [[ -z "$movies_directory" ]] && movies_directory="$HOME/Videos/Movies"
 [[ -z "$shows_directory" ]] && shows_directory="$HOME/Videos/Shows"
 [[ -z "$player" ]] && player="mpv"
-[[ -z "$speed" ]] && speed="1.0"
+[[ -z "$speed" ]] || [[ "$player" == "syncplay" ]] && speed="1.0"
 
 if [[ ! -f "$fallback_poster" ]]; then
 	eval $(xrdb -query | awk '/color0/{print "color0="$NF} /color7/{print "color7="$NF}')
@@ -101,9 +101,8 @@ process_media(){
 	if [ ${#lines[@]} -eq 0 ]; then
 		notify-send -r 12 -u low -a rofi-media "rofi-media" "No files were found in $media_directory"
 		return
-	elif [ ${#lines[@]} -gt "$( ls -A "$data_dir/$media_type" | wc -l)" ]; then
+	elif [ ${#lines[@]} -gt "$(ls -1 "$data_dir/$media_type" | wc -l)" ]; then
 		notify-send -r 12 -u low -a rofi-media "rofi-media" "Getting posters..."
-		echo ${#lines[@]}
 	fi
 
 	for line in "${lines[@]}"; do
@@ -134,7 +133,9 @@ process_media(){
 
 		# Check if the poster file is missing and download it
 		if ! [[ -f "$data_dir/$media_type/$title.jpg" ]]; then
-			get_poster "$media_type" "$title" "$year"
+			get_poster "$media_type" "$title" "$year" &
+			# Wait for the request to be completed to not exceeded Jikan API rate limit
+			[[ "$media_type" == "anime" ]] && wait
 		fi
 
 		menu_entry="$shortcuts/$name.desktop"
@@ -158,6 +159,7 @@ process_media(){
 		fi
 	done
 
+	wait
 	rofi -show drun -drun-categories "${media_type^}" -theme rofi-media
 }
 
@@ -346,7 +348,7 @@ select_episode(){
 	local show="$1"
 
 	# Check if there are multiple season directories, only if there are no video files in the directory
-	[[ -z "$(ls -p "$show" | grep -v / | grep -E '\.mp4$|\.mkv$')" ]] && season_dirs="$(ls -v "$show")"
+	[[ -z "$(ls -p "$show" | grep -v / | grep -E '\.mp4$|\.mkv$')" ]] && season_dirs="$(ls -vp "$show" | grep / | sed 's/\///g')"
 
 	if [[ -n "$season_dirs" ]]; then
 	  season=$(prompt_menu "$(echo "$season_dirs" | sed -E '
@@ -404,7 +406,7 @@ select_episode(){
 	if [[ $(echo "$episode_list" | wc -l ) -eq 1 ]]; then
 		selection="$episode_list"
 	else
-		selection=$(echo "$episode_list" | rofi -sort -dmenu -p "Episode: " -mesg "Select the episode:")
+		selection=$(echo "$episode_list" | rofi -sort -mesg "Select the episode:")
 	fi
 
 	# Map the selected "Episode X: Title" or title without episode number back to the corresponding file name
