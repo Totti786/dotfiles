@@ -94,7 +94,7 @@ process_media(){
 	esac
 
 	# Define the titles array
-	IFS=$'\n' titles=($(ls -1 $data_dir/$media_type))
+	IFS=$'\n' titles=($(ls -1 $data_dir/$media_type | sed 's/\.[^.]*$//'))
 
 	if [ ${#lines[@]} -eq 0 ]; then
 		notify-send -r 12 -u low -a rofi-media "rofi-media" "No files were found in $media_directory"
@@ -108,20 +108,22 @@ process_media(){
 		name="${line##*/}"
 		# Remove the file extension from the name
 		name="${name%.*}"
-
+	
 		# Initialize variable to hold matched title
-        matched_title=""
-
+		matched_title=""
+	
 	    # Check if the filename matches any title
-	    for title in "${titles[@]}"; do
+		for title in "${titles[@]}"; do
 			if [[ "$name" == *"$title" ]]; then
 				matched_title="$title"
 				break
-	        fi
+			fi
 		done
 
 		# Check if the title doesn't exists and get it from name and download posters
-		if [[ -z "$matched_title" ]]; then
+		if [[ -n "$matched_title" ]]; then
+			title="$matched_title"
+		else
 			# Extract the year and remove everything after it
 			if [[ "$name" =~ ([1][9][0-9]{2}|20[0-9]{2}) ]]; then
 				# Get the year if present and strip the title of extra info
@@ -135,7 +137,7 @@ process_media(){
 				fi
 			else
 				# Remove trailing spaces
-				title=$(echo "$name" | sed -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()-]/ /g' -e 's/[[:space:]]\+/ /g' -e 's/^[ \t]*//;s/[ \t]*$//' -e 's/ S[0-9][0-9]*.*//')
+				title=$(echo "$name" | sed -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g' -e 's/^[ \t]*//;s/[ \t]*$//' -e 's/ S[0-9][0-9]*.*//')
 				year=""
 			fi
 
