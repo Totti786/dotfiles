@@ -77,20 +77,15 @@ process_media(){
 	case "$media_type" in
 		"movies")
 			media_directory="$movies_directory"
-			exec_command="mpv --speed=$speed --write-filename-in-watch-later-config --save-position-on-quit"
 			# Find media files directly
-			readarray -t lines < <(find -L "$media_directory" -type f \( -iname "*.mp4" -o -iname "*.mkv" \))
+			readarray -t lines < <(find -L "$media_directory" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort)
 			;;
 		"shows" | "anime")
-			media_directory="$([ "$media_type" = "shows" ] && echo "$shows_directory" || echo "$anime_directory")"
 			exec_command="$0 --episode"
-
+			media_directory="$([ "$media_type" = "shows" ] && echo "$shows_directory" || echo "$anime_directory")"
 			# Find directories containing media files
 			readarray -t lines < <(find "$media_directory" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 | while IFS= read -r -d '' dir; do
-				if find -L "$dir" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -print -quit | grep -q .; then
-					echo "$dir"
-				fi
-			done)
+				if find -L "$dir" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -print -quit | grep -q .; then echo "$dir" ;fi done | sort)
 			;;
 		*)
 			echo "Invalid media type specified."
@@ -98,10 +93,13 @@ process_media(){
 			;;
 	esac
 
+	# Define the titles array
+	IFS=$'\n' titles=($(ls -1 $data_dir/$media_type))
+
 	if [ ${#lines[@]} -eq 0 ]; then
 		notify-send -r 12 -u low -a rofi-media "rofi-media" "No files were found in $media_directory"
 		return
-	elif [ ${#lines[@]} -gt "$(ls -1 "$data_dir/$media_type" | wc -l)" ]; then
+	elif [ ${#lines[@]} -gt "${#titles[@]}" ]; then
 		notify-send -r 12 -u low -a rofi-media "rofi-media" "Getting posters..."
 	fi
 
@@ -111,34 +109,54 @@ process_media(){
 		# Remove the file extension from the name
 		name="${name%.*}"
 
-		# Extract the year and remove everything after it
-		if [[ "$name" =~ ([1][9][0-9]{2}|20[0-9]{2}) ]]; then
-			# Get the year if present and strip the title of extra info
-			year="${BASH_REMATCH[1]}"
-			title=$(echo "$name" | sed -e "s/$year.*//" -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()-]/ /g' -e 's/[[:space:]]\+/ /g' -e 's/^[ \t]*//;s/[ \t]*$//' -e 's/ S[0-9][0-9]*.*//')
+		# Initialize variable to hold matched title
+        title=""
+		#title=$(printf "%s\n" "${titles[@]}" | grep -F -x -m 1 "$name")
 
-			# Check if title is empty or only contains the year
-			if [[ -z "$title" || "$title" =~ ^[[:space:]]*$ ]]; then
-				# If title is empty or only contains spaces, set title to the year itself
-				title="$year"
+	    # Check if the filename matches any title
+	    for title in "${titles[@]}"; do
+			if [[ "$name" == *"$title" ]]; then
+				break
+	        fi
+		done
+
+		# Check if the title doesn't exists and get it from name and download posters
+		if [[ -z "$matched_title" ]]; then
+			# Extract the year and remove everything after it
+			if [[ "$name" =~ ([1][9][0-9]{2}|20[0-9]{2}) ]]; then
+				# Get the year if present and strip the title of extra info
+				year="${BASH_REMATCH[1]}"
+				title=$(echo "$name" | sed -e "s/$year.*//" -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()-]/ /g' -e 's/[[:space:]]\+/ /g' -e 's/^[ \t]*//;s/[ \t]*$//' -e 's/ S[0-9][0-9]*.*//')
+	
+				# Check if title is empty or only contains the year
+				if [[ -z "$title" || "$title" =~ ^[[:space:]]*$ ]]; then
+					# If title is empty or only contains spaces, set title to the year itself
+					title="$year"
+				fi
+			else
+				# Remove trailing spaces
+				title=$(echo "$name" | sed -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()-]/ /g' -e 's/[[:space:]]\+/ /g' -e 's/^[ \t]*//;s/[ \t]*$//' -e 's/ S[0-9][0-9]*.*//')
+				year=""
 			fi
-		else
-			# Remove trailing spaces
-			title=$(echo "$name" | sed -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()-]/ /g' -e 's/[[:space:]]\+/ /g' -e 's/^[ \t]*//;s/[ \t]*$//' -e 's/ S[0-9][0-9]*.*//')
-			year=""
+
+			# Check if the poster file is missing and download it
+			if ! [[ -f "$data_dir/$media_type/$title.jpg" ]]; then
+				get_poster "$media_type" "$title" "$year" &
+				# Wait for the request to be completed to not exceeded Jikan API rate limit
+				[[ "$media_type" == "anime" ]] && wait
+			fi
+		fi
+
+		# Set the clean version of the title in the player
+		if [[ "$media_type" == "movies" ]]; then 
+			exec_command="mpv --speed=$speed --write-filename-in-watch-later-config --save-position-on-quit"
+			exec_command+=" --title=\"$title\""
 		fi
 
 		# Create a list of used posters
 		used_images+=("$data_dir/$media_type/$title.jpg")
 
-		# Check if the poster file is missing and download it
-		if ! [[ -f "$data_dir/$media_type/$title.jpg" ]]; then
-			get_poster "$media_type" "$title" "$year" &
-			# Wait for the request to be completed to not exceeded Jikan API rate limit
-			[[ "$media_type" == "anime" ]] && wait
-		fi
-
-		menu_entry="$shortcuts/$name.desktop"
+		menu_entry="$shortcuts/$title.desktop"
 
 		if [[ ! -f "$menu_entry" ]]; then
 			cat > "$menu_entry" <<- EOF
@@ -406,7 +424,7 @@ select_episode(){
 	if [[ $(echo "$episode_list" | wc -l ) -eq 1 ]]; then
 		selection="$episode_list"
 	else
-		selection=$(echo "$episode_list" | rofi -sort -mesg "Select the episode:")
+		selection=$(echo "$episode_list" | rofi -sort -dmenu -mesg "Select the episode:")
 	fi
 
 	# Map the selected "Episode X: Title" or title without episode number back to the corresponding file name
