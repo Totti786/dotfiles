@@ -6,7 +6,7 @@ shortcuts="$HOME/.local/share/applications/media"
 watchlater_dir="$data_dir/watch_later"
 media_history="$data_dir/media_history.txt"
 config_file="$data_dir/conf.sh"
-fallback_poster="$data_dir/cover.jpg"  # Define the path to your fallback poster image
+fallback_poster="$data_dir/cover.jpg"
 
 # Create necessary directories if they don't exist
 mkdir -p "$shortcuts"
@@ -123,13 +123,13 @@ process_media(){
 			name="${line##*/}"
 			# Remove the file extension from the name
 			name="${name%.*}"
-		
+
 			# Extract the year and remove everything after it
 			if [[ "$name" =~ ([1][9][0-9]{2}|20[0-9]{2}) ]]; then
 				# Get the year if present and strip the title of extra info
 				year="${BASH_REMATCH[1]}"
 				title=$(echo "$name" | sed -e "s/$year.*//" -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g' -e 's/^[ \t]*//;s/[ \t]*$//' -e 's/ S[0-9][0-9]*.*//')
-	
+
 				# Check if title is empty or only contains the year
 				if [[ -z "$title" || "$title" =~ ^[[:space:]]*$ ]]; then
 					# If title is empty or only contains spaces, set title to the year itself
@@ -140,9 +140,9 @@ process_media(){
 				title=$(echo "$name" | sed -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g' -e 's/^[ \t]*//;s/[ \t]*$//' -e 's/ S[0-9][0-9]*.*//')
 				year=""
 			fi
-			
+
 			printf "%s\t%s\n" "$line" "$title" >> "$saved_lines"
-			
+
 		fi
 
 		# Check if the poster file is missing and download it
@@ -153,7 +153,7 @@ process_media(){
 		fi
 
 		# Set the clean version of the title in the player
-		if [[ "$media_type" == "movies" ]]; then 
+		if [[ "$media_type" == "movies" ]]; then
 			exec_command="mpv --speed=$speed --write-filename-in-watch-later-config --save-position-on-quit"
 			exec_command+=" --title=\"$title\""
 		fi
@@ -271,7 +271,7 @@ prompt(){
 
 	# Check for the next episode in the current season
 	next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
-	next_episode_file=$(ls -v "$selected_directory" | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
+	next_episode_file=$(ls -v "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.)")
 
 	if [[ -n "$next_episode_file" ]]; then
 
@@ -340,7 +340,7 @@ play_history(){
 
 		# Check for the next episode in the current season
 		next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
-		next_episode_file=$(ls -v "$selected_directory" | grep -E "S[0-9]+E$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.")
+		next_episode_file=$(ls -v "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.)")
 
 		if [[ -n "$next_episode_file" ]]; then
 			file_path="$selected_directory/$next_episode_file"
