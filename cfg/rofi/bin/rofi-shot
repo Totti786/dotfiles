@@ -27,6 +27,6 @@ order=("" "" "" "" "" "" "" "" "" "" "")
 options_str=$(printf "%s\n" "${order[@]}")
 
 # Variable passed to rofi
-selection=$(echo -e "$options_str" | $rofi_command -p 'Take Screenshot' -dmenu -selected-row 0)
+selection=$(echo -e "$options_str" | $rofi_command -dmenu -selected-row 0)
 
 [[ -n "$selection" ]] && shot "--${options[$selection]}"

@@ -72,7 +72,6 @@ entry-wrapper {
     children:                       [ button, entry ];
 }
 
-
 element {
     children:                       [element-box];
     orientation:                    vertical;

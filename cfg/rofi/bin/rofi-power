@@ -19,7 +19,7 @@ confirm(){
 	echo -e "$options" | rofi -dmenu -i \
 	     -no-fixed-num-lines \
 	     -p "Are You Sure? : " \
-	     -theme confirm
+	     -theme power-screen -theme-str "#listview { lines: 2; }"
 }
 
 # Variable passed to rofi

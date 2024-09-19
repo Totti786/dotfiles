@@ -21,8 +21,8 @@ window {
     location:                    east;
     anchor:                      east;
     fullscreen:                  false;
-    width:                       95px;
-    x-offset:                    -20px;
+    width:                       105px;
+    x-offset:                    -15px;
     y-offset:                    0px;
 
     /* properties for all widgets */
@@ -30,9 +30,9 @@ window {
     margin:                      0px;
     padding:                     0px;
     border:                      0px solid;
-    border-radius:               0px;
+    border-radius:               90%;
     border-color:                @selected;
-    background-color:            transparent;
+    background-color:            @background;
 }
 
 /*****----- Main Box -----*****/
@@ -40,9 +40,7 @@ mainbox {
     enabled:                     true;
     spacing:                     15px;
     margin:                      0px;
-    padding:                     0px;
-    border:                      0px solid;
-    border-radius:               0px;
+    padding:                     10px 8px 10px 8px;
     border-color:                @selected;
     background-color:            transparent;
     children:                    [ "listview" ];
@@ -76,11 +74,11 @@ element {
     enabled:                     true;
     spacing:                     0px;
     margin:                      0px;
-    padding:                     25px 10px;
+    padding:                     23px 10px;
     border:                      0px solid;
     border-radius:               100%;
     border-color:                @selected;
-    background-color:            @background;
+    background-color:            @background-alt;
     text-color:                  @foreground;
 }
 element-text {
