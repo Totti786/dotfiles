@@ -110,12 +110,14 @@ cover_art(){
 	if [[ "$playerctl_status" == "No players found" ]]; then
 	    [[ -f "$fallback_cover" ]] &&  rm "$fallback_cover"
 	else
-		# Create a fallback cover image with a colored background and icon
-	    eval $(xrdb -query | awk '/color0/{print "color0="$NF} /color7/{print "color7="$NF}')
-	    magick -size 128x128 xc:"$color0" png:"$fallback_cover"
-	    magick "$fallback_cover" -gravity center -fill "$color7" \
-	    -font /usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf \
-	    -pointsize 50 -annotate 0 "󰎇" "$fallback_cover"
+		if [[ ! -f "$fallback_cover" ]];then
+			# Create a fallback cover image with a colored background and icon
+		    eval $(xrdb -query | awk '/color0/{print "color0="$NF} /color7/{print "color7="$NF}')
+		    magick -size 128x128 xc:"$color0" png:"$fallback_cover"
+		    magick "$fallback_cover" -gravity center -fill "$color7" \
+		    -font /usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf \
+		    -pointsize 50 -annotate 0 "󰎇" "$fallback_cover"
+	    fi
 	fi
 	
 	# Check if the URL is empty
@@ -181,8 +183,10 @@ case "$1" in
                 echo "No music is playing"
                 ;;
             "Paused")
-                polybar_update_hooks 2
-                player
+				if [ -n "$($0 --title)" ]; then
+					polybar_update_hooks 2
+					player
+                fi
                 ;;
             "No players found")
                 if [ "$1" = "--polybar-minimal" ]; then
