@@ -51,7 +51,7 @@ change_colors(){
 	/* colors */
 	* {
 		background:       ${bg_mix}$alpha_rofi;
-		background-alt:   ${background};
+		background-alt:   ${bg_light};
 		background-blur:  ${background}60;
 		foreground:       ${foreground};
 		selected:         ${red};
