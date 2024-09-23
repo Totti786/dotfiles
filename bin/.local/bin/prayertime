@@ -99,4 +99,4 @@ if [ -f "$prayer_cache" ]; then
 fi
 
 # Display the rofi menu if no arguments are provided; otherwise, show the remaining time until the next prayer
-[ -z "$@" ] && < "$prayer_rofi" rofi -dmenu -p "Prayer Times" || remaining
+[ -z "$@" ] && < "$prayer_rofi" rofi -dmenu -mesg "Prayer Times" -theme-str "#mainbox { children: [ message, listview ]; } #textbox { padding: 24px; }" || remaining
