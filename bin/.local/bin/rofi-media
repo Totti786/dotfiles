@@ -120,9 +120,9 @@ process_media(){
 			title="${title_map[$line]}"
 	    else
 			# Extract the name of the file from the path
-			name="${line##*/}"
+			local name="${line##*/}"
 			# Remove the file extension from the name
-			name="${name%.*}"
+			local name="${name%.*}"
 
 			# Extract the year and remove everything after it
 			if [[ "$name" =~ ([1][9][0-9]{2}|20[0-9]{2}) ]]; then
@@ -195,7 +195,7 @@ get_duration(){
 		# Check if mpv is running and get the duration
 		duration="$([[ "$(pgrep mpv)" ]] && echo '{"command": ["get_property", "duration"]}' | socat - $ipc_socket 2> /dev/null | awk -F'"data":|,' '{print $2}')"
 		
-		# If duration is still empty, wait for 1 second and try again
+		# If duration is still empty, wait for half a second and try again
 		[[ -z "$duration" ]] && sleep 0.5
 	done
 
@@ -213,19 +213,31 @@ play_media() {
 
 	get_duration &
 
+	# Initial player_cmd array
+	player_cmd=(--speed="$speed" --keep-open=always --watch-later-dir="$watchlater_dir" \
+				--write-filename-in-watch-later-config --save-position-on-quit \
+				--input-ipc-server="$ipc_socket" --start="$start_position")
+
+	# Use `find` to get the subs directory, assuming it's a direct subdirectory
+	subs_directory="$(find -L "${file_path%/*}" -maxdepth 1 -mindepth 1 -type d | grep -i 'subs' | head -n 1)"
+
+	# Check if subs_directory is non-empty
+	if [ -n "$subs_directory" ]; then
+		file_name="${file_path##*/}"	# Get the base filename from file_path
+		file_name="${file_name%.*}"		# Strip extension
+	
+	    # Append the subtitle options to player_cmd
+	    player_cmd+=(--sub-auto=all --sub-file-paths="${subs_directory}/${file_name}")
+	fi
+
 	if [[ "$player" == "syncplay" ]]; then
-		local episode_list="$(ls -v "${file_path%/*}" | awk -v start="${file_path##*/}" '$0 >= start' > $playlist)"
+		local episode_list="$(ls -v "${file_path%/*}" | grep -E '\.mp4$|\.mkv$' | awk -v start="${file_path##*/}" '$0 >= start' > $playlist)"
 
-		syncplay --player-path "$(command -v mpv)" --load-playlist-from-file "$playlist" "$file_path" -- \
-			--speed="$speed" --keep-open=always --watch-later-dir="$watchlater_dir" \
-			--write-filename-in-watch-later-config --save-position-on-quit \
-			--input-ipc-server="$ipc_socket" --start="$start_position" >/dev/null 2>&1
+		syncplay --player-path "$(command -v mpv)" --load-playlist-from-file "$playlist" "$file_path" -- "${player_cmd[@]}" >/dev/null 2>&1
 	elif [[ "$player" == "mpv" ]]; then
-		local episode_list="$(find -L "${file_path%/*}" -maxdepth 1 -type f | sort | awk -v start="$file_path" '$0 >= start' > $playlist)"
+		local episode_list="$(find -L "${file_path%/*}" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort | awk -v start="$file_path" '$0 >= start' > $playlist)"
 
-		mpv --speed="$speed" --keep-open=always --watch-later-dir="$watchlater_dir" \
-			--write-filename-in-watch-later-config --save-position-on-quit \
-			--input-ipc-server="$ipc_socket" --start="$start_position" "$playlist" >/dev/null 2>&1
+		mpv "${player_cmd[@]}" "$playlist" >/dev/null 2>&1
 	fi
 }
 
@@ -271,7 +283,7 @@ prompt(){
 
 	# Check for the next episode in the current season
 	next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
-	next_episode_file=$(ls -v "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.)")
+	next_episode_file=$(ls -v "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.)" | grep -E '\.mp4$|\.mkv$')
 
 	if [[ -n "$next_episode_file" ]]; then
 
@@ -285,7 +297,6 @@ prompt(){
 		"Next")
 			play_media "$selected_directory/$next_episode_file"
 			save_history "$show"
-			episode_number=$(($episode_number + 1))
 			prompt "$show"
 			;; 
 		"Resume")
@@ -326,7 +337,6 @@ prompt(){
 			fi
 		fi
 	fi
-
 }
 
 play_history(){
@@ -340,7 +350,7 @@ play_history(){
 
 		# Check for the next episode in the current season
 		next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
-		next_episode_file=$(ls -v "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.)")
+		next_episode_file=$(ls -v "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.)" | grep -E '\.mp4$|\.mkv$')
 
 		if [[ -n "$next_episode_file" ]]; then
 			file_path="$selected_directory/$next_episode_file"
@@ -369,7 +379,6 @@ play_history(){
 
 select_episode(){
 	local show="$1"
-
 	# Check if there are multiple season directories, only if there are no video files in the directory
 	[[ -z "$(ls -p "$show" | grep -v / | grep -E '\.mp4$|\.mkv$')" ]] && season_dirs="$(ls -vp "$show" | grep / | sed 's/\///g')"
 
