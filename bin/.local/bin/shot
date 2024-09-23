@@ -11,7 +11,7 @@
 # - For X11: scrot, xclip, notify-send (libnotify)
 # - For Wayland: grim, wl-clipboard, slurp, swappy
 # - Optional: tesseract (OCR), zbarimg (QR code scanning), xdg-open, ImageMagick (magick), curl (for Imgur upload)
-# - Optional (for extra features): python-gtts (TTS), translate-shell (translation and language detection)
+# - Optional (for extra features): python-gtts (TTS), translate-shell (translation and language detection), dialect (front-end for translating text)
 
 # Set the current time for naming the screenshot file
 time="$(date +%Y-%m-%d-%H-%M-%S)"
@@ -177,24 +177,53 @@ shot_extract_text() {
 	fi
 }
 
-# Function to translate the extracted text and read it aloud
 shot_translate() {
+	# Extract the text
 	shot_extract_text
-	
-	if [[ -z "$text" ]]; then exit 1 ;fi
+
+	if [[ -z "$text" ]]; then exit 1; fi
 	original_text="$(echo "$text" | tr -d '\n' | sed 's/\. /.\n/g')"
-	
+
+	# Detect the language of the text
 	lang="$(echo $original_text | trans -b -identify)"
 
 	target_lang="en"
-
-	translated_text="$(echo "$original_text" | trans -b "$lang":"$target_lang")"
+	if command -v dialect >/dev/null 2>&1; then
+		dialect -t "$original_text" -s "$lang" -d "$target_lang"
+	else
+		# Translate the text
+		translated_text="$(echo "$original_text" | trans -b "$lang":"$target_lang")"
 	
-	zenity --info --title="Original Text" --text="$original_text" >/dev/null 2>&1 & disown
-	zenity --info --title="Translated Text" --text="$translated_text" >/dev/null 2>&1 & disown
+		# Display the original text with Zenity
+		zenity --info --title="Original Text" --text="$original_text" >/dev/null 2>&1 &
+		zenity_pid1=$!
 	
-	echo "$translated_text" | gtts-cli - -l "$target_lang" | mpv --force-media-title="Text to Speech" --speed=1.2 -
+		# Display the translated text with Zenity
+		zenity --info --title="Translated Text" --text="$translated_text" >/dev/null 2>&1 &
+		zenity_pid2=$!
+	
+		# Play the original text using MPV
+		echo "$original_text" | gtts-cli - -l "$lang" | mpv --force-media-title="Text to Speech" - &
+		mpv_pid=$!
+	
+		# Wait for any Zenity window to close
+		wait $zenity_pid1
+	
+		# When Zenity is closed, kill the MPV process
+		kill $mpv_pid 2>/dev/null
+	
+		# Play the original text using MPV
+		echo "$translated_text" | gtts-cli - -l "$target_lang" | mpv --force-media-title="Text to Speech" --speed=1.2 - &
+		mpv_pid=$!
+	
+		# Wait for any Zenity window to close
+		wait $zenity_pid2
+	
+		# When Zenity is closed, kill the MPV process
+		kill $mpv_pid 2>/dev/null
+	fi
 }
+
 
 # Function to read the extracted text aloud
 shot_read() {
