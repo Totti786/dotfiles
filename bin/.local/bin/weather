@@ -128,5 +128,5 @@ case "$1" in
         get_weather_data &> /dev/null
         cat "${cache_weather_icon}" "${cache_weather_degree}" "${cache_weather_stat}" | tr -d '\n'
         ;;
-    --rofi) cat "${cache_weather_rofi}" | rofi -dmenu -p "Weather" -theme weather ;;
+    --rofi) cat "${cache_weather_rofi}" | rofi -dmenu -p "Weather" -theme menu ;;
 esac
