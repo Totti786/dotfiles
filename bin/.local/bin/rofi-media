@@ -161,7 +161,7 @@ process_media(){
 
 		# Create a list of used posters
 		used_images+=("$data_dir/$media_type/$title")
-		used_lines+=($(grep -F "${line}" "$saved_lines"))
+		used_lines+=($(grep -F "${line}" "$saved_lines" | head -n1 ))
 
 		menu_entry="$shortcuts/$title.desktop"
 
