@@ -29,7 +29,7 @@ if [[ ! -f "$fallback_poster" ]]; then
 fi
 
 get_poster(){
-	if [ -z "$1" ]; then
+	if [[ -z "$1" ]]; then
 		echo "Usage: $0 <title> <year (optional)> <type>"
 		exit 1
 	fi
@@ -44,7 +44,7 @@ get_poster(){
 	# Prepare the title argument for the API request
 	encoded_title=$(echo "$title" | tr ' ' '+')
 
-	if [ "$type" == "anime" ]; then
+	if [[ "$type" == "anime" ]]; then
 		# Fetch anime data from Jikan API
 		response=$(curl -s "https://api.jikan.moe/v4/anime?q=$encoded_title&season=$year")
 		poster_url=$(echo "$response" | jq -r '.data[0].images.jpg.large_image_url')
@@ -57,12 +57,12 @@ get_poster(){
 
 	# Check for errors
 	error_message=$(echo "$response" | jq -r '.Error')
-	if [ "$error_message" != "null" ]; then
+	if [[ "$error_message" != "null" ]]; then
 		#echo "Error: $error_message"
 		poster_url="N/A"
 	fi
 
-	if [ "$poster_url" == "N/A" ]; then
+	if [[ "$poster_url" == "N/A" ]]; then
 		#echo "No poster available for '$title', using fallback image."
 		cp "$fallback_poster" "$cover_dir/$title.jpg"
 	else
@@ -93,17 +93,17 @@ process_media(){
 			;;
 	esac
 
+	saved_lines="$data_dir/$media_type/$media_type.txt"
+
 	# Define the titles array
 	IFS=$'\n' titles=($(find  $data_dir/$media_type -type f -iname "*.jpg" 2> /dev/null))
 
 	if [[ ${#lines[@]} -eq 0 ]]; then
 		notify-send -r 12 -u low -a rofi-media "rofi-media" "No files were found in $media_directory"
 		return
-	elif [ ${#lines[@]} -gt ${#titles[@]} ]; then
+	elif [[ "$(cut -f2 "$saved_lines" 2> /dev/null | uniq | wc -l)" -gt ${#titles[@]} ]]; then
 		notify-send -r 12 -u low -a rofi-media "rofi-media" "Getting posters..."
 	fi
-
-	saved_lines="$data_dir/$media_type/$media_type.txt"
 
 	# Declare an associative array
 	declare -A title_map
@@ -156,11 +156,12 @@ process_media(){
 		# Set the clean version of the title in the player
 		if [[ "$media_type" == "movies" ]]; then
 			exec_command="mpv --speed=$speed --write-filename-in-watch-later-config --save-position-on-quit"
-			exec_command+=" --title=\"$title\""
+			exec_command+=" --title=\"$title\" \"$line\""
 		fi
 
 		# Create a list of used posters
 		used_images+=("$data_dir/$media_type/$title")
+		used_lines+=($(grep -F "${line}" "$saved_lines"))
 
 		menu_entry="$shortcuts/$title.desktop"
 
@@ -168,7 +169,7 @@ process_media(){
 			cat > "$menu_entry" <<- EOF
 			[Desktop Entry]
 			Name=$title
-			Exec=$exec_command "$line"
+			Exec=$exec_command $media_type "$title"
 			Icon=$data_dir/$media_type/$title.jpg
 			Type=Application
 			Categories=${media_type^}
@@ -176,9 +177,11 @@ process_media(){
 		fi
 	done
 
+	printf "%s\n" "${used_lines[@]}" > "$saved_lines"
+
 	# Delete unused posters
 	for cached_image in ${titles[@]} ; do
-		if [[ ! " ${used_images[@]} " =~ " ${cached_image%.*} " ]]; then
+	    if [[ ! " ${used_images[@]} " =~ "${cached_image%.jpg}" ]]; then
 			rm "$cached_image"
 		fi
 	done
@@ -223,7 +226,7 @@ play_media() {
 	subs_directory="$(find -L "${file_path%/*}" -maxdepth 1 -mindepth 1 -type d | grep -i 'subs' | head -n 1)"
 
 	# Check if subs_directory is non-empty
-	if [ -n "$subs_directory" ]; then
+	if [[ -n "$subs_directory" ]]; then
 		file_name="${file_path##*/}"	# Get the base filename from file_path
 		file_name="${file_name%.*}"		# Strip extension
 
@@ -243,6 +246,8 @@ play_media() {
 save_history(){
 	local name="${1##*/}"
 	local name="${name%.*}"
+	local name="$(grep -F "$name" "$saved_lines" | cut -f2)"
+
 	local duration="$(cat $watchlater_dir/duration 2> /dev/null)"
 
 	file="$(grep -hB1 "start=" $watchlater_dir/* 2>/dev/null | grep -A2 "$name")"
@@ -265,6 +270,7 @@ save_history(){
 
 check_history(){
 	local name="${1##*/}"
+	local name="$(grep -F "$name" "$saved_lines" | cut -f2)"
 
 	position="$(grep -hw "$name" $media_history | awk -F'\t' '{print $2}')"
 	file_path="$(grep -hw "$name" $media_history | awk -F'\t' '{print $3}')"
@@ -337,7 +343,11 @@ prompt(){
 }
 
 play_history(){
-	local show="$1"
+	media_type="$1"
+	local title="$2"
+	saved_lines="$data_dir/$media_type/$media_type.txt"
+	local show="$(grep -F "$title" "$saved_lines" | cut -f1)"
+
 	check_history "$show"
 
 	if [[ "$progress" -ge 90 ]]; then
@@ -360,6 +370,7 @@ play_history(){
 	[[ -n "$file_path" ]] && history=$(prompt_menu "Yes\nNo" "Resume from where you left off?")
 
 	if [[ "$history" == "Yes" ]]; then
+		#local show="${file_path%/*}"
 		play_media "$file_path" "$position"
 		save_history "$show"
 		[[ -d "$show" ]] &&  prompt "$show"
@@ -376,9 +387,14 @@ play_history(){
 
 select_episode(){
 	local show="$1"
+	local seasons_number="$(echo -e "$show" | wc -l)"
 	# Check if there are multiple season directories, only if there are no video files in the directory
-	[[ -z "$(ls -p "$show" | grep -v / | grep -E '\.mp4$|\.mkv$')" ]] && season_dirs="$(ls -vp "$show" | grep / | sed 's/\///g')"
-
+	if [[ "$seasons_number" -gt 1 ]]; then
+		season_dirs="$show"
+	elif [[ -z "$(ls -p "$show" | grep -v / | grep -E '\.mp4$|\.mkv$')" ]]; then
+		season_dirs="$(ls -vp "$show" | grep / | sed 's/\///g')"
+	fi
+	
 	if [[ -n "$season_dirs" ]]; then
 	  season=$(prompt_menu "$(echo "$season_dirs" | sed -E '
 	    # Handle "S01P01" -> "Season 1: Part 1" (case-insensitive)
@@ -406,9 +422,14 @@ select_episode(){
 		    # Handle regular season formats like S01, Season 1, etc.
 		    season_pattern="([sS]0?$season_number|[sS]$season_number|Season[[:space:]]*$season_number|^0?$season_number$)"
 		fi
-
-		[[ -n "$season_number" ]] && season=$(ls -v "$show" | grep -E -i "$season_pattern" | head -n 1)
-		selected_directory="$show/$season"
+		if [[ -n "$season_number" && "$seasons_number" -eq 1 ]]; then
+			season=$(ls -v "$show" | grep -E -i "$season_pattern" | head -n 1)
+			selected_directory="$show/$season"
+		elif [[ -n "$season_number" ]]; then
+			season=$(echo "$show" | grep -E -i "$season_pattern" | head -n 1)
+			selected_directory="$season"
+			show="$season"
+		fi
 	else
 		selected_directory="$show"
 	fi
@@ -468,10 +489,10 @@ case "$1" in
 		process_media "${1#--}" && rm -r "$shortcuts"
 		;;
 	--episode)
-		play_history "$2"
+		play_history "$2" "$3"
 		;;
 	--clear)
-		rm "$media_history"
+		[[ -f "$media_history" ]] && rm "$media_history" && echo "History Cleared!"		
 		;;
 	--edit | -e)
 		xdg-open "$config_file"
