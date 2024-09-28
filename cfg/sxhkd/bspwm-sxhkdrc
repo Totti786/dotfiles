@@ -34,7 +34,7 @@ super + {~button4, ~button5}
 
 # Send focused window to another workspace and switch to the workspace
 super + {_,shift + }{1-8}
-	bspc {desktop -f,node -d} '^{1-8}' --follow
+	bspc {desktop -f,node -d} '^{1-8}'
 
 ctrl + shift + {Left,Right}
 	bspc node --to-desktop {prev,next} --follow
@@ -94,7 +94,7 @@ super + alt + Down
 
 # Rotate windows
 ctrl + super + {r,KP_Divide}
-  bspc node @/ -R {90,90}
+	bspc node @/ -R {90,90}
 
 # Reload Keybinding
 ctrl + alt + Escape
@@ -111,6 +111,5 @@ ctrl + shift + r
 # Hide/Unhide Window
 super + d
 	~/.config/bspwm/winmask
-	
 
 ##---------- EOF ----------##

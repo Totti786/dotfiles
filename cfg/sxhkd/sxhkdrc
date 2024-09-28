@@ -53,8 +53,8 @@ super + {r,b,l,j,y}
 super + {e,f,w,o,v,p,z}
 	{exo-open --launch FileManager,exo-open --launch WebBrowser,geany,obs,copyq toggle,color-picker,vesktop || discord}
 
-super + shift + {s,w,r,d,l}
-	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk pick,rofi-utils --record,dmenu.sh,lobster -c}
+super + shift + {s,w,r,l}
+	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk pick,rofi-utils --record,lobster -c}
 
 # Terminal Apps
 ctrl + alt + {v,e,h}

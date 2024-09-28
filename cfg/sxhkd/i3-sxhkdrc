@@ -78,22 +78,26 @@ super + alt + {Left,Down,Up,Right}
 alt + F8
 	i3-msg sticky toggle
 
+# Move to Scratchpad
+super + shift + d
+	i3-msg sticky enable && i3-msg move scratchpad
+
+# Toggle Scratchpad
+super + d
+	i3-msg scratchpad show
+
 # Reload Keybinding
 ctrl + alt + Escape
     pkill -USR1 -x sxhkd
 
-# Quit bspwm
+# Quit i3
 ctrl + shift + q
 	i3-msg exit
 
-# Quit bspwm
+# Quit i3
 ctrl + shift + r
 	i3-msg restart
 
-# Hide/Unhide Window
-super + d
-	~/.config/i3/i3-winmask
-	
 # Restore Previous Workspace
 super + shift + q
 	~/.config/i3/i3-resurrect-dmenu
