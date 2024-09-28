@@ -23,7 +23,7 @@ hypr="$config/hypr/colors.conf"
 swaync="$config/swaync/style.css"
 waybar="$HOME/.config/waybar/colors.css"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='FF'
+alpha='70'
 
 ## Change colors
 change_colors(){
@@ -33,7 +33,7 @@ change_colors(){
 	cat > "$polybar" <<- EOF
 		[color]
 		;; main colors
-		background = ${background}$alpha
+		background = ${background}
 		background-alt = ${bg_mix}
 		foreground = $foreground
 		primary = $foreground
@@ -124,7 +124,7 @@ change_colors(){
 		
 	# dunst
 	sed -i "$dunst" \
-		-e "s/background = .*/background = \"${bg_light}$alpha\"/g" \
+		-e "s/background = .*/background = \"${bg_light}$alpha_dunst\"/g" \
 		-e "s/foreground = .*/foreground = \"${foreground}\"/g" \
 		-e "s/highlight = .*/highlight = \"${foreground}\"/g" \
 		-e "s/frame_color = .*/frame_color = \"${green}CF\"/g"
@@ -226,11 +226,13 @@ transparent(){
 		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst"
 		alpha_jg="100"
 		alpha_rofi="ff"
+		alpha_dunst="ff"
 	else 
 		sed -i "s/opacity =.*/opacity = 0.7/" "${alacritty%/*}/alacritty.toml"
 		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst"
 		alpha_jg="$alpha"
 		alpha_rofi="$alpha"
+		alpha_dunst="99"
 	fi
 }
 
