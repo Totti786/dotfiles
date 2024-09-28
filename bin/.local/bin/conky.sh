@@ -3,7 +3,7 @@
 config="$HOME/.config/conky/conky-$XDG_CURRENT_DESKTOP.conf"
 
 [[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
-[[ "$bar_style" == "bionic" ]] && alpha_conky="255" || alpha_conky="150"
+[[ "$bar_style" == "bionic" ]] && alpha_conky="255" || alpha_conky="180"
 
 if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
 	source "$HOME/.cache/wal/colors.sh"
