@@ -18,7 +18,7 @@ declare -a minimal=(
 	gpu-screen-recorder-git jq gpick grep python-gtts html-xml-utils htop i3lock-color i3-wm \
 	imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot loupe man moreutils mpv mpv-mpris mugshot ncdu \
 	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv \
-	nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct rhythmbox rofi-wayland \
+	nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct rhythmbox rofi-wayland \
 	rtorrent scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
 	picom-git plank playerctl plasma-browser-integration polkit-gnome polybar python-pipx python-wheel qbittorrent \
 	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
