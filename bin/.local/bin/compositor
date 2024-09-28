@@ -225,13 +225,13 @@ elif [ "$1" = '--disable-blur' ]; then
 elif [ "$1" = '--enable-opacity' ]; then
 	if [ -n "$check_opacity" ]; then 
 		sed -i "/opacity-rule = \[/,/\];/ s/^#//" "$config"
-		sed -i "s/opacity=1.0/opacity=0.9/g" "$config"
+		sed -i "s/opacity=1.0/opacity=0.8/" "$config"
 	fi
 	
 elif [ "$1" = '--disable-opacity' ]; then
 	if [ -z "$check_opacity" ]; then 
 		sed -i "/opacity-rule = \[/,/\];/ s/^/#/" "$config"
-		sed -i "s/opacity=0.9/opacity=1.0/g" "$config"
+		sed -i "s/opacity=0.8/opacity=1.0/" "$config"
 	fi
 	
 elif [ "$1" = '--update-blur' ]; then
