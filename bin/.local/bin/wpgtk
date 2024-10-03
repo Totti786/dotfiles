@@ -23,7 +23,7 @@ hypr="$config/hypr/colors.conf"
 swaync="$config/swaync/style.css"
 waybar="$HOME/.config/waybar/colors.css"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='70'
+alpha='FF'
 
 ## Change colors
 change_colors(){
@@ -228,7 +228,7 @@ transparent(){
 		alpha_rofi="ff"
 		alpha_dunst="ff"
 	else 
-		sed -i "s/opacity =.*/opacity = 0.7/" "${alacritty%/*}/alacritty.toml"
+		sed -i "s/opacity =.*/opacity = 0.75/" "${alacritty%/*}/alacritty.toml"
 		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst"
 		alpha_jg="$alpha"
 		alpha_rofi="$alpha"
