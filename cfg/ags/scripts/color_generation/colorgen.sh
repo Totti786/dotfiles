@@ -85,25 +85,16 @@ elif [ "$backend" = "material" ]; then
         apply_hypr
     fi
 elif [ "$backend" = "pywal" ]; then
-    # copy scss
-    cp "$XDG_CACHE_HOME/wal/colors.scss" "$CACHE_DIR"/user/generated/material_colors.scss
-
-    cat color_generation/pywal_to_material.scss >> "$CACHE_DIR"/user/generated/material_colors.scss
     if [ "$2" = "--apply" ]; then
-		sass "$CACHE_DIR"/user/generated/material_colors.scss "$CACHE_DIR"/user/generated/colors_classes.scss -s compressed
-		
-		sed -i "s/{color//g" "$CACHE_DIR"/user/generated/colors_classes.scss
-		sed -i "s/\./$/g" "$CACHE_DIR"/user/generated/colors_classes.scss
-		sed -i "s/}/;/g" "$CACHE_DIR"/user/generated/colors_classes.scss
-		sed -i "s/;/;\n/g" "$CACHE_DIR"/user/generated/colors_classes.scss
-		
+		color_generation/pywal_to_material.sh "$CACHE_DIR"/user/generated/material_colors.scss
+
 		if [ "$transparency" == "opaque" ]; then
-			sed -i '1i\$darkmode: True;\n$transparent: False;\n' "$CACHE_DIR"/user/generated/colors_classes.scss
+			sed -i '1i\$darkmode: True;\n$transparent: False;\n' "$CACHE_DIR"/user/generated/material_colors.scss
         else
-			sed -i '1i\$darkmode: True;\n$transparent: True;\n' "$CACHE_DIR"/user/generated/colors_classes.scss
+			sed -i '1i\$darkmode: True;\n$transparent: True;\n' "$CACHE_DIR"/user/generated/material_colors.scss
         fi
 
-		cp "$CACHE_DIR"/user/generated/colors_classes.scss "$STATE_DIR"/scss/_material.scss
+		cp "$CACHE_DIR"/user/generated/material_colors.scss "$STATE_DIR"/scss/_material.scss
     
         apply_ags &
         apply_hypr
