@@ -25,6 +25,7 @@ else
 	rm "$HOME/.config/wpg/schemes/_home_$(whoami)__dotfiles_deps_background_jpg_dark_wal__1.1.0.json"
 	## change wallpaper and update color scheme
 	"$dots"/bin/.local/bin/wpgtk wall "$dots"/deps/background.jpg
+	"$dots"/bin/.local/bin/wpgtk main
 	tput -x clear
 	echo "Update is complete!"
 	echo "You can now close this window"
