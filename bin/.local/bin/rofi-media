@@ -345,7 +345,7 @@ play_history(){
 	media_type="$1"
 	local title="$2"
 	saved_lines="$data_dir/$media_type/$media_type.txt"
-	local show="$(grep -F "$title" "$saved_lines" | head -n1 | cut -f1)"
+	local show="$(grep -E "$title$" "$saved_lines" | cut -f1)"
 	number_of_seasons="$(echo -e "$show" | wc -l)"
 	[[ "$media_type" == "anime" ]] && speed="1.0"
 
