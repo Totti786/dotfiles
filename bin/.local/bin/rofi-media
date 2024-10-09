@@ -96,7 +96,7 @@ process_media(){
 	saved_lines="$data_dir/$media_type/$media_type.txt"
 
 	# Define the titles array
-	IFS=$'\n' posters=($(find  "$data_dir"/"$media_type" -type f -iname "*.jpg" 2> /dev/null))
+	IFS=$'\n' posters=($(find "$data_dir"/"$media_type" -type f -iname "*.jpg" 2> /dev/null))
 
 	if [[ ${#lines[@]} -eq 0 ]]; then
 		notify-send -r 12 -u low -a rofi-media "rofi-media" "No files were found in $media_directory"
@@ -284,12 +284,10 @@ prompt(){
 	local show="$1"
 	check_history "$show"
 
-	local episode_number="$episode"
-	local selected_directory="$dir"
+  local episode_number="$episode"
+  local selected_directory="$dir"
 
-	# Check for the next episode in the current season
-	next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
-	next_episode_file=$(ls -v "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number[[:space:]]| - $next_episode_number[^a-zA-Z0-9]|[_\.x-]$next_episode_number[^a-zA-Z0-9])" | grep -E '\.mp4$|\.mkv$')
+  get_next_episode
 
 	if [[ -n "$next_episode_file" ]]; then
 		if [[ "$progress" -ge 90 ]]; then
@@ -315,6 +313,7 @@ prompt(){
 			prompt "$show"
       ;;
 		"Select")
+		echo "$show"
 			select_episode "$show"
 			;;
 		"Exit")
@@ -323,19 +322,16 @@ prompt(){
 		esac
 	else
 		# Check if there is another season available
-		parent_directory="${selected_directory%/*}"
-		current_season="${selected_directory##*/}"
-		next_season_dir=$(ls -v "$parent_directory" | grep -A1 "$current_season" | grep -Ei "$name|s[0-9]+|season[[:space:]]*[0-9]+" | tail -n1)
-		if [[ -n "$next_season_dir" && "$next_season_dir" != "$current_season" ]]; then
-			next_season_dir="$parent_directory/$next_season_dir"
-			binge_next_season="$(prompt_menu "Yes\nNo" "Next season available. Play next season?")"
-			if [[ "$binge_next_season" == "Yes" ]]; then
-				first_episode_file=$(ls -v "$next_season_dir" | grep -E '\.mp4$|\.mkv$' | head -n1)
-				if [[ -n "$first_episode_file" ]]; then
-					play_media "$next_season_dir/$first_episode_file"
-					save_history "$show"
-					prompt "$show"
-				fi
+		next_season_dir="$(echo "$season_dirs" | grep -A1 "$selected_directory" | tail -n1)"
+		[[ -n "$next_season_dir"  && "$next_season_dir" != "$selected_directory" ]] && binge_next_season="$(prompt_menu "Yes\nNo" "Next season available. Play next season?")"
+	
+		if [[ "$binge_next_season" == "Yes"  && "$next_season_dir" != "$selected_directory" ]]; then
+			first_episode_file=$(ls -v "$next_season_dir" | grep -E '\.mp4$|\.mkv$' | head -n1)
+			if [[ -n "$first_episode_file" ]]; then
+				play_media "$next_season_dir/$first_episode_file"
+				grep -q "$next_season_dir" "$saved_lines" && show="$next_season_dir"
+				save_history "$show"
+				prompt "$show"
 			fi
 		fi
 	fi
@@ -350,16 +346,18 @@ play_history(){
 	[[ "$media_type" == "anime" ]] && speed="1.0"
 
 	check_history "$show"
+  
+  local episode_number="$episode"
+  local selected_directory="$dir"
+  
+  get_next_episode(){
+    # Check for the next episode in the current season
+    next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
+    next_episode_file=$(ls -v "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number[[:space:]]| - $next_episode_number[^a-zA-Z0-9]|[_\.x-]$next_episode_number[^a-zA-Z0-9])" | grep -E '\.mp4$|\.mkv$')
+  }
 
-	if [[ "$progress" -ge 90 ]]; then
-
-		local episode_number="$episode"
-		local selected_directory="$dir"
-
-		# Check for the next episode in the current season
-		next_episode_number=$(printf '%02d' $((10#$episode_number + 1)))
-		next_episode_file=$(ls -v "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number\..*|[_\.x-]$next_episode_number\.)" | grep -E '\.mp4$|\.mkv$')
-
+	if [[ "$progress" -ge 90 ]]; then    
+    get_next_episode
 		if [[ -n "$next_episode_file" ]]; then
 			file_path="$selected_directory/$next_episode_file"
 			position=""
@@ -371,7 +369,6 @@ play_history(){
 	[[ -n "$file_path" ]] && history=$(prompt_menu "Yes\nNo" "Resume from where you left off?")
 
 	if [[ "$history" == "Yes" ]]; then
-		#[[ "$number_of_seasons" -gt 1 ]] && local show="$dir"
 		if [[ -n $(echo "$show" | grep "$dir") ]]; then
 			show="$dir"
 		else
@@ -434,16 +431,28 @@ select_episode(){
 	}
 
 	# Check if there are multiple season directories, only if there are no video files in the directory
-	if [[ "$number_of_seasons" -gt 1 ]]; then
-		IFS=$'\n' ; for line in $(echo "$show") ;do
-			if [[ -n $(ls -p "$line" | grep /) ]]; then
-				season_dirs+="$(find -L "$line" -maxdepth 1 -mindepth 1 -type d | sort)"$'\n'
-			else
+	if [[ "$number_of_seasons" -gt 1 && -z "$season_dirs" ]]; then
+		IFS=$'\n' ; for line in $(echo -e "$show"); do
+			# Find directories inside the current line
+			subdirs=$(find -L "$line" -maxdepth 1 -mindepth 1 -type d)
+	
+			# Loop through each subdir to check if it contains video files
+			if [[ -n "$subdirs" ]]; then 
+				for subdir in "$subdirs"; do
+					# Check if the subdir contains video files
+					if find -L "$subdir" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | grep -q .; then
+						season_dirs+="${subdir}"$'\n'
+					fi
+				done
+			fi
+	
+			# If no subdirectories were found with video files, check if the current directory has videos
+			if [[ -z "$subdirs" ]] || [[ -n $(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | grep .) ]]; then
 				season_dirs+="${line}"$'\n'
 			fi
 		done
-	elif [[ -z "$(ls -p "$show" | grep -v / | grep -E '\.mp4$|\.mkv$')" ]]; then
-		season_dirs="$(ls -vp "$show" | grep / | sed 's/\///g')"
+	elif [[ -z "$(find -L "$show" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)')" && -z "$season_dirs" ]]; then
+		season_dirs="$(find -L "$show" -maxdepth 1 -mindepth 1 -type d | sort)"
 	fi
 
 	if [[ -n "$season_dirs" ]]; then
