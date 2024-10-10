@@ -12,13 +12,15 @@ fallback_poster="$data_dir/cover.jpg"
 mkdir -p "$shortcuts"
 mkdir -p "$watchlater_dir"
 
-[[ -f "$config_file" ]] && . "${config_file}" || echo  "# rofi-media config file" >> "${config_file}"
-
-[[ -z "$anime_directory" ]] && anime_directory="$HOME/Videos/Anime"
-[[ -z "$movies_directory" ]] && movies_directory="$HOME/Videos/Movies"
-[[ -z "$shows_directory" ]] && shows_directory="$HOME/Videos/Shows"
-[[ -z "$player" ]] && player="mpv"
-[[ -z "$speed" ]] || [[ "$player" == "syncplay" ]] && speed="1.0"
+configuration(){
+	[[ -f "$config_file" ]] && . "${config_file}" || echo  "# rofi-media config file" >> "${config_file}"
+	
+	[[ -z "$anime_directory" ]] && anime_directory="$HOME/Videos/Anime"
+	[[ -z "$movies_directory" ]] && movies_directory="$HOME/Videos/Movies"
+	[[ -z "$shows_directory" ]] && shows_directory="$HOME/Videos/Shows"
+	[[ -z "$player" ]] && player="mpv"
+	[[ -z "$speed" ]] || [[ "$player" == "syncplay" ]] && speed="1.0"
+}
 
 if [[ ! -f "$fallback_poster" ]]; then
 	eval $(xrdb -query | awk '/color0/{print "color0="$NF} /color7/{print "color7="$NF}')
@@ -73,7 +75,6 @@ get_poster(){
 
 process_media(){
 	media_type="$1"
-
 	case "$media_type" in
 		"movies")
 			media_directory="$movies_directory"
@@ -81,7 +82,7 @@ process_media(){
 			readarray -t lines < <(find -L "$media_directory" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort)
 			;;
 		"shows" | "anime")
-			exec_command="$0 --episode"
+		[[ "$player" == "syncplay" ]] && exec_command="$0 -s --episode" || exec_command="$0 --episode"
 			media_directory="$([ "$media_type" = "shows" ] && echo "$shows_directory" || echo "$anime_directory")"
 			# Find directories containing media files
 			readarray -t lines < <(find "$media_directory" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 | while IFS= read -r -d '' dir; do
@@ -196,11 +197,11 @@ prompt_menu(){
 
 get_duration(){
 	while [[ -z "$duration" ]]; do
+		# If duration is still empty, wait for half a second and try again
+		[[ -z "$duration" ]] && sleep 1
+
 		# Check if mpv is running and get the duration
 		duration="$([[ "$(pgrep mpv)" ]] && echo '{"command": ["get_property", "duration"]}' | socat - $ipc_socket 2> /dev/null | awk -F'"data":|,' '{print $2}')"
-
-		# If duration is still empty, wait for half a second and try again
-		[[ -z "$duration" ]] && sleep 0.5
 	done
 
 	# Once duration is found, save it to the file
@@ -250,7 +251,7 @@ save_history(){
 
 	local duration="$(cat $watchlater_dir/duration 2> /dev/null)"
 
-	file="$(grep -hB1 "start=" $watchlater_dir/* 2>/dev/null | grep -A2 "$name")"
+	file="$(grep -hB1 "start=" $watchlater_dir/* 2>/dev/null | grep -FA2 "$name")"
 
 	if [[ -n "$file" ]]; then
 		position="$(echo "$file" | awk -F= '/start/ {print int($2)}' | tail -n1)"
@@ -313,7 +314,6 @@ prompt(){
 			prompt "$show"
       ;;
 		"Select")
-		echo "$show"
 			select_episode "$show"
 			;;
 		"Exit")
@@ -322,14 +322,14 @@ prompt(){
 		esac
 	else
 		# Check if there is another season available
-		next_season_dir="$(echo "$season_dirs" | grep -A1 "$selected_directory" | tail -n1)"
+		next_season_dir="$(echo "$season_dirs" | grep -FA1 "$selected_directory" | tail -n1)"
 		[[ -n "$next_season_dir"  && "$next_season_dir" != "$selected_directory" ]] && binge_next_season="$(prompt_menu "Yes\nNo" "Next season available. Play next season?")"
 	
 		if [[ "$binge_next_season" == "Yes"  && "$next_season_dir" != "$selected_directory" ]]; then
 			first_episode_file=$(ls -v "$next_season_dir" | grep -E '\.mp4$|\.mkv$' | head -n1)
 			if [[ -n "$first_episode_file" ]]; then
 				play_media "$next_season_dir/$first_episode_file"
-				grep -q "$next_season_dir" "$saved_lines" && show="$next_season_dir"
+				grep -Fq "$next_season_dir" "$saved_lines" && show="$next_season_dir"
 				save_history "$show"
 				prompt "$show"
 			fi
@@ -369,12 +369,12 @@ play_history(){
 	[[ -n "$file_path" ]] && history=$(prompt_menu "Yes\nNo" "Resume from where you left off?")
 
 	if [[ "$history" == "Yes" ]]; then
-		if [[ -n $(echo "$show" | grep "$dir") ]]; then
+		if [[ -n $(echo "$show" | grep -F "$dir") ]]; then
 			show="$dir"
 		else
 			show="${dir%/*}"
 		fi
-	
+
 		play_media "$file_path" "$position"
 		save_history "$show"
 		[[ -d "$show" ]] &&  prompt "$show"
@@ -435,7 +435,7 @@ select_episode(){
 		IFS=$'\n' ; for line in $(echo -e "$show"); do
 			# Find directories inside the current line
 			subdirs=$(find -L "$line" -maxdepth 1 -mindepth 1 -type d)
-	
+
 			# Loop through each subdir to check if it contains video files
 			if [[ -n "$subdirs" ]]; then 
 				for subdir in "$subdirs"; do
@@ -445,7 +445,7 @@ select_episode(){
 					fi
 				done
 			fi
-	
+
 			# If no subdirectories were found with video files, check if the current directory has videos
 			if [[ -z "$subdirs" ]] || [[ -n $(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | grep .) ]]; then
 				season_dirs+="${line}"$'\n'
@@ -460,8 +460,8 @@ select_episode(){
 
 		[[ -z "$season" ]] && exit 1
 
-    season_number=$(echo "$season" | grep -oP '(?<=Season\s)\d+')
-    part_number=$(echo "$season" | grep -oP '(?<=Part\s)\d+')
+		season_number=$(echo "$season" | grep -oP '(?<=Season\s)\d+')
+		part_number=$(echo "$season" | grep -oP '(?<=Part\s)\d+')
 
 		if [[ -n "$part_number" ]]; then
 	    # Handle part and season combinations like S01P01, S1P1, Season 1 - Part 1, etc.
@@ -479,7 +479,7 @@ select_episode(){
 			else
 				season_dir=$(echo "$season_dirs" | grep -E -i "$season_pattern" | head -n 1)
 				selected_directory="$season_dir"
-				if [[ -n $(echo "$show" | grep "$season_dir") ]]; then
+				if [[ -n $(echo "$show" | grep -F "$season_dir") ]]; then
 					show="$season_dir"
 				else
 					show="${season_dir%/*}"
@@ -494,7 +494,7 @@ select_episode(){
 			else
 				season_dir=$(echo "$season_dirs" | grep -E -i "$season" | head -n1)
 				selected_directory="$season_dir"
-				if [[ -n $(echo "$show" | grep "$season_dir") ]]; then
+				if [[ -n $(echo "$show" | grep -F "$season_dir") ]]; then
 					show="$season_dir"
 				else
 					show="${season_dir%/*}"
@@ -554,20 +554,31 @@ select_episode(){
 	fi
 }
 
-case "$1" in
-	--movies|--shows|--anime)
-		process_media "${1#--}" && rm -r "$shortcuts"
-		;;
-	--episode)
-		play_history "$2" "$3"
-		;;
-	--clear)
-		[[ -f "$media_history" ]] && rm "$media_history" && echo "History Cleared!"
-		;;
-	--edit | -e)
-		xdg-open "$config_file"
-		;;
-	*)
-		echo "Invalid option. Use --movies, --shows, --anime, --episode, or --edit."
-		;;
-esac
+configuration
+
+# Parse options
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		-s | --syncplay) player="syncplay" && shift ;;
+		--movies|--shows|--anime)
+			process_media "${1#--}" && rm -r "$shortcuts"
+			shift # Move to next argument
+			;;
+		--episode)
+			play_history "$2" "$3"
+			shift 3 # Move past --episode and its two arguments
+			;;
+		--clear)
+			[[ -f "$media_history" ]] && rm "$media_history" && echo "History Cleared!"
+			shift # Move to next argument
+			;;
+		--edit|-e)
+			xdg-open "$config_file"
+			shift # Move to next argument
+			;;
+		*)
+			echo "Invalid option. Use --movies, --shows, --anime, --episode, --edit"
+			exit 1
+			;;
+	esac
+done
