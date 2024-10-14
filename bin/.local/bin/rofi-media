@@ -133,14 +133,14 @@ process_media(){
 				# Get the year if present and strip the title of extra info
 				year="${BASH_REMATCH[1]}"
 				title=$(echo "$name" | sed -e "s/$year.*//" -e 's/^\[.*\] \(.*\) - .*/\1/' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
-						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\|[Ss][0-9]\{1,2\}[^[:alnum:]]\)[[:space:]].*$//')
+						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\)[[:space:]].*$//')
 				# Check if title is empty or only contains the year
 				# If title is empty or only contains spaces, set title to the year itself
 				[[ -z "$title" || "$title" =~ ^[[:space:]]*$ ]] && title="$year"
 			else
 				# Remove trailing spaces
 				title=$(echo "$name" | sed -e 's/^\[.*\] \(.*\) - .*/\1/' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
-						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\|[Ss][0-9]\{1,2\}[^[:alnum:]]\)[[:space:]].*$//')
+						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\)[[:space:]].*$//')
 				year=""
 			fi
 			printf "%s\t%s\n" "$line" "$title" >> "$saved_lines" 2> /dev/null
@@ -292,25 +292,29 @@ prompt(){
   get_next_episode
 	get_next_season
 	
+	# Determine menu options based on conditions
 	if [[ -n "$next_episode_file" ]]; then
 		if [[ "$progress" -ge 90 ]]; then
-			options="$(prompt_menu "Next\nReplay\nSelect\nExit" "Select an option:")"
+			options="Next\nReplay\nSelect\nExit"
 		else
-			options="$(prompt_menu "Next\nResume\nReplay\nSelect\nExit" "Select an option:")"
+			options="Next\nResume\nReplay\nSelect\nExit"
 		fi
 	elif [[ -n "$next_season_dir" ]]; then
 		if [[ "$progress" -ge 90 ]]; then
-			options="$(prompt_menu "Next Season\nReplay\nSelect\nExit" "Select an option:")"
+			options="Next Season\nReplay\nSelect\nExit"
 		else
-			options="$(prompt_menu "Next Season\nResume\nReplay\nSelect\nExit" "Select an option:")"
+			options="Next Season\nResume\nReplay\nSelect\nExit"
 		fi
 	else
 		if [[ "$progress" -ge 90 ]]; then
-			options="$(prompt_menu "Replay\nSelect\nExit" "Select an option:")"
+			options="Replay\nSelect\nExit"
 		else
-			options="$(prompt_menu "Resume\nReplay\nSelect\nExit" "Select an option:")"
+			options="Resume\nReplay\nSelect\nExit"
 		fi
 	fi
+
+	# Call prompt_menu with the determined options
+	options="$(prompt_menu "$options" "Select an option:")"
 
 	if [[ -n "$options" ]]; then
 		case "$options" in
@@ -398,8 +402,11 @@ play_history(){
 			fi
 		done
 	elif [[ -z "$(find -L "$show" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)')" && -z "$season_dirs" ]]; then
-		season_dirs="$(find -L "$show" -maxdepth 1 -mindepth 1 -type d | sort)"
+		season_dirs="$(find -L "$show" -maxdepth 1 -mindepth 1 -type d)"
 	fi
+
+	# Remove trailing newline if it exists and sort the seasons
+	season_dirs=$(echo -n "$season_dirs" | sed 's/\n$//' | sort)
 
 	if [[ "$progress" -ge 90 ]]; then
     get_next_episode
@@ -415,6 +422,7 @@ play_history(){
 				grep -Fq "$next_season_dir" "$saved_lines" && show="$next_season_dir"
 			else
 				file_path=""
+				sed -i "/$title/d" "$media_history"
 			fi
 		fi
 	fi
@@ -449,7 +457,7 @@ play_history(){
 select_episode(){
 
 	list_seasons() {
-		season=$(prompt_menu "$(echo "$1" | sed -E '
+		season=$(prompt_menu "$(echo "$1" | sort | sed -E '
     # Handle "S01P01" -> "Season 1: Part 1" (case-insensitive)
     s/.*[sS]0?([1-9][0-9]*)[pP]0?([1-9][0-9]*).*/Season \1: Part \2/; t;
     # Handle "Season 3 Part 1" -> "Season 3: Part 1"
@@ -470,7 +478,7 @@ select_episode(){
 
 	list_episodes() {
 		# Extract episode numbers and titles, and format the selection
-		 episode_list="$(ls -vp "$1" | grep -v / | grep -E '\.mp4$|\.mkv$' | sed -E '
+		 episode_list="$(ls -vp "$1" | grep -v / | grep -E '\.mp4$|\.mkv$' | sort | sed -E '
 			# Handle [group] tag and metadata in square brackets - ignore group name and metadata
 			s/\[.*\][[:space:]]+[^-]+[[:space:]]+-[[:space:]]+([0-9]+)[[:space:]]+\[.*\].*$/Episode \1/; t;
 			# Handle standard episode formats with season and episode numbers, capturing titles after SXXEXX
