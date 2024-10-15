@@ -517,6 +517,7 @@ play_history(){
 	if [[ "$progress" -ge 90 ]]; then
 		# If progress is above 90%, get the next episode
 		get_next_episode
+		position=0
 
 		# Check if the next episode file exists
 		if [[ -n "$next_episode_file" ]]; then
@@ -706,14 +707,15 @@ select_episode(){
 
 		if [[ -n "$episode_title" ]] && ! [[ $selection =~ "Ep" ]]; then
 			# Handle patterns with no episode number, matching by title
-			episode_file=$(ls -p "$selected_directory" | grep -Fi "$episode_title" | grep -E '\.mp4$|\.mkv$')
+			episode_file=$(find -L "$selected_directory" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | grep -Fi "$episode_title")
 		else
 			# Handle both patterns with episode number
-			episode_file=$(ls -p "$selected_directory" | grep -Ei "([sS][0-9]+[eE]$episode_number| - Episode $episode_number - .*| - Episode $episode_number\..*| - $episode_number[[:space:]]| - $episode_number[^a-zA-Z0-9]|[_\.x-]$episode_number[^a-zA-Z0-9])" | grep -E '\.mp4$|\.mkv$')
+			episode_pattern="([sS][0-9]+[eE]$episode_number| - Episode $episode_number - .*| - Episode $episode_number\..*| - $episode_number[[:space:]]| - $episode_number[^a-zA-Z0-9]|[_\.x-]$episode_number[^a-zA-Z0-9])"
+			episode_file=$(find -L "$selected_directory" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | grep -Ei "$episode_pattern")
 		fi
 
 		if [[ -n "$episode_file" ]]; then
-			play_media "$selected_directory/$episode_file"
+			play_media "$episode_file"
 			save_history "$show"
 			prompt "$show"
 		fi
