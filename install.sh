@@ -38,7 +38,7 @@ declare -a extra=(
 
 declare -a wayland=(
 	aylurs-gtk-shell-git dart-sass gnome-control-center grim hypridle hyprland \
-	hyprlock aur/hyprpicker nwg-displays slurp swww ttf-readex-pro \
+	hyprlock hyprpicker nwg-displays slurp swww ttf-readex-pro \
 	xdg-desktop-portal-hyprland python-pywayland wl-clipboard
 )
 
