@@ -105,7 +105,7 @@ change_colors(){
 		-e "s/bg=.*/bg=${background}/g" \
 		-e "s/fg=.*/fg=${foreground}/g" \
 		-e "s/tag_yellow=.*/tag_yellow=${cyan}/g" \
-		-e "s/fold_bg_grey=.*/fold_bg_grey=${background}/g" \
+		-e "s/fold_bg_grey=.*/fold_bg_grey=${bg_lighter}/g" \
 		-e "s/keyword_orange=.*/keyword_orange=${red}/g" \
 		-e "s/string_green=.*/string_green=${green}/g" \
 		-e "s/margin_bg_grey=.*/margin_bg_grey=${black}/g" \
@@ -164,7 +164,7 @@ change_colors(){
 	text               = ${bright_white:1}
 	subtext            = ${bright_white:1}
 	main               = ${bg_light:1}
-	main-elevated      = ${bg_light:1}
+	main-elevated      = ${bg_mix:1}
 	highlight          = ${magenta:1}
 	highlight-elevated = ${bright_magenta:1}
 	sidebar            = ${bg_mix:1}
@@ -405,7 +405,7 @@ misc(){
 	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
 		xfconf-query -c xsettings -p /Net/ThemeName -s "Dummy" &&
 		xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
-	
+
 		conky.sh restart &
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
