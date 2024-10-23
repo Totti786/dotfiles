@@ -573,17 +573,17 @@ select_episode(){
 		# Handle "S01P01" -> "Season 1: Part 1" (case-insensitive)
 		s/.*[sS]0?([1-9][0-9]*)[pP]0?([1-9][0-9]*).*/Season \1: Part \2/; t;
 		# Handle "Season 3 Part 1" -> "Season 3: Part 1"
-		s/.*[sS]eason[[:space:]]+([0-9]+)[[:space:]]*-[[:space:]]*Part[[:space:]]+([0-9]+).*/Season \1: Part \2/; t;
+		s/.*[sS]eason[[:space:]]*([0-9]+)[[:space:]]*Part[[:space:]]*([0-9]+).*/Season \1: Part \2/; t;
 		# Handle "Season 3 - Part 1" -> "Season 3: Part 1"
-		s/.*[sS]eason[[:space:]]+([0-9]+)[[:space:]]*-[[:space:]]*Part[[:space:]]+([0-9]+).*/Season \1: Part \2/; t;
-		# Handle "Episodes 001-148" -> "Episodes 001-148"
-		s/.*Episodes[[:space:]]+([0-9]+)-([0-9]+).*/Episodes \1-\2/; t;
-		# Handle "Movies" -> "Movies"
-		s/.*Movies.*/Movies/; t;
+		s/.*[sS]eason[[:space:]]*([0-9]+)[[:space:]]*-+[[:space:]]*Part[[:space:]]*([0-9]+).*/Season \1: Part \2/; t;
+		# Handle "Season 1" case
+		s/.*[sS]eason[[:space:]]*([0-9]+).*/Season \1/; t;
 		# Handle "S01" -> "Season 1" (case-insensitive)
 		s/.*[sS]0?([1-9][0-9]*).*/Season \1/; t;
-		# Handle "Season 3" -> "Season 3" (case-insensitive)
-		s/.*[sS]eason[[:space:]]+([0-9]+).*/Season \1/; t;
+		# Handle "Episodes" case
+		s/.*Episodes[[:space:]]*([0-9]+)-([0-9]+).*/Episodes \1-\2/; t;
+		# Handle "Movies" case
+		s/.*Movies.*/Movies/; t;
 		# Handle cases with extra information, just keep the name unchanged
 		s!.*/!!')"
 	}
@@ -591,25 +591,26 @@ select_episode(){
 	# Extract episode numbers and titles, and format the selection
 	list_episodes() {
 	 episode_list="$(echo "$1" | sed -E '
-		# Handle [group] tag and metadata in square brackets - ignore group name and metadata
-		s/.*\[[^]]*\][[:space:]]+([^ -]+)[[:space:]]+-[[:space:]]+([0-9]+)[[:space:]]+\[.*\].*$/Episode \2/; t;
-		# Handle standard episode formats with season and episode numbers, capturing titles after SXXEXX
-		s/.*[sS][0-9]+[Ee]([0-9]+)[^A-Za-z0-9]*([^0-9]+\S[^0-9]+?)[. ]+[^.]+$/Episode \1: \2/; t;
-		s/.*[sS][0-9]+[Ee]([0-9]+)[^A-Za-z0-9]*([^0-9]+\S[^0-9]+?)[. ]+.*$/Episode \1: \2/; t;
-		s/.*[sS][0-9]+[Ee]([0-9]+).*$/Episode \1/; t;
-		# Match complex titles after a number if present, or just extract the title after the last dash
-		s/.* - ([0-9]+[^0-9a-zA-Z]?) - ([^0-9]+?)\..*$/Episode \1: \2/; t;
-		s/.* - ([^0-9]+?) - ([^0-9]+?)\..*$/\2/; t;
-		s/.* - ([0-9]+[^0-9a-zA-Z]?)\..*$/Episode \1/; t;
-		s/.* - Episode ([0-9]+) - ([^0-9]+?)\..*$/Episode \1: \2/; t;
-		s/.* - Episode ([0-9]+)\..*$/Episode \1/; t;
-		s/.*[sS][0-9]+[Ee]([0-9]+)\..*$/Episode \1/; t;
-		# Handle movies or files with "The Movie" in the title
-		s/.*[[:space:]]+-[[:space:]]+The[[:space:]]+Movie[[:space:]]+-[[:space:]]+([^[]+)[[:space:]]+\[.*\].*$/\1/; t;
-		# Handle cases where title is complex and episode number is not in the format
-		s/.* - ([^-]+)\..*$/\1/; t;
-		# Fallback for movies or files without episode or season numbers
-		s/.* ([^\/]+)\..*$/\1/' | sed -E 's/\./ /g')"
+    # Handle [group] tag and metadata in square brackets - ignore group name and metadata
+    s/.*\[[^]]*\][[:space:]]+([^ -]+)[[:space:]]+-[[:space:]]+([0-9]+)[[:space:]]+\[.*\].*$/Episode \2/; t;
+    # Handle standard episode formats with season and episode numbers, capturing titles after SXXEXX
+    s/.*[sS][0-9]+[Ee]([0-9]+)[^A-Za-z0-9]*Episode[[:space:]]+([0-9]+).*/Episode \1/; t;  # Ignore cases with "Episode X" already present
+    s/.*[sS][0-9]+[Ee]([0-9]+)[^A-Za-z0-9]*([^0-9]+\S[^A-Z0-9]+)[. ]+[^.]+$/Episode \1: \2/; t;  # Avoid capturing all-uppercase words
+    s/.*[sS][0-9]+[Ee]([0-9]+)[^A-Za-z0-9]*([^0-9]+\S[^A-Z0-9]+)[. ]+.*$/Episode \1: \2/; t;     # Same here
+    s/.*[sS][0-9]+[Ee]([0-9]+).*$/Episode \1/; t;
+    # Match complex titles after a number if present, or just extract the title after the last dash
+    s/.* - ([0-9]+[^0-9a-zA-Z]?) - ([^0-9]+?)\..*$/Episode \1: \2/; t;
+    s/.* - ([^0-9]+?) - ([^0-9]+?)\..*$/\2/; t;
+    s/.* - ([0-9]+[^0-9a-zA-Z]?)\..*$/Episode \1/; t;
+    s/.* - Episode ([0-9]+) - ([^0-9]+?)\..*$/Episode \1: \2/; t;
+    s/.* - Episode ([0-9]+)\..*$/Episode \1/; t;
+    s/.*[sS][0-9]+[Ee]([0-9]+)\..*$/Episode \1/; t;
+    # Handle movies or files with "The Movie" in the title
+    s/.*[[:space:]]+-[[:space:]]+The[[:space:]]+Movie[[:space:]]+-[[:space:]]+([^[]+)[[:space:]]+\[.*\].*$/\1/; t;
+    # Handle cases where title is complex and episode number is not in the format
+    s/.* - ([^-]+)\..*$/\1/; t;
+    # Fallback for movies or files without episode or season numbers
+    s/.* ([^\/]+)\..*$/\1/' | sed -E 's/\./ /g')"
 	}
 
 	# Check if there are any season directories available
@@ -624,8 +625,7 @@ select_episode(){
 		else
 			season=$(echo "$seasons_list" | uniq -d)
 			# Find and list .mkv or .mp4 files in the given season directories
-			IFS=$'\n'
-			for line in $(echo -e "$season_dirs"); do
+			IFS=$'\n'; for line in $(echo -e "$season_dirs"); do
 				# List .mkv or .mp4 files in the current directory
 				video_files=$(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)')
 
@@ -634,7 +634,6 @@ select_episode(){
 					episodes+="$video_files"$'\n'
 				fi
 			done
-
 			# Remove trailing newline if it exists and sort the seasons
 			episodes=$(echo -n "$episodes" | sed 's/\n$//' | sort -V)
 		fi
@@ -659,8 +658,8 @@ select_episode(){
 		if [[ -n "$season_number" ]]; then
 			if [[ "$number_of_seasons" -eq 1 ]]; then
 				# If there's only one season, search within the show directory
-				season_dir=$(find -L "$show" -maxdepth 1 -mindepth 1 -type d | sort | grep -E -i "$season_pattern" | head -n 1)
-				selected_directory="$season_dir"
+				season_dir=$(find -L "$show" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort | grep -E -i "$season_pattern" | head -n 1)
+				selected_directory="$show/$season_dir"
 				#echo 1
 			else
 				# If there are multiple seasons, search within the available season directories
@@ -673,8 +672,8 @@ select_episode(){
 	else
 			# If no season number is found, use the season name for lookup
 			if [[ "$number_of_seasons" -eq 1 ]]; then
-				season_dir=$(find -L "$show" -maxdepth 1 -mindepth 1 -type d | sort | grep -Fi "$season" | head -n 1)
-				selected_directory="$season_dir"
+				season_dir=$(find -L "$show" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort | grep -Fi "$season" | head -n 1)
+				selected_directory="$show/$season_dir"
 				#echo 3
 			else
 				season_dir=$(echo "$season_dirs" | grep -Fi "$season" | head -n 1)
@@ -708,7 +707,7 @@ select_episode(){
 
 	# List all episodes in the selected directory
 	if [[ -z "$episodes" ]]; then 
-		episodes=$(find -L "$selected_directory" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort -V)
+		episodes=$(find -L "$selected_directory" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | sort -V)
 	fi
 	list_episodes "$episodes"
 
