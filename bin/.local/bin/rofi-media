@@ -627,7 +627,7 @@ select_episode(){
 			# Find and list .mkv or .mp4 files in the given season directories
 			IFS=$'\n'; for line in $(echo -e "$season_dirs"); do
 				# List .mkv or .mp4 files in the current directory
-				video_files=$(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)')
+				video_files=$(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' -printf "%f\n")
 
 				# Add the video files to the final list if any are found
 				if [[ -n "$video_files" ]]; then
@@ -707,7 +707,7 @@ select_episode(){
 
 	# List all episodes in the selected directory
 	if [[ -z "$episodes" ]]; then 
-		episodes=$(find -L "$selected_directory" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | sort -V)
+		episodes=$(find -L "$selected_directory" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' -printf "%f\n" | sort -V)
 	fi
 	list_episodes "$episodes"
 
@@ -738,7 +738,7 @@ select_episode(){
 		fi
 
 		if [[ -n "$episode_file" ]]; then
-			play_media "$episode_file"
+			play_media "$selected_directory/$episode_file"
 			save_history "$show"
 			prompt "$show"
 		fi
