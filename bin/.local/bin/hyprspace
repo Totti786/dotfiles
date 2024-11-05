@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+apps="$(hyprctl -j clients | jq -r  '.[]' | jq -r '.initialClass')"
+
+# Unimatrix window
+if ! [[ "$apps" =~ "unimatrix" ]]; then
+	hyprctl dispatch exec "[workspace special:space;float;size 340 600;move 10 44]" "alacritty --class 'unimatrix,Alacritty' -e unimatrix -s 93"
+fi
+
+# Btop window
+if ! [[ "$apps" =~ "btop" ]]; then
+	hyprctl dispatch exec "[workspace special:space;float;size 1150 600;move 360 44]" "alacritty --class 'btop,Alacritty' -e btop"
+fi
+
+# Gping window
+if ! [[ "$apps" =~ "gping" ]]; then
+	hyprctl dispatch exec "[workspace special:space;float;size 390 600;move 1520 44]" "alacritty --class 'gping,Alacritty' -e gping 1.1.1.1"
+fi
+
+# Nvtop window
+if ! [[ "$apps" =~ "nvtop" ]]; then
+	hyprctl dispatch exec "[workspace special:space;float;size 1120 415;move 10 655]" "alacritty --class 'nvtop,Alacritty' -e nvtop"
+fi
+
+# Clock window
+if ! [[ "$apps" =~ "clock" ]]; then
+	hyprctl dispatch exec "[workspace special:space;float;size 770 415;move 1140 655]" "alacritty --class 'clock,Alacritty' -e tty-clock -cts"
+fi
+
+hyprctl dispatch togglespecialworkspace space
