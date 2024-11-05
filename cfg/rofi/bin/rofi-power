@@ -25,7 +25,7 @@ confirm(){
 # Variable passed to rofi
 options="$shutdown\n$reboot\n$lock\n$suspend\n$hibernate\n$logout"
 
-chosen="$(echo -e "$options" | $rofi_command -p "UP - $uptime" -dmenu -selected-row 2)"
+chosen="$(echo -e "$options" | $rofi_command -dmenu -selected-row 2)"
 case "$chosen" in
     "$shutdown")
 		[[ "$(confirm)" == "$confirm" ]] && systemctl poweroff
