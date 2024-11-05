@@ -40,19 +40,31 @@ const WindowTitle = async () => {
     }
 }
 
+// Define the throttle function outside the main export function
+let lastScrollTime = 0;
+const throttleDelay = 50; // Adjust delay as needed
+
+function throttleScroll(action) {
+    const now = Date.now();
+    if (now - lastScrollTime >= throttleDelay) {
+        action();
+        lastScrollTime = now;
+    }
+}
 
 export default async (monitor = 0) => {
     const optionalWindowTitleInstance = await WindowTitle();
     return Widget.EventBox({
         onScrollUp: () => {
-            Indicator.popup(1); // Since the brightness and speaker are both on the same window
-            Brightness[monitor].screen_value += 0.05;
+            throttleScroll(() => {
+                Utils.execAsync('brightnessctl set 5%+').catch(print);
+            });
         },
         onScrollDown: () => {
-            Indicator.popup(1); // Since the brightness and speaker are both on the same window
-		if (Brightness[monitor].screen_value <= 0.05);
-		else Brightness[monitor].screen_value -= 0.05;
-		},
+            throttleScroll(() => {
+                Utils.execAsync('brightnessctl set 5%-').catch(print);
+            });
+        },	
         onPrimaryClick: () => {
             App.toggleWindow('sideleft');
         },

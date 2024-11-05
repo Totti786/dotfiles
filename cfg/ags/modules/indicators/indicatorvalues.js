@@ -1,9 +1,8 @@
-// This file is for brightness/volume indicators
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Audio from 'resource:///com/github/Aylur/ags/service/audio.js';
 const { Box, Label, ProgressBar } = Widget;
 import { MarginRevealer } from '../.widgethacks/advancedrevealers.js';
-import Brightness from '../../services/brightness.js';
+import BrightnessService from '../../services/brightness.js';
 import Indicator from '../../services/indicator.js';
 
 const OsdValue = ({
@@ -21,7 +20,7 @@ const OsdValue = ({
         hexpand: false, className: 'osd-value-txt',
         setup: labelSetup,
     });
-    return Box({ // Volume
+    return Box({
         vertical: true,
         hexpand: true,
         className: `osd-bg osd-value ${extraClassName}`,
@@ -49,64 +48,77 @@ const OsdValue = ({
     });
 }
 
-export default (monitor = 0) => {
+export default () => {
+    const volumeIndicator = OsdValue({
+	    name: 'Volume',
+	    extraClassName: 'osd-volume',
+	    extraProgressClassName: 'osd-volume-progress',
+	    attribute: { headphones: undefined , device: undefined },
+	    nameSetup: (self) => {
+	        // Update device label based on audio output
+	        const updateAudioDevice = () => {
+	            const usingHeadphones = (Audio.speaker?.stream?.port)?.toLowerCase().includes('headphone');
+	            const usingHeadset = (Audio.speaker?.stream?.port)?.toLowerCase().includes('headset');
+	            if (volumeIndicator.attribute.headphones !== usingHeadphones) {
+	                volumeIndicator.attribute.headphones = usingHeadphones;
+	                self.label = usingHeadphones ? 'Headphones' : 'Speakers';
+	            }
+	            if (volumeIndicator.attribute.headphones !== usingHeadset) {
+	                volumeIndicator.attribute.headphones = usingHeadset;
+	                self.label = usingHeadset ? 'Headset' : 'Speakers';
+	            }
+	        };
+	        self.hook(Audio, updateAudioDevice);
+	        Utils.timeout(1000, updateAudioDevice); // Initial check after 1 second
+	    },
+	    labelSetup: (self) => {
+	        const updateVolume = () => {
+	            const newDevice = (Audio.speaker?.name);
+	            const updateValue = Math.round(Audio.speaker?.volume * 100);
+	            if (!isNaN(updateValue)) {
+	                if (newDevice === volumeIndicator.attribute.device && updateValue !== self.label) {
+	                    Indicator.popup(1); // Show the popup if the value changed
+	                }
+	            }
+	            volumeIndicator.attribute.device = newDevice;
+	            self.label = `${updateValue}`; // Update label with current volume
+	        };
+	        self.hook(Audio, updateVolume); // Hook into the Audio service for updates
+	    },
+	    progressSetup: (self) => {
+	        const updateProgress = () => {
+	            const updateValue = Audio.speaker?.volume;
+	            if (!isNaN(updateValue)) {
+	                self.value = Math.min(updateValue, 1); // Ensure value does not exceed 1
+	            }
+	        };
+	        self.hook(Audio, updateProgress);
+	    },
+	});
+	
     const brightnessIndicator = OsdValue({
         name: 'Brightness',
         extraClassName: 'osd-brightness',
         extraProgressClassName: 'osd-brightness-progress',
-        labelSetup: (self) => self.hook(Brightness[monitor], self => {
-            self.label = `${Math.round(Brightness[monitor].screen_value * 100)}`;
-        }, 'notify::screen-value'),
-        progressSetup: (self) => self.hook(Brightness[monitor], (progress) => {
-            const updateValue = Brightness[monitor].screen_value;
-            if (updateValue !== progress.value) Indicator.popup(1);
-            progress.value = updateValue;
-        }, 'notify::screen-value'),
-    });
-
-    const volumeIndicator = OsdValue({
-        name: 'Volume',
-        extraClassName: 'osd-volume',
-        extraProgressClassName: 'osd-volume-progress',
-        attribute: { headphones: undefined , device: undefined},
-        nameSetup: (self) => Utils.timeout(1, () => {
-            const updateAudioDevice = (self) => {
-                const usingHeadphones = (Audio.speaker?.stream?.port)?.toLowerCase().includes('headphone');
-                const usingHeadset = (Audio.speaker?.stream?.port)?.toLowerCase().includes('headset');
-                if (volumeIndicator.attribute.headphones === undefined ||
-                    volumeIndicator.attribute.headphones !== usingHeadphones) {
-                    volumeIndicator.attribute.headphones = usingHeadphones;
-                    self.label = usingHeadphones ? 'Headphones' : 'Speakers';
+        labelSetup: (self) => {
+            BrightnessService.connect('screen-changed', () => {
+                const newLabel = Math.round(BrightnessService.screen_value * 100);
+                if (self.label !== newLabel) {
+                    self.label = `${newLabel}`;
                 }
-                if (volumeIndicator.attribute.headphones === undefined ||
-                    volumeIndicator.attribute.headphones !== usingHeadset) {
-                    volumeIndicator.attribute.headphones = usingHeadset;
-                    self.label = usingHeadset ? 'Headset' : 'Speakers';
-                }
-                // Indicator.popup(1);
-            }
-            self.hook(Audio, updateAudioDevice);
-            Utils.timeout(1000, updateAudioDevice);
-        }),
-        labelSetup: (self) => self.hook(Audio, (label) => {
-            const newDevice = (Audio.speaker?.name);
-            const updateValue = Math.round(Audio.speaker?.volume * 100);
-            if (!isNaN(updateValue)) {
-                if (newDevice === volumeIndicator.attribute.device && updateValue != label.label) {
+            });
+        },
+        progressSetup: (self) => {
+            BrightnessService.connect('screen-changed', () => {
+                const updateValue = BrightnessService.screen_value;
+                if (self.value !== updateValue) {
                     Indicator.popup(1);
+                    self.value = updateValue;
                 }
-            }
-            volumeIndicator.attribute.device = newDevice;
-            label.label = `${updateValue}`;
-        }),
-        progressSetup: (self) => self.hook(Audio, (progress) => {
-            const updateValue = Audio.speaker?.volume;
-            if (!isNaN(updateValue)) {
-                if (updateValue > 1) progress.value = 1;
-                else progress.value = updateValue;
-            }
-        }),
+            });
+        },
     });
+    
     return MarginRevealer({
         transition: 'slide_down',
         showClass: 'osd-show',
@@ -115,8 +127,7 @@ export default (monitor = 0) => {
             .hook(Indicator, (revealer, value) => {
                 if (value > -1) revealer.attribute.show();
                 else revealer.attribute.hide();
-            }, 'popup')
-        ,
+            }, 'popup'),
         child: Box({
             hpack: 'center',
             vertical: false,
