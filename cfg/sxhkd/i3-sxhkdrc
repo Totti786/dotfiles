@@ -72,7 +72,7 @@ super + shift + {Left,Down,Up,Right}
 
 # Resize focused window
 super + alt + {Left,Down,Up,Right}
-	i3-msg resize {shrink width,grow height,shrink height,grow width} 10 px or 10 ppt
+	i3-msg resize {shrink width,grow height,shrink height,grow width}
 
 # Make window omnipresent
 alt + F8

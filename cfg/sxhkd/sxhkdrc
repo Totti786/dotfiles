@@ -60,10 +60,6 @@ super + shift + {s,w,r,l}
 ctrl + alt + {v,e,h}
 	terminal --float -e {vim,yazi,htop}
 
-# Reset Wallpaper
-ctrl + alt + b
-	~/.fehbg
-
 # Lockscreen
 ctrl + alt + l
    loginctl lock-session
@@ -74,25 +70,13 @@ ctrl + alt + w
 
 ##------- System Keys -------##
 
-# Take a screenshot
-Print
-	shot --now
-
-# Take screenshot of an area
-shift + Print
-	shot --area
-
-# Take screenshot using flameshot
-ctrl + Print
-	shot --edit
-	
-# Take screenshot using flameshot
-alt + Print
-	shot --text
-
-# Brighness control
+# Brightness control
 XF86MonBrightness{Up,Down}
 	brightness{ --inc, --dec}
+
+# Auto Brightness control
+super + XF86MonBrightness{Up,Down}
+	clight.sh --{capture,toggle-pause}
 
 # Volume control
 XF86Audio{RaiseVolume,LowerVolume,Mute}
@@ -101,6 +85,22 @@ XF86Audio{RaiseVolume,LowerVolume,Mute}
 # Media control
 XF86Audio{Next,Prev,Play,Pause,Stop}
 	playerctl {next,previous,play-pause,play-pause,stop}
+
+# Take a screenshot
+Print
+	shot --now
+
+# Take a screenshot of an area
+shift + Print
+	shot --area
+
+# Edit Screenshot
+ctrl + Print
+	shot --edit
+	
+# Extract text from screenshot
+alt + Print
+	shot --text
 
 # Other Function keys
 
