@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-get_state(){
-	state=$(gdbus call \
-		--session \
-		--dest org.clight.clight \
-        --object-path /org/clight/clight \
-        --method org.freedesktop.DBus.Properties.Get \
-        org.clight.clight $1)
+get_value(){
+	busctl --user get-property org.clight.clight /org/clight/clight org.clight.clight "$1" | cut -d" " -f2
+}
 
+get_state(){
+	state=$(get_value "$1")
 	if [[ "$state" =~ "true" ]]; then
 		echo "true"
 	else
@@ -24,11 +22,11 @@ toggle_inhibit() {
 	fi
 	
 	# Toggle the inhibition
-	gdbus call --session \
-	           --dest org.clight.clight \
-	           --object-path /org/clight/clight \
-	           --method org.clight.clight.Inhibit \
-	           "$new_state"
+	busctl --user call \
+		org.clight.clight \
+		/org/clight/clight \
+		org.clight.clight \
+		Inhibit b "$new_state"
 }
 
 toggle_pause() {
@@ -41,37 +39,74 @@ toggle_pause() {
 	    new_state="true"	    
 	fi
 
-	# Toggle the inhibition
-	gdbus call --session \
-	           --dest org.clight.clight \
-	           --object-path /org/clight/clight \
-	           --method org.clight.clight.Pause \
-	           "$new_state"
+	# Toggle Pause
+	busctl --user call \
+		org.clight.clight \
+		/org/clight/clight \
+		org.clight.clight \
+		Pause b "$new_state"
 }
 
-
 increase_brightness() {           
-	gdbus call --session \
-	           --dest org.clight.clight \
-	           --object-path /org/clight/clight \
-	           --method org.clight.clight.IncBl "0.05"
+	busctl --user call \
+		org.clight.clight \
+		/org/clight/clight \
+		org.clight.clight \
+		IncBl d "0.05"
 }
 
 decrease_brightness() {           
-	gdbus call --session \
-	           --dest org.clight.clight \
-	           --object-path /org/clight/clight \
-	           --method org.clight.clight.DecBl "0.05"
+	busctl --user call \
+		org.clight.clight \
+		/org/clight/clight \
+		org.clight.clight \
+		DecBl d "0.05"
 }
 
 capture(){
-	gdbus call --session \
-	           --dest org.clight.clight \
-	           --object-path /org/clight/clight \
-	           --method org.clight.clight.Capture \
-	           "true" "false"	
+	busctl --user call \
+		org.clight.clight \
+		/org/clight/clight \
+		org.clight.clight \
+		Capture bb "true" "false"
 }
 
+toggle_gamma() {
+	busctl --user call \
+		org.clight.clight \
+		/org/clight/clight/Conf/Gamma \
+		org.clight.clight.Conf.Gamma \
+		Toggle
+}
+
+gamma_status(){
+	busctl --user get-property \
+		org.clight.clight \
+		/org/clight/clight/Conf/Gamma \
+		org.clight.clight.Conf.Gamma \
+		AmbientGamma 2> /dev/null | cut -d" " -f2
+}
+
+toggle_ambient_gamma(){
+	ambient_stauts="$(gamma_status)"
+
+	if [[ "$ambient_stauts" != "true" ]]; then
+		new_state="true"
+	else
+		new_state="false"
+	fi
+
+	busctl --user set-property \
+		org.clight.clight \
+		/org/clight/clight/Conf/Gamma \
+		org.clight.clight.Conf.Gamma \
+		AmbientGamma "b" "$new_state"
+}
+
+change_temp(){
+	busctl --user set-property \
+	org.clight.clight /org/clight/clight/Conf/Gamma org.clight.clight.Conf.Gamma NightTemp 'i' "$1"
+}
 
 if [[ -z "$(pgrep clight)" ]]; then
 	echo "[!] Clight Not Running"
@@ -100,4 +135,25 @@ case "$1" in
     ;;
 	"--capture")
     	capture
+    ;;
+    "--gamma")
+        get_value Temp
+    ;;
+    "--toggle-gamma")
+        toggle_gamma
+    ;;
+    "--toggle-ambient-gamma")
+        toggle_ambient_gamma
+    ;;
+    "--gamma-status")
+        gamma_status
+    ;;
+    "--increase-gamma")
+       	temperature="$(get_value Temp)"
+        change_temp $((temperature +100))
+    ;;
+    "--decrease-gamma")
+        temperature="$(get_value Temp)"
+        change_temp $((temperature - 100))
+    ;;
 esac
