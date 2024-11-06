@@ -49,76 +49,88 @@ const OsdValue = ({
 }
 
 export default () => {
-    const volumeIndicator = OsdValue({
-	    name: 'Volume',
-	    extraClassName: 'osd-volume',
-	    extraProgressClassName: 'osd-volume-progress',
-	    attribute: { headphones: undefined , device: undefined },
-	    nameSetup: (self) => {
-	        // Update device label based on audio output
-	        const updateAudioDevice = () => {
-	            const usingHeadphones = (Audio.speaker?.stream?.port)?.toLowerCase().includes('headphone');
-	            const usingHeadset = (Audio.speaker?.stream?.port)?.toLowerCase().includes('headset');
-	            if (volumeIndicator.attribute.headphones !== usingHeadphones) {
-	                volumeIndicator.attribute.headphones = usingHeadphones;
-	                self.label = usingHeadphones ? 'Headphones' : 'Speakers';
-	            }
-	            if (volumeIndicator.attribute.headphones !== usingHeadset) {
-	                volumeIndicator.attribute.headphones = usingHeadset;
-	                self.label = usingHeadset ? 'Headset' : 'Speakers';
-	            }
-	        };
-	        self.hook(Audio, updateAudioDevice);
-	        Utils.timeout(1000, updateAudioDevice); // Initial check after 1 second
-	    },
-	    labelSetup: (self) => {
-	        const updateVolume = () => {
-	            const newDevice = (Audio.speaker?.name);
-	            const updateValue = Math.round(Audio.speaker?.volume * 100);
-	            if (!isNaN(updateValue)) {
-	                if (newDevice === volumeIndicator.attribute.device && updateValue !== self.label) {
-	                    Indicator.popup(1); // Show the popup if the value changed
-	                }
-	            }
-	            volumeIndicator.attribute.device = newDevice;
-	            self.label = `${updateValue}`; // Update label with current volume
-	        };
-	        self.hook(Audio, updateVolume); // Hook into the Audio service for updates
-	    },
-	    progressSetup: (self) => {
-	        const updateProgress = () => {
-	            const updateValue = Audio.speaker?.volume;
-	            if (!isNaN(updateValue)) {
-	                self.value = Math.min(updateValue, 1); // Ensure value does not exceed 1
-	            }
-	        };
-	        self.hook(Audio, updateProgress);
-	    },
-	});
-	
     const brightnessIndicator = OsdValue({
         name: 'Brightness',
         extraClassName: 'osd-brightness',
         extraProgressClassName: 'osd-brightness-progress',
         labelSetup: (self) => {
-            BrightnessService.connect('screen-changed', () => {
-                const newLabel = Math.round(BrightnessService.screen_value * 100);
-                if (self.label !== newLabel) {
-                    self.label = `${newLabel}`;
-                }
+            BrightnessService.connect('notify::screen-value', () => {
+                self.label = `${Math.round(BrightnessService.screen_value * 100)}`;
             });
         },
         progressSetup: (self) => {
-            BrightnessService.connect('screen-changed', () => {
+            BrightnessService.connect('notify::screen-value', () => {
                 const updateValue = BrightnessService.screen_value;
-                if (self.value !== updateValue) {
-                    Indicator.popup(1);
-                    self.value = updateValue;
-                }
+                if (updateValue !== self.value) Indicator.popup(1);
+                self.value = updateValue;
             });
         },
     });
-    
+
+	let lastVolume = null;
+	let lastMuteState = null;
+	
+	const volumeIndicator = OsdValue({
+	    name: 'Volume',
+	    extraClassName: 'osd-volume',
+	    extraProgressClassName: 'osd-volume-progress',
+	    attribute: { headphones: undefined, device: undefined },
+	    nameSetup: (self) => Utils.timeout(1, () => {
+	        const updateAudioDevice = () => {
+	            const usingHeadphones = (Audio.speaker?.stream?.port)?.toLowerCase().includes('headphone');
+	            const usingHeadset = (Audio.speaker?.stream?.port)?.toLowerCase().includes('headset');
+	            if (volumeIndicator.attribute.headphones === undefined ||
+	                volumeIndicator.attribute.headphones !== usingHeadphones) {
+	                volumeIndicator.attribute.headphones = usingHeadphones;
+	                self.label = usingHeadphones ? 'Headphones' : 'Speakers';
+	            }
+	            if (volumeIndicator.attribute.headphones === undefined ||
+	                volumeIndicator.attribute.headphones !== usingHeadset) {
+	                volumeIndicator.attribute.headphones = usingHeadset;
+	                self.label = usingHeadset ? 'Headset' : 'Speakers';
+	            }
+	        }
+	        self.hook(Audio, updateAudioDevice);
+	        Utils.timeout(1000, updateAudioDevice);
+	    }),
+	    labelSetup: (self) => self.hook(Audio, (label) => {
+	        const newDevice = Audio.speaker?.name;
+	        const updateValue = Math.round(Audio.speaker?.volume * 100);
+	        const isMuted = Audio.speaker?.isMuted || updateValue === 0;
+	
+	        // Log values to debug
+	        console.log(`Volume: ${updateValue}, Muted: ${isMuted}`);
+	
+	        // Set label to "Muted" or show the actual volume percentage
+	        label.label = isMuted ? 'Muted' : `${updateValue}`;
+	
+	        // Check if volume or mute state has changed
+	        const volumeChanged = updateValue !== lastVolume;
+	        const muteStateChanged = isMuted !== lastMuteState;
+	
+	        if (volumeChanged || muteStateChanged) {
+	            // Trigger the popup only if there was a change in volume or mute state
+	            Indicator.popup(1);
+	        }
+	
+	        // Update the stored state
+	        lastVolume = updateValue;
+	        lastMuteState = isMuted;
+	
+	        volumeIndicator.attribute.device = newDevice;
+	    }),
+	    progressSetup: (self) => self.hook(Audio, (progress) => {
+	        const updateValue = Audio.speaker?.volume;
+	        const isMuted = Audio.speaker?.isMuted || updateValue === 0;
+	
+	        // Log values to debug
+	        console.log(`Progress Value: ${isMuted ? 0 : updateValue}`);
+	
+	        // Update progress bar: 0 if muted, actual volume otherwise
+	        progress.value = isMuted ? 0 : (updateValue > 1 ? 1 : updateValue);
+	    }),
+	});
+
     return MarginRevealer({
         transition: 'slide_down',
         showClass: 'osd-show',
