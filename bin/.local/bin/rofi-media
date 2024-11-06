@@ -71,7 +71,6 @@ get_poster(){
 		# Fetch movie/show data from OMDB API
 		response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&year=$year&apikey=$API_KEY")
 		poster_url=$(echo "$response" | grep -oP '"Poster":\s*"\K[^"]+')
-
 	fi
 
 	# Check for errors
@@ -173,7 +172,7 @@ process_media(){
 		# Set the clean version of the title in the player
 		if [[ "$media_type" == "movies" ]]; then
 			exec_command="mpv --speed=$speed --write-filename-in-watch-later-config --save-position-on-quit"
-			exec_command+=" --title=\"$title\" \"$line\""
+			exec_command+=" --force-media-title=\"$title\" --title=\"$title\" \"$line\""
 		fi
 
 		# Create a list of used posters
@@ -283,8 +282,8 @@ play_media() {
 
 	# If a subtitle directory is found, append subtitle options to the player command
 	if [[ -n "$subs_directory" ]]; then
-		local file_name="${file_path##*/}"  # Get the base filename from file_path
-		file_name="${file_name%.*}"          # Remove the file extension
+		local file_name="${file_path##*/}"	# Get the base filename from file_path
+		file_name="${file_name%.*}"					# Remove the file extensione
 
 		# Append subtitle options to the player command
 		player_cmd+=(--sub-auto=all --sub-file-paths="${subs_directory}/${file_name}")
@@ -338,6 +337,7 @@ save_history() {
 		# Remove any existing history for the same title
 		if grep -qw "$title" "$media_history"; then
 			sed -i "/$title/d" "$media_history"
+			echo yes
 		fi
 
 		# Append the updated history information to the media history file
@@ -480,7 +480,11 @@ play_history(){
 	get_next_season(){
 		# Check if there is another season available
 		next_season_dir="$(echo "$season_dirs" | grep -FA1 "$selected_directory" | tail -n1 | grep -vxF "$selected_directory")"
-		[[ -n "$next_season_dir" ]] && first_episode_file=$(find -L "$next_season_dir" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort -V | head -n1)
+		if [[ -n "$next_season_dir" ]]; then 
+			first_episode_file=$(find -L "$next_season_dir" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort -V | head -n1)
+		#else
+			#sed -i "/$title/d" "$media_history" 
+		fi
 	}
 
 	# Check if there are multiple season directories, only if there are no video files in the directory
@@ -585,7 +589,9 @@ select_episode(){
 		# Handle "Movies" case
 		s/.*Movies.*/Movies/; t;
 		# Handle cases with extra information, just keep the name unchanged
-		s!.*/!!')"
+		s!.*/!!' | sed -E '
+		# Normalize format to remove leading zeroes in "Season" numbers
+		s/Season 0*([1-9][0-9]*)/Season \1/g')"
 	}
 
 	# Extract episode numbers and titles, and format the selection
@@ -669,7 +675,7 @@ select_episode(){
 				grep -Fq "$season_dir" <<< "$show" && show="$season_dir" || show="${season_dir%/*}"
 				#echo 2
 			fi
-	else
+		else
 			# If no season number is found, use the season name for lookup
 			if [[ "$number_of_seasons" -eq 1 ]]; then
 				season_dir=$(find -L "$show" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort | grep -Fi "$season" | head -n 1)
