@@ -78,22 +78,22 @@ function calculateSchemeInitIndex(optionsArr, searchValue = 'vibrant') {
 
 const schemeOptionsArr = [
     [
-        { name: 'Tonal Spot', value: 'tonalspot' },
-        { name: 'Fruit Salad', value: 'fruitsalad' },
-        { name: 'Fidelity', value: 'fidelity' },
-        { name: 'Rainbow', value: 'rainbow' },
+        { name: getString('Tonal Spot'), value: 'tonalspot' },
+        { name: getString('Fruit Salad'), value: 'fruitsalad' },
+        { name: getString('Fidelity'), value: 'fidelity' },
+        { name: getString('Rainbow'), value: 'rainbow' },
     ],
     [
-        { name: 'Neutral', value: 'neutral' },
-        { name: 'Monochrome', value: 'monochrome' },
-        { name: 'Expressive', value: 'expressive' },
-        { name: 'Vibrant', value: 'vibrant' },
+        { name: getString('Neutral'), value: 'neutral' },
+        { name: getString('Monochrome'), value: 'monochrome' },
+        { name: getString('Expressive'), value: 'expressive' },
+        { name: getString('Vibrant'), value: 'vibrant' },
     ],
     [
-        { name: 'Vibrant+', value: 'morevibrant' },
+        { name: getString('Vibrant+'), value: 'morevibrant' },
     ],
     //[
-    //  { name: 'Content', value: 'content' },
+    //  { name: getString('Content'), value: 'content' },
     //]
 ];
 
@@ -122,7 +122,7 @@ const ColorSchemeSettings = () => {
 	                Widget.Label({
 	                    xalign: 0,
 	                    className: 'txt-norm titlefont txt',
-	                    label: 'Options',
+			    label: getString('Options'),
 	                    hpack: 'center',
 	                }),
 	                ConfigToggle({
@@ -209,7 +209,7 @@ const ColorschemeContent = () => Widget.Box({
         Widget.Label({
             xalign: 0,
             className: 'txt-norm titlefont txt',
-            label: 'Color scheme',
+            label: getString('Color scheme'),
             hpack: 'center',
         }),
         Widget.Box({

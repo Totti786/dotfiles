@@ -13,43 +13,43 @@ import { distroID, isArchDistro, isDebianDistro, hasFlatpak } from '../../.miscu
 const scripts = [
     {
         icon: 'nixos-symbolic',
-        name: 'Trim system generations to 5',
+        name: getString('Trim system generations to 5'),
         command: `sudo ${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 system`,
         enabled: distroID == 'nixos',
     },
     {
         icon: 'nixos-symbolic',
-        name: 'Trim home manager generations to 5',
+        name: getString('Trim home manager generations to 5'),
         command: `${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 home-manager`,
         enabled: distroID == 'nixos',
     },
     {
         icon: 'ubuntu-symbolic',
-        name: 'Update packages',
+        name: getString('Update packages'),
         command: `sudo apt update && sudo apt upgrade -y`,
         enabled: isDebianDistro,
     },
     {
         icon: 'fedora-symbolic',
-        name: 'Update packages',
+        name: getString('Update packages'),
         command: `sudo dnf upgrade -y`,
         enabled: distroID == 'fedora',
     },
     {
         icon: 'arch-symbolic',
-        name: 'Update System',
-        command: `${App.configDir}/scripts/quickscripts/dots-update.sh`,
+        name: getString('Update packages'),
+        command: `sudo pacman -Syyu`,
         enabled: isArchDistro,
     },
     {
         icon: 'arch-symbolic',
-        name: 'Remove orphan packages',
+        name: getString('Remove orphan packages'),
         command: `sudo pacman -R $(pacman -Qdtq)`,
         enabled: isArchDistro,
     },
     {
         icon: 'flatpak-symbolic',
-        name: 'Uninstall unused flatpak packages',
+        name: getString('Uninstall unused flatpak packages'),
         command: `flatpak uninstall --unused`,
         enabled: hasFlatpak,
     },
@@ -57,7 +57,7 @@ const scripts = [
 
 export default () => SidebarModule({
     icon: MaterialIcon('code', 'norm'),
-    name: 'Quick scripts',
+    name: getString('Quick scripts'),
     child: Box({
         vertical: true,
         className: 'spacing-v-5',

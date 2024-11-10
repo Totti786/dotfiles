@@ -31,7 +31,7 @@ export function launchCustomCommand(command) {
     else if (args[0] == '>color') { // Generate colorscheme from color picker
         if (!args[1])
             execAsync([`bash`, `-c`, `${App.configDir}/scripts/color_generation/switchcolor.sh --pick`, `&`]).catch(print);
-        else if(args[1][0] === '#')
+        else if (args[1][0] === '#')
             execAsync([`bash`, `-c`, `${App.configDir}/scripts/color_generation/switchcolor.sh "${args[1]}"`, `&`]).catch(print);
     }
     else if (args[0] == '>light') { // Light mode

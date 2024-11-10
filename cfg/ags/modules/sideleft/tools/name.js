@@ -10,7 +10,7 @@ export default () => Box({
     className: 'txt sidebar-module techfont',
     children: [
         Label({
-            label: 'Totti\'s Dotfiles'
+            label: getString('illogical-impulse')
         }),
         Box({ hexpand: true }),
         Button({

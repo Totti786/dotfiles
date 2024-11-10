@@ -71,6 +71,10 @@ let configOptions = {
             'color': 'rgba(113,227,32,0.9)',
         },
     },
+    'i18n': {
+        'langCode': "",//Customize the locale, such as zh_CN,Optional value references "~/.config/ags/i18n/locales/"
+        'extraLogs': false
+    },
     'monitors': {
         'scaleMethod': "division", // Either "division" [default] or "gdk"
     },
@@ -157,11 +161,11 @@ let configOptions = {
         'autoHide': [
             {
                 'trigger': 'client-added',
-                'interval': 1000,
+                'interval': 500,
             },
             {
                 'trigger': 'client-removed',
-                'interval': 1000,
+                'interval': 500,
             },
         ],
     },

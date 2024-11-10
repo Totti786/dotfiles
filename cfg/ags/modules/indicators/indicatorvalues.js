@@ -1,3 +1,4 @@
+// This file is for brightness/volume indicators
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Audio from 'resource:///com/github/Aylur/ags/service/audio.js';
 const { Box, Label, ProgressBar } = Widget;
@@ -20,7 +21,7 @@ const OsdValue = ({
         hexpand: false, className: 'osd-value-txt',
         setup: labelSetup,
     });
-    return Box({
+    return Box({ // Volume
         vertical: true,
         hexpand: true,
         className: `osd-bg osd-value ${extraClassName}`,
@@ -139,7 +140,8 @@ export default () => {
             .hook(Indicator, (revealer, value) => {
                 if (value > -1) revealer.attribute.show();
                 else revealer.attribute.hide();
-            }, 'popup'),
+            }, 'popup')
+        ,
         child: Box({
             hpack: 'center',
             vertical: false,
