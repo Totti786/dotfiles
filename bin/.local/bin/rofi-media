@@ -148,15 +148,17 @@ process_media(){
 			if [[ "$name" =~ ([1][9][0-9]{2}|20[0-9]{2}) ]]; then
 				# Get the year if present and strip the title of extra info
 				year="${BASH_REMATCH[1]}"
-				title=$(echo "$name" | sed -e "s/$year.*//" -e 's/^\[.*\] \(.*\) - .*/\1/' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
-						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\|[Ss][0-9]\{1,2\}[Ee][0-9]\{1,2\}\)[[:space:]].*$//')
+				title=$(echo "$name" | sed -e "s/$year.*//" -e 's/^\[.*\] \(.*\) - .*/\1/' -e 's/ - / /g' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
+						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\|[Ss][0-9]\{1,2\}[Ee][0-9]\{1,2\}\)[[:space:]]\{0,\}.*$//')
 				# Check if title is empty or only contains the year
 				# If title is empty or only contains spaces, set title to the year itself
 				[[ -z "$title" || "$title" =~ ^[[:space:]]*$ ]] && title="$year"
+				echo "$title"
+				echo "$year"
 			else
 				# Remove trailing spaces
-				title=$(echo "$name" | sed -e 's/^\[.*\] \(.*\) - .*/\1/' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
-						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\|[Ss][0-9]\{1,2\}[Ee][0-9]\{1,2\}\)[[:space:]].*$//')
+				title=$(echo "$name" | sed -e 's/^\[.*\] \(.*\) - .*/\1/'  -e 's/ - / /g' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
+						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\|[Ss][0-9]\{1,2\}[Ee][0-9]\{1,2\}\)[[:space:]]\{0,\}.*$//')
 				year=""
 			fi
 			printf "%s\t%s\n" "$line" "$title" >> "$saved_lines" 2> /dev/null
@@ -337,7 +339,6 @@ save_history() {
 		# Remove any existing history for the same title
 		if grep -qw "$title" "$media_history"; then
 			sed -i "/$title/d" "$media_history"
-			echo yes
 		fi
 
 		# Append the updated history information to the media history file
@@ -504,12 +505,12 @@ play_history(){
 			fi
 
 			# If no subdirectories were found with video files, check if the current directory has videos
-			if [[ -z "$subdirs" ]] || [[ -n $(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | grep .) ]]; then
+			if [[ -z "$subdirs" ]] || [[ -n $(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' -printf "%f\n" | grep .) ]]; then
 				season_dirs+="${line}"$'\n'
 			fi
 		done
 	elif [[ -z "$(find -L "$show" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)')" && -z "$season_dirs" ]]; then
-		season_dirs="$(find -L "$show" -maxdepth 1 -mindepth 1 -type d)"
+		season_dirs="$(find -L "$show" -maxdepth 1 -mindepth 1 -type d -printf "%f\n")"
 	fi
 
 	# Remove trailing newline if it exists and sort the seasons
