@@ -69,7 +69,7 @@ get_poster(){
 	else
 		API_KEY="497fd34e"
 		# Fetch movie/show data from OMDB API
-		response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&year=$year&apikey=$API_KEY")
+		response=$(curl -s "http://www.omdbapi.com/?t=$encoded_title&y=$year&apikey=$API_KEY")
 		poster_url=$(echo "$response" | grep -oP '"Poster":\s*"\K[^"]+')
 	fi
 
@@ -153,8 +153,6 @@ process_media(){
 				# Check if title is empty or only contains the year
 				# If title is empty or only contains spaces, set title to the year itself
 				[[ -z "$title" || "$title" =~ ^[[:space:]]*$ ]] && title="$year"
-				echo "$title"
-				echo "$year"
 			else
 				# Remove trailing spaces
 				title=$(echo "$name" | sed -e 's/^\[.*\] \(.*\) - .*/\1/'  -e 's/ - / /g' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
@@ -505,12 +503,12 @@ play_history(){
 			fi
 
 			# If no subdirectories were found with video files, check if the current directory has videos
-			if [[ -z "$subdirs" ]] || [[ -n $(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' -printf "%f\n" | grep .) ]]; then
+			if [[ -z "$subdirs" ]] || [[ -n $(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)'  | grep .) ]]; then
 				season_dirs+="${line}"$'\n'
 			fi
 		done
 	elif [[ -z "$(find -L "$show" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)')" && -z "$season_dirs" ]]; then
-		season_dirs="$(find -L "$show" -maxdepth 1 -mindepth 1 -type d -printf "%f\n")"
+		season_dirs="$(find -L "$show" -maxdepth 1 -mindepth 1 -type d)"
 	fi
 
 	# Remove trailing newline if it exists and sort the seasons
@@ -623,7 +621,7 @@ select_episode(){
 	# Check if there are any season directories available
 	if [[ -n "$season_dirs" ]]; then
 		# List available seasons
-		list_seasons "$season_dirs"
+		list_seasons "$(echo "$season_dirs" | sed 's!.*/!!')"
 		episodes=""
 
 		# Check if there are multiple season directories
@@ -714,7 +712,7 @@ select_episode(){
 
 	# List all episodes in the selected directory
 	if [[ -z "$episodes" ]]; then 
-		episodes=$(find -L "$selected_directory" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' -printf "%f\n" | sort -V)
+		episodes=$(find -L "$selected_directory" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | sort -V)
 	fi
 	list_episodes "$episodes"
 
@@ -745,7 +743,7 @@ select_episode(){
 		fi
 
 		if [[ -n "$episode_file" ]]; then
-			play_media "$selected_directory/$episode_file"
+			play_media "$episode_file"
 			save_history "$show"
 			prompt "$show"
 		fi
