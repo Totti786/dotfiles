@@ -20,8 +20,8 @@ declare -a minimal=(
 	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv \
 	nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct rhythmbox rofi-wayland \
 	rtorrent scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
-	picom-git plank playerctl plasma-browser-integration polkit-gnome polybar python-pipx python-wheel qbittorrent \
-	thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
+	picom-git plank playerctl plasma-browser-integration polkit-gnome polybar python-screeninfo python-pipx python-wheel \
+	qbittorrent thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
 	ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift \
 	tumbler translate-shell viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
 	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
