@@ -37,8 +37,8 @@ const scripts = [
     },
     {
         icon: 'arch-symbolic',
-        name: getString('Update packages'),
-        command: `sudo pacman -Syyu`,
+        name: getString('Update System'),
+        command: `${App.configDir}/scripts/quickscripts/dots-update.sh`,
         enabled: isArchDistro,
     },
     {
