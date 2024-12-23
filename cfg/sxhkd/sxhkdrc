@@ -44,8 +44,8 @@ super + {a,n,m}
 	rofi-media --{anime,shows,movies}
 
 # Rofi Applets
-super + {r,b,l,j,y}	
-	{rofi-reader,rofi-bluetooth,lobster,jerry,ytfzf -fD}
+super + {r,b,y}	
+	{rofi-reader,rofi-bluetooth,ytfzf -fD}
 	
 ##------ Applications -------##
 
@@ -53,8 +53,8 @@ super + {r,b,l,j,y}
 super + {e,f,w,o,v,p,z}
 	{exo-open --launch FileManager,exo-open --launch WebBrowser,geany,obs,copyq toggle,color-picker,gtk-launch vesktop || gtk-launch discord}
 
-super + shift + {s,w,r,l}
-	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk pick,rofi-utils --record,lobster -c}
+super + shift + {s,w,r}
+	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk pick,rofi-utils --record}
 
 # Terminal Apps
 ctrl + alt + {v,e,h}

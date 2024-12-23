@@ -59,6 +59,10 @@ super + shift + f
 super + space
     i3-msg floating toggle
 
+# Toggle between stacking/tabbed/split
+super + shift + g
+	i3-msg layout toggle
+
 # Set the node flags
 super + shift + {x,c}
 	i3-msg layout {tabbed,toggle split}
@@ -85,6 +89,10 @@ super + shift + d
 # Toggle Scratchpad
 super + d
 	i3-msg scratchpad show
+
+# Toggle hyprspace
+ctrl + shift + Return
+	~/.config/i3/overview
 
 # Reload Keybinding
 ctrl + alt + Escape
