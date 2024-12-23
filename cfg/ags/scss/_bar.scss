@@ -188,8 +188,8 @@ $bar_ws_width_focus_active: 2.045rem;
 .bar-ram-icon {
     @include full-rounding;
     @include element_decel;
-    min-height: 1.77rem;
-    min-width: 1.77rem;
+    min-height: 1.4rem;
+    min-width: 1.76rem;
     border-radius: 10rem;
     color: $ramOnLayer2;
 }
