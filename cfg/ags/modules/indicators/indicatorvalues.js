@@ -103,7 +103,8 @@ export default () => {
 	        console.log(`Volume: ${updateValue}, Muted: ${isMuted}`);
 	
 	        // Set label to "Muted" or show the actual volume percentage
-	        label.label = isMuted ? 'Muted' : `${updateValue}`;
+	        label.className = isMuted ? 'osd-value-icon icon-material' : "osd-value-txt";
+	        label.label = isMuted ? 'volume_off' : `${updateValue}`;
 	
 	        // Check if volume or mute state has changed
 	        const volumeChanged = updateValue !== lastVolume;
