@@ -341,8 +341,12 @@ setup(){
 
 random(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
-		image="$(find "$Wallpapers" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -exec shuf -ezn 1 {} + | xargs -0)"
-		wall "$image"
+        if command -v waypaper >/dev/null 2>&1; then
+			waypaper --random
+		else
+            image="$(find "$Wallpapers" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -exec shuf -ezn 1 {} + | xargs -0)"
+            wall "$image"
+        fi
 	else
 		notify-send -u low -r 43 "No Wallpapers Were Found in:" "~/Pictures/Wallpapers"
 	fi
@@ -353,7 +357,6 @@ random(){
 pick(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
 		if command -v waypaper >/dev/null 2>&1; then
-			[[ ! -f "$HOME/.config/waypaper/config.ini" ]] && fix_configs			
 			waypaper
 		else
 			wal=$(nsxiv -torb $Wallpapers)
