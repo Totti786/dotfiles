@@ -12,10 +12,10 @@ fi
 
 declare -a minimal=(
 	acpi acpilight alacritty appimagelauncher autotiling axel base-devel bc blueman bluez \
-	bluez-utils brightnessctl bspwm clight conky copyq dmenu drawing dunst envycontrol \
+	bluez-utils brightnessctl bspwm btop clight conky copyq dmenu drawing dunst envycontrol \
 	fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep \
 	geany gnome-bluetooth-3.0 gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
-	gpu-screen-recorder-git jq gpick grep python-gtts html-xml-utils htop i3lock-color i3-wm \
+	gping gpu-screen-recorder-git jq gpick grep python-gtts html-xml-utils htop i3lock-color i3-wm \
 	imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot loupe man moreutils mpv mpv-mpris mugshot ncdu \
 	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv \
 	nvtop obconf openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct rhythmbox rofi-wayland \
@@ -23,7 +23,7 @@ declare -a minimal=(
 	picom-git plank playerctl plasma-browser-integration polkit-gnome polybar python-screeninfo python-pipx python-wheel \
 	qbittorrent thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
 	ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift \
-	tumbler translate-shell viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
+	tumbler translate-shell viewnior wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
 	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
 	xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh
 )
@@ -37,13 +37,13 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	aylurs-gtk-shell-git dart-sass gnome-control-center grim hypridle hyprland \
+	dart-sass gnome-control-center grim hypridle hyprland \
 	hyprlock hyprpicker nwg-displays slurp swww ttf-readex-pro \
 	xdg-desktop-portal-hyprland python-pywayland wl-clipboard
 )
 
 declare -a aur=(
-	i3-resurrect aur/qt5gtk2 aur/qt6gtk2 \
+	i3-resurrect aur/qt5gtk2 aur/qt6gtk2 aur/waypaper \
 	python-materialyoucolor-git mpv-thumbfast-git mpv-uosc-git \
 	ruby-fusuma ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl \
 	sioyek-git xiccd xqp zscroll-git
