@@ -94,7 +94,7 @@ xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo xqp xss-lock yad yt
 zathura-pdf-mupdf zenity zscroll-git zsh 
 
 ```
-If you want to install hyprland configs to work, you need the following packages as well:
+If you want to install hyprland, you need the following packages as well:
 
 ```bash
 yay -Syu --needed \
