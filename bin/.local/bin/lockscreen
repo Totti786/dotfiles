@@ -9,17 +9,17 @@ fi
 if [[ "$XDG_SESSION_TYPE" == "x11" ]] && [[ -z $(pgrep i3lock) ]]; then 
 	image="$HOME/.config/wpg/templates/wallpaper.jpg"
 	font="JetBrainsMono Nerd Font"
-	
+
 	# Retrieve all color values at once and assign them to variables
 	eval $(xrdb -query | awk '
-	    /^*\.foreground:/ {print "FG="$2}
-	    /^*\.color1:/ {print "red="$2}
-	    /^*\.color4:/ {print "blue="$2}
-	    /^*\.color3:/ {print "yellow="$2}
-	    /^*\.color2:/ {print "green="$2}
-	    /^*\.color5:/ {print "magenta="$2}
+		/^*\.foreground:/ {print "FG="$2}
+		/^*\.color1:/ {print "red="$2}
+		/^*\.color4:/ {print "blue="$2}
+		/^*\.color3:/ {print "yellow="$2}
+		/^*\.color2:/ {print "green="$2}
+		/^*\.color5:/ {print "magenta="$2}
 	')
-	
+
 	# Fallback colors in case xrdb does not return a value
 	: ${FG:="#FFFFFF"}
 	: ${red:="#7ba5dd"}
@@ -36,48 +36,47 @@ if [[ "$XDG_SESSION_TYPE" == "x11" ]] && [[ -z $(pgrep i3lock) ]]; then
 		--no-modkey-text \
 		--indicator \
 		--force-clock \
-        --modif-size=9 \
-        --modif-pos="w/2:h/2-15" \
-        --image "$image" \
-        --time-str="%I:%M" \
-        --time-pos="w/2:h/2-55" \
-        --time-color="$FG" \
-        --time-size=160 \
-        --time-font="$font" \
-        --date-str="%A, %B %d" \
-        --date-pos="w/2:h/2" \
-        --date-color="$FG" \
-        --date-size=35 \
-        --date-font="$font" \
-        --verif-text="" \
-        --verif-color=${green:1} \
-        --verif-size=10 \
-        --verif-font="$font" \
-        --wrong-text="" \
-        --wrong-color=${magenta:1} \
-        --wrong-size=10 \
-        --wrong-font="$font" \
-        --ring-color=00000000 \
-        --ringver-color=${green:1} \
-        --ringwrong-color=${magenta:1} \
-        --radius 180 \
-        --ring-width=5 \
-        --insidever-color=${green:1}80 \
-        --insidewrong-color=${red:1}80 \
-        --inside-color=${yellow:1}02 \
-        --noinput-text="" \
-        --line-uses-inside \
-        --keyhl-color=${red:1} \
-        --bshl-color=${blue:1} \
-        --separator-color=${yellow:1} \
-        --pointer=default \
+		--modif-size=9 \
+		--modif-pos="w/2:h/2-15" \
+		--image "$image" \
+		--time-str="%I:%M" \
+		--time-pos="w/2:h/2-55" \
+		--time-color="$FG" \
+		--time-size=160 \
+		--time-font="$font" \
+		--date-str="%A, %B %d" \
+		--date-pos="w/2:h/2" \
+		--date-color="$FG" \
+		--date-size=35 \
+		--date-font="$font" \
+		--verif-text="" \
+		--verif-color=${green:1} \
+		--verif-size=10 \
+		--verif-font="$font" \
+		--wrong-text="" \
+		--wrong-color=${magenta:1} \
+		--wrong-size=10 \
+		--wrong-font="$font" \
+		--ring-color=00000000 \
+		--ringver-color=${green:1} \
+		--ringwrong-color=${magenta:1} \
+		--radius 180 \
+		--ring-width=5 \
+		--insidever-color=${green:1}80 \
+		--insidewrong-color=${red:1}80 \
+		--inside-color=${yellow:1}02 \
+		--noinput-text="" \
+		--line-uses-inside \
+		--keyhl-color=${red:1} \
+		--bshl-color=${blue:1} \
+		--separator-color=${yellow:1} \
+		--pointer=default \
 		--radius 94 \
 		--greeter-text="Type to unlock!" \
 		--greeter-font="$font" \
 		--greeter-size=18 \
-		--greeter-color=${red:1} \
-        --ind-pos="w-960:h-200"
-
+		--greeter-color=${FG:1} \
+		--ind-pos="w-960:h-200" &
 elif [[ -z "$(pgrep hyprlock)" ]]; then
 	playerctl.sh --art & 
 	hyprlock
