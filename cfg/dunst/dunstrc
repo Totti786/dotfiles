@@ -2,8 +2,8 @@
 
 [global]
     monitor = 0
-    width = (111, 444)
-    height = 222
+    width = (150, 350)
+    height = (50, 110)
     origin = top-right
     offset = 15x55
     scale = 0
@@ -39,7 +39,7 @@
     icon_position = left
     icon_path = /usr/share/icons/Papirus/128x128/status/:/usr/share/icons/icons/Papirus/128x128/devices/
 	icon_theme = "Papirus-Dark"
-	max_icon_size = 100
+	max_icon_size = 130
 	
     always_run_script = true
     dmenu = /usr/bin/rofi -dmenu -p dunst:
@@ -49,7 +49,7 @@
     browser = xdg-open
     
     frame_width = 0
-    frame_color = "#685B56CF"
+    frame_color = "#5F3D53CF"
     
 [logger]
 	summary = "*"
@@ -58,20 +58,19 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#161310FF"
-    foreground = "#fff7e3"
+    background = "#161118ff"
+    foreground = "#ffe3fa"
     highlight  = "#b6beca"
     timeout = 5
 
 [urgency_normal]
-    background = "#161310FF"
-    foreground = "#fff7e3"
+    background = "#161118ff"
+    foreground = "#ffe3fa"
     highlight  = "#b6beca"
     timeout = 20
 
 [urgency_critical]
-    background = "#161310FF"
-    foreground = "#fff7e3"
+    background = "#161118ff"
+    foreground = "#ffe3fa"
     highlight  = "#b6beca"
     timeout = 60
-    
