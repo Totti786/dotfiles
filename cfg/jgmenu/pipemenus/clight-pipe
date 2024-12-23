@@ -15,11 +15,16 @@ menu+=("^sep(Clight ($status))")
 if [[ "$status" == "Off" ]]; then
 	menu+=("Start Clight,clight & disown")
 else
-menu+=("Force Capture,clight.sh --capture")
-menu+=("Toggle Auto Brightness,clight.sh --toggle-pause")
-menu+=("Increase Brightness,clight.sh --increase")
-menu+=("Decrease Brightness,clight.sh --decrease")
-menu+=("Edit config file,exo-open $clight_conf")
+	gamma="$(if [[ $(clight.sh --gamma-status)  == "true" ]]; then echo $(clight.sh --gamma)K ;else echo "Inhibited" ;fi)"
+	menu+=("Force Capture,clight.sh --capture")
+	menu+=("Toggle Auto Brightness,clight.sh --toggle-pause")
+	menu+=("Increase Brightness,clight.sh --increase")
+	menu+=("Decrease Brightness,clight.sh --decrease")
+	menu+=("^sep(Gamma ($gamma))")
+	menu+=("Toggle Gamma,clight.sh --toggle-gamma")
+	menu+=("Toggle Ambient Gamma,clight.sh --toggle-ambient-gamma")
+	menu+=("^sep()")
+	menu+=("Edit config file,exo-open $clight_conf")
 fi
 
 printf '%s\n' "${menu[@]}"
