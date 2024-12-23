@@ -8,20 +8,14 @@ lock="$HOME"/.syshide.lock
 
 tray(){
 	gravity="NE"
-	res="$(xrandr --current | awk '/Screen/ {printf("%.0f\n", $8)}')"
-	if [[ "$res" > 1920 ]]; then 
-		width="$(echo $res | awk '{printf("%.0f\n", $1 / 2 * 0.049 + 1920)}')"
-	else
-		width="$(echo $res | awk '{printf("%.0f\n", $1 * 0.049)}')"
-	fi
 	color="$(pastel mix -f 0.4 $color8 $color0 | pastel format hex)"
 	
 	if [[ "$bar_style" == "base" ]]; then 
 		geometry="1x1-5+28"
 	elif [[ "$bar_style" == "minimal" ]]; then 
-		geometry="1x1-$width-34"
+		geometry="1x1-99-38"
 	elif [[ "$bar_style" == "bionic" ]]; then 
-		geometry="1x1-$width+45"
+		geometry="1x1-96+45"
 	fi
 	
 	tray_command=(stalonetray --background $color --geometry $geometry --grow-gravity $gravity --icon-gravity $gravity --vertical false --slot-size 32 --kludges force_icons_size)
