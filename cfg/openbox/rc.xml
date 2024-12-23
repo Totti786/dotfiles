@@ -509,6 +509,16 @@
         <command>brightness --dec</command>
       </action>
     </keybind>
+    <keybind key="W-XF86MonBrightnessUp">
+      <action name="Execute">
+        <command>clight.sh --capture</command>
+      </action>
+    </keybind>
+    <keybind key="W-XF86MonBrightnessDown">
+      <action name="Execute">
+        <command>clight.sh --toggle-pause</command>
+      </action>
+    </keybind>
     <!-- Screenshot Keys -->
     <keybind key="Print">
       <action name="Execute">
