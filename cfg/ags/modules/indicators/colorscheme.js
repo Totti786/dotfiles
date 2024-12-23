@@ -209,7 +209,7 @@ const ColorschemeContent = () => Widget.Box({
         Widget.Label({
             xalign: 0,
             className: 'txt-norm titlefont txt',
-            label: getString('Color scheme'),
+            label: getString('Color Scheme'),
             hpack: 'center',
         }),
         Widget.Box({
