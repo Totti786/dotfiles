@@ -2,8 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-export PATH=$PATH:~/.scripts/
+export ZSH="/usr/share/oh-my-zsh/"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -11,17 +10,21 @@ export PATH=$PATH:~/.scripts/
 ZSH_THEME="robbyrussell"
 
 plugins=(
-    zsh-autosuggestions
-    zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
 
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 # User configuration
 export HISTORY_IGNORE="(ls|cd|cls|clear|pwd|exit|sudo reboot|history|cd -|cd ..)"
 
+# fzf key bindings
+source <(fzf --zsh)
+
 # ls
-alias l='ls -lh'
+alias  l='ls -lh'
 alias ll='ls -lah'
 alias la='ls -A'
 alias lm='ls -m'
@@ -55,7 +58,6 @@ alias pac="yay -Qq | fzf --prompt='➜ ' --color=16 -m --preview 'yay -Qi {1}'"
 alias pacc='yay -Qtdq | yay -Rns -'
 
 # misc
-alias neo='neofetch'
 alias edit='vim ~/.zshrc'
 alias ctemp='watch -n 1 sensors'
 alias cls='clear'
