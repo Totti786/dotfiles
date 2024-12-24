@@ -1,4 +1,0 @@
-(include "controls/controls.yuck")
-(include "bar/bar.yuck")
-(include "./variables.yuck")
-(include "./notifications/notification-panel.yuck")
