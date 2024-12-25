@@ -23,7 +23,6 @@ import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-
 Item {
     id: wrapper
 
@@ -37,7 +36,8 @@ Item {
     property bool constrainText: true
     signal clicked()
 
-    property real faceSize: config.AvatarPixelSize ? config.AvatarPixelSize : Math.min(width, height - usernameDelegate.height - units.smallSpacing)
+    // Set a fixed size for the avatar image
+    property real faceSize: 200 // Change this value to the desired size
 
     opacity: isCurrent ? 1.0 : 0.3
 
@@ -103,7 +103,7 @@ Item {
     PlasmaComponents.Label {
         id: usernameDelegate
         font.family: config.Font || "Noto Sans"
-        font.pointSize: config.FontPointSize ? config.FontPointSize * 1.2 : root.height / 80 * 1.2
+        font.pointSize: 25
         renderType: Text.QtRendering
         font.capitalization: Font.Capitalize
         anchors {
@@ -129,3 +129,4 @@ Item {
     Accessible.role: Accessible.Button
     function accessiblePressAction() { wrapper.clicked() }
 }
+
