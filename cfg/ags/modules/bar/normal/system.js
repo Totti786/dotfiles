@@ -183,43 +183,58 @@ const Utilities = () => {
 };
 
 
-const BarBattery = () => Box({
-    className: 'spacing-h-4 bar-batt-txt',
-    children: [
-        Revealer({
-            transitionDuration: userOptions.animations.durationSmall,
-            revealChild: false,
-            transition: 'slide_right',
-            child: MaterialIcon('bolt', 'norm', { tooltipText: "Charging" }),
-            setup: (self) => self.hook(Battery, revealer => {
-                self.revealChild = Battery.charging;
-            }),
-        }),
-        Label({
-            className: 'txt-smallie',
-            setup: (self) => self.hook(Battery, label => {
-                label.label = `${Number.parseFloat(Battery.percent.toFixed(1))}%`;
-            }),
-        }),
-        Overlay({
-            child: Widget.Box({
+const BarBattery = () => {
+    const batteryCircProg = AnimatedCircProg({
+        className: 'bar-batt-circprog',
+        vpack: 'center',
+        hpack: 'center',
+    });
+    const batteryProgress = Box({
+        homogeneous: true,
+        children: [Overlay({
+            child: Box({
                 vpack: 'center',
                 className: 'bar-batt',
                 homogeneous: true,
                 children: [
                     MaterialIcon('battery_full', 'small'),
                 ],
-                setup: (self) => self.hook(Battery, box => {
-                    box.toggleClassName('bar-batt-low', Battery.percent <= userOptions.battery.low);
-                    box.toggleClassName('bar-batt-full', Battery.charged);
+            }),
+            overlays: [batteryCircProg]
+        })]
+    });
+    const batteryLabel = Label({
+        className: 'txt-smallie txt-onSurfaceVariant',
+    });
+    const widget = Box({
+        className: 'spacing-h-4 bar-batt-txt',
+        children: [
+            Revealer({
+                transitionDuration: userOptions.animations.durationSmall,
+                revealChild: false,
+                transition: 'slide_right',
+                child: MaterialIcon('bolt', 'norm', { tooltipText: "Charging" }),
+                setup: (self) => self.hook(Battery, revealer => {
+                    self.revealChild = Battery.charging;
                 }),
             }),
-            overlays: [
-                BarBatteryProgress(),
-            ]
-        }),
-    ]
-});
+            batteryProgress,
+            batteryLabel,
+        ],
+        setup: (self) => self.poll(5000, () => execAsync(['bash', '-c', `acpi | awk '{print $5}' | cut -d ":" -f1-2`])
+            .then((output) => {
+                const remainingTime = output.trim();
+                batteryLabel.label = `${Number.parseFloat(Battery.percent.toFixed(1))}%`;
+                widget.tooltipText = remainingTime || "Unknown remaining time";
+                batteryCircProg.css = `font-size: ${Battery.percent}px;`; // Example of using Battery.percent dynamically.
+            }).catch((err) => {
+                print(err);
+                widget.tooltipText = "Error fetching battery time";
+            }))
+    });
+
+    return widget;
+};
 
 const WeatherModule = () => Widget.Box({
 		hexpand: true,
