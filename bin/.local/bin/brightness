@@ -23,8 +23,9 @@ inc_brightness() {
 
 # Decrease brightness
 dec_brightness() {
-	if [[ "${brightness%%%}" -ge 5 ]]; then
+	if [[ "${brightness%%%}" -ge 6 ]]; then
 		brightnessctl s 5%-
+		echo "${brightness%%%}"
 		notify
 	fi
 }
