@@ -26,11 +26,11 @@ super + {1-8}
     
 # Switch workspace
 ctrl + super + {Left,Right,Up,Down}
-	~/.config/i3/i3-workspaces {prev,next,prev,next}
+	workspace {prev,next,prev,next}
 
 # Move to the next or the previous workspace
 super + {~button4, ~button5}
-	~/.config/i3/i3-workspaces {prev,next}
+	workspace {prev,next}
 
 # Send focused window to another workspace and switch to the workspace
 super + shift + {1-8}
@@ -90,6 +90,10 @@ super + shift + d
 super + d
 	i3-msg scratchpad show
 
+# Restore Previous Workspace
+super + shift + q
+	~/.config/i3/i3-resurrect-dmenu
+
 # Toggle hyprspace
 ctrl + shift + Return
 	~/.config/i3/overview
@@ -105,9 +109,5 @@ ctrl + shift + q
 # Quit i3
 ctrl + shift + r
 	i3-msg restart
-
-# Restore Previous Workspace
-super + shift + q
-	~/.config/i3/i3-resurrect-dmenu
 
 ##---------- EOF ----------##

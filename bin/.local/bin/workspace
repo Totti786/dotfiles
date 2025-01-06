@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# Normalize the desktop environment to lowercase using string substitution
+desktop_env="${XDG_CURRENT_DESKTOP,,}" # Converts to lowercase
+
+# Function to switch workspaces for wmctrl-compatible environments
+switch_wmctrl() {
+    current=$(wmctrl -d | awk '/\*/{print $1}')
+    total_workspaces=$(wmctrl -d | wc -l)
+    case "$1" in
+        next) target=$(( (current + 1) % total_workspaces )) ;;
+        prev) target=$(( (current - 1 + total_workspaces) % total_workspaces )) ;; # Wrap around
+        *) echo "Usage: $0 [next|prev]"; exit 1 ;;
+    esac
+    wmctrl -s "$target" || echo "Error: Failed to switch to workspace $target."
+}
+
+# Function to switch workspaces for i3
+switch_i3() {
+    current=$(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).num')
+    max="8"
+    case "$1" in
+        next) target=$(( (current % max) + 1 )) ;;
+        prev) target=$(( (current - 2 + max) % max + 1 )) ;; # Wrap around
+        *) echo "Usage: $0 [next|prev]"; exit 1 ;;
+    esac
+    i3-msg workspace number "$target" || echo "Error: Failed to switch to workspace $target."
+}
+
+# Main logic to detect environment and switch workspaces
+case "$desktop_env" in
+    gnome|xfce|mate|lxde|openbox|bspwm) # Desktop environments compatible with wmctrl
+        switch_wmctrl "$1"
+        ;;
+    i3) # Tiling window manager
+        switch_i3 "$1"
+        ;;
+    *)
+        echo "Error: Unsupported desktop environment '$XDG_CURRENT_DESKTOP'."
+        exit 1
+        ;;
+esac

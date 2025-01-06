@@ -438,12 +438,12 @@
     <!-- Move to next/prev desktop -->
     <keybind key="W-C-Left">
       <action name="Execute">
-        <command>~/.config/openbox/ob-workspaces prev</command>
+        <command>workspace prev</command>
       </action>
     </keybind>
     <keybind key="W-C-Right">
       <action name="Execute">
-        <command>~/.config/openbox/ob-workspaces next</command>
+        <command>workspace next</command>
       </action>
     </keybind>
     <!-- Media Controls-->
@@ -824,12 +824,12 @@
       </mousebind>
       <mousebind action="Press" button="W-Up">
         <action name="Execute">
-          <command>~/.config/openbox/ob-workspaces prev</command>
+          <command>workspace prev</command>
         </action>
       </mousebind>
       <mousebind action="Press" button="W-Down">
         <action name="Execute">
-          <command>~/.config/openbox/ob-workspaces next</command>
+          <command>workspace next</command>
         </action>
       </mousebind>
     </context>
@@ -1045,12 +1045,12 @@
       </mousebind>
       <mousebind action="Press" button="W-Up">
         <action name="Execute">
-          <command>~/.config/openbox/ob-workspaces prev</command>
+          <command>workspace prev</command>
         </action>
       </mousebind>
       <mousebind action="Press" button="W-Down">
         <action name="Execute">
-          <command>~/.config/openbox/ob-workspaces next</command>
+          <command>workspace next</command>
         </action>
       </mousebind>
     </context>

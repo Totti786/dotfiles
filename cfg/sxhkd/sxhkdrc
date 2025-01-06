@@ -82,9 +82,15 @@ super + XF86MonBrightness{Up,Down}
 XF86Audio{RaiseVolume,LowerVolume,Mute}
 	volume{ --inc, --dec, --toggle}
 
+super + XF86Audio{RaiseVolume,LowerVolume,Mute}
+	{playerctl volume 0.05+,playerctl volume 0.05-,playerctld shift}
+
 # Media control
 XF86Audio{Next,Prev,Play,Pause,Stop}
 	playerctl {next,previous,play-pause,play-pause,stop}
+
+ctrl + alt + {Left,Right,Up,Down}
+	playerctl {previous,next,volume 0.05+,volume 0.05-}
 
 # Take a screenshot
 Print
