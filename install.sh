@@ -19,8 +19,8 @@ declare -a minimal=(
 	imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot loupe man moreutils mpv mpv-mpris mugshot ncdu \
 	network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv \
 	nvtop obconf oh-my-zsh-git openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct rhythmbox rofi-wayland \
-	rtorrent scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
-	picom-git plank playerctl polkit-gnome polybar python-screeninfo python-wheel qbittorrent thunar-media-tags-plugin \
+	scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
+	picom-git plank playerctl polkit-gnome polybar python-pyxdg python-screeninfo python-wheel qbittorrent thunar-media-tags-plugin \
 	thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols \
 	ttf-nerd-fonts-symbols-common timeshift tumbler translate-shell viewnior wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
 	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
