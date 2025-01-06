@@ -38,7 +38,7 @@ declare -a floating=(Lxappearance obs mpv float pop-up
 	KotatogramDesktop gnome-calculator syncplay
 	Xfce4-power-manager-settings '*:*:AudioRelay'
 	Blueman-manager Trackma-gtk Waypaper zenity
-	clight-gui file-roller)
+	clight-gui file-roller snapshot)
 	
 for i in "${floating[@]}"; do
    bspc rule -a "$i" state=floating follow=on focus=on
@@ -50,7 +50,7 @@ for i in "${tiled[@]}"; do
 	bspc rule -a "$i" manage=on state=tiled
 done
 
-bspc rule -a '*:*:Picture-in-Picture' sticky=on state=floating
+bspc rule -a '*:*:Picture-in-Picture' sticky=on state=floating border=off
 bspc rule -a drop state=floating follow=on focus=on sticky=on layer=above locked=on 
 bspc rule -a Plank layer=above manage=off locked=on border=off state=floating focus=off
 
