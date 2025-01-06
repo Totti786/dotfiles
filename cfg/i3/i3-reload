@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
 [[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
-[[ -z "$bar_style" ]] && top_padding="23" bottom_padding="23"
 
-sed -i -e "s/gaps top .*/gaps top $top_padding/" "$HOME/.config/i3/config"
-sed -i -e "s/gaps bottom .*/gaps bottom $bottom_padding/" "$HOME/.config/i3/config"
-i3-msg reload &> /dev/null
+top_padding="${top_padding:-23}"
+bottom_padding="${bottom_padding:-23}"
+
+sed -i -e "s/gaps top .*/gaps top $top_padding/" \
+       -e "s/gaps bottom .*/gaps bottom $bottom_padding/" "$HOME/.config/i3/config"
+
+i3-msg reload &>/dev/null

@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+[[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
+[[ -z "$bar_style" ]] && top_padding="23"
+
+top_padding="$(( $top_padding + 10 ))"
+bottom_padding="$(( 655 - $bottom_padding ))"
+
+# Define the special workspace name
+special_workspace="special"
+
+# Get the current active workspace
+current_workspace=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).name')
+
+# Toggle logic: Switch to the special workspace if not already there, otherwise go back
+if [[ "$current_workspace" == "$special_workspace" ]]; then
+    # Go back to the previous workspace (or default to workspace 1 if none is stored)
+    i3-msg "workspace back_and_forth"
+else
+    # Switch to the special workspace and run the setup script
+    i3-msg "workspace $special_workspace"
+
+    # Run the setup commands for the special workspace
+    apps="$(i3-msg -t get_tree | jq)"
+
+    # Unimatrix window
+    if ! echo "$apps" | grep -q "unimatrix"; then
+        i3-msg "exec --no-startup-id \"alacritty --class 'unimatrix,Alacritty' -e unimatrix -s 93\""
+        sleep 0.4
+        i3-msg "[class=\"unimatrix\"] floating enable, move to position 10 $top_padding, resize set 340 600"
+    fi
+
+    # Btop window
+    if ! echo "$apps" | grep -q "btop"; then
+        i3-msg "exec --no-startup-id \"alacritty --class 'btop,Alacritty' -e btop\""
+        sleep 0.4
+        i3-msg "[class=\"btop\"] floating enable, move to position 360 $top_padding, resize set 1150 600"
+    fi
+
+    # Gping window
+    if ! echo "$apps" | grep -q "gping"; then
+        i3-msg "exec --no-startup-id \"alacritty --class 'gping,Alacritty' -e gping 1.1.1.1\""
+        sleep 0.4
+        i3-msg "[class=\"gping\"] floating enable, move to position 1520 $top_padding, resize set 390 600"
+    fi
+
+    # Nvtop window
+    if ! echo "$apps" | grep -q "nvtop"; then
+        i3-msg "exec --no-startup-id \"alacritty --class 'nvtop,Alacritty' -e nvtop\""
+        sleep 0.4
+        i3-msg "[class=\"nvtop\"] floating enable, move to position 10 $bottom_padding, resize set 1120 415"
+    fi
+
+    # Clock window
+    if ! echo "$apps" | grep -q "clock"; then
+        i3-msg "exec --no-startup-id \"alacritty --class 'clock,Alacritty' -e tty-clock -cts\""
+        sleep 0.4
+        i3-msg "[class=\"clock\"] floating enable, move to position 1140 $bottom_padding, resize set 770 415"
+    fi
+fi

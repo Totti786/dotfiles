@@ -1,7 +1,5 @@
 ## i3wm configuration
 
-include ~/.config/i3/border
-
 ##-- Autostart ---------------------------
 
 exec_always --no-startup-id  ~/.config/i3/autostart
@@ -10,13 +8,36 @@ exec_always --no-startup-id  ~/.config/i3/autostart
 
 font pango:JetBrains Mono Medium 9
 
+##-- Colors ------------------------------
+
+# Set colors from Xresources
+# Change 'color7' and 'color2' to whatever colors you want i3 to use 
+# from the generated scheme.
+# NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
+# it fails to get colors from Xresources.
+set_from_resource $fg i3wm.color15 #FFFFFF
+set_from_resource $bg i3wm.color8 #f0f0f0
+set_from_resource $focused i3wm.color2 #f0f0f0
+set_from_resource $unfocused i3wm.color4 #f0f0f0
+set_from_resource $urgent i3wm.color5 #f0f0f0
+set_from_resource $indicator i3wm.color6 #98C379
+
+# class                 border      backgr. 	text  indicator  child_border
+client.focused          $focused    $focused    $fg  $indicator  $focused
+client.focused_inactive $unfocused  $unfocused 	$fg  $indicator  $unfocused
+client.unfocused        $unfocused  $unfocused 	$fg  $indicator  $unfocused
+client.urgent           $urgent     $urgent    	$fg  $indicator  $urgent
+client.placeholder      $bg    		$bg     	$fg  $indicator  $bg
+
+client.background       $bg
+
 ##-- Gaps --------------------------------
 
 # Gaps (Outer gaps are added to the inner gaps)
 gaps inner 10
 gaps outer 0
-gaps top 35
-gaps bottom 0
+gaps top 23
+gaps bottom 23
 
 # Uncomment this to enable title bars
 #for_window [class=".*"] border normal 0
@@ -41,7 +62,7 @@ for_window [urgent="latest"] focus
 for_window [title="AudioRelay|Library|Waypaper"] floating enable
 for_window [title="Picture-in-Picture"] floating enable sticky enable
 for_window [class="drop"] floating enable sticky enable
-for_window [class="Xfce4-.*|org.gnome.Weather|copyq|Nsxiv|Music|syncplay"] floating enable
+for_window [class="Xfce4-.*|org.gnome.Weather|copyq|Nsxiv|Music|syncplay|snapshot"] floating enable
 for_window [class="Viewnior|Gpicview|Gimp|MPlayer|TelegramDesktop|zenity"] floating enable
 for_window [class="Kvantum Manager|qt5ct|Nm-connection-editor|Anki|file-roller"] floating enable
 for_window [class="Lxappearance|Nitrogen|loupe|Yad|float|mpv|gamescope|dialect"] floating enable
