@@ -219,6 +219,21 @@ install_sddm(){
 	sudo systemctl enable sddm
 	}
 
+file_check(){
+	# Define directories to search
+	directories=(ags bspwm openbox i3 polybar jgmenu rofi)
+	
+	# Find and make script files executable
+	for dir in "${directories[@]}"; do
+	    find "$HOME/.config/$dir" "$HOME/.local/bin" -type f 2>/dev/null | \
+	    while read -r file; do
+	        if file "$file" | grep -q "script"; then
+	            chmod +x "$file"
+	        fi
+	    done
+	done
+	}
+
 install_firefox_theme(){
 	cp -rb "$dir"/deps/firefox/user.js "$HOME"/.mozilla/firefox/*.default-release/ && echo "User Profile Copied Successfully"
 	cp -rb "$dir"/deps/firefox/chrome "$HOME"/.mozilla/firefox/*.default-release/ && echo "Chrome CSS Copied Successfully"
@@ -258,7 +273,7 @@ update(){
 	cp -r "$dir"/bin/.local/ "$HOME"/
 	# restore weather info file
 	cp "$HOME"/.cache/info "$HOME"/.local/bin/info
-	sh "$dir/bin/.scripts/file-check"
+	file_check
 }
 
 #---- TUI functions  ---------------------
