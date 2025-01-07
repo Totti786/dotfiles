@@ -265,6 +265,7 @@ update(){
 	cp "$HOME"/.local/bin/info "$HOME"/.cache/info
 	ln -sfr ~/.themes/FlatColor ~/.themes/Dummy
 	cp "$dir"/deps/.zprofile "$HOME"/
+	cp "$dir"/deps/.zshrc "$HOME"/
 	cp "$dir"/deps/.gtkrc-2.0 "$HOME"/
 	cp "$dir"/deps/.theme "$HOME"/
 	## move udpated scripts and configs
