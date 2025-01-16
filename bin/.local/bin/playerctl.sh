@@ -106,6 +106,11 @@ cover_art(){
 	url=$(metadata "{{ mpris:artUrl }}")
 	fallback_cover="/tmp/cover"
 	
+	cache_dir="$HOME/.cache/playerctl"
+	mkdir -p "$cache_dir"
+	filename=$(basename "$url")
+	destination="$cache_dir/${filename%.*}"
+
 	# Remove fallback cover if no players are found
 	if [[ "$playerctl_status" == "No players found" ]]; then
 	    [[ -f "$fallback_cover" ]] &&  rm "$fallback_cover"
@@ -126,24 +131,17 @@ cover_art(){
 	    if [[ "$url" == file://* ]]; then
 	        url=${url#file://}
 	        if [[ $(file --extension "$url" | awk '{print $2}') != "png" ]]; then
-	            magick "$url" -resize 128x128 png:"$url"
+	            magick "$url" -resize 128x128 png:"$destination"
 	        fi
-	        echo "$url"
-	    fi
 	
 	    # Process the URL if it starts with 'http' or 'https'
-	    if [[ "$url" == http://* || "$url" == https://* ]]; then
-	        cache_dir="$HOME/.cache/playerctl"
-	        mkdir -p "$cache_dir"
-	        filename=$(basename "$url")
-	        destination="$cache_dir/$filename"
-	
+		elif [[ "$url" == http://* || "$url" == https://* ]]; then
 	        # Download the file only if it does not exist
-	        if [ ! -f "$destination" ]; then
+	        if [[ ! -f "$destination" ]]; then
 	            curl -s "$url" | magick - -resize 128x128 png:"$destination"
 	        fi
-	        echo "$destination"
 	    fi
+        echo "$destination"
 	fi
 }
 
