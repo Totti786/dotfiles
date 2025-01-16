@@ -89,9 +89,6 @@ const schemeOptionsArr = [
         { name: getString('Expressive'), value: 'expressive' },
         { name: getString('Vibrant'), value: 'vibrant' },
     ],
-    [
-        { name: getString('Vibrant+'), value: 'morevibrant' },
-    ],
     //[
     //  { name: getString('Content'), value: 'content' },
     //]
@@ -122,7 +119,37 @@ const ColorSchemeSettings = () => {
 	                Widget.Label({
 	                    xalign: 0,
 	                    className: 'txt-norm titlefont txt',
-			    label: getString('Options'),
+						label: getString('Wallpapers'),
+	                    hpack: 'center',
+	                }),
+	                Widget.Box({
+						hpack: 'center',
+						children: [
+						    Widget.Button({
+						        className: 'osk-control-button',
+						        child: Widget.Label('Pick Wallpaper'),
+						        onClicked: () => {
+									execAsync([`bash`, `-c`, `wpgtk pick`])
+						        },
+						    }),		
+						    Widget.Button({
+						        className: 'osk-control-button',
+						        child: Widget.Label('Random Wallpaper'),
+						        onClicked: () => {
+									execAsync([`bash`, `-c`, `wpgtk random`])
+						        },
+						    }),
+						]
+			       }),
+                ]
+            }),
+            Widget.Box({
+	            vertical: true,
+                children: [
+	                Widget.Label({
+	                    xalign: 0,
+	                    className: 'txt-norm titlefont txt',
+						label: getString('Options'),
 	                    hpack: 'center',
 	                }),
 	                ConfigToggle({

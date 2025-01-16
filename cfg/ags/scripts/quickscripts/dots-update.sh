@@ -14,11 +14,10 @@ if [[ ! -d "$dots" ]]; then
 		rm -rf "$dots" && notify-send -r 34 'Cloning Failed' 
 		echo "Cloning Failed, Try again"
 		exit 1
-	else
-		echo "Cloning is complete!"
-		echo "You can now close this window"
 	fi
-else
+fi
+
+if [[ "$1" == "--dots" ]]; then
 	cd "$dots"
 	"$dots"/install.sh --update &&
 	## remove already existing json file for background color scheme
@@ -28,4 +27,7 @@ else
 	tput -x clear
 	echo "Update is complete!"
 	echo "You can now close this window"
+elif [[ "$1" == "--wall" ]]; then
+	cd "$dots"
+	"$dots"/install.sh --wallpapers
 fi

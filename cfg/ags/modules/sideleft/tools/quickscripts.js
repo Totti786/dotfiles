@@ -38,13 +38,19 @@ const scripts = [
     {
         icon: 'arch-symbolic',
         name: getString('Update System'),
-        command: `${App.configDir}/scripts/quickscripts/dots-update.sh`,
+        command: `${App.configDir}/scripts/quickscripts/dots-update.sh --dots`,
         enabled: isArchDistro,
     },
     {
         icon: 'arch-symbolic',
         name: getString('Remove orphan packages'),
         command: `sudo pacman -R $(pacman -Qdtq)`,
+        enabled: isArchDistro,
+    },
+    {
+        icon: 'image-x-generic-symbolic-symbolic',
+        name: getString('Update Wallpapers'),
+        command: `${App.configDir}/scripts/quickscripts/dots-update.sh --wall`,
         enabled: isArchDistro,
     },
     {
