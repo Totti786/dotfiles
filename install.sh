@@ -106,7 +106,7 @@ wayland_install(){
 	install_wayland &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	move_configs
-	sh "$dir/bin/.scripts/file-check"
+	file_check
 	change_theme
 	install_sddm
 	install_zsh
@@ -118,7 +118,7 @@ x11_install(){
 	install_minimal &&
 	xdg-user-dirs-update &&	xdg-user-dirs-gtk-update
 	move_configs
-	sh "$dir/bin/.scripts/file-check"
+	file_check
 	change_theme
 	install_sddm
 	install_zsh
