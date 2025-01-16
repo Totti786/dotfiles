@@ -269,7 +269,6 @@ update(){
 	cp "$dir"/deps/.gtkrc-2.0 "$HOME"/
 	cp "$dir"/deps/.theme "$HOME"/
 	## move udpated scripts and configs
-	cp -r "$dir"/bin/.scripts/ "$HOME"/
 	cp -r "$dir"/cfg/* "$HOME"/.config/
 	cp -r "$dir"/bin/.local/ "$HOME"/
 	# restore weather info file
