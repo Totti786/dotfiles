@@ -277,17 +277,17 @@ play_media() {
 		--start="$start_position"
 	)
 
-	# Find the subtitle directory within the same path as the media file
-	local subs_directory="$(find -L "${file_path%/*}" -maxdepth 1 -mindepth 1 -type d | grep -i 'subs' | head -n 1)"
+	## Find the subtitle directory within the same path as the media file
+	#local subs_directory="$(find -L "${file_path%/*}" -maxdepth 1 -mindepth 1 -type d | grep -i 'subs' | head -n 1)"
 
-	# If a subtitle directory is found, append subtitle options to the player command
-	if [[ -n "$subs_directory" ]]; then
-		local file_name="${file_path##*/}"	# Get the base filename from file_path
-		file_name="${file_name%.*}"					# Remove the file extensione
+	## If a subtitle directory is found, append subtitle options to the player command
+	#if [[ -n "$subs_directory" ]]; then
+		#local file_name="${file_path##*/}"	# Get the base filename from file_path
+		#file_name="${file_name%.*}"					# Remove the file extensione
 
-		# Append subtitle options to the player command
-		player_cmd+=(--sub-auto=all --sub-file-paths="${subs_directory}/${file_name}")
-	fi
+		## Append subtitle options to the player command
+		#player_cmd+=(--sub-auto=all --sub-file-paths="${subs_directory}/${file_name}")
+	#fi
 
 	# Handle playback with different players
 	case "$player" in
