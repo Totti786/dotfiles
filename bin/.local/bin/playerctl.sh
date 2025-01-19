@@ -108,7 +108,7 @@ cover_art(){
 	
 	cache_dir="$HOME/.cache/playerctl"
 	mkdir -p "$cache_dir"
-	filename=$(basename "$url")
+	filename="${url##*/}"
 	destination="$cache_dir/${filename%.*}"
 
 	# Remove fallback cover if no players are found
@@ -125,14 +125,18 @@ cover_art(){
 	    fi
 	fi
 	
+	# Check if the file exists
+	if 	[[ -f "$destination" ]]; then
+		echo "$destination" 
+		exit 0
+	fi
+
 	# Check if the URL is empty
-	if [ -n "$url" ]; then
+	if [[ -n "$url" ]]; then
 	    # Remove 'file://' prefix if present
 	    if [[ "$url" == file://* ]]; then
 	        url=${url#file://}
-	        if [[ $(file --extension "$url" | awk '{print $2}') != "png" ]]; then
-	            magick "$url" -resize 128x128 png:"$destination"
-	        fi
+            magick "$url" -resize 128x128 png:"$destination"
 	
 	    # Process the URL if it starts with 'http' or 'https'
 		elif [[ "$url" == http://* || "$url" == https://* ]]; then
