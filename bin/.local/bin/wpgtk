@@ -352,20 +352,22 @@ random(){
 	fi
 }
 
-# this function uses nsxiv or waypaper as wallpaper selector for wpg 
-# to set a wallpaper in nsxiv you should select a wallpaper by pressing "m" and then quitting 
-pick(){
-	if [[ "$(ls -A $Wallpapers)" ]]; then 
-		if command -v waypaper >/dev/null 2>&1; then
-			waypaper
-		else
-			wal=$(nsxiv -torb $Wallpapers)
-			wall "$wal"
-		fi
-	else
-		notify-send -u low -r 43 "No Wallpapers Were Found In:" "~/Pictures/Wallpapers"
+# This function uses nsxiv or waypaper as a wallpaper selector for wpg.
+# To set a wallpaper in nsxiv, select a wallpaper by pressing "m" and then quitting.
+pick() {
+	if [[ -z "$(ls -A "$Wallpapers" 2>/dev/null)" ]]; then
+		notify-send -u low -r 43 "No Wallpapers Found" "$Wallpapers"
+		return 1
 	fi
-}	
+
+	if command -v waypaper >/dev/null 2>&1; then
+		waypaper
+	else
+		wal=$(nsxiv -torb "$Wallpapers") || return 1
+		[[ -n "$wal" ]] && wall "$wal"
+	fi
+}
+
 
 dynamic(){
 	dynmaic_wall="$HOME/Pictures/Dynamic"
@@ -446,51 +448,114 @@ main(){
 
 ## Check if wpg is installed and get colors
 run(){
-	if [[ -f "/usr/bin/wpg" ]]; then
-		## check if the files exists and import colors from wpg
-		if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
-			source "$HOME/.cache/wal/colors.sh"
-			# Normal colors
-			background="$(printf "%s\n" "$background")"
-			foreground="$(printf "%s\n" "$foreground")"
-			black="$(printf "%s\n" "$color0")"
-			red="$(printf "%s\n" "$color1")"
-			green="$(printf "%s\n" "$color2")"
-			yellow="$(printf "%s\n" "$color3")"
-			blue="$(printf "%s\n" "$color4")"
-			magenta="$(printf "%s\n" "$color5")"
-			cyan="$(printf "%s\n" "$color6")"
-			white="$(printf "%s\n" "$color7")"
-			# Bright colors
-			bright_black="$(printf "%s\n" "$color8")"
-			bright_red="$(printf "%s\n" "$color9")"
-			bright_green="$(printf "%s\n" "$color10")"
-			bright_yellow="$(printf "%s\n" "$color11")"
-			bright_blue="$(printf "%s\n" "$color12")"
-			bright_magenta="$(printf "%s\n" "$color13")"
-			bright_cyan="$(printf "%s\n" "$color14")"
-			bright_white="$(printf "%s\n" "$color15")"
-			# Additional colors
-			bg_mix="$(pastel mix -f 0.4 $bright_black $black | pastel format hex)"
-			bg_light="$(pastel mix -f 0.2 $bright_black $black | pastel format hex)"
-			bg_lighter="$(pastel lighten 0.08 $black | pastel format hex)"
-			bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
-			bg_rgb="$(pastel format rgb ${bg_mix:1})"
-			bg_mix_rgb="$(pastel format rgb ${bg_mix:1})"
-			## merging the Xresources files with the main one
-			xrdb -merge "$HOME"/.cache/wal/colors.Xresources
-		else
-			echo "[!] Theme file not found"
-			exit 1
-		fi 
-	else
+	if [[ ! -f "/usr/bin/wpg" ]]; then
 		echo "[!] 'wpgtk' is not installed."
 		echo "Installing from the AUR..." 
-		yay -S wpgtk-git --noconfirm
+		yay -S wpgtk --noconfirm
 		wpgConfig
-		# this command installs rofi, gtk, and openbox themes
+		# this command installs gtk, and openbox themes
 		wpg-install.sh -g -o
+	fi
+
+	## check if the files exists and import colors from wpg
+	if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+		source "$HOME/.cache/wal/colors.sh"
+		# Normal colors
+		background="$(printf "%s\n" "$background")"
+		foreground="$(printf "%s\n" "$foreground")"
+		black="$(printf "%s\n" "$color0")"
+		red="$(printf "%s\n" "$color1")"
+		green="$(printf "%s\n" "$color2")"
+		yellow="$(printf "%s\n" "$color3")"
+		blue="$(printf "%s\n" "$color4")"
+		magenta="$(printf "%s\n" "$color5")"
+		cyan="$(printf "%s\n" "$color6")"
+		white="$(printf "%s\n" "$color7")"
+		# Bright colors
+		bright_black="$(printf "%s\n" "$color8")"
+		bright_red="$(printf "%s\n" "$color9")"
+		bright_green="$(printf "%s\n" "$color10")"
+		bright_yellow="$(printf "%s\n" "$color11")"
+		bright_blue="$(printf "%s\n" "$color12")"
+		bright_magenta="$(printf "%s\n" "$color13")"
+		bright_cyan="$(printf "%s\n" "$color14")"
+		bright_white="$(printf "%s\n" "$color15")"
+		# Additional colors
+		bg_mix="$(pastel mix -f 0.4 $bright_black $black | pastel format hex)"
+		bg_light="$(pastel mix -f 0.2 $bright_black $black | pastel format hex)"
+		bg_lighter="$(pastel lighten 0.08 $black | pastel format hex)"
+		bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
+		bg_rgb="$(pastel format rgb ${bg_mix:1})"
+		bg_mix_rgb="$(pastel format rgb ${bg_mix:1})"
+		## merging the Xresources files with the main one
+		xrdb -merge "$HOME"/.cache/wal/colors.Xresources
+	else
+		echo "[!] Theme file not found"
+		exit 1
 	fi
 }
 
-"$@"
+help(){
+    echo "Usage: ${0##*/} [options]"
+    echo "Options:"
+    echo "  -h, --help       Show this help message and exit"
+    echo "  --restore        Restore previous wallpaper"
+    echo "  --random         Set a random wallpaper"
+    echo "  --set            Set a specific wallpaper"
+    echo "  --pick           Pick a wallpaper manually"
+    echo "  --phone          Set a phone wallpaper"	
+    echo "  --reload         Reload colors"	
+    echo "  --restart        Restart apps and reload colors"	
+}
+
+case "$1" in
+	-h|--help)
+		help
+		;;
+	--restore)
+		restore
+		exit 0
+		;;
+	--random)
+		random
+		exit 0
+		;;
+	--set)
+		wall "$2"
+		exit 0
+		;;
+	--pick)
+		pick
+		exit 0
+		;;
+	--phone)
+		phone
+		exit 0
+		;;
+	--colors)
+		run
+		exit 0
+		;;
+	--apply)
+		change_colors
+		exit 0
+		;;
+	--lock)
+		lockPerms
+		exit 0
+		;;
+	--reload)
+		partial
+		exit 0
+		;;
+	--restart)
+		main
+		exit 0
+		;;
+	*)
+		echo "Unknown option: $1"
+		help
+		;;
+esac
+
+#"$@"

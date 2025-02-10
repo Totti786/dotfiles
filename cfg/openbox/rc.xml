@@ -724,13 +724,13 @@
     <!-- Change Wallpaper-->
     <keybind key="W-S-w">
       <action name="Execute">
-        <command>wpgtk pick</command>
+        <command>wpgtk --pick</command>
       </action>
     </keybind>
     <!-- Random Wallpaper-->
     <keybind key="C-A-w">
       <action name="Execute">
-        <command>wpgtk random</command>
+        <command>wpgtk --random</command>
       </action>
     </keybind>
     <!-- Spotify -->

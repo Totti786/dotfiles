@@ -6,7 +6,7 @@
 [[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # Restore Wallpaper
-wpgtk restore &
+wpgtk --restore &
 
 # Screenlocker
 killall -q -9 xss-lock
@@ -28,9 +28,6 @@ dunst &
 
 # Compositor 
 compositor --start &
-
-# Ambient light manager
-clight &
 
 # Touchpad Gestures
 if libinput list-devices | grep -qiw 'Touchpad'; then

@@ -21,7 +21,7 @@ toggle_transparency(){
 }
 
 reload(){
-	wpgtk partial
+	wpgtk --reload
 }
 
 base(){

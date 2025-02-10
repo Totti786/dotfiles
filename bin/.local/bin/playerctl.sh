@@ -142,6 +142,7 @@ cover_art(){
 	        fi
 	    fi
         echo "$cover"
+        #pkill --signal=SIGUSR2 hyprlock
 	fi
 }
 

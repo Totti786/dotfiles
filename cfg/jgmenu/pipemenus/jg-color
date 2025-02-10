@@ -174,8 +174,8 @@ menu+=("^sep(Wallpapers)")
 userwallp=$(find "$WALLPAPERS_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | wc -l)
 menu+=("  Wallpapers (<small>${userwallp}</small>),^checkout(wallpapers)")
 submenu+=("^tag(wallpapers)")
-submenu+=("Set Random Wallpaper,wpgtk random")
-submenu+=("Pick a Wallpaper, wpgtk pick")
+submenu+=("Set Random Wallpaper,wpgtk --random")
+submenu+=("Pick a Wallpaper, wpgtk --pick")
 menu+=("^sep(${CURRENT_WALL##*/})")
 
 

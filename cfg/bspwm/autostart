@@ -6,7 +6,7 @@
 [[ ! $(pgrep -f polkit-gnome-authentication-agent) ]] && xdg-autostart
 
 # Restore Wallpaper
-wpgtk restore
+wpgtk --restore
 
 # Screenlocker
 killall -q -9 xss-lock
@@ -32,9 +32,6 @@ compositor --start &
 
 # Power manager
 [[ ! "$(pgrep xfce4-power-man)" ]] && xfce4-power-manager &
-
-# Ambient light manager
-clight &
 
 # Touchpad Gestures
 if libinput list-devices | grep -qiw 'Touchpad'; then

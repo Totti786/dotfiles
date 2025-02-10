@@ -27,7 +27,7 @@ Update,^pipe(~/.config/jgmenu/pipemenus/update-pipe)
 ^sep()
 Change Graphics,^pipe(~/.config/jgmenu/pipemenus/graphics-card)
 ^sep()
-Change Wallpaper,sh ~/.local/bin/wpgtk pick
+Change Wallpaper,sh ~/.local/bin/wpgtk --pick
 Appearance Settings,xfce4-appearance-settings
 ^sep()
 Power Settings,xfce4-power-manager-settings

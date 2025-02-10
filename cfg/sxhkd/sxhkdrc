@@ -53,8 +53,8 @@ super + {r,b,y}
 super + {e,f,w,o,v,p,z}
 	{exo-open --launch FileManager,exo-open --launch WebBrowser,geany,obs,copyq toggle,color-picker,gtk-launch vesktop || gtk-launch discord}
 
-super + shift + {s,w,r}
-	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk pick,rofi-utils --record}
+super + shift + {s,w,m,r}
+	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk --pick,wpgtk --reload,rofi-utils --record}
 
 # Terminal Apps
 ctrl + alt + {v,e,h}
@@ -66,7 +66,7 @@ ctrl + alt + l
 
 # Random Wallpaper
 ctrl + alt + w
-   wpgtk random
+   wpgtk --random
 
 ##------- System Keys -------##
 

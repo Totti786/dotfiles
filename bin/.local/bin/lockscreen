@@ -78,6 +78,6 @@ if [[ "$XDG_SESSION_TYPE" == "x11" ]] && [[ -z $(pgrep i3lock) ]]; then
 		--greeter-color=${FG:1} \
 		--ind-pos="w-960:h-200" &
 elif [[ -z "$(pgrep hyprlock)" ]]; then
-	playerctl.sh --art & 
+	playerctl.sh --art &
 	hyprlock
 fi

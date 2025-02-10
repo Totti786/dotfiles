@@ -17,11 +17,11 @@ apply_hypr() {
 	if [ "$transparency" == "opaque" ]; then
 		sed -i "/^[^#]*opacity/s/^/#/" "$HOME"/.config/hypr/hyprland.conf
 		sed -i "s/alpha=.*/alpha='FF'/" "$HOME"/.local/bin/wpgtk &&
-		wpgtk change_colors
+		wpgtk --apply
 	else
 		sed -i "/opacity/s/^#//" "$HOME"/.config/hypr/hyprland.conf
 		sed -i "s/alpha=.*/alpha='70'/" "$HOME"/.local/bin/wpgtk &&
-		wpgtk change_colors
+		wpgtk --apply
 	fi
 }
 

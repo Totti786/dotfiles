@@ -26,7 +26,7 @@ export function launchCustomCommand(command) {
             })
     }
     else if (args[0] == '>img') { // Change wallpaper
-        execAsync([`bash`, `-c`, `wpgtk pick`, `&`]).catch(print);
+        execAsync([`bash`, `-c`, `wpgtk --pick`, `&`]).catch(print);
     }
     else if (args[0] == '>color') { // Generate colorscheme from color picker
         if (!args[1])

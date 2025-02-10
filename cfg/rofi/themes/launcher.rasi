@@ -3,17 +3,17 @@
  * Github : @adi1090x
 **/
 
-/*****----- Configuration -----*****/
-configuration {
-    show-icons:                 true;
-	drun-display-format:        "{name}";
-	kb-cancel: 					"Escape,Alt+F1";
-}
-
 /*****----- Global Properties -----*****/
 
 @import "colors.rasi"
 @import "fonts.rasi"
+
+/*****----- Configuration -----*****/
+configuration {
+    show-icons:                  true;
+	drun-display-format:         "{name}";
+	kb-cancel: 					 "Escape,Alt+F1";
+}
 
 /*****----- Main Window -----*****/
 window {
