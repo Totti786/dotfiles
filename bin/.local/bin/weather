@@ -107,7 +107,7 @@ get_weather_data() {
 
     else
         # Fetch fallback weather data from wttr.in if OpenWeather API fails
-        wttr=$(curl wttr.in/"$CITY"?format="%t+%C\n")
+        wttr=$(wget -qO- "http://wttr.in/$CITY?format=%t+%C\n")
         if [[ -n "$wttr" ]]; then
             echo "$wttr" > "${cache_weather_stat}"
         else 
