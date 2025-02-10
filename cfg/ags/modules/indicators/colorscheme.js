@@ -129,14 +129,14 @@ const ColorSchemeSettings = () => {
 						        className: 'osk-control-button',
 						        child: Widget.Label('Pick Wallpaper'),
 						        onClicked: () => {
-									execAsync([`bash`, `-c`, `wpgtk pick`])
+									execAsync([`bash`, `-c`, `wpgtk --pick`])
 						        },
 						    }),		
 						    Widget.Button({
 						        className: 'osk-control-button',
 						        child: Widget.Label('Random Wallpaper'),
 						        onClicked: () => {
-									execAsync([`bash`, `-c`, `wpgtk random`])
+									execAsync([`bash`, `-c`, `wpgtk --random`])
 						        },
 						    }),
 						]
