@@ -26,8 +26,8 @@ apply_hypr() {
 }
 
 apply_ags() {
-    ags run-js "handleStyles(false);"
-    ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
+    agsv1 run-js "handleStyles(false);"
+    agsv1 run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
 }
 
 # check if the file $STATE_DIR/user/colormode.txt exists. if not, create it. else, read it to $lightdark

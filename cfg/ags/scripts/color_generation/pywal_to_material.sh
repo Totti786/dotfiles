@@ -52,6 +52,11 @@ successContainer="#374B3E"
 onSuccessContainer="#D1E9D6"
 
 # Output the colors to a file or standard output
+if [ $# -eq 0 ]; then
+	echo "[!] No ouput file was specified"
+	exit 1
+fi
+
 cat << EOF > "$1"
 \$primary_paletteKeyColor: $primary_paletteKeyColor;
 \$secondary_paletteKeyColor: $secondary_paletteKeyColor;
