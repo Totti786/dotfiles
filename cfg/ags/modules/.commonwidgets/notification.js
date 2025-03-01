@@ -106,6 +106,14 @@ export default ({
         onSecondaryClick: (self) => {
             destroyWithAnims();
         },
+		onPrimaryClick: (self) => {
+			if (notifObject.actions.length > 0) {
+				notifObject.invoke(notifObject.actions[1].id);
+			} else {
+				// Fallback behavior if no actions exist (e.g., dismiss notification)
+				destroyWithAnims();
+			}
+		},
         setup: (self) => {
             self.on("button-press-event", () => {
                 wholeThing.attribute.held = true;
