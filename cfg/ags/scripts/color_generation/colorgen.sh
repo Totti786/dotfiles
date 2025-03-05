@@ -30,6 +30,11 @@ apply_ags() {
     agsv1 run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
 }
 
+apply_qt() {
+  sh "$CONFIG_DIR/scripts/kvantum/materialQT.sh"          # generate kvantum theme
+  python "$CONFIG_DIR/scripts/kvantum/changeAdwColors.py" # apply config colors
+}
+
 # check if the file $STATE_DIR/user/colormode.txt exists. if not, create it. else, read it to $lightdark
 colormodefile="$STATE_DIR/user/colormode.txt"
 lightdark="dark"
@@ -82,6 +87,7 @@ elif [ "$backend" = "material" ]; then
     if [ "$2" = "--apply" ]; then
         cp "$CACHE_DIR"/user/generated/material_colors.scss "$STATE_DIR/scss/_material.scss"
         apply_ags &
+        apply_qt &
         apply_hypr
     fi
 elif [ "$backend" = "pywal" ]; then

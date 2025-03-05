@@ -180,7 +180,7 @@ let configOptions = {
         // Example: ['/usr/share/icons/Tela-nord/scalable/apps']
         'searchPaths': [''],
         'symbolicIconTheme': {
-            "dark": "Papirus",
+            "dark": "Papirus-Dark",
             "light": "Papirus-Light",
         },
         substitutions: {
