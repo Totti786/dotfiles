@@ -34,11 +34,11 @@ darker() {
 # This function reloads the icon theme.
 reload(){
 	if [[ "$XDG_SESSION_TYPE"  == "wayland" ]]; then
-		gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' &&
-		gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
+		gsettings set org.gnome.desktop.interface icon-theme 'Papirus' &&
+		gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
 	else
-		xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark" &&
-		xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"
+		xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus" &&
+		xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark"
 	fi
 }
 
