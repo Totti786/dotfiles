@@ -187,14 +187,14 @@ change_colors(){
 	if [[ -f "$hypr" ]]; then 
 	# hypr
 	cat > "$hypr" <<- EOF 
-		\$black		= ${bright_black:1}aa
-		\$red 		= ${bright_red:1}ff
-		\$green		= ${bright_green:1}ff
-		\$yellow 	= ${bright_yellow:1}ff
-		\$blue 		= ${bright_blue:1}ff
-		\$magenta 	= ${bright_magenta:1}ff
-		\$cyan 		= ${bright_cyan:1}ff
-		\$white     	= ${bright_white:1}ff
+		\$black		= rgba(${bright_black:1}aa)
+		\$red 		= rgba(${bright_red:1}ff)
+		\$green		= rgba(${bright_green:1}ff)
+		\$yellow 	= rgba(${bright_yellow:1}ff)
+		\$blue 		= rgba(${bright_blue:1}ff)
+		\$magenta 	= rgba(${bright_magenta:1}ff)
+		\$cyan 		= rgba(${bright_cyan:1}ff)
+		\$white     	= rgba(${bright_white:1}ff)
 		EOF
 	fi
 
