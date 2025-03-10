@@ -25,11 +25,11 @@
     # dynamic width from 0 to 300
     # width = (0, 300)
     # constant width of 300
-    width = (120, 450)
+    width = (160, 400)
 
     # The height of a single notification, excluding the frame.
     # dynamic height from 0 to 300
-    height = (40, 140)
+    height = (70, 140)
     # constant height of 300
     # height = 300
     # NOTE: Dunst from version 1.11 and older don't support dynamic height
@@ -112,7 +112,7 @@
     frame_width = 0
 
     # Defines color of the frame around the notification window.
-    frame_color = "#547489CF"
+    frame_color = "#6992A4CF"
 
     # Size of gap to display between notifications - requires a compositor.
     # If value is greater than 0, separator_height will be ignored and a border
@@ -324,7 +324,7 @@
     # * context_all: Open context menu for all notifications.
     # These values can be strung together for each mouse event, and
     # will be executed in sequence.
-    mouse_left_click = do_action4, close_current  
+    mouse_left_click = do_action, close_current  
     mouse_middle_click = do_action, close_current
     mouse_right_click = close_current
 
@@ -341,24 +341,24 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#061827ff"
-    foreground = "#f9fffb"
+    background = "#101a1aff"
+    foreground = "#f9fffc"
     timeout = 5
     # Icon for notifications with low urgency
     #default_icon = dialog-information
 
 [urgency_normal]
-    background = "#061827ff"
-    foreground = "#f9fffb"
+    background = "#101a1aff"
+    foreground = "#f9fffc"
     timeout = 20
     override_pause_level = 30
     # Icon for notifications with normal urgency
     #default_icon = dialog-information
 
 [urgency_critical]
-    background = "#061827ff"
-    foreground = "#f9fffb"
-    frame_color = "#547489CF"
+    background = "#101a1aff"
+    foreground = "#f9fffc"
+    frame_color = "#6992A4CF"
     timeout = 60
     #override_pause_level = 60
     # Icon for notifications with critical urgency
