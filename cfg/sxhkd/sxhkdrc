@@ -51,7 +51,7 @@ super + {r,b,y}
 
 # Launch Apps
 super + {e,f,w,o,v,p,z}
-	{exo-open --launch FileManager,exo-open --launch WebBrowser,geany,obs,copyq toggle,color-picker,gtk-launch vesktop || gtk-launch discord}
+	{exo-open --launch FileManager,exo-open --launch WebBrowser,geany,obs,copyq toggle,color-picker,discord}
 
 super + shift + {s,w,m,r}
 	{gtk-launch spotify-adblock || gtk-launch spotify,wpgtk --pick,wpgtk --reload,rofi-utils --record}
