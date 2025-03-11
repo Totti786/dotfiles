@@ -112,7 +112,21 @@ change_colors(){
 		-e "s/error_red=.*/error_red=${magenta}/g" \
 		-e "s/current_line_grey=.*/current_line_grey=${bg_lighter}/g" \
 		-e "s/selection_blue=.*/selection_blue=${white}/g"
-		
+	
+	if [[ -f "$hypr" ]]; then 
+	# hypr
+	cat > "$hypr" <<- EOF 
+		\$black		= rgba(${bright_black:1}aa)
+		\$red 		= rgba(${bright_red:1}ff)
+		\$green		= rgba(${bright_green:1}ff)
+		\$yellow 	= rgba(${bright_yellow:1}ff)
+		\$blue 		= rgba(${bright_blue:1}ff)
+		\$magenta 	= rgba(${bright_magenta:1}ff)
+		\$cyan 		= rgba(${bright_cyan:1}ff)
+		\$white     	= rgba(${bright_white:1}ff)
+		EOF
+	fi
+	
 	# copyq 
 	sed -i "$copyq" \
 		-e "s/bg=#.*/bg=${background}/g" \
@@ -182,20 +196,6 @@ change_colors(){
 	equalizer          = ${white:1}
 	misc               = ${red:1}
 	EOF
-	fi
-
-	if [[ -f "$hypr" ]]; then 
-	# hypr
-	cat > "$hypr" <<- EOF 
-		\$black		= rgba(${bright_black:1}aa)
-		\$red 		= rgba(${bright_red:1}ff)
-		\$green		= rgba(${bright_green:1}ff)
-		\$yellow 	= rgba(${bright_yellow:1}ff)
-		\$blue 		= rgba(${bright_blue:1}ff)
-		\$magenta 	= rgba(${bright_magenta:1}ff)
-		\$cyan 		= rgba(${bright_cyan:1}ff)
-		\$white     	= rgba(${bright_white:1}ff)
-		EOF
 	fi
 
 	#if [[ -f "$kvantum" ]]; then 
@@ -554,8 +554,8 @@ misc(){
 	    
 		gsettings set org.gnome.desktop.interface gtk-theme "Dummy"
 		gsettings set org.gnome.desktop.interface gtk-theme "FlatColor"
-		gsettings set org.gnome.desktop.interface color-scheme prefer-dark
-		gsettings set org.gnome.desktop.interface color-scheme prefer-light
+		#gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+		#gsettings set org.gnome.desktop.interface color-scheme prefer-light
 	fi
 }
 
