@@ -4,15 +4,15 @@
 # shortcut desktop entries for documents in the Zathura document viewer,
 # providing a convenient way to access and read PDF, EPUB, and CBZ files.
 
-# Dependencies: evince-thumbnailer (for PDF and CBZ thumbnails)
+# Dependencies: evince-thumbnailer or papaers-thumbnailer (for PDF and CBZ thumbnails)
 #				gnome-epub-thumbnailer (for EPUB thumbnails)
 #				zathura or sioyek (document viewer)
 #				rofi (application launcher)
 #				sqlite (to parse the history file)
 
 # Define cache and history file paths
-cached="$HOME/.cache/rofi-reader"
-config_file="$HOME/.cache/rofi-reader/config"
+cached="$HOME/.local/share/rofi-reader"
+config_file="$cached/config"
 zathura_history="$HOME/.local/share/zathura/bookmarks.sqlite"
 sioyek_history="$HOME/.local/share/sioyek/local.db"
 shortcuts="$HOME/.local/share/applications/books"
