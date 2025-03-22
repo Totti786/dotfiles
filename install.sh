@@ -22,7 +22,7 @@ declare -a minimal=(
 	rhythmbox rofi-wayland scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
 	picom-git plank playerctl polkit-gnome polybar python-pyxdg python-screeninfo python-wheel qbittorrent thunar-media-tags-plugin \
 	thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols \
-	ttf-nerd-fonts-symbols-common timeshift tumbler translate-shell viewnior wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
+	ttf-nerd-fonts-symbols-common timeshift tumbler translate-shell waypaper wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
 	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
 	xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh\
 	zsh-autosuggestions zsh-syntax-highlighting
@@ -42,7 +42,7 @@ declare -a wayland=(
 )
 
 declare -a aur=(
-	i3-resurrect aur/waypaper python-materialyoucolor-git mpv-thumbfast-git mpv-uosc-git \
+	i3-resurrect python-materialyoucolor-git mpv-thumbfast-git mpv-uosc-git \
 	ruby-fusuma ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl sioyek-git xiccd xqp zscroll-git
 )
 
