@@ -1,0 +1,13 @@
+[Unit]
+Description=Clight Service
+After=graphical.target
+
+[Service]
+[Service]
+ExecStart=/usr/bin/clight
+ExecStartPost=/bin/sh -c 'sleep 2; /usr/bin/busctl --expect-reply=false --user call org.clight.clight /org/clight/clight org.clight.clight Pause "b" true'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
