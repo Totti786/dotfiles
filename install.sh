@@ -37,8 +37,8 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	dart-sass grim hypridle hyprland hyprlock hyprpicker nwg-displays \
-	slurp swww ttf-readex-pro xdg-desktop-portal-hyprland python-pywayland wl-clipboard
+	dart-sass grim hypridle hyprland hyprlock hyprpicker nwg-displays slurp swww ttf-readex-pro \
+	xdg-desktop-portal-hyprland python-pywayland python-setproctitle wl-clipboard
 )
 
 declare -a aur=(
