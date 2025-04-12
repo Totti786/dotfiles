@@ -42,6 +42,7 @@ application/x-tar=xarchiver.desktop;
 image/jxl=viewnior.desktop;org.gnome.Loupe.desktop;
 image/avif=viewnior.desktop;
 application/zip=org.gnome.FileRoller.desktop;
+inode/directory=thunar.desktop;
 
 [Default Applications]
 x-scheme-handler/tg=userapp-Kotatogram Desktop-GRY061.desktop
@@ -72,7 +73,7 @@ image/x-xpixmap=org.gnome.Loupe.desktop
 image/vnd.microsoft.icon=org.gnome.Loupe.desktop
 image/webp=org.gnome.Loupe.desktop
 image/avif=org.gnome.Loupe.desktop
-inode/directory=Thunar.desktop
+inode/directory=thunar.desktop
 video/x-ogm+ogg=mpv.desktop
 video/x-matroska=mpv.desktop
 video/3gpp2=mpv.desktop
