@@ -8,46 +8,47 @@ else
 fi
 	
 material_pywal="$HOME/.cache/wal/material_colors.sh"
+material_qs="$HOME/.cache/wal/colors-qs.json"
 
-# Define the color manipulation functions using Pastel
+# Define color manipulation using Pastel
 primary_paletteKeyColor="$color1"
 secondary_paletteKeyColor="$color2"
 tertiary_paletteKeyColor="$color5"
 neutral_paletteKeyColor="$color4"
-neutral_variant_paletteKeyColor=$(pastel mix -f 0.5 "$color0" "$color8" | pastel format hex) # 50%
-background=$(pastel mix -f 0.8 "$color0" "$color8" | pastel format hex) # 80%
+neutral_variant_paletteKeyColor=$(pastel mix -f 0.5 "$color0" "$color8" | pastel format hex)
+background=$(pastel mix -f 0.8 "$color0" "$color8" | pastel format hex)
 onBackground="$color7"
-surface=$(pastel mix -f 0.7 "$color0" "$color8" | pastel format hex) # 70%
-surfaceDim=$(pastel mix -f 0.4 "$color0" "$color8" | pastel format hex) # 40%
+surface=$(pastel mix -f 0.7 "$color0" "$color8" | pastel format hex)
+surfaceDim=$(pastel mix -f 0.4 "$color0" "$color8" | pastel format hex)
 surfaceBright="$color8"
-surfaceContainerLowest="#FFFFFF"
-surfaceContainer=$(pastel mix -f 0.2 "$color0" "$color8" | pastel format hex) # 20%
-surfaceContainerLow=$(pastel mix -f 0.45 "$color0" "$color8" | pastel format hex) # Darken 10%
-surfaceContainerHigh=$(pastel lighten 0.1 "$color0" | pastel format hex) # Lighten 10%
-surfaceContainerHighest=$(pastel lighten 0.2 "$color0" | pastel format hex) # Lighten 20%
-onSurface=$(pastel mix -f 0.3 "$color7" "$color15" | pastel format hex) # 30%
-surfaceVariant=$(pastel darken 0.1 "$color1" | pastel format hex) # Darken 10%
+surfaceContainerLowest="#0e0e0e"
+surfaceContainer=$(pastel mix -f 0.2 "$color0" "$color8" | pastel format hex)
+surfaceContainerLow=$(pastel mix -f 0.45 "$color0" "$color8" | pastel format hex)
+surfaceContainerHigh=$(pastel lighten 0.1 "$color0" | pastel format hex)
+surfaceContainerHighest=$(pastel lighten 0.2 "$color0" | pastel format hex)
+onSurface=$(pastel mix -f 0.3 "$color7" "$color15" | pastel format hex)
+surfaceVariant=$(pastel darken 0.1 "$color1" | pastel format hex)
 onSurfaceVariant="$color7"
 inverseSurface="$color0"
-inverseOnSurface=$(pastel lighten 0.2 "$color3" | pastel format hex) # Lighten 20%
-outline=$(pastel lighten 0.2 "$color3" | pastel format hex) # Lighten 20%
+inverseOnSurface=$(pastel lighten 0.2 "$color3" | pastel format hex)
+outline=$(pastel lighten 0.2 "$color3" | pastel format hex)
 outlineVariant="$color5"
 shadow="#000000"
 scrim="#000000"
-surfaceTint=$(pastel lighten 0.2 "$color1" | pastel format hex) # Lighten 20%
-primary=$(pastel lighten 0.1 "$color1" | pastel format hex) # Lighten 10%
-onPrimary=$(pastel darken 0.2 "$color2" | pastel format hex) # Darken 20%
-primaryContainer=$(pastel darken 0.1 "$color4" | pastel format hex) # Darken 10%
-onPrimaryContainer=$(pastel lighten 0.4 "$color4" | pastel format hex) # Lighten 40%
+surfaceTint=$(pastel lighten 0.2 "$color1" | pastel format hex)
+primary=$(pastel lighten 0.1 "$color1" | pastel format hex)
+onPrimary=$(pastel darken 0.2 "$color2" | pastel format hex)
+primaryContainer=$(pastel darken 0.1 "$color4" | pastel format hex)
+onPrimaryContainer=$(pastel lighten 0.4 "$color4" | pastel format hex)
 inversePrimary=$(pastel complement "$color4" | pastel format hex)
-secondary=$(pastel lighten 0.1 "$(pastel saturate 0.2 "$color5" | pastel format hex)" | pastel format hex) # Lighten 10%
-onSecondary=$(pastel lighten 0.05 "$color7" | pastel format hex) # Lighten 5%
-secondaryContainer=$(pastel darken 0.05 "$color3" | pastel format hex) # Darken 5%
-onSecondaryContainer=$(pastel lighten 0.2 "$color5" | pastel format hex) # Lighten 20%
+secondary=$(pastel lighten 0.1 "$(pastel saturate 0.2 "$color5" | pastel format hex)" | pastel format hex)
+onSecondary=$(pastel lighten 0.05 "$color7" | pastel format hex)
+secondaryContainer=$(pastel darken 0.05 "$color3" | pastel format hex)
+onSecondaryContainer=$(pastel mix -f 0.8 "$color7" "$color3" | pastel format hex)
 tertiary="$color5"
-onTertiary=$(pastel darken 0.2 "$color2" | pastel format hex) # Darken 20%
-tertiaryContainer=$(pastel darken 0.1 "$color2" | pastel format hex) # Darken 10%
-onTertiaryContainer=$(pastel lighten 0.5 "$color4" | pastel format hex) # Lighten 50%
+onTertiary=$(pastel darken 0.2 "$color2" | pastel format hex)
+tertiaryContainer=$(pastel darken 0.1 "$color2" | pastel format hex)
+onTertiaryContainer=$(pastel lighten 0.5 "$color4" | pastel format hex)
 error="#FFB4AB"
 onError="#690005"
 errorContainer="#93000A"
@@ -120,4 +121,59 @@ term12="$color12"
 term13="$color13"
 term14="$color14"
 term15="$color15"
+EOF
+
+# Output in JSON format
+cat << EOF > "$material_qs"
+{
+  "background": "$background",
+  "error": "$error",
+  "error_container": "$errorContainer",
+  "inverse_on_surface": "$inverseOnSurface",
+  "inverse_primary": "$inversePrimary",
+  "inverse_surface": "$inverseSurface",
+  "on_background": "$onBackground",
+  "on_error": "$onError",
+  "on_error_container": "$onErrorContainer",
+  "on_primary": "$onPrimary",
+  "on_primary_container": "$onPrimaryContainer",
+  "on_primary_fixed": "$onPrimary",
+  "on_primary_fixed_variant": "$primaryContainer",
+  "on_secondary": "$onSecondary",
+  "on_secondary_container": "$onSecondaryContainer",
+  "on_secondary_fixed": "$onSecondary",
+  "on_secondary_fixed_variant": "$secondaryContainer",
+  "on_surface": "$onSurface",
+  "on_surface_variant": "$onSurfaceVariant",
+  "on_tertiary": "$onTertiary",
+  "on_tertiary_container": "$onTertiaryContainer",
+  "on_tertiary_fixed": "$onTertiary",
+  "on_tertiary_fixed_variant": "$tertiaryContainer",
+  "outline": "$outline",
+  "outline_variant": "$outlineVariant",
+  "primary": "$primary",
+  "primary_container": "$primaryContainer",
+  "primary_fixed": "$onPrimaryContainer",
+  "primary_fixed_dim": "$primary",
+  "scrim": "$scrim",
+  "secondary": "$secondary",
+  "secondary_container": "$secondaryContainer",
+  "secondary_fixed": "$onSecondaryContainer",
+  "secondary_fixed_dim": "$secondary",
+  "shadow": "$shadow",
+  "surface": "$surface",
+  "surface_bright": "$surfaceBright",
+  "surface_container": "$surfaceContainer",
+  "surface_container_high": "$surfaceContainerHigh",
+  "surface_container_highest": "$surfaceContainerHighest",
+  "surface_container_low": "$surfaceContainerLow",
+  "surface_container_lowest": "$surfaceContainerLowest",
+  "surface_dim": "$surfaceDim",
+  "surface_tint": "$surfaceTint",
+  "surface_variant": "$surfaceVariant",
+  "tertiary": "$tertiary",
+  "tertiary_container": "$tertiaryContainer",
+  "tertiary_fixed": "$onTertiaryContainer",
+  "tertiary_fixed_dim": "$tertiary"
+}
 EOF
