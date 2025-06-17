@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 current_day=$(date +'%m-%d-%Y-%A')
-temp_dir_base="$HOME/Pictures/Screenshots/Temp"
+temp_dir_base="$HOME/.local/share/proto-recall"
 temp_dir="$temp_dir_base/$current_day"
-video_dir="$HOME/Videos/TimeLapse"
+video_dir="$HOME/Videos/.timeLapse"
 
 ffmpeg_config=(-vaapi_device /dev/dri/renderD128 -vcodec hevc_vaapi -vf 'format=nv12|vaapi,hwupload')
 
@@ -38,16 +38,12 @@ shoot(){
 	        grim "$temp_dir/$time.png"
 	    fi
 	
-	    sleep 45
+	    sleep 30
 	done
 }
 
 merge(){
-	
-	if [[ ! -d "$video_dir" ]]; then
-		mkdir -p "$video_dir"
-	fi
-	
+
 	if ! command -v ffmpeg &> /dev/null; then
 		echo "FFmpeg is not installed!"
 		exit 1
@@ -60,18 +56,26 @@ merge(){
 	
 		# Check if the directory is not for the current day
 		if [[ "$dir_name" != "$current_day" ]]; then
+			year="$(echo $dir_name | cut -d- -f3)"
+			month="$(echo $dir_name | cut -d- -f1)"
+			month_name="$(date -d "$month_num" +%B)"
+			file_dir="$video_dir/$year/$month - $month_name"
+
+			if [[ ! -d "$file_dir" ]]; then
+				mkdir -p "$file_dir"
+			fi
+
 			# Create a time-lapse video using ffmpeg
-			ffmpeg -framerate 10 -pattern_type glob -i "$daily_dir/*.png"  ${ffmpeg_config[@]} "$video_dir/$dir_name.mp4"
+			ffmpeg -framerate 10 -pattern_type glob -i "$daily_dir/*.png" ${ffmpeg_config[@]} "$file_dir/$dir_name.mp4"
 	
 			# Check if the video file was created successfully
-			if [ -f "$video_dir/$dir_name.mp4" ]; then
-				# Optionally, delete the images in the directory
+			if [ -f "$file_dir/$dir_name.mp4" ]; then
+				# Delete the images in the directory
 				rm -R "$daily_dir"
 			fi
 		fi
 	done
 }
-
 
 if [[ "$1" == "--shoot" ]]; then
 	shoot & disown
@@ -80,6 +84,6 @@ elif  [[ "$1" == "--merge" ]]; then
 else
 	echo "Usage: ${0##*/} [Options]"
     echo "Options:"
-    echo "  --shoot             Take periodic screenshots"
+    echo "  --shoot            Take periodic screenshots"
     echo "  --merge            Create a timelapse video"
 fi
