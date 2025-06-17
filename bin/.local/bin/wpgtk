@@ -9,6 +9,8 @@
 
 # Color files
 config="$HOME/.config"
+data_dir="$HOME/.cache/wal"
+config_file="$data_dir/wpg-conf.sh"
 alacritty="$config/alacritty/colors.toml"
 polybar="$config/polybar/colors.ini"
 rofi="$config/rofi/themes/colors.rasi"
@@ -21,7 +23,9 @@ spotify="$config/spicetify/Themes/pywal/color.ini"
 hypr="$config/hypr/colors.conf"
 kde="$config/kdeglobals"
 Wallpapers="$HOME/Pictures/Wallpapers"
-alpha='FF'
+
+
+[[ -f "$config_file" ]] && . "${config_file}" || echo  "# wpgtk config file\nalpha='FF'" >> "${config_file}"
 
 ## Change colors
 change_colors(){
@@ -115,14 +119,14 @@ change_colors(){
 	if [[ -f "$hypr" ]]; then 
 	# hypr	
 	cat > "$hypr" <<- EOF 
-	\$black		= rgba(${bright_black:1}aa)
-	\$red 		= rgba(${bright_red:1}ff)
-	\$green		= rgba(${bright_green:1}ff)
-	\$yellow 	= rgba(${bright_yellow:1}ff)
-	\$blue 		= rgba(${bright_blue:1}ff)
-	\$magenta 	= rgba(${bright_magenta:1}ff)
-	\$cyan 		= rgba(${bright_cyan:1}ff)
-	\$white     	= rgba(${bright_white:1}ff)
+	\$black		= rgba(${black:1}aa)
+	\$red 		= rgba(${red:1}ff)
+	\$green		= rgba(${green:1}ff)
+	\$yellow 	= rgba(${yellow:1}ff)
+	\$blue 		= rgba(${blue:1}ff)
+	\$magenta 	= rgba(${magenta:1}ff)
+	\$cyan 		= rgba(${cyan:1}ff)
+	\$white     	= rgba(${white:1}ff)
 	EOF
 	fi
 	
@@ -315,14 +319,15 @@ wall() {
 		elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
             swww query || swww-daemon -q & disown
 			swww img "$wall" \
-				--transition-fps 60 \
-			    --transition-type any \
-			    --transition-duration 2 & disown
+				--transition-step 120 \
+				--transition-fps 120 \
+				--transition-type random \
+				--transition-duration 1 & disown
 	    fi
     fi
 
-    wpg -A "$wall" && wpg -s "$wall"
-    rm "${wall}_wal_sample.png"
+	wpg -A "$wall" && wpg -s "$wall"
+	rm "${wall}_wal_sample.png"
     exit
 }
 
@@ -333,11 +338,13 @@ restore() {
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
 		swww query || swww-daemon -q & disown
 		if [[ "$(swww query | awk '{print $8}')" != "$wallpaper" ]]; then
-		main &
+		#main &
 		swww img "$wallpaper" \
-			--transition-fps 60 \
+			--transition-step 100 \
+			--transition-fps 120 \
+			--transition-angle 30 \
 			--transition-type any \
-			--transition-duration 2 & disown
+			--transition-duration 1 & disown
 		fi
     fi
 }
@@ -425,8 +432,15 @@ misc(){
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
 		# ags
-		if [[ -d "$HOME/.config/ags/scss/" ]]; then
+		if [[ -d "$HOME/.config/ags/scss/" ]] && [[ -n $(pgrep ags) ]]; then
 			"$HOME"/.config/ags/scripts/color_generation/colorgen.sh "$wallpaper" --apply --smart >/dev/null 2>&1
+	    fi
+		
+		# Quickshell
+		if [[ -n $(pgrep qs) ]]; then
+			"$HOME"/.config/quickshell/scripts/least_busy_region.py --screen-width "1920" \
+				--screen-height "1080" --width 300 --height 200 \
+				"$wallpaper" > "$HOME"/.local/state/quickshell/user/generated/wallpaper/least_busy_region.json
 	    fi
 	    
 		gsettings set org.gnome.desktop.interface gtk-theme "Dummy"
@@ -436,8 +450,8 @@ misc(){
 
 partial(){
 	change_colors
-	qt_colors
 	misc
+	qt_colors
 	pkill dunst; dunst > /dev/null 2>&1 & disown
 	check spicetify -q refresh &
 	check pywalfox update >/dev/null 2>&1 &
@@ -460,7 +474,6 @@ run(){
 		echo "[!] 'wpgtk' is not installed."
 		echo "Installing from the AUR..." 
 		yay -S wpgtk --noconfirm
-		wpgConfig
 		# this command installs gtk, and openbox themes
 		wpg-install.sh -g -o
 	fi
