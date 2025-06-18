@@ -5,7 +5,7 @@
 [[ -z "$bar_style" ]] && bar_style="base"
 
 toggle_transparency(){
-	wpgtk_dir="$HOME/.local/bin/wpgtk"
+	wpgtk_dir="$HOME/.cache/wal/wpg-conf.sh"
 	pipe_dir="$HOME/.config/jgmenu/pipemenus"
 	if [[ "$1" == "off" ]]; then 
 		compositor --disable-opacity
