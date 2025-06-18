@@ -358,12 +358,12 @@ setup(){
 
 random(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
-        if command -v waypaper >/dev/null 2>&1; then
-			waypaper --random
-		else
+        #if command -v waypaper >/dev/null 2>&1; then
+		#	waypaper --random
+		#else
             image="$(find "$Wallpapers" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -exec shuf -ezn 1 {} + | xargs -0)"
             wall "$image"
-        fi
+        #fi
 	else
 		notify-send -u low -r 43 "No Wallpapers Were Found in:" "~/Pictures/Wallpapers"
 	fi
@@ -430,17 +430,12 @@ misc(){
 		conky.sh restart &
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
-	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-		# ags
-		if [[ -d "$HOME/.config/ags/scss/" ]] && [[ -n $(pgrep ags) ]]; then
-			"$HOME"/.config/ags/scripts/color_generation/colorgen.sh "$wallpaper" --apply --smart >/dev/null 2>&1
-	    fi
-		
+	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then	
 		# Quickshell
-		if [[ -n $(pgrep qs) ]]; then
+		if [[ -n $(pgrep -f "qs|quickshell") ]]; then
 			"$HOME"/.config/quickshell/scripts/least_busy_region.py --screen-width "1920" \
 				--screen-height "1080" --width 300 --height 200 \
-				"$wallpaper" > "$HOME"/.local/state/quickshell/user/generated/wallpaper/least_busy_region.json
+				"$wallpaper" > "$HOME"/.local/state/quickshell/user/generated/wallpaper/least_busy_region.json &
 	    fi
 	    
 		gsettings set org.gnome.desktop.interface gtk-theme "Dummy"
