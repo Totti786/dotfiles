@@ -37,13 +37,14 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	dart-sass grim hypridle hyprland hyprlock hyprpicker nwg-displays slurp swww quickshell python-opencv \
+	dart-sass grim hypridle hyprland hyprlock hyprpicker nwg-displays sassc slurp swappy swww quickshell python-opencv \
 	xdg-desktop-portal-hyprland python-pywayland python-setproctitle wl-clipboard syntax-highlighting
 )
 
 declare -a aur=(
-	i3-resurrect python-materialyoucolor-git mpv-thumbfast-git mpv-uosc-git \
-	ruby-fusuma ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl sioyek-git xiccd xqp zscroll-git
+	i3-resurrect python-materialyoucolor-git mpv-thumbfast-git mpv-uosc-git ruby-fusuma \
+	ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl sioyek-git ttf-rubik-vf ttf-gabarito-git \
+	xiccd xqp zscroll-git
 )
 
 declare -a additional=(
