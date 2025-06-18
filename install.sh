@@ -216,7 +216,7 @@ install_sddm(){
 
 file_check(){
 	# Define directories to search
-	directories=(ags bspwm openbox i3 polybar jgmenu rofi)
+	directories=(quickshell hypr bspwm openbox i3 polybar jgmenu rofi)
 	
 	# Find and make script files executable
 	for dir in "${directories[@]}"; do
@@ -254,7 +254,7 @@ wallpapers() {
 
 update(){
 	## update dependencies and install new ones
-	install_minimal
+	install_wayland
 	progressBar "Updating... "
 	## backup weather info file
 	cp "$HOME"/.local/bin/info "$HOME"/.cache/info
