@@ -130,6 +130,17 @@ Scope {
                             ButtonGroup {
                                 QuickToggleButton {
                                     toggled: false
+                                    buttonIcon: "system_update_alt"
+                                    onClicked: {
+                                        Hyprland.dispatch(`exec alacritty --hold -e ~/.config/quickshell/scripts/dots-update.sh --dots`)
+                                        Hyprland.dispatch(`global quickshell:sidebarRightClose`)
+                                    }
+                                    StyledToolTip {
+                                        content: qsTr("Update System & Configs")
+                                    }
+                                }
+                                QuickToggleButton {
+                                    toggled: false
                                     buttonIcon: "restart_alt"
                                     onClicked: {
                                         Hyprland.dispatch("reload")
