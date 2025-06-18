@@ -37,8 +37,8 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	dart-sass grim hypridle hyprland hyprlock hyprpicker nwg-displays slurp swww ttf-readex-pro \
-	xdg-desktop-portal-hyprland python-pywayland python-setproctitle wl-clipboard
+	dart-sass grim hypridle hyprland hyprlock hyprpicker nwg-displays slurp swww quickshell python-opencv \
+	xdg-desktop-portal-hyprland python-pywayland python-setproctitle wl-clipboard syntax-highlighting
 )
 
 declare -a aur=(
@@ -139,7 +139,6 @@ change_theme(){
 	if [[ -d  /usr/share/icons/Papirus ]]; then
 		sudo chgrp -R $(whoami) /usr/share/icons/Papirus
 		sudo chmod -R ug+rwX /usr/share/icons/Papirus
-		sudo ln -s /usr/share/icons/Papirus-Dark "$HOME"/.local/share/icons/Papirus
 	fi
 	}
 
