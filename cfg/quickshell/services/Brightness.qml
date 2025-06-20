@@ -1,4 +1,4 @@
-pragma Singleton
+	pragma Singleton
 pragma ComponentBehavior: Bound
 
 // From https://github.com/caelestia-dots/shell/ (`quickshell` branch) with modifications.
@@ -125,6 +125,20 @@ Singleton {
 
         BrightnessMonitor {}
     }
+    
+	property string brightnessPath: "/sys/class/backlight/intel_backlight/brightness"
+	
+	FileView {
+	    id: brightnessFile
+	    path: root.brightnessPath
+	    watchChanges: true
+	
+	    onFileChanged: {
+			for (let m of root.monitors) {
+				m.initialize();
+			}
+	    }
+	}
 
     IpcHandler {
         target: "brightness"
