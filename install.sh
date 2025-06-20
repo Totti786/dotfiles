@@ -37,7 +37,7 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	dart-sass grim hypridle hyprland hyprlock hyprpicker nwg-displays sassc slurp swappy swww quickshell python-opencv \
+	cliphist dart-sass grim hypridle hyprland hyprlock hyprpicker nwg-displays sassc slurp swappy swww quickshell python-opencv \
 	xdg-desktop-portal-hyprland python-pywayland python-setproctitle wl-clipboard syntax-highlighting
 )
 
