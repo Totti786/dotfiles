@@ -433,6 +433,7 @@ misc(){
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then	
 		# Quickshell
 		if [[ -n $(pgrep -f "qs|quickshell") ]]; then
+			ln -sf "$HOME"/.cache/wal/colors-qs.json "$HOME"/.local/state/quickshell/user/generated/colors.json
 			"$HOME"/.config/quickshell/scripts/least_busy_region.py --screen-width "1920" \
 				--screen-height "1080" --width 300 --height 200 \
 				"$wallpaper" > "$HOME"/.local/state/quickshell/user/generated/wallpaper/least_busy_region.json &
