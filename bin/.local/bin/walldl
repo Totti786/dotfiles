@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# Configuration
+APIKEY="u4YNdj6N0M7nkrM2Pbz7fHAY0EYIT5WL"
+LOCATION="$HOME/Pictures/Wallpapers/walldl"
+CATEGORIES="110"         # General, Anime, People
+FILTER="100"             # 1st=SFW, 2nd=Sketchy, 3rd=NSFW
+RESOLUTION="1920x1080"   # Preferred resolution
+ATLEAST="1920x1080"      # Minimum resolution
+ASPECTRATIO="16x9"       # Aspect ratio
+MODE="relevance"           # relevance, random, views, favorites, toplist
+TOPRANGE="1w"            # 1d, 3d, 1w,1M, 3M, 6M, 1y
+ORDER="desc"             # asc or desc
+ID="2kmw8g"
+THUMBS=64                # Results per API page (max 64)
+MAX_PARALLEL=10          # Number of concurrent downloads
+
+# Number of wallpapers to download (default: 1)
+: ${WPNUM:=${1:-1}}
+
+# Optional tag (second argument)
+TAG=${2:-}
+[[ -n "$TAG" ]] && MODE="favorites" && LOCATION="$HOME/Pictures/Wallpapers/walldl/$TAG"
+TAG=$(echo "$TAG" | tr ' ' '+')
+
+# Prepare download folder
+mkdir -p "$LOCATION"
+
+downloaded_count=0
+page=1
+
+# Download function to be run in parallel
+download_wallpaper() {
+    local url="$1"
+    local path="$2"
+    local fname
+    fname=$(basename "$path")
+
+    echo "Downloading: $fname"
+    curl -s -o "$path" "$url" #&& notify-send "Wallpaper Downloaded" "$fname"
+}
+
+while (( downloaded_count < WPNUM )); do
+    SEED=$((RANDOM + RANDOM))
+    URL="https://wallhaven.cc/api/v1/search"
+    URL+="?categories=$CATEGORIES"
+    URL+="&purity=$FILTER"
+    #URL+="&resolutions=$RESOLUTION"
+    URL+="&atleast=$ATLEAST"
+    #URL+="&ratios=$ASPECTRATIO"
+    URL+="&sorting=$MODE"
+    URL+="&topRange=$TOPRANGE"
+    URL+="&order=$ORDER"
+    URL+="&page=$page"
+    URL+="&seed=$SEED"
+
+    [[ -n "$TAG" ]] && URL+="&q=$TAG"
+
+    TMPFILE=$(mktemp)
+    curl -s -H "X-API-Key: $APIKEY" "$URL" -o "$TMPFILE"
+
+    for ((i=0; i<THUMBS && downloaded_count<WPNUM; i++)); do
+        IMGURL=$(jq -r ".data[$i].path" "$TMPFILE")
+        [[ "$IMGURL" == "null" || -z "$IMGURL" ]] && continue
+
+        FILENAME=$(basename "$IMGURL")
+        FILEPATH="$LOCATION/$FILENAME"
+
+        if [[ -f "$FILEPATH" ]]; then
+            echo "Already exists: $FILENAME"
+            continue
+        fi
+
+        download_wallpaper "$IMGURL" "$FILEPATH" &
+
+        ((downloaded_count++))
+
+        # Limit concurrent jobs
+        if (( downloaded_count % MAX_PARALLEL == 0 )); then
+            wait
+        fi
+    done
+
+    rm -f "$TMPFILE"
+    ((page++))
+done
+
+# Wait for any remaining downloads
+wait
+
+notify-send "Download Complete" "$downloaded_count wallpapers saved to $LOCATION"
