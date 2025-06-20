@@ -13,7 +13,7 @@ elif [ "$1" == "--full" ]; then
 	window.opacity=0.6 font.size=14 "${@:2}"
 elif [ "$1" == "--drop" ]; then 
 	if [ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]; then
-		hyprctl dispatch exec "[workspace special:drop;float;size 1200 500;move 18.5% 4%]" "alacritty --class 'drop,drop' --config-file $CONFIG ${@:2}"
+		hyprctl dispatch exec "[workspace special:drop;float;size 1200 500;move 18.5% 4.8%]" "alacritty --class 'drop,drop' --config-file $CONFIG ${@:2}"
 	elif [ "$XDG_CURRENT_DESKTOP" == "bspwm" ]; then 
 		tdrop -t -a -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'drop,drop' --config-file "$CONFIG" "${@:2}"
 	else
