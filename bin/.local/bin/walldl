@@ -8,7 +8,7 @@ FILTER="100"             # 1st=SFW, 2nd=Sketchy, 3rd=NSFW
 RESOLUTION="1920x1080"   # Preferred resolution
 ATLEAST="1920x1080"      # Minimum resolution
 ASPECTRATIO="16x9"       # Aspect ratio
-MODE="relevance"           # relevance, random, views, favorites, toplist
+MODE="toplist"           # relevance, random, views, favorites, toplist
 TOPRANGE="1w"            # 1d, 3d, 1w,1M, 3M, 6M, 1y
 ORDER="desc"             # asc or desc
 ID="2kmw8g"
