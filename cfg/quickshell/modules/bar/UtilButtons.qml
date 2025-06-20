@@ -23,7 +23,7 @@ Item {
             visible: ConfigOptions.bar.utilButtons.showScreenSnip
             sourceComponent: CircleUtilButton {
                 Layout.alignment: Qt.AlignVCenter
-                onClicked: Hyprland.dispatch("exec hyprshot --freeze --clipboard-only --mode region --silent")
+                onClicked: Hyprland.dispatch("exec shot --area")
                 MaterialSymbol {
                     horizontalAlignment: Qt.AlignHCenter
                     fill: 1
@@ -39,7 +39,7 @@ Item {
              visible: ConfigOptions.bar.utilButtons.showColorPicker
              sourceComponent: CircleUtilButton {
                  Layout.alignment: Qt.AlignVCenter
-                 onClicked: Hyprland.dispatch("exec hyprpicker -a")
+                 onClicked: Hyprland.dispatch("exec color-picker")
                  MaterialSymbol {
                      horizontalAlignment: Qt.AlignHCenter
                      fill: 1
