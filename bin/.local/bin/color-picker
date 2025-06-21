@@ -10,7 +10,7 @@ pick_color() {
             echo "$color" | tr -d "\n" | xclip -selection clipboard
         fi
 
-        convert -size 48x48 xc:"$color" "$image"
+        magick -size 48x48 xc:"$color" "$image"
         notify-send -a 'Color Picker' -u low -i "$image" "$color"
     fi
 }
