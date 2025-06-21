@@ -1,4 +1,4 @@
-	pragma Singleton
+pragma Singleton
 pragma ComponentBehavior: Bound
 
 // From https://github.com/caelestia-dots/shell/ (`quickshell` branch) with modifications.
