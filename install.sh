@@ -42,7 +42,7 @@ declare -a wayland=(
 )
 
 declare -a aur=(
-	i3-resurrect python-materialyoucolor-git mpv-thumbfast-git mpv-uosc-git ruby-fusuma \
+	better-control-git i3-resurrect python-materialyoucolor-git mpv-thumbfast-git mpv-uosc-git ruby-fusuma \
 	ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl sioyek-git ttf-rubik-vf ttf-gabarito-git \
 	xiccd xqp zscroll-git
 )
