@@ -1,12 +1,12 @@
-import QtQuick
-import Quickshell
 pragma Singleton
 pragma ComponentBehavior: Bound
+import QtQuick
+import Quickshell
 
 Singleton {
     property QtObject policies: QtObject {
         property int ai: 1 // 0: No | 1: Yes | 2: Local
-        property int weeb: 1 // 0: No | 1: Open | 2: Closet
+        property int weeb: 0 // 0: No | 1: Open | 2: Closet
     }
 
     property QtObject ai: QtObject {
@@ -14,27 +14,29 @@ Singleton {
     }
 
     property QtObject appearance: QtObject {
-        property int fakeScreenRounding: 2 // 0: None | 1: Always | 2: When not fullscreen
+        property int fakeScreenRounding: 1 // 0: None | 1: Always | 2: When not fullscreen
         property bool transparency: false
         property QtObject palette: QtObject {
             property string type: "auto" // Allowed: auto, scheme-content, scheme-expressive, scheme-fidelity, scheme-fruit-salad, scheme-monochrome, scheme-neutral, scheme-rainbow, scheme-tonal-spot
         }
     }
 
-    property QtObject audio: QtObject { // Values in %
-        property QtObject protection: QtObject { // Prevent sudden bangs
-            property bool enable: true
+    property QtObject audio: QtObject {
+        // Values in %
+        property QtObject protection: QtObject {
+            // Prevent sudden bangs
+            property bool enable: false
             property real maxAllowedIncrease: 10
             property real maxAllowed: 90 // Realistically should already provide some protection when it's 99...
         }
     }
 
     property QtObject apps: QtObject {
-        property string bluetooth: "kcmshell6 kcm_bluetooth"
-        property string network: "plasmawindowed org.kde.plasma.networkmanagement"
-        property string networkEthernet: "kcmshell6 kcm_networkmanagement"
-        property string taskManager: "plasma-systemmonitor --page-name Processes"
-        property string terminal: "kitty -1" // This is only for shell actions
+        property string bluetooth: "better-control -b"
+        property string network: "better-control -w"
+        property string networkEthernet: "nm-connection-editor"
+        property string taskManager: "missioncenter"
+        property string terminal: "alacritty" // This is only for shell actions
     }
 
     property QtObject background: QtObject {
@@ -50,24 +52,25 @@ Singleton {
         property bool showBackground: true
         property bool verbose: true
         property QtObject resources: QtObject {
-            property bool alwaysShowSwap: true
-            property bool alwaysShowCpu: false
+            property bool alwaysShowSwap: false
+            property bool alwaysShowCpu: true
         }
         property list<string> screenList: [] // List of names, like "eDP-1", find out with 'hyprctl monitors' command
         property QtObject utilButtons: QtObject {
             property bool showScreenSnip: true
-            property bool showColorPicker: false
+            property bool showColorPicker: true
             property bool showMicToggle: false
-            property bool showKeyboardToggle: true
+            property bool showKeyboardToggle: false
+            property bool showDarkModeToggle: false
         }
         property QtObject tray: QtObject {
-            property bool monochromeIcons: true
+            property bool monochromeIcons: false
         }
         property QtObject workspaces: QtObject {
             property int shown: 10
             property bool showAppIcons: true
             property bool alwaysShowNumbers: false
-            property int showNumberDelay: 300 // milliseconds
+            property int showNumberDelay: 50 // milliseconds
         }
     }
 
@@ -83,9 +86,7 @@ Singleton {
         property bool pinnedOnStartup: false
         property bool hoverToReveal: false // When false, only reveals on empty workspace
         property list<string> pinnedApps: [ // IDs of pinned entries
-            "org.kde.dolphin",
-            "kitty",
-        ]
+            "org.kde.dolphin", "kitty",]
     }
 
     property QtObject language: QtObject {
@@ -123,7 +124,7 @@ Singleton {
     property QtObject search: QtObject {
         property int nonAppResultDelay: 30 // This prevents lagging when typing
         property string engineBaseUrl: "https://www.google.com/search?q="
-        property list<string> excludedSites: [ "quora.com" ]
+        property list<string> excludedSites: ["quora.com"]
         property bool sloppy: false // Uses levenshtein distance based scoring instead of fuzzy sort. Very weird.
         property QtObject prefix: QtObject {
             property string action: "/"
@@ -148,7 +149,7 @@ Singleton {
 
     property QtObject time: QtObject {
         // https://doc.qt.io/qt-6/qtime.html#toString
-        property string format: "hh:mm"
+        property string format: "h:mm AP"
         property string dateFormat: "dddd, dd/MM"
     }
 
@@ -160,5 +161,4 @@ Singleton {
     property QtObject hacks: QtObject {
         property int arbitraryRaceConditionDelay: 20 // milliseconds
     }
-
 }

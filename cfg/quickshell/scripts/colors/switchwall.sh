@@ -25,15 +25,15 @@ handle_kde_material_you_colors() {
 }
 
 pre_process() {
-    local mode_flag="$1"
-    # Set GNOME color-scheme if mode_flag is dark or light
-    if [[ "$mode_flag" == "dark" ]]; then
-        gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-        gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
-    elif [[ "$mode_flag" == "light" ]]; then
-        gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
-        gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3'
-    fi
+    #local mode_flag="$1"
+    ## Set GNOME color-scheme if mode_flag is dark or light
+    #if [[ "$mode_flag" == "dark" ]]; then
+        #gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+        #gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
+    #elif [[ "$mode_flag" == "light" ]]; then
+        #gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+        #gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3'
+    #fi
 
     if [ ! -d "$CACHE_DIR"/user/generated ]; then
         mkdir -p "$CACHE_DIR"/user/generated
@@ -48,10 +48,10 @@ post_process() {
     handle_kde_material_you_colors &
 
     # Determine the largest region on the wallpaper that's sufficiently un-busy to put widgets in
-    if [ ! -f "$MATUGEN_DIR/scripts/least_busy_region.py" ]; then
+    if [ ! -f "$CONFIG_DIR/scripts/least_busy_region.py" ]; then
         echo "Error: least_busy_region.py script not found in $MATUGEN_DIR/scripts/"
     else
-        "$MATUGEN_DIR/scripts/least_busy_region.py" \
+        "$CONFIG_DIR/scripts/least_busy_region.py" \
             --screen-width "$screen_width" --screen-height "$screen_height" \
             --width 300 --height 200 \
             "$wallpaper_path" > "$STATE_DIR"/user/generated/wallpaper/least_busy_region.json

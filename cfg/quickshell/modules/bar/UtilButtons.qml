@@ -11,6 +11,7 @@ Item {
     id: root
     property bool borderless: ConfigOptions.bar.borderless
     implicitWidth: rowLayout.implicitWidth + rowLayout.spacing * 2
+    implicitHeight: rowLayout.implicitHeight
 
     RowLayout {
         id: rowLayout
@@ -23,7 +24,7 @@ Item {
             visible: ConfigOptions.bar.utilButtons.showScreenSnip
             sourceComponent: CircleUtilButton {
                 Layout.alignment: Qt.AlignVCenter
-                onClicked: Hyprland.dispatch("exec shot --area")
+                onClicked: Quickshell.execDetached(["bash", "-c", `shot --area`])
                 MaterialSymbol {
                     horizontalAlignment: Qt.AlignHCenter
                     fill: 1
@@ -34,21 +35,21 @@ Item {
             }
         }
 
-         Loader {
-             active: ConfigOptions.bar.utilButtons.showColorPicker
-             visible: ConfigOptions.bar.utilButtons.showColorPicker
-             sourceComponent: CircleUtilButton {
-                 Layout.alignment: Qt.AlignVCenter
-                 onClicked: Hyprland.dispatch("exec color-picker")
-                 MaterialSymbol {
-                     horizontalAlignment: Qt.AlignHCenter
-                     fill: 1
-                     text: "colorize"
-                     iconSize: Appearance.font.pixelSize.large
-                     color: Appearance.colors.colOnLayer2
-                 }
-             }
-         }
+        Loader {
+            active: ConfigOptions.bar.utilButtons.showColorPicker
+            visible: ConfigOptions.bar.utilButtons.showColorPicker
+            sourceComponent: CircleUtilButton {
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: Quickshell.execDetached(["bash", "-c", `color-picker`])
+                MaterialSymbol {
+                    horizontalAlignment: Qt.AlignHCenter
+                    fill: 1
+                    text: "colorize"
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
+                }
+            }
+        }
 
         Loader {
             active: ConfigOptions.bar.utilButtons.showKeyboardToggle
@@ -76,6 +77,28 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     fill: 0
                     text: Pipewire.defaultAudioSource?.audio?.muted ? "mic_off" : "mic"
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
+                }
+            }
+        }
+
+        Loader {
+            active: ConfigOptions.bar.utilButtons.showDarkModeToggle
+            visible: ConfigOptions.bar.utilButtons.showDarkModeToggle
+            sourceComponent: CircleUtilButton {
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: event => {
+                    if (Appearance.m3colors.darkmode) {
+                        Hyprland.dispatch(`exec ${Directories.wallpaperSwitchScriptPath} --mode light --noswitch`);
+                    } else {
+                        Hyprland.dispatch(`exec ${Directories.wallpaperSwitchScriptPath} --mode dark --noswitch`);
+                    }
+                }
+                MaterialSymbol {
+                    horizontalAlignment: Qt.AlignHCenter
+                    fill: 0
+                    text: Appearance.m3colors.darkmode ? "light_mode" : "dark_mode"
                     iconSize: Appearance.font.pixelSize.large
                     color: Appearance.colors.colOnLayer2
                 }

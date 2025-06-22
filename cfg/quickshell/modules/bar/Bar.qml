@@ -99,7 +99,7 @@ Scope {
                             Hyprland.dispatch('global quickshell:sidebarLeftOpen')
                         }
                         else if (event.button === Qt.RightButton) {
-							Hyprland.dispatch('exec clight.sh --capture')
+			    Quickshell.execDetached(["bash", "-c", `clight.sh --capture`])
 			}
                     }
                     // Scroll to change brightness

@@ -27,7 +27,7 @@ Singleton {
     property string notificationsPath: FileUtils.trimFileProtocol(`${Directories.cache}/notifications/notifications.json`)
     property string generatedMaterialThemePath: FileUtils.trimFileProtocol(`${Directories.state}/user/generated/colors.json`)
     property string cliphistDecode: FileUtils.trimFileProtocol(`/tmp/quickshell/media/cliphist`)
-    property string wallpaperSwitchScriptPath: "wpgtk --set"
+    property string wallpaperSwitchScriptPath: FileUtils.trimFileProtocol(`${Directories.config}/quickshell/scripts/colors/switchwall.sh`)
     // Cleanup on init
     Component.onCompleted: {
         Hyprland.dispatch(`exec mkdir -p '${stateWallPath}'`)
