@@ -20,7 +20,7 @@ QuickToggleButton {
     }
     Process {
         id: nightLightOn
-        command: ["gammastep"]
+        command: ["gammastep", "-PO 4500"]
     }
     Process {
         id: nightLightOff

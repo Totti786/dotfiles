@@ -306,7 +306,11 @@ Scope {
                         }
                         else if (event.button === Qt.RightButton) {
                             MprisController.activePlayer.togglePlaying()
-                        }
+                        }else if (event.button === Qt.BackButton) {
+							MprisController.activePlayer.previous();
+						} else if (event.button === Qt.ForwardButton) {
+							MprisController.activePlayer.next();
+						}
                     }
                     // Scroll to change volume
                     WheelHandler {
