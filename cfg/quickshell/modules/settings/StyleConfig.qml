@@ -18,7 +18,7 @@ ContentPage {
     Process {
         id: konachanWallProc
         property string status: ""
-        command: ["bash", "-c", FileUtils.trimFileProtocol(`${Directories.config}/quickshell/scripts/colors/random_konachan_wall.sh`)]
+        command: ["bash", "-c", `wpgtk --random`]
         stdout: SplitParser {
             onRead: data => {
                 console.log(`Konachan wall proc output: ${data}`);
@@ -75,13 +75,13 @@ ContentPage {
                     id: rndWallBtn
                     buttonRadius: Appearance.rounding.small
                     materialIcon: "wallpaper"
-                    mainText: konachanWallProc.running ? "Be patient..." : "Random: Konachan"
+                    mainText: konachanWallProc.running ? "Be patient..." : "Random"
                     onClicked: {
                         console.log(konachanWallProc.command.join(" "))
                         konachanWallProc.running = true;
                     }
                     StyledToolTip {
-                        content: "Random SFW Anime wallpaper from Konachan\nImage is saved to ~/Pictures/Wallpapers"
+                        content: "Random Image from ~/Pictures/Wallpapers"
                     }
                 }
                 RippleButtonWithIcon {
@@ -90,7 +90,7 @@ ContentPage {
                         content: "Pick wallpaper image on your system"
                     }
                     onClicked: {
-                        Quickshell.execDetached(`${Directories.wallpaperSwitchScriptPath}`)
+                        Quickshell.execDetached(["bash", "-c", `wpgtk --pick`])
                     }
                     mainContentComponent: Component {
                         RowLayout {
@@ -103,17 +103,17 @@ ContentPage {
                             RowLayout {
                                 spacing: 3
                                 KeyboardKey {
-                                    key: "Ctrl"
+                                    key: "󰖳"
                                 }
                                 KeyboardKey {
-                                    key: "󰖳"
+                                    key: "Shift"
                                 }
                                 StyledText {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: "+"
                                 }
                                 KeyboardKey {
-                                    key: "T"
+                                    key: "W"
                                 }
                             }
                         }
@@ -143,7 +143,7 @@ ContentPage {
                     text: "Enable"
                     checked: ConfigOptions.appearance.transparency
                     onCheckedChanged: {
-                        ConfigLoader.setConfigValueAndSave("appearance.transparency", checked);
+				        Hyprland.dispatch(`exec wpgtk --trans`)
                     }
                     StyledToolTip {
                         content: "Might look ass. Unsupported."

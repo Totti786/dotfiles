@@ -9,8 +9,7 @@
 
 # Color files
 config="$HOME/.config"
-data_dir="$HOME/.cache/wal"
-config_file="$data_dir/wpg-conf.sh"
+config_file="$HOME/.theme"
 alacritty="$config/alacritty/colors.toml"
 polybar="$config/polybar/colors.ini"
 rofi="$config/rofi/themes/colors.rasi"
@@ -24,8 +23,11 @@ hypr="$config/hypr/colors.conf"
 kde="$config/kdeglobals"
 Wallpapers="$HOME/Pictures/Wallpapers"
 
-
-[[ -f "$config_file" ]] && . "${config_file}" || echo  "# wpgtk config file\nalpha='FF'" >> "${config_file}"
+if [[ -f "$config_file" ]]; then
+	source "${config_file}"
+else
+	echo -e "# wpgtk config file\ntransparency='false'" > "${config_file}"
+fi
 
 ## Change colors
 change_colors(){
@@ -234,20 +236,34 @@ qt_colors(){
 	python "$config/Kvantum/Colloid/changeAdwColors.py" &> /dev/null
 }
 
+toggle_transparency(){
+	if [[ "$transparency" == "true" ]]; then 
+		sed -i "s/transparency=.*/transparency='false'/" "$config_file"
+		transparency='false'
+	else
+		sed -i "s/transparency=.*/transparency='true'/" "$config_file"
+		transparency='true'
+	fi
+	change_colors
+}
+
 transparent(){
-	if [[ "$alpha" == "FF" ]]; then 
+	if [[ "$transparency" == "false" ]]; then 
 		sed -i "s/opacity =.*/opacity = 1.0/" "${alacritty%/*}/alacritty.toml"
 		sed -i "s/frame_width = .*/frame_width = 0/" "$dunst"
+		sed -i "/^[^#]*opacity/s/^/#/" "$HOME"/.config/hypr/hyprland.conf
 		alpha_jg="100"
 		alpha_rofi="ff"
-		alpha_dunst="ff"
+		alpha_dunst="ff" 
 	else 
 		sed -i "s/opacity =.*/opacity = 0.75/" "${alacritty%/*}/alacritty.toml"
 		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst"
-		alpha_jg="$alpha"
-		alpha_rofi="$alpha"
+		sed -i "/opacity/s/^#//" "$HOME"/.config/hypr/hyprland.conf
+		alpha_jg="70"
+		alpha_rofi="70"
 		alpha_dunst="99"
 	fi
+	sed -i "s/\"transparency\": [^,]*/\"transparency\": $transparency/" "$HOME/.config/illogical-impulse/config.json"
 }
 
 # this functions should only be used if you have a system with a seperate home partition 
@@ -356,6 +372,7 @@ setup(){
 	done
 }
 
+
 random(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
         #if command -v waypaper >/dev/null 2>&1; then
@@ -378,7 +395,7 @@ pick() {
 	fi
 
 	if command -v waypaper >/dev/null 2>&1; then
-		waypaper
+		[[ -z $(pgrep waypaper) ]] && waypaper || echo "Chill!"
 	else
 		wal=$(nsxiv -torb "$Wallpapers") || return 1
 		[[ -n "$wal" ]] && wall "$wal"
@@ -565,6 +582,10 @@ case "$1" in
 		;;
 	--colors)
 		run
+		exit 0
+		;;
+	--trans)
+		toggle_transparency
 		exit 0
 		;;
 	--material)
