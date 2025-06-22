@@ -257,18 +257,12 @@ update(){
 	## update dependencies and install new ones
 	install_wayland
 	progressBar "Updating... "
-	## backup weather info file
-	cp "$HOME"/.local/bin/info "$HOME"/.cache/info
-	ln -sfr ~/.themes/FlatColor ~/.themes/Dummy
-	cp "$dir"/deps/.zprofile "$HOME"/
-	cp "$dir"/deps/.zshrc "$HOME"/
-	cp "$dir"/deps/.gtkrc-2.0 "$HOME"/
-	cp "$dir"/deps/.theme "$HOME"/
-	## move udpated scripts and configs
-	cp -r "$dir"/cfg/* "$HOME"/.config/
+	ln -sfr "$HOME"/.themes/FlatColor "$HOME"/.themes/Dummy
+	cp "$dir"/deps/.zprofile .zshrc .gtkrc-2.0 .theme "$HOME"/
+	## Move udpated scripts and configs
 	cp -r "$dir"/bin/.local/ "$HOME"/
-	# restore weather info file
-	cp "$HOME"/.cache/info "$HOME"/.local/bin/info
+	rsync -av --exclude '/hypr/custom.conf' --exclude '/hypr/monitor.conf' "$dir"/cfg/* "$HOME"/.config/
+	# Mark scripts as executable
 	file_check
 }
 
