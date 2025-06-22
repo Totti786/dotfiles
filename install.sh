@@ -379,6 +379,8 @@ main(){
 
 if [[ "$1" == "--update" ]]; then
 	git pull --recurse-submodules
+	"$0" "--actual-update"
+elif [[ "$1" == "--actual-update" ]]; then
 	update
 elif [[ "$1" == "--wallpapers" ]]; then
 	wallpapers
