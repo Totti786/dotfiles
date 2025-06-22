@@ -261,7 +261,7 @@ update(){
 	cp "$dir"/deps/.zprofile .zshrc .gtkrc-2.0 .theme "$HOME"/
 	## Move udpated scripts and configs
 	cp -r "$dir"/bin/.local/ "$HOME"/
-	rsync -av --exclude '/hypr/custom.conf' --exclude '/hypr/monitor.conf' "$dir"/cfg/* "$HOME"/.config/
+	rsync -a --exclude '/hypr/custom.conf' --exclude '/hypr/monitor.conf' "$dir"/cfg/* "$HOME"/.config/
 	# Mark scripts as executable
 	file_check
 }
