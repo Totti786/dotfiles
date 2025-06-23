@@ -17,17 +17,23 @@ Singleton {
     property var substitutions: ({
         "code-url-handler": "visual-studio-code",
         "Code": "visual-studio-code",
+        "float": "Alacritty",
         "gnome-tweaks": "org.gnome.tweaks",
         "pavucontrol-qt": "pavucontrol",
         "wps": "wps-office2019-kprometheus",
         "wpsoffice": "wps-office2019-kprometheus",
         "footclient": "foot",
         "zen": "zen-browser",
+        "brave-browser": "brave-desktop"
     })
     property var regexSubstitutions: [
         {
             "regex": /^steam_app_(\\d+)$/,
             "replace": "steam_icon_$1"
+        },
+        {
+            "regex": /waydroid.*/,
+            "replace": "waydroid"
         },
         {
             "regex": /Minecraft.*/,

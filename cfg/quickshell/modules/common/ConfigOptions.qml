@@ -77,7 +77,8 @@ Singleton {
     property QtObject battery: QtObject {
         property int low: 20
         property int critical: 5
-        property int suspend: 2
+        property bool automaticSuspend: true
+        property int suspend: 3
     }
 
     property QtObject dock: QtObject {
@@ -112,9 +113,8 @@ Singleton {
 
     property QtObject overview: QtObject {
         property real scale: 0.18 // Relative to screen size
-        property real numOfRows: 2
-        property real numOfCols: 5
-        property bool showXwaylandIndicator: true
+        property real rows: 2
+        property real columns: 5
     }
 
     property QtObject resources: QtObject {
