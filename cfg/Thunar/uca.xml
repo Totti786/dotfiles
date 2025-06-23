@@ -5,7 +5,7 @@
 	<name>JXL</name>
 	<submenu>Convert to</submenu>
 	<unique-id>1723053614774156-1</unique-id>
-	<command>magick %f -quality 90 &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jxl&quot;</command>
+	<command>for f in %F ; do magick &quot;$f&quot; &quot;$(echo &quot;${f##*/}&quot; | sed &apos;s/\.[^.]*$//&apos;).jxl&quot; ;done</command>
 	<description>Convert to JXL</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -16,7 +16,7 @@
 	<name>JPG</name>
 	<submenu>Convert to</submenu>
 	<unique-id>1669732092996674-1</unique-id>
-	<command>magick %f -quality 90 &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).jpg&quot;</command>
+	<command>for f in %F ; do magick &quot;$f&quot; -quality 90  &quot;$(echo &quot;${f##*/}&quot; | sed &apos;s/\.[^.]*$//&apos;).jpg&quot; ;done</command>
 	<description>Convert to JPG</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -27,7 +27,7 @@
 	<name>PNG</name>
 	<submenu>Convert to</submenu>
 	<unique-id>1686859468146406-1</unique-id>
-	<command>magick %f -quality 80  &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).png&quot;</command>
+	<command>for f in %F ; do magick &quot;$f&quot; -quality 90  &quot;$(echo &quot;${f##*/}&quot; | sed &apos;s/\.[^.]*$//&apos;).png&quot; ;done</command>
 	<description>Convert to PNG</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -38,7 +38,7 @@
 	<name>AVIF</name>
 	<submenu>Convert to</submenu>
 	<unique-id>1686859468146406-1</unique-id>
-	<command>magick %f -quality 90 &quot;$(basename %f | sed &apos;s/\.[^.]*$//&apos;).avif&quot;</command>
+	<command>for f in %F ; do magick &quot;$f&quot; -quality 90  &quot;$(echo &quot;${f##*/}&quot; | sed &apos;s/\.[^.]*$//&apos;).avif&quot; ;done</command>
 	<description>Convert to AVIF</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -58,7 +58,7 @@
 </action>
 <action>
 	<icon>go-parent-folder</icon>
-	<name>Open as root</name>
+	<name>Open as Root</name>
 	<submenu></submenu>
 	<unique-id>1622790717174452-1</unique-id>
 	<command>pkexec thunar %f</command>
@@ -69,7 +69,7 @@
 </action>
 <action>
 	<icon>document-edit-sign</icon>
-	<name>Edit as root</name>
+	<name>Edit as Root</name>
 	<submenu></submenu>
 	<unique-id>1622790919788057-2</unique-id>
 	<command>pkexec geany %f</command>
@@ -84,7 +84,7 @@
 	<submenu></submenu>
 	<unique-id>1622791692322694-4</unique-id>
 	<command>meld %F</command>
-	<description>Compare files and directories with  meld</description>
+	<description>Compare files and directories with meld</description>
 	<range></range>
 	<patterns>*</patterns>
 	<directories/>
@@ -119,10 +119,10 @@
 </action>
 <action>
 	<icon>view-preview</icon>
-	<name>Set as wallpaper</name>
+	<name>Set as Wallpaper</name>
 	<submenu></submenu>
 	<unique-id>1622798756568291-1</unique-id>
-	<command>wpgtk wall %f</command>
+	<command>wpgtk --set %f</command>
 	<description>Set wallpaper and change color scheme</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -161,9 +161,30 @@
 	<submenu></submenu>
 	<unique-id>1713659756832081-1</unique-id>
 	<command>gpg -c %f</command>
-	<description>Encrypts files using gpg </description>
+	<description>Encrypts files using gpg</description>
 	<range>*</range>
 	<patterns>*</patterns>
 	<text-files/>
+</action>
+<action>
+	<icon>tools-rip-video-cd</icon>
+	<name>Compress Video</name>
+	<submenu></submenu>
+	<unique-id>1725895236679465-1</unique-id>
+	<command></command>
+	<description>Compress videos using ffmpeg</description>
+	<range>*</range>
+	<patterns>*</patterns>
+</action>
+<action>
+	<icon>color-mode-invert-image</icon>
+	<name>Download Similar Images</name>
+	<submenu></submenu>
+	<unique-id>1750641173716251-1</unique-id>
+	<command>walldl -n 5 -l %n -m favorites</command>
+	<description>Uses the tag of the image to get similar images from wallhave.cc (requires a tag to be present in the file name))</description>
+	<range>*</range>
+	<patterns>wallhaven-*</patterns>
+	<image-files/>
 </action>
 </actions>
