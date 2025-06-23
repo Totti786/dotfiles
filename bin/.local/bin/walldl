@@ -2,34 +2,96 @@
 
 # Configuration
 APIKEY="u4YNdj6N0M7nkrM2Pbz7fHAY0EYIT5WL"
-LOCATION="$HOME/Pictures/Wallpapers/walldl"
-CATEGORIES="110"         # General, Anime, People
+LOCATION="$HOME/Pictures/Wallpapers/walldl/"
+CATEGORIES="111"         # General, Anime, People
 FILTER="100"             # 1st=SFW, 2nd=Sketchy, 3rd=NSFW
 RESOLUTION="1920x1080"   # Preferred resolution
 ATLEAST="1920x1080"      # Minimum resolution
 ASPECTRATIO="16x9"       # Aspect ratio
-MODE="toplist"           # relevance, random, views, favorites, toplist
 TOPRANGE="1w"            # 1d, 3d, 1w,1M, 3M, 6M, 1y
-ORDER="desc"             # asc or desc
-ID="2kmw8g"
+ORDER="desc"             # Sorting order
 THUMBS=64                # Results per API page (max 64)
 MAX_PARALLEL=10          # Number of concurrent downloads
 
-# Number of wallpapers to download (default: 1)
-: ${WPNUM:=${1:-1}}
+# Defaults
+WPNUM=1
+TAG=""
+MODE="toplist"           # relevance, random, views, favorites, toplist
+SIMILAR_ID=""
 
-# Optional tag (second argument)
-TAG=${2:-}
-[[ -n "$TAG" ]] && MODE="favorites" && LOCATION="$HOME/Pictures/Wallpapers/walldl/$TAG"
-TAG=$(echo "$TAG" | tr ' ' '+')
+print_help() {
+    cat <<EOF
+Usage: ${0##*/} [OPTIONS]
 
-# Prepare download folder
+Download wallpapers from Wallhaven.cc using the API.
+
+Options:
+  -n, --number <num>       Number of wallpapers to download (default: 1)
+  -t, --tag <tag>          Tag to search for (e.g. "cyberpunk")
+  -m, --mode <mode>        Sorting mode (toplist, random, favorites, views, relevance)
+  -l, --like <id>          Find wallpapers similar to given wallpaper ID
+  -h, --help               Show this help message and exit
+
+Examples:
+  ${0##*/} -n 5
+  ${0##*/} -n 10 -t "Makise Kurisu"
+  ${0##*/} -t "Cat" -m random
+  ${0##*/} -l 2kmw8g -n 3 -m favorites
+
+EOF
+    exit 0
+}
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -n|--number) WPNUM="$2"; shift 2 ;;
+        -t|--tag) TAG="$2"; shift 2 ;;
+        -m|--mode) MODE="$2"; shift 2 ;;
+		-l|--like)
+		    input="$2"
+		    shift 2
+		
+		    # Try to extract wallpaper ID from path or string
+		    if [[ "$input" =~ wallhaven-([a-zA-Z0-9]{6}) ]]; then
+		        SIMILAR_ID="${BASH_REMATCH[1]}"
+		    elif [[ "$input" =~ ^[a-zA-Z0-9]{6}$ ]]; then
+		        SIMILAR_ID="$input"
+		    else
+		        echo "Error: Invalid wallpaper ID or file name: '$input'"
+		        exit 1
+		    fi
+		    ;;
+        -h|--help) print_help ;;
+        --) shift; break ;;
+        *) echo "Unknown option: $1"; print_help ;;
+    esac
+done
+
+# Prepare values
+# Validate input: can't use both tag and like-id
+if [[ -n "$TAG" && -n "$SIMILAR_ID" ]]; then
+    echo "Error: You cannot use both --tag and --like in the same request."
+    exit 1
+fi
+
+# Set the query properly
+if [[ -n "$TAG" ]]; then
+    QUERY=$(echo "$TAG" | tr ' ' '+')
+elif [[ -n "$SIMILAR_ID" ]]; then
+    QUERY="like:$SIMILAR_ID"
+else
+    QUERY=""
+fi
+
+
+# Set download location
+[[ -n "$TAG" ]] && LOCATION+="$TAG"
+[[ -n "$SIMILAR_ID" ]] && LOCATION="$LOCATION/similar-$SIMILAR_ID"
+
 mkdir -p "$LOCATION"
 
-downloaded_count=0
-page=1
-
-# Download function to be run in parallel
+# Download function
 download_wallpaper() {
     local url="$1"
     local path="$2"
@@ -37,27 +99,45 @@ download_wallpaper() {
     fname=$(basename "$path")
 
     echo "Downloading: $fname"
-    curl -s -o "$path" "$url" #&& notify-send "Wallpaper Downloaded" "$fname"
+    curl -s -o "$path" "$url"
 }
 
 while (( downloaded_count < WPNUM )); do
-    SEED=$((RANDOM + RANDOM))
+    SEED=$(tr -dc 'a-zA-Z0-9' </dev/urandom | head -c 6)
+
     URL="https://wallhaven.cc/api/v1/search"
     URL+="?categories=$CATEGORIES"
     URL+="&purity=$FILTER"
-    #URL+="&resolutions=$RESOLUTION"
-    URL+="&atleast=$ATLEAST"
-    #URL+="&ratios=$ASPECTRATIO"
+    #URL+="&atleast=$ATLEAST"
     URL+="&sorting=$MODE"
     URL+="&topRange=$TOPRANGE"
     URL+="&order=$ORDER"
     URL+="&page=$page"
-    URL+="&seed=$SEED"
-
-    [[ -n "$TAG" ]] && URL+="&q=$TAG"
+	[[ "$MODE" == "random" ]] && URL+="&seed=$SEED"
+    [[ -n "$QUERY" ]] && URL+="&q=$QUERY"
 
     TMPFILE=$(mktemp)
-    curl -s -H "X-API-Key: $APIKEY" "$URL" -o "$TMPFILE"
+
+	HTTP_STATUS=$(curl -s -w "%{http_code}" -H "X-API-Key: $APIKEY" -o "$TMPFILE" "$URL")
+	
+	if [[ "$HTTP_STATUS" -ne 200 ]]; then
+	    echo "Error: Failed to fetch wallpapers (HTTP $HTTP_STATUS)"
+	    case "$HTTP_STATUS" in
+	        401) echo "→ Unauthorized. Check your API key." ;;
+	        403) echo "→ Forbidden. You may be blocked or banned." ;;
+	        429) echo "→ Rate limited. Too many requests, try again in a minute." ;;
+	        5*)  echo "→ Server error. Try again later." ;;
+	    esac
+	    rm -f "$TMPFILE"
+	    exit 1
+	fi
+	
+	wallpaper_count=$(jq '.data | length' "$TMPFILE")
+	if (( wallpaper_count == 0 )); then
+	    echo "No wallpapers found for query."
+	    rm -f "$TMPFILE"
+	    exit 1
+	fi
 
     for ((i=0; i<THUMBS && downloaded_count<WPNUM; i++)); do
         IMGURL=$(jq -r ".data[$i].path" "$TMPFILE")
@@ -74,8 +154,6 @@ while (( downloaded_count < WPNUM )); do
         download_wallpaper "$IMGURL" "$FILEPATH" &
 
         ((downloaded_count++))
-
-        # Limit concurrent jobs
         if (( downloaded_count % MAX_PARALLEL == 0 )); then
             wait
         fi
@@ -85,7 +163,5 @@ while (( downloaded_count < WPNUM )); do
     ((page++))
 done
 
-# Wait for any remaining downloads
 wait
-
 notify-send "Download Complete" "$downloaded_count wallpapers saved to $LOCATION"
