@@ -2,7 +2,7 @@
 
 # Configuration
 APIKEY="u4YNdj6N0M7nkrM2Pbz7fHAY0EYIT5WL"
-LOCATION="$HOME/Pictures/Wallpapers/walldl/"
+LOCATION="$HOME/Pictures/Wallpapers/walldl"
 CATEGORIES="111"         # General, Anime, People
 FILTER="100"             # 1st=SFW, 2nd=Sketchy, 3rd=NSFW
 RESOLUTION="1920x1080"   # Preferred resolution
@@ -10,13 +10,13 @@ ATLEAST="1920x1080"      # Minimum resolution
 ASPECTRATIO="16x9"       # Aspect ratio
 TOPRANGE="1w"            # 1d, 3d, 1w,1M, 3M, 6M, 1y
 ORDER="desc"             # Sorting order
-THUMBS=64                # Results per API page (max 64)
+THUMBS=64                # Results per page (max 64)
 MAX_PARALLEL=10          # Number of concurrent downloads
 
 # Defaults
+MODE="toplist"           # relevance, random, views, favorites, toplist
 WPNUM=1
 TAG=""
-MODE="toplist"           # relevance, random, views, favorites, toplist
 SIMILAR_ID=""
 PRINT_PATH=false
 
@@ -51,7 +51,7 @@ while [[ $# -gt 0 ]]; do
         -n|--number) WPNUM="$2"; shift 2 ;;
         -t|--tag) TAG="$2"; shift 2 ;;
         -m|--mode) MODE="$2"; shift 2 ;;
-        -u|--unsafe) FILTER="111"; shift ;;
+        -u|--unsafe) FILTER="001"; shift ;;
 		-l|--like)
 		    input="$2"
 		    shift 2
@@ -83,21 +83,20 @@ if [[ -n "$TAG" && -n "$SIMILAR_ID" ]]; then
     exit 1
 fi
 
-# Set the query properly
+# Set the query properly and download location
 if [[ -n "$TAG" ]]; then
     QUERY=$(echo "$TAG" | tr ' ' '+')
+    LOCATION+="/$TAG"
+    MODE="favorites"
 elif [[ -n "$SIMILAR_ID" ]]; then
     QUERY="like:$SIMILAR_ID"
     LOCATION="$LOCATION/similar-$SIMILAR_ID"
-    MODE="favorites"
+    MODE="relevance"
 else
     QUERY=""
 fi
 
-# Set download location
 [[ "$PRINT_PATH" == true ]] && WPNUM=1
-[[ -n "$TAG" ]] && LOCATION+="$TAG"
-[[ -n "$SIMILAR_ID" ]] && 
 
 mkdir -p "$LOCATION"
 
@@ -130,7 +129,7 @@ while (( downloaded_count < WPNUM )); do
     [[ -n "$QUERY" ]] && URL+="&q=$QUERY"
 
     TMPFILE=$(mktemp)
-echo $URL
+
 	HTTP_STATUS=$(curl -s -w "%{http_code}" -H "X-API-Key: $APIKEY" -o "$TMPFILE" "$URL")
 	
 	if [[ "$HTTP_STATUS" -ne 200 ]]; then
