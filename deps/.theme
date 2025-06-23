@@ -3,7 +3,7 @@
 # Bar and window manager style settings
 bar_style="bionic"
 window_border="0"
-transparency='true'
+transparency='false'
 
 if [[ "$bar_style" == "base" ]];then
 	top_padding="23"
