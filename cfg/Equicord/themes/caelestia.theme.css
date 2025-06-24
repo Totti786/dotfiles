@@ -15,7 +15,7 @@
 
 body {
     /* font, change to '' for default discord font */
-	--font: gg sans; 
+	--font: figtree; 
 
     /* sizes */
     --gap: 12px; /* spacing between panels */
@@ -52,7 +52,7 @@ body {
     --background-image-url: url(''); /* url of the background image */
 
     /* transparency/blur options */
-    /* NOTE: TO USE TRANSPARENCY/BLUR, YOU MUST HAVE TRANSPARENT BG COLORS. FOR EXAMPLE: --bg-4: #072433;
+    /* NOTE: TO USE TRANSPARENCY/BLUR, YOU MUST HAVE TRANSPARENT BG COLORS. FOR EXAMPLE: --bg-4: #122526;
     --transparency-tweaks: off; /* turn on to remove some elements for better transparency */
     --remove-bg-layer: off; /* turn on to remove the base --bg-3 layer for use with window transparency (WILL OVERRIDE BACKGROUND IMAGE) */
     --panel-blur: off; /* turn on to blur the background of panels */
@@ -75,27 +75,27 @@ body {
     /* text colors */
     --text-0: var(--bg-4); /* text on colored elements */
     --text-1: hsl(220, 45%, 95%); /* other normally white text */
-    --text-2: #adffff;
-    --text-3: #adffff;
-    --text-4: #adffff;
-    --text-5: #adffff;
+    --text-2: #fdffff;
+    --text-3: #fdffff;
+    --text-4: #fdffff;
+    --text-5: #fdffff;
 
     /* background and dark colors */
-    --bg-1: #061e2b;
-    --bg-2: #041822;
-    --bg-3: #061e2b;
-    --bg-4: #072433;
+    --bg-1: #0f1e20;
+    --bg-2: #0b1819;
+    --bg-3: #0f1e20;
+    --bg-4: #122526;
     --hover: hsla(221, 19%, 40%, 0.1); /* channels and buttons when hovered */
     --active: hsla(220, 19%, 40%, 0.2); /* channels and buttons when clicked or selected */
     --active-2: hsla(220, 19%, 40%, 0.3); /* extra state for transparent buttons */
     --message-hover: hsla(220, 0%, 0%, 0.1); /* messages when hovered */
 
     /* accent colors */
-    --accent-1: #03AFB4;
-    --accent-2: #129FA4;
-    --accent-3: #048E91;
-    --accent-4: #34B3B4;
-    --accent-5: #5A7D83;
+    --accent-1: #5EA39F;
+    --accent-2: #248777;
+    --accent-3: #166999;
+    --accent-4: #A38F52;
+    --accent-5: #A3BFBC;
     --accent-new: var(--accent-2); /* stuff that's normally red like mute/deafen buttons */
     --mention: linear-gradient(to right, color-mix(in hsl, var(--accent-2), transparent 90%) 40%, transparent); /* background of messages that mention you */
     --mention-hover: linear-gradient(to right, color-mix(in hsl, var(--accent-2), transparent 95%) 40%, transparent); /* background of messages that mention you when hovered */
