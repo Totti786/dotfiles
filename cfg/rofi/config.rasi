@@ -17,6 +17,7 @@ configuration {
 	display-recursivebrowser:   "";
 	display-window:             "";
 	display-calc:     	   		"";
+	display-emoji:     	   		"󰱨";
 	display-combi: 				"";
 	drun-display-format:        "{name}";
 	window-format:              "{w} · {c} · {t}";

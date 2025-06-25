@@ -94,10 +94,6 @@ super + d
 super + shift + q
 	~/.config/i3/i3-resurrect-dmenu
 
-# Toggle hyprspace
-ctrl + shift + Return
-	~/.config/i3/overview
-
 # Reload Keybinding
 ctrl + alt + Escape
     pkill -USR1 -x sxhkd
