@@ -5,18 +5,17 @@
 [[ -z "$bar_style" ]] && bar_style="base"
 
 toggle_transparency(){
-	wpgtk_dir="$HOME/.cache/wal/wpg-conf.sh"
 	pipe_dir="$HOME/.config/jgmenu/pipemenus"
 	if [[ "$1" == "off" ]]; then 
 		compositor --disable-opacity
 		compositor --enable-shadows
 		"$pipe_dir"/wm-pipe --border 0
-		sed -i "s/alpha=.*/alpha='FF'/" "$wpgtk_dir"
+		sed -i "s/transparency=.*/transparency='false'/" "$HOME/.theme"
 	elif [[ "$1" == "on" ]]; then
 		compositor --enable-opacity
 		compositor --disable-shadows
 		"$pipe_dir"/wm-pipe --border "$window_border"
-		sed -i "s/alpha=.*/alpha='70'/" "$wpgtk_dir"
+		sed -i "s/transparency=.*/transparency='true'/" "$HOME/.theme"
 	fi	
 }
 
