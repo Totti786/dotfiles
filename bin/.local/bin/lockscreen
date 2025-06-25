@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ "$(playerctl -i kdeconnect -p %any status)" == "Playing" ]; then
+if playerctl -i kdeconnect -a status | grep -q '^Playing$'; then
 	playerctl -i kdeconnect -a pause
 fi
 
