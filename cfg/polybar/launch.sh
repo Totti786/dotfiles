@@ -18,8 +18,6 @@ change_modules(){
 		-i -e "s/wm-name = .*/wm-name = $2/g" \
 		-i -e "s/wm-restack = .*/wm-restack = $2/g" \
 		-i -e "s/override-redirect = .*/override-redirect = $3/g" \
-		-i -e "s/scroll-up = .*/scroll-up = $4/" \
-		-i -e "s/scroll-down = .*/scroll-down = $5/" \
 	"$config_file"
 }
 
@@ -45,22 +43,22 @@ fix_modules() {
 	case "$current_desktop" in
 	 "Openbox")
 		sed -i -e 's/title\b/titlex/g' "$config_file"
-		change_modules "workspaces" "openbox" "false" "~\/.config\/openbox\/ob-workspaces prev" "~\/.config\/openbox\/ob-workspaces next"
+		change_modules "workspaces" "openbox" "false"
 	 	;;
 	 "bspwm")
 		bspc config -m focused top_padding "$top_padding"
 		bspc config -m focused bottom_padding "$bottom_padding"
 		sed -i -e 's/titlex\b/title/g' "$config_file"
-		change_modules "bspwm" "bspwm" "true" "bspc desktop -f prev.local" "bspc desktop -f next.local"
+		change_modules "bspwm" "bspwm" "true"
 		;;
 	 "i3")
 		"$HOME"/.config/i3/i3-reload
 		sed -i -e 's/titlex\b/title/g' "$config_file"			
-		change_modules "i3" "i3" "true" "~\/.config\/i3\/i3-workspaces prev" "~\/.config\/i3\/i3-workspaces next"
+		change_modules "i3" "i3" "true"
 		;;
 	 "herbstluftwm")
 		sed -i -e 's/titlex\b/title/g' "$config_file"
-		change_modules "workspaces" "herbstluftwm" "false" " " " "
+		change_modules "workspaces" "herbstluftwm" "false"
 		;;	
 	 *)	 	 
 		echo "Unknown window manager: $current_desktop"

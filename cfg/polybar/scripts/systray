@@ -4,7 +4,7 @@
 [[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
 [[ -z "$bar_style" ]] && bar_style="base" top_padding="23"
 
-lock="$HOME"/.syshide.lock
+lock=/tmp/.syshide.lock
 
 tray(){
 	gravity="NE"

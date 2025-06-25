@@ -12,6 +12,9 @@ wpgtk --restore &
 killall -q -9 xss-lock
 xss-lock --ignore-xss -l lockscreen &
 
+# D-Bus
+dbus-update-activation-environment --all
+
 # xfce4-settings daemon
 xfsettingsd &
 
