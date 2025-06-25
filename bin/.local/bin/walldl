@@ -8,13 +8,13 @@ FILTER="100"             # 1st=SFW, 2nd=Sketchy, 3rd=NSFW
 RESOLUTION="1920x1080"   # Preferred resolution
 ATLEAST="1920x1080"      # Minimum resolution
 ASPECTRATIO="16x9"       # Aspect ratio
-TOPRANGE="1w"            # 1d, 3d, 1w,1M, 3M, 6M, 1y
+TOPRANGE="1m"            # 1d, 3d, 1w,1M, 3M, 6M, 1y
 ORDER="desc"             # Sorting order
 THUMBS=64                # Results per page (max 64)
 MAX_PARALLEL=10          # Number of concurrent downloads
 
 # Defaults
-MODE="toplist"           # relevance, random, views, favorites, toplist
+MODE="toplist"           # relevance, random, views, favorites, toplist, hot
 WPNUM=1
 TAG=""
 SIMILAR_ID=""
@@ -29,7 +29,7 @@ Download wallpapers from wallhaven.cc
 Options:
   -n, --number <num>       Number of wallpapers to download (default: 1)
   -t, --tag <tag>          Tag to search for (e.g. "cyberpunk")
-  -m, --mode <mode>        Sorting mode (toplist, random, favorites, views, relevance)
+  -m, --mode <mode>        Sorting mode (hot, toplist, random, favorites, views, relevance)
   -l, --like <id>          Find wallpapers similar to given wallpaper ID
   -p, --path               Output the path of the downloaded wallpaper.
   -h, --help               Show this help message and exit
@@ -91,7 +91,7 @@ if [[ -n "$TAG" ]]; then
 elif [[ -n "$SIMILAR_ID" ]]; then
     QUERY="like:$SIMILAR_ID"
     LOCATION="$LOCATION/similar-$SIMILAR_ID"
-    MODE="relevance"
+    MODE=""
 else
     QUERY=""
 fi
@@ -122,9 +122,9 @@ while (( downloaded_count < WPNUM )); do
     URL+="&purity=$FILTER"
     #URL+="&atleast=$ATLEAST"
     URL+="&sorting=$MODE"
-    URL+="&topRange=$TOPRANGE"
-    URL+="&order=$ORDER"
+	URL+="&order=$ORDER"
     URL+="&page=$page"
+    [[ "$MODE" == "toplist" ]] && URL+="&topRange=$TOPRANGE"
 	[[ "$MODE" == "random" ]] && URL+="&seed=$SEED"
     [[ -n "$QUERY" ]] && URL+="&q=$QUERY"
 
