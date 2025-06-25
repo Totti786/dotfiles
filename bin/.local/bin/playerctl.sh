@@ -86,7 +86,6 @@ player_name() {
 
     # Combine friendly name and icon into a single variable
     player_name="$friendly_name $player_icon"
-    
 }
 
 # Function to display current playing information and player icon
@@ -97,7 +96,7 @@ player(){
 	else
 		format="{{ title }}: {{ artist }}"
 	fi
-		
+
 	player_icon
 	current="$(metadata "$format")"
 	echo "$current" "${icon:-}"
@@ -108,6 +107,7 @@ cover_art(){
 	# Retrieve the artwork URL
 	url=$(metadata "{{ mpris:artUrl }}")
 	fallback_cover="/tmp/cover"
+	player_file="/tmp/player"
 
 	cache_dir="$HOME/.cache/playerctl"
 	mkdir -p "$cache_dir"
@@ -116,33 +116,33 @@ cover_art(){
 
 	# Remove fallback cover if no players are found
 	if [[ "$playerctl_status" == "No players found" ]]; then
-	    [[ -f "$fallback_cover" ]] &&  rm "$fallback_cover"
+	    [[ -f "$fallback_cover" ]] && rm "$fallback_cover" "$player_file"
 	else
 		# Create a fallback cover image with a colored background and icon
 		player_icon
-	    eval $(xrdb -query | awk '/color0/{print "color0="$NF} /color7/{print "color7="$NF}')
-	    magick -size 128x128 xc:"$color0" png:"$fallback_cover"
-	    magick "$fallback_cover" -gravity center -fill "$color7" \
-	    -font '/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf' \
-	    -pointsize 60 -annotate 0 "$player_icon" "$fallback_cover"
+		if [[ "$player_name" != "$(cat $player_file)" ]]; then
+			echo "$player_name" > "$player_file"
+		    eval $(xrdb -query | awk '/color0/{print "color0="$NF} /color7/{print "color7="$NF}')
+		    magick -size 128x128 xc:"$color0" png:"$fallback_cover"
+		    magick "$fallback_cover" -gravity center -fill "$color7" \
+		    -font '/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf' \
+		    -pointsize 60 -annotate 0 "$player_icon" "$fallback_cover"
+		fi
 	fi
 
 	# Check if the URL is empty
 	if [[ -n "$url" ]]; then
 	    # Remove 'file://' prefix if present
 	    if [[ "$url" == file://* ]]; then
-	        url=${url#file://}
-            magick "$url" -resize 128x128 png:"$cover"
-	
+	        cover=${url#file://}
 	    # Process the URL if it starts with 'http' or 'https'
 		elif [[ "$url" == http://* || "$url" == https://* ]]; then
 	        # Download the file only if it does not exist
 	        if [[ ! -f "$cover" ]]; then
-	            curl -s "$url" | magick - -resize 128x128 png:"$cover"
+	            curl -s "$url" > "$cover"
 	        fi
 	    fi
         echo "$cover"
-        #pkill --signal=SIGUSR2 hyprlock
 	fi
 }
 
