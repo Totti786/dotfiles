@@ -133,9 +133,20 @@ Scope {
                             ButtonGroup {
                                 QuickToggleButton {
                                     toggled: false
+                                    buttonIcon: "wallpaper"
+                                    onClicked: {
+										Quickshell.execDetached(["bash", "-c", `alacritty --hold -e ~/.config/quickshell/scripts/dots-update.sh --wall`])
+                                        Hyprland.dispatch(`global quickshell:sidebarRightClose`)
+                                    }
+                                    StyledToolTip {
+                                        content: qsTr("Update Wallpapers")
+                                    }
+                                }
+                                QuickToggleButton {
+                                    toggled: false
                                     buttonIcon: "system_update_alt"
                                     onClicked: {
-					Quickshell.execDetached(["bash", "-c", `alacritty --hold -e ~/.config/quickshell/scripts/dots-update.sh --dots`])
+										Quickshell.execDetached(["bash", "-c", `alacritty --hold -e ~/.config/quickshell/scripts/dots-update.sh --dots`])
                                         Hyprland.dispatch(`global quickshell:sidebarRightClose`)
                                     }
                                     StyledToolTip {
