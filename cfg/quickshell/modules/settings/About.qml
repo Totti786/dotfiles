@@ -96,11 +96,11 @@ ContentPage {
                 Layout.alignment: Qt.AlignVCenter
                 // spacing: 10
                 StyledText {
-                    text: "illogical-impulse"
+                    text: "Totti786"
                     font.pixelSize: Appearance.font.pixelSize.title
                 }
                 StyledText {
-                    text: "https://github.com/end-4/dots-hyprland"
+                    text: "https://github.com/Totti786/dotfiles"
                     font.pixelSize: Appearance.font.pixelSize.normal
                     textFormat: Text.MarkdownText
                     onLinkActivated: (link) => {

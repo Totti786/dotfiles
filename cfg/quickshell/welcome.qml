@@ -28,7 +28,7 @@ ApplicationWindow {
     property bool showNextTime: false
     visible: true
     onClosing: Qt.quit()
-    title: "illogical-impulse Welcome"
+    title: "Quickshell Welcome"
 
     Component.onCompleted: {
         MaterialThemeLoader.reapplyTheme()

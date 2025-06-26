@@ -52,7 +52,7 @@ ApplicationWindow {
 
     visible: true
     onClosing: Qt.quit()
-    title: "illogical-impulse Settings"
+    title: "Quickshell Settings"
 
     Component.onCompleted: {
         MaterialThemeLoader.reapplyTheme()
