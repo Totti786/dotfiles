@@ -18,7 +18,7 @@ declare -a minimal=(
 	gping gpu-screen-recorder jq gpick grep python-gtts html-xml-utils htop i3lock-color i3-wm \
 	imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot kvantum kvantum-qt5 loupe man moreutils \
 	mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji \
-	nsxiv nvtop obconf oh-my-zsh-git openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct \
+	nsxiv nvtop oh-my-zsh-git openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct \
 	rhythmbox rofi-wayland scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
 	picom-git plank playerctl polkit-gnome polybar python-pyxdg python-screeninfo python-wheel qbittorrent thunar-media-tags-plugin \
 	thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols \
@@ -37,12 +37,12 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	cliphist dart-sass grim hypridle hyprland hyprlock hyprpicker nwg-displays sassc slurp swappy swww quickshell python-opencv \
-	xdg-desktop-portal-hyprland python-pywayland python-setproctitle wl-clipboard syntax-highlighting
+	cliphist grim hypridle hyprland hyprlock hyprpicker nwg-displays sassc slurp swappy swww quickshell-git python-opencv \
+	xdg-desktop-portal-hyprland python-materialyoucolor-git python-pywayland wl-clipboard syntax-highlighting
 )
 
 declare -a aur=(
-	better-control-git i3-resurrect python-materialyoucolor-git mpv-thumbfast-git mpv-uosc-git ruby-fusuma \
+	better-control-git i3-resurrect mpv-thumbfast-git mpv-uosc-git ruby-fusuma \
 	ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl sioyek-git ttf-rubik-vf ttf-gabarito-git \
 	xiccd xqp zscroll-git
 )
@@ -123,7 +123,6 @@ x11_install(){
 	}
 
 move_configs(){
-	cp -r "$dir"/bin/.scripts/ "$HOME" && echo "moved scripts home"
 	cp -r "$dir"/cfg/* "$HOME"/.config && echo "moved config files"
 	cp -r "$dir"/bin/.local/ "$HOME" && echo "moved bin"
 	cp -r "$dir"/deps/.zprofile "$HOME"
