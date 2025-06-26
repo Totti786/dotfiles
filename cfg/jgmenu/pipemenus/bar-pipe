@@ -11,6 +11,6 @@ menu+=("Change Style,^checkout(style)")
 menu+=("Reload,bar-style --reload")
 menu+=("Edit Config,exo-open $polybar_conf/$bar_style/config.ini")
 menu+=("Edit Modules,exo-open $polybar_conf/$bar_style/modules.ini")
-menu+=("Edit Weather Data,exo-open $polybar_conf/scripts/info")
+menu+=("Edit Weather Data,exo-open $HOME/.local/bin/info")
 
 printf '%s\n' "${menu[@]}" "${submenu[@]}"
