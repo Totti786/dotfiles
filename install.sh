@@ -11,7 +11,7 @@ fi
 #---- Programs List ----------------------
 
 declare -a minimal=(
-	acpi acpilight alacritty appimagelauncher autotiling axel base-devel bc blueman bluez \
+	acpi alacritty appimagelauncher autotiling axel base-devel bc blueman bluez \
 	bluez-utils brightnessctl bspwm btop clight conky copyq dmenu drawing dunst envycontrol \
 	fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep \
 	geany gnome-bluetooth-3.0 gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
