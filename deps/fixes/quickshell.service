@@ -1,0 +1,9 @@
+[Unit]
+Description=Flexbile QtQuick based desktop shell toolkit
+PartOf=graphical-session.target
+
+[Service]
+Type=dbus
+BusName=org.freedesktop.Notifications
+ExecStart=/usr/local/bin/wayland-notif
+Slice=session.slice

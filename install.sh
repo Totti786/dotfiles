@@ -252,6 +252,15 @@ wallpapers() {
     fi
 }
 
+fixes(){
+	sudo cp "$dots"/deps/fixes/quickshell.service /usr/lib/systemd/user/
+	sudo cp "$dots"/deps/fixes/wayland-notif /usr/local/bin/
+	sudo cp "$dots"/deps/fixes/org.notifications.quichshell.service /usr/share/dbus-1/services/
+	sudo cp "$dots"/deps/fixes/org.geany.pkexec.policy /usr/share/polkit-1/actions
+	sudo cp "$dots"/deps/fixes/libalpm/* /usr/share/libalpm/
+	sudo chmod +x /usr/local/bin/wayland-notif
+}
+
 update(){
 	## update dependencies and install new ones
 	install_wayland
@@ -294,6 +303,7 @@ additionalPrograms(){
 
 tools(){
 	installOptions=$($Dialog --radiolist  "Choose one of the following options:"  15 60 4\
+		fixes "Implement Various Fixes" off\
 		checkrepo "Add Chaotic AUR repo" off\
 		install_full "Install Dependencies" off\
 		install_zsh "Zsh Configuration" off\

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+## Copyright (C) 2020-2024 Aditya Shakya <adi1090x@gmail.com>
+##
+## Perform various operations for Archcraft
+
+fix_thunar() {
+	## Remove thunar wallpaper plugin
+	twplug='/usr/lib/thunarx-3/thunar-wallpaper-plugin.so'
+	if [[ -e "$twplug" ]]; then
+		rm -rf "$twplug"
+	fi
+}
+
+fix_notifications() {
+	xfce_dbus_file='/usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service'
+	if [[ -e "$xfce_dbus_file" ]]; then
+		sed -i -e 's/Name=org.freedesktop.Notifications/Name=org.freedesktop.NotificationsNone/g' "$xfce_dbus_file"
+	fi
+
+	dunst_dbus_file='/usr/share/dbus-1/services/org.knopwob.dunst.service'
+	if [[ -e "$dunst_dbus_file" ]]; then
+		sed -i -e 's/Name=org.freedesktop.Notifications/Name=org.freedesktop.NotificationsNone/g' "$dunst_dbus_file"
+	fi
+}
+
+main() {
+    local hookname="$1"
+
+    case "$hookname" in
+        fix-thunar)   		fix_thunar ;;
+        fix-notifications)    fix_notifications ;;
+        "")           		echo "Nothing to do!";;
+    esac
+}
+
+main "$@"

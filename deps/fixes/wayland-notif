@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Launch the appropriate notification daemon based on session type.
+# Uses 'qs' on Wayland if available, otherwise falls back to 'dunst'.
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]] && command -v qs &> /dev/null; then
+    [[ -z $(pgrep -f "qs|quickshell") ]] && /usr/bin/qs
+else
+    /usr/bin/dunst
+fi
