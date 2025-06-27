@@ -253,12 +253,14 @@ wallpapers() {
 }
 
 fixes(){
-	sudo cp "$dots"/deps/fixes/quickshell.service /usr/lib/systemd/user/
-	sudo cp "$dots"/deps/fixes/wayland-notif /usr/local/bin/
-	sudo cp "$dots"/deps/fixes/org.notifications.quichshell.service /usr/share/dbus-1/services/
-	sudo cp "$dots"/deps/fixes/org.geany.pkexec.policy /usr/share/polkit-1/actions
-	sudo cp "$dots"/deps/fixes/libalpm/* /usr/share/libalpm/
+	sudo cp "$dir"/deps/fixes/quickshell.service /usr/lib/systemd/user/
+	sudo cp "$dir"/deps/fixes/wayland-notif /usr/local/bin/
+	sudo cp "$dir"/deps/fixes/org.notifications.quichshell.service /usr/share/dbus-1/services/
+	sudo cp "$dir"/deps/fixes/org.geany.pkexec.policy /usr/share/polkit-1/actions
+	sudo cp "$dir"/deps/fixes/libalpm/* /usr/share/libalpm/
 	sudo chmod +x /usr/local/bin/wayland-notif
+	sudo sh "$dir"/deps/fixes/libalpm/scripts/archlinux-hooks-extra fix-notifications
+	sudo sh "$dir"/deps/fixes/libalpm/scripts/archlinux-hooks-extra fix-thunar
 }
 
 update(){
