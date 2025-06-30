@@ -228,7 +228,7 @@ change_colors(){
 	fi
 	
 	# resize and move wallpaper for use by other programs
-	ln -s "$wallpaper" "$HOME"/.config/wpg/wallpapers/ &> /dev/null
+	ln -sf "$wallpaper" "$HOME"/.config/wpg/wallpapers/
 }
 
 qt_colors(){
@@ -372,7 +372,7 @@ setup(){
 	done
 }
 
-
+# Set Random Wallpaper from ~/Pictures/Wallpaper
 random(){
 	if [[ "$(ls -A $Wallpapers)" ]]; then 
         #if command -v waypaper >/dev/null 2>&1; then
@@ -491,56 +491,51 @@ run(){
 		wpg-install.sh -g -o
 	fi
 
-	## check if the files exists and import colors from wpg
-	if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
-		source "$HOME/.cache/wal/colors.sh"
-		# Normal colors
-		background="$(printf "%s\n" "$background")"
-		foreground="$(printf "%s\n" "$foreground")"
-		black="$(printf "%s\n" "$color0")"
-		red="$(printf "%s\n" "$color1")"
-		green="$(printf "%s\n" "$color2")"
-		yellow="$(printf "%s\n" "$color3")"
-		blue="$(printf "%s\n" "$color4")"
-		magenta="$(printf "%s\n" "$color5")"
-		cyan="$(printf "%s\n" "$color6")"
-		white="$(printf "%s\n" "$color7")"
-		# Bright colors
-		bright_black="$(printf "%s\n" "$color8")"
-		bright_red="$(printf "%s\n" "$color9")"
-		bright_green="$(printf "%s\n" "$color10")"
-		bright_yellow="$(printf "%s\n" "$color11")"
-		bright_blue="$(printf "%s\n" "$color12")"
-		bright_magenta="$(printf "%s\n" "$color13")"
-		bright_cyan="$(printf "%s\n" "$color14")"
-		bright_white="$(printf "%s\n" "$color15")"
-		# Additional colors
-		bg_mix="$(pastel mix -f 0.4 $bright_black $black | pastel format hex)"
-		bg_light="$(pastel mix -f 0.2 $bright_black $black | pastel format hex)"
-		bg_lighter="$(pastel lighten 0.08 $black | pastel format hex)"
-		bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
 
-		#bg=$(pastel mix -f 0.2 "$black" "$bright_black" | pastel format hex) # 20%
-		
-		#bg_mix=$(pastel mix -f 0.8 "$black" "$bright_black" | pastel format hex) # 80%
-		#bg_dark=$(pastel mix -f 0.45 "$black" "$bright_black" | pastel format hex) # Darken 10%
-		#bg_darker=$(pastel mix -f 0.4 "$color0" "$color8" | pastel format hex) # 40%
+	# Normal colors
+	background="$(printf "%s\n" "$background")"
+	foreground="$(printf "%s\n" "$foreground")"
+	black="$(printf "%s\n" "$color0")"
+	red="$(printf "%s\n" "$color1")"
+	green="$(printf "%s\n" "$color2")"
+	yellow="$(printf "%s\n" "$color3")"
+	blue="$(printf "%s\n" "$color4")"
+	magenta="$(printf "%s\n" "$color5")"
+	cyan="$(printf "%s\n" "$color6")"
+	white="$(printf "%s\n" "$color7")"
+	# Bright colors
+	bright_black="$(printf "%s\n" "$color8")"
+	bright_red="$(printf "%s\n" "$color9")"
+	bright_green="$(printf "%s\n" "$color10")"
+	bright_yellow="$(printf "%s\n" "$color11")"
+	bright_blue="$(printf "%s\n" "$color12")"
+	bright_magenta="$(printf "%s\n" "$color13")"
+	bright_cyan="$(printf "%s\n" "$color14")"
+	bright_white="$(printf "%s\n" "$color15")"
+	# Additional colors
+	bg_mix="$(pastel mix -f 0.4 $bright_black $black | pastel format hex)"
+	bg_light="$(pastel mix -f 0.2 $bright_black $black | pastel format hex)"
+	bg_lighter="$(pastel lighten 0.08 $black | pastel format hex)"
+	bg_dark="$(pastel darken 0.02 ${background:1} | pastel format hex)"
 
-		#bg_light=$(pastel lighten 0.1 "$black" | pastel format hex) # Lighten 10%
-		#bg_lighter=$(pastel lighten 0.2 "$black" | pastel format hex) # Lighten 20%
-		
-		#fg_mix=$(pastel mix -f 0.3 "$color7" "$color15" | pastel format hex) # 30%
-		#fg_light=$(pastel lighten 0.2 "$color5" | pastel format hex) # Lighten 20%
-		
-		bg_rgb="$(pastel format rgb ${bg_mix:1})"
-		bg_mix_rgb="$(pastel format rgb ${bg_mix:1})"
-		
-		## merging the Xresources files with the main one
-		xrdb -merge "$HOME"/.cache/wal/colors.Xresources
-	else
-		echo "[!] Theme file not found"
-		exit 1
-	fi
+	#bg=$(pastel mix -f 0.2 "$black" "$bright_black" | pastel format hex) # 20%
+	
+	#bg_mix=$(pastel mix -f 0.8 "$black" "$bright_black" | pastel format hex) # 80%
+	#bg_dark=$(pastel mix -f 0.45 "$black" "$bright_black" | pastel format hex) # Darken 10%
+	#bg_darker=$(pastel mix -f 0.4 "$color0" "$color8" | pastel format hex) # 40%
+
+	#bg_light=$(pastel lighten 0.1 "$black" | pastel format hex) # Lighten 10%
+	#bg_lighter=$(pastel lighten 0.2 "$black" | pastel format hex) # Lighten 20%
+	
+	#fg_mix=$(pastel mix -f 0.3 "$color7" "$color15" | pastel format hex) # 30%
+	#fg_light=$(pastel lighten 0.2 "$color5" | pastel format hex) # Lighten 20%
+	
+	bg_rgb="$(pastel format rgb ${bg_mix:1})"
+	bg_mix_rgb="$(pastel format rgb ${bg_mix:1})"
+	
+	## merging the Xresources files with the main one
+	xrdb -merge "$HOME"/.cache/wal/colors.Xresources
+
 }
 
 help(){
@@ -556,6 +551,14 @@ help(){
     echo "  --restart        Restart apps and reload colors"	
 }
 
+# Source theme file
+if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+	source "$HOME/.cache/wal/colors.sh"
+else
+	echo "[!] Theme file not found"
+	exit 1
+fi
+
 case "$1" in
 	-h|--help)
 		help
@@ -565,6 +568,11 @@ case "$1" in
 		exit 0
 		;;
 	--random)
+		random
+		exit 0
+		;;
+	--purge)
+		rm "$wallpaper"
 		random
 		exit 0
 		;;
