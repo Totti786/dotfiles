@@ -29,7 +29,7 @@ Singleton {
 
     onIsCriticalAndNotChargingChanged: {
         if (available && isCriticalAndNotCharging) 
-            Quickshell.execDetached(["bash", "-c", `notify-send "Critically low battery" "🙏 I beg for pleas charg\nAutomatic suspend triggers at ${ConfigOptions.battery.suspend}%" -u critical -a "Shell"`]);
+            Quickshell.execDetached(["bash", "-c", `notify-send "Critically low battery" "Plug in the charger!\nAutomatic suspend triggers at ${ConfigOptions.battery.suspend}%" -u critical -a "Shell"`]);
     }
 
     onIsSuspendingAndNotChargingChanged: {

@@ -5,7 +5,6 @@
 // Adjust this to make the app smaller or larger
 //@ pragma Env QT_SCALE_FACTOR=1
 
-import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -123,6 +122,24 @@ ApplicationWindow {
             ContentPage {
                 id: contentColumn
                 anchors.fill: parent
+
+                ContentSection {
+                    title: "Bar style"
+
+                    ConfigSelectionArray {
+                        currentValue: ConfigOptions.bar.cornerStyle
+                        configOptionName: "bar.cornerStyle"
+                        onSelected: (newValue) => {
+                            ConfigLoader.setConfigValueAndSave("bar.cornerStyle", newValue);
+                        }
+                        options: [
+                            { displayName: "Hug", value: 0 },
+                            { displayName: "Float", value: 1 },
+                            { displayName: "Plain rectangle", value: 2 }
+                        ]
+                    }
+                }
+
                 ContentSection {
                     title: "Style & wallpaper"
 
