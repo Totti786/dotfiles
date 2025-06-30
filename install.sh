@@ -44,11 +44,11 @@ declare -a wayland=(
 declare -a aur=(
 	better-control-git i3-resurrect mpv-thumbfast-git mpv-uosc-git ruby-fusuma \
 	ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl sioyek-git ttf-rubik-vf ttf-gabarito-git \
-	xiccd xqp zscroll-git
+	tty-clock unimatrix-git xiccd xqp zscroll-git
 )
 
 declare -a additional=(
-	2048.c ookla-speedtest-bin tty-clock typioca-git unimatrix-git
+	ookla-speedtest-bin typioca-git 
 )
 
 #---- Core functions ---------------------
@@ -68,11 +68,6 @@ checkrepo(){
 		'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm || exit 1 &&
 		echo "[chaotic-aur]
 		Include = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf > /dev/null
-
-		# Configure pacman
-		sudo sed -i "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
-		sudo sed -i "s/#Color/Color/g" /etc/pacman.conf
-		sudo sed -i "s/#VerbosePkgLists/VerbosePkgLists/g" /etc/pacman.conf
 	fi
 
 	if ! pacman -Q yay &> /dev/null; then
@@ -82,8 +77,10 @@ checkrepo(){
 		echo "The AUR helper yay is already installed"
 	fi
 
+	# Configure pacman
 	sudo sed -i "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
-	sudo sed -i "s/#Color/Color/g" /etc/pacman.conf	
+	sudo sed -i "s/#Color/Color/g" /etc/pacman.conf
+	sudo sed -i "s/#VerbosePkgLists/VerbosePkgLists/g" /etc/pacman.conf
 	}
 
 install_minimal(){
