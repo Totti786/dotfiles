@@ -180,9 +180,7 @@ toggle_trust() {
 
 # Toggles device connection
 toggle_connection() {
-	name="$(echo $device | cut -d ' ' -f3-)"
-	echo $device
-	echo $name 
+	name="$(echo $device | cut -d ' ' -f3-)"	 
 	if $(bluetoothctl show | grep -q "Powered: no"); then
 		bluetoothctl power on
 	fi
