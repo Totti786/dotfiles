@@ -4,8 +4,10 @@
 [[ -f "$HOME/.theme" ]] && source "$HOME/.theme"
 [[ -z "$bar_style" ]] && bar_style="base"
 
+polybar_conf="$HOME/.config/polybar"
+pipe_dir="$HOME/.config/jgmenu/pipemenus"
+
 toggle_transparency(){
-	pipe_dir="$HOME/.config/jgmenu/pipemenus"
 	if [[ "$1" == "off" ]]; then 
 		compositor --disable-opacity
 		compositor --enable-shadows
