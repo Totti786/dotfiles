@@ -491,7 +491,6 @@ run(){
 		wpg-install.sh -g -o
 	fi
 
-
 	# Normal colors
 	background="$(printf "%s\n" "$background")"
 	foreground="$(printf "%s\n" "$foreground")"
@@ -562,6 +561,10 @@ fi
 case "$1" in
 	-h|--help)
 		help
+		;;
+	--run)
+		run
+		exit 0
 		;;
 	--restore)
 		restore
