@@ -19,11 +19,11 @@ declare -a minimal=(
 	imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot kvantum kvantum-qt5 loupe man moreutils \
 	mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji \
 	nsxiv nvtop oh-my-zsh-git openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct \
-	rhythmbox rofi-wayland scrot stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
+	rhythmbox rofi-wayland ruby-fusuma ruby-fusuma-plugin-sendkey scrot sioyek-git stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
 	picom-git plank playerctl polkit-gnome polybar python-pyxdg python-screeninfo python-wheel qbittorrent thunar-media-tags-plugin \
 	thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols \
 	ttf-nerd-fonts-symbols-common timeshift tumbler translate-shell waypaper wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
-	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xorg-xdpyinfo xorg-xkill xorg-xrandr \
+	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xiccd xorg-xdpyinfo xorg-xkill xorg-xrandr \
 	xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh\
 	zsh-autosuggestions zsh-syntax-highlighting
 )
@@ -42,9 +42,8 @@ declare -a wayland=(
 )
 
 declare -a aur=(
-	better-control-git i3-resurrect mpv-thumbfast-git mpv-uosc-git ruby-fusuma \
-	ruby-fusuma-plugin-sendkey ruby-fusuma-plugin-wmctrl sioyek-git ttf-rubik-vf ttf-gabarito-git \
-	tty-clock unimatrix-git xiccd xqp zscroll-git
+	better-control-git i3-resurrect mpv-thumbfast-git mpv-uosc-git ttf-rubik-vf ttf-gabarito-git \
+	tty-clock unimatrix-git xqp zscroll-git
 )
 
 declare -a additional=(
@@ -133,20 +132,20 @@ change_theme(){
 	cat "$dir/cfg/plank/plank.conf" | dconf load /net/launchpad/plank/docks/
 	cp -r "$dir"/bin/.icons "$HOME"
 
-	if [[ -d  /usr/share/icons/Papirus ]]; then
+	if [[ -d  "/usr/share/icons/Papirus" ]]; then
 		sudo chgrp -R $(whoami) /usr/share/icons/Papirus
 		sudo chmod -R ug+rwX /usr/share/icons/Papirus
 	fi
 	}
 
 install_wpgtk(){
-	sh "$dir"/bin/.local/bin/wpgtk run &&
+	sh "$dir"/bin/.local/bin/wpgtk --run &&
 	if "$Dialog" --yesno "Do you want your Login Screen background to sync with your wallpaper?
 		(This only works with the included SDDM theme)" 20 60 ;then
-		"$dir"/bin/.local/bin/wpgtk lockPerms &&
-		"$dir"/bin/.local/bin/wpgtk wall "$dir"/deps/background.jpg
+		"$dir"/bin/.local/bin/wpgtk --lock &&
+		"$dir"/bin/.local/bin/wpgtk --set "$dir"/deps/background.jpg
 	else
-		"$dir"/bin/.local/bin/wpgtk wall "$dir"/deps/background.jpg
+		"$dir"/bin/.local/bin/wpgtk --set "$dir"/deps/background.jpg
 	fi
 	}
 
