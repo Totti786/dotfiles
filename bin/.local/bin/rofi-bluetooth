@@ -343,7 +343,7 @@ show_menu() {
 
 device=$(bluetoothctl devices | grep "$chosen" | head -n 1)
 # Rofi command to pipe into, can add any options here
-rofi_command="rofi -dmenu $* -p"
+rofi_command="rofi -dmenu $*  -theme bluetooth -p "
 
 case "$1" in
     --status)
