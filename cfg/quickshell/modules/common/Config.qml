@@ -55,7 +55,7 @@ Singleton {
             id: configOptionsJsonAdapter
             property JsonObject policies: JsonObject {
                 property int ai: 1 // 0: No | 1: Yes | 2: Local
-                property int weeb: 0 // 0: No | 1: Open | 2: Closet
+                property int weeb: 1 // 0: No | 1: Open | 2: Closet
             }
 
             property JsonObject ai: JsonObject {
@@ -134,7 +134,7 @@ Singleton {
             property JsonObject dock: JsonObject {
                 property bool enable: false
                 property real height: 60
-                property real hoverRegionHeight: 3
+                property real hoverRegionHeight: 2
                 property bool pinnedOnStartup: false
                 property bool hoverToReveal: true // When false, only reveals on empty workspace
                 property list<string> pinnedApps: [ // IDs of pinned entries
