@@ -6,18 +6,18 @@
 CONFIG="$HOME/.config/alacritty/alacritty.toml"
 
 if [ "$1" == "--float" ]; then
-	alacritty --class 'float,Alacritty' --config-file "$CONFIG" "${@:2}"
+	alacritty --class 'Alacritty-float,Alacritty' --config-file "$CONFIG" "${@:2}"
 elif [ "$1" == "--full" ]; then
 	alacritty --class 'Alacritty,fullscreen' --config-file "$CONFIG" \
 	-o 'window.startup_mode="Fullscreen"' window.padding.x=10 window.padding.y=10 \
 	window.opacity=0.6 font.size=14 "${@:2}"
 elif [ "$1" == "--drop" ]; then 
 	if [ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]; then
-		hyprctl dispatch exec "[workspace special:drop;float;size 1200 500;move 18.5% 4.8%]" "alacritty --class 'drop,drop' --config-file $CONFIG ${@:2}"
+		hyprctl dispatch exec "[workspace special:drop;float;size 1200 500;move 18.5% 4.8%]" "alacritty --class 'Alacritty-drop,Alacritty' --config-file $CONFIG ${@:2}"
 	elif [ "$XDG_CURRENT_DESKTOP" == "bspwm" ]; then 
-		tdrop -t -a -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'drop,drop' --config-file "$CONFIG" "${@:2}"
+		tdrop -t -a -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'Alacritty-drop,Alacritty' --config-file "$CONFIG" "${@:2}"
 	else
-		tdrop -t -a -m -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'drop,drop' --config-file "$CONFIG" "${@:2}"
+		tdrop -t -a -m -w 70% -h 50% -y "$(( $top_padding + 10))" -x 15% alacritty --class 'Alacritty-drop,Alacritty' --config-file "$CONFIG" "${@:2}"
 	fi
 elif [ "$1" == "--help" ] || [ "$1"  == "-h" ]; then
 	echo "Usage: $(basename $0) [options] [--]	

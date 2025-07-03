@@ -28,7 +28,7 @@ bspc config focus_follows_pointer true
 bspc rule -r *:*
 
 ## special rules
-declare -a floating=(Lxappearance obs mpv float pop-up
+declare -a floating=(Lxappearance obs mpv Alacritty-float pop-up
 	Onboard Yad Viewnior Eog loupe scrcpy Steam Wpg
 	feh Nm-connection-editor stalonetray pavucontrol
 	copyq '*:*:Library' Xfce4-appearance-settings
@@ -51,7 +51,7 @@ for i in "${tiled[@]}"; do
 done
 
 bspc rule -a '*:*:Picture-in-Picture' sticky=on state=floating border=off
-bspc rule -a drop state=floating follow=on focus=on sticky=on layer=above locked=on 
+bspc rule -a Alacritty-drop state=floating follow=on focus=on sticky=on layer=above locked=on 
 bspc rule -a Plank layer=above manage=off locked=on border=off state=floating focus=off
 
 ## Autostart ----------------------------------------------#
