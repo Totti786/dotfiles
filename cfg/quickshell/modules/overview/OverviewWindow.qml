@@ -80,7 +80,7 @@ Item { // Window
                 hovered ? ColorUtils.transparentize(Appearance.colors.colLayer2Hover, 0.7) : 
                 ColorUtils.transparentize(Appearance.colors.colLayer2)
             border.color : ColorUtils.transparentize(Appearance.m3colors.m3outline, 0.7)
-            border.width : 1
+            border.width : 0
         }
 
         ColumnLayout {

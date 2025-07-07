@@ -3,6 +3,7 @@ import "root:/services"
 import "root:/modules/common/"
 import "root:/modules/common/widgets"
 import "root:/modules/common/functions/color_utils.js" as ColorUtils
+import "root:/modules/bar/weather"
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -26,7 +27,8 @@ Scope {
         color: Appearance.colors.colOutlineVariant
     }
 
-    Variants { // For each monitor
+    Variants {
+        // For each monitor
         model: {
             const screens = Quickshell.screens;
             const list = Config.options.bar.screenList;
@@ -41,12 +43,8 @@ Scope {
             screen: modelData
 
             property var brightnessMonitor: Brightness.getMonitorForScreen(modelData)
-            property real useShortenedForm: (Appearance.sizes.barHellaShortenScreenWidthThreshold >= screen.width) ? 2 :
-                (Appearance.sizes.barShortenScreenWidthThreshold >= screen.width) ? 1 : 0
-            readonly property int centerSideModuleWidth: 
-                (useShortenedForm == 2) ? Appearance.sizes.barCenterSideModuleWidthHellaShortened :
-                (useShortenedForm == 1) ? Appearance.sizes.barCenterSideModuleWidthShortened : 
-                    Appearance.sizes.barCenterSideModuleWidth
+            property real useShortenedForm: (Appearance.sizes.barHellaShortenScreenWidthThreshold >= screen.width) ? 2 : (Appearance.sizes.barShortenScreenWidthThreshold >= screen.width) ? 1 : 0
+            readonly property int centerSideModuleWidth: (useShortenedForm == 2) ? Appearance.sizes.barCenterSideModuleWidthHellaShortened : (useShortenedForm == 1) ? Appearance.sizes.barCenterSideModuleWidthShortened : Appearance.sizes.barCenterSideModuleWidth
 
             WlrLayershell.namespace: "quickshell:bar"
             implicitHeight: Appearance.sizes.barHeight + Appearance.rounding.screenRounding
@@ -87,7 +85,7 @@ Scope {
                         }
                     }
                 }
-                
+
                 // Background shadow
                 Loader {
                     active: showBarBackground && Config.options.bar.cornerStyle === 1
@@ -107,7 +105,7 @@ Scope {
                     color: showBarBackground ? Appearance.colors.colLayer0 : "transparent"
                     radius: Config.options.bar.cornerStyle === 1 ? Appearance.rounding.windowRounding : 0
                 }
-                
+
                 MouseArea { // Left side | scroll to change brightness
                     id: barLeftSideMouseArea
                     anchors.left: parent.left
@@ -121,16 +119,16 @@ Scope {
                     acceptedButtons: Qt.LeftButton
                     hoverEnabled: true
                     propagateComposedEvents: true
-                    onEntered: (event) => {
-                        barLeftSideMouseArea.hovered = true
+                    onEntered: event => {
+                        barLeftSideMouseArea.hovered = true;
                     }
-                    onExited: (event) => {
-                        barLeftSideMouseArea.hovered = false
-                        barLeftSideMouseArea.trackingScroll = false
+                    onExited: event => {
+                        barLeftSideMouseArea.hovered = false;
+                        barLeftSideMouseArea.trackingScroll = false;
                     }
-                    onPressed: (event) => {
+                    onPressed: event => {
                         if (event.button === Qt.LeftButton) {
-                            Hyprland.dispatch('global quickshell:sidebarLeftOpen')
+                            Hyprland.dispatch('global quickshell:sidebarLeftOpen');
                         }
                         else if (event.button === Qt.RightButton) {
 			    Quickshell.execDetached(["bash", "-c", `clight.sh --capture`])
@@ -138,7 +136,7 @@ Scope {
                     }
                     // Scroll to change brightness
                     WheelHandler {
-                        onWheel: (event) => {
+                        onWheel: event => {
                             if (event.angleDelta.y < 0)
                                 barRoot.brightnessMonitor.setBrightness(barRoot.brightnessMonitor.brightness - 0.05);
                             else if (event.angleDelta.y > 0)
@@ -150,17 +148,18 @@ Scope {
                         }
                         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
                     }
-                    onPositionChanged: (mouse) => {
+                    onPositionChanged: mouse => {
                         if (barLeftSideMouseArea.trackingScroll) {
                             const dx = mouse.x - barLeftSideMouseArea.lastScrollX;
                             const dy = mouse.y - barLeftSideMouseArea.lastScrollY;
-                            if (Math.sqrt(dx*dx + dy*dy) > osdHideMouseMoveThreshold) {
-                                Hyprland.dispatch('global quickshell:osdBrightnessHide')
+                            if (Math.sqrt(dx * dx + dy * dy) > osdHideMouseMoveThreshold) {
+                                Hyprland.dispatch('global quickshell:osdBrightnessHide');
                                 barLeftSideMouseArea.trackingScroll = false;
                             }
                         }
                     }
-                    Item {  // Left section
+                    Item {
+                        // Left section
                         anchors.fill: parent
                         implicitHeight: leftSectionRowLayout.implicitHeight
                         implicitWidth: leftSectionRowLayout.implicitWidth
@@ -172,22 +171,22 @@ Scope {
                             side: "left"
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-                            
                         }
-                        
+
                         RowLayout { // Content
                             id: leftSectionRowLayout
                             anchors.fill: parent
                             spacing: 10
 
-                            RippleButton { // Left sidebar button
+                            RippleButton {
+                                // Left sidebar button
                                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                                 Layout.leftMargin: Appearance.rounding.screenRounding
                                 Layout.fillWidth: false
                                 property real buttonPadding: 5
                                 implicitWidth: distroIcon.width + buttonPadding * 2
                                 implicitHeight: distroIcon.height + buttonPadding * 2
-                                
+
                                 buttonRadius: Appearance.rounding.full
                                 colBackground: barLeftSideMouseArea.hovered ? Appearance.colors.colLayer1Hover : ColorUtils.transparentize(Appearance.colors.colLayer1Hover, 1)
                                 colBackgroundHover: Appearance.colors.colLayer1Hover
@@ -196,10 +195,10 @@ Scope {
                                 colBackgroundToggledHover: Appearance.colors.colSecondaryContainerHover
                                 colRippleToggled: Appearance.colors.colSecondaryContainerActive
                                 toggled: GlobalStates.sidebarLeftOpen
-                                    property color colText: toggled ? Appearance.m3colors.m3onSecondaryContainer : Appearance.colors.colOnLayer0
+                                property color colText: toggled ? Appearance.m3colors.m3onSecondaryContainer : Appearance.colors.colOnLayer0
 
                                 onPressed: {
-                                    Hyprland.dispatch('global quickshell:sidebarLeftToggle')
+                                    Hyprland.dispatch('global quickshell:sidebarLeftToggle');
                                 }
 
                                 CustomIcon {
@@ -207,10 +206,9 @@ Scope {
                                     anchors.centerIn: parent
                                     width: 19.5
                                     height: 19.5
-                                    source: Config.options.bar.topLeftIcon == 'distro' ? 
-                                        SystemInfo.distroIcon : "spark-symbolic"
+                                    source: Config.options.bar.topLeftIcon == 'distro' ? SystemInfo.distroIcon : "spark-symbolic"
                                 }
-                                
+
                                 ColorOverlay {
                                     anchors.fill: distroIcon
                                     source: distroIcon
@@ -248,34 +246,38 @@ Scope {
                             visible: barRoot.useShortenedForm < 2
                             Layout.fillWidth: true
                         }
-
                     }
 
-                    VerticalBarSeparator {visible: Config.options?.bar.borderless}
+                    VerticalBarSeparator {
+                        visible: Config.options?.bar.borderless
+                    }
 
                     BarGroup {
                         id: middleCenterGroup
                         padding: workspacesWidget.widgetPadding
                         Layout.fillHeight: true
-                        
+
                         Workspaces {
                             id: workspacesWidget
                             bar: barRoot
                             Layout.fillHeight: true
-                            MouseArea { // Right-click to toggle overview
+                            MouseArea {
+                                // Right-click to toggle overview
                                 anchors.fill: parent
                                 acceptedButtons: Qt.RightButton
-                                
-                                onPressed: (event) => {
+
+                                onPressed: event => {
                                     if (event.button === Qt.RightButton) {
-                                        Hyprland.dispatch('global quickshell:overviewToggle')
+                                        Hyprland.dispatch('global quickshell:overviewToggle');
                                     }
                                 }
                             }
                         }
                     }
 
-                    VerticalBarSeparator {visible: Config.options?.bar.borderless}
+                    VerticalBarSeparator {
+                        visible: Config.options?.bar.borderless
+                    }
 
                     MouseArea {
                         id: rightCenterGroup
@@ -285,13 +287,13 @@ Scope {
                         Layout.fillHeight: true
 
                         onPressed: {
-                            Hyprland.dispatch('global quickshell:sidebarRightToggle')
+                            Hyprland.dispatch('global quickshell:sidebarRightToggle');
                         }
 
                         BarGroup {
                             id: rightCenterGroupContent
                             anchors.fill: parent
-                            
+
                             ClockWidget {
                                 showDate: (Config.options.bar.verbose && barRoot.useShortenedForm < 2)
                                 Layout.alignment: Qt.AlignVCenter
@@ -310,6 +312,9 @@ Scope {
                         }
                     }
 
+                    VerticalBarSeparator {
+                        visible: Config.options.bar.borderless && Config.options.bar.weather.enable
+                    }
                 }
 
                 MouseArea { // Right side | scroll to change volume
@@ -324,22 +329,21 @@ Scope {
                     property real lastScrollX: 0
                     property real lastScrollY: 0
                     property bool trackingScroll: false
-                    
+
                     acceptedButtons: Qt.LeftButton
                     hoverEnabled: true
                     propagateComposedEvents: true
-                    onEntered: (event) => {
-                        barRightSideMouseArea.hovered = true
+                    onEntered: event => {
+                        barRightSideMouseArea.hovered = true;
                     }
-                    onExited: (event) => {
-                        barRightSideMouseArea.hovered = false
-                        barRightSideMouseArea.trackingScroll = false
+                    onExited: event => {
+                        barRightSideMouseArea.hovered = false;
+                        barRightSideMouseArea.trackingScroll = false;
                     }
-                    onPressed: (event) => {
+                    onPressed: event => {
                         if (event.button === Qt.LeftButton) {
-                            Hyprland.dispatch('global quickshell:sidebarRightOpen')
-                        }
-                        else if (event.button === Qt.RightButton) {
+                            Hyprland.dispatch('global quickshell:sidebarRightOpen');
+                        } else if (event.button === Qt.RightButton) {
                             MprisController.activePlayer.togglePlaying()
                         }else if (event.button === Qt.BackButton) {
 			    MprisController.activePlayer.previous();
@@ -349,7 +353,7 @@ Scope {
                     }
                     // Scroll to change volume
                     WheelHandler {
-                        onWheel: (event) => {
+                        onWheel: event => {
                             const currentVolume = Audio.value;
                             const step = currentVolume < 0.1 ? 0.01 : 0.02 || 0.2;
                             if (event.angleDelta.y < 0)
@@ -363,12 +367,12 @@ Scope {
                         }
                         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
                     }
-                    onPositionChanged: (mouse) => {
+                    onPositionChanged: mouse => {
                         if (barRightSideMouseArea.trackingScroll) {
                             const dx = mouse.x - barRightSideMouseArea.lastScrollX;
                             const dy = mouse.y - barRightSideMouseArea.lastScrollY;
-                            if (Math.sqrt(dx*dx + dy*dy) > osdHideMouseMoveThreshold) {
-                                Hyprland.dispatch('global quickshell:osdVolumeHide')
+                            if (Math.sqrt(dx * dx + dy * dy) > osdHideMouseMoveThreshold) {
+                                Hyprland.dispatch('global quickshell:osdVolumeHide');
                                 barRightSideMouseArea.trackingScroll = false;
                             }
                         }
@@ -378,7 +382,7 @@ Scope {
                         anchors.fill: parent
                         implicitHeight: rightSectionRowLayout.implicitHeight
                         implicitWidth: rightSectionRowLayout.implicitWidth
-                        
+
                         ScrollHint {
                             reveal: barRightSideMouseArea.hovered
                             icon: "volume_up"
@@ -393,7 +397,7 @@ Scope {
                             anchors.fill: parent
                             spacing: 5
                             layoutDirection: Qt.RightToLeft
-                    
+
                             RippleButton { // Right sidebar button
                                 id: rightSidebarButton
 
@@ -419,7 +423,7 @@ Scope {
                                 }
 
                                 onPressed: {
-                                    Hyprland.dispatch('global quickshell:sidebarRightToggle')
+                                    Hyprland.dispatch('global quickshell:sidebarRightToggle');
                                 }
 
                                 RowLayout {
@@ -427,7 +431,7 @@ Scope {
                                     anchors.centerIn: parent
                                     property real realSpacing: 15
                                     spacing: 0
-                                    
+
                                     Revealer {
                                         reveal: Audio.sink?.audio?.muted ?? false
                                         Layout.fillHeight: true
@@ -486,6 +490,17 @@ Scope {
                             Item {
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
+                            }
+
+                            // Weather
+                            Loader {
+                                Layout.leftMargin: 8
+                                Layout.fillHeight: true
+                                active: Config.options.bar.weather.enable
+                                sourceComponent: BarGroup {
+                                    implicitHeight: Appearance.sizes.baseBarHeight
+                                    WeatherBar {}
+                                }
                             }
                         }
                     }
@@ -557,9 +572,6 @@ Scope {
                     }
                 }
             }
-
         }
-
     }
-
 }
