@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
 
 # Bar and window manager style settings
-bar_style="bionic"
+bar_style="base"
 window_border="0"
-transparency='false'
+transparency='true'
+
+# Gtk themes
+gtk_theme="FlatColor"
+icon_theme="Papirus-Dark"
+cursor_theme="Fluent-dark-cursors"
+font_name="Noto Sans 9"
 
 if [[ "$bar_style" == "base" ]];then
 	top_padding="23"
 	bottom_padding="23"
-	transparent="true"
 elif [[ "$bar_style" == "minimal" ]];then
 	top_padding="0"
 	bottom_padding="30"
-	transparent="true"
 elif [[ "$bar_style" == "bionic" ]];then
 	top_padding="35"
 	bottom_padding="0"
-	transparent="false"
 fi
