@@ -13,7 +13,6 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -22,6 +21,12 @@ export HISTORY_IGNORE="(ls|cd|cls|clear|pwd|exit|sudo reboot|history|cd -|cd ..)
 
 # fzf key bindings
 source <(fzf --zsh)
+
+# Set default mime types
+export EDITOR="vim"
+export VISUAL="geany"
+export BROWSER="firefox"
+export TERMINAL="alacritty"
 
 # ls
 alias  l='ls -lh'
@@ -41,7 +46,8 @@ alias gc='git commit -m'
 alias gp='git push origin master'
 
 # pacman 
-alias pacs='sudo pacman -S'
+#alias pacs='sudo pacman -S'
+alias pacs='yay -S $1'
 alias pacr='sudo pacman -Rcns'
 alias pacu='sudo pacman -Syu'
 
@@ -58,6 +64,6 @@ alias pac="yay -Qq | fzf --prompt='➜ ' --color=16 -m --preview 'yay -Qi {1}'"
 alias pacc='yay -Qtdq | yay -Rns -'
 
 # misc
-alias edit='vim ~/.zshrc'
+alias edit='vim $HOME/.zshrc'
 alias ctemp='watch -n 1 sensors'
 alias cls='clear'
