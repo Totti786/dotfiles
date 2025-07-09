@@ -21,8 +21,18 @@ jgmenu="$config/jgmenu/jgmenurc"
 spotify="$config/spicetify/Themes/pywal/color.ini"
 hypr="$config/hypr/colors.conf"
 kde="$config/kdeglobals"
-Wallpapers="$HOME/Pictures/Wallpapers"
+sniffnet="$config/sniffnet/colors.toml"
+wallpapers_dir="$HOME/Pictures/Wallpapers"
 
+# Source theme file
+if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
+	source "$HOME/.cache/wal/colors.sh"
+else
+	echo "[!] Theme file not found"
+	exit 1
+fi
+
+# Source config file
 if [[ -f "$config_file" ]]; then
 	source "${config_file}"
 else
@@ -154,9 +164,6 @@ change_colors(){
 		-e "s/color_sel_bg         = .*/color_sel_bg         = ${bright_black} 40/g" \
 		-e "s/color_sel_fg         = .*/color_sel_fg         = ${bright_red} 100/g" \
 		-e "s/color_sep_fg         = .*/color_sep_fg         = ${bright_blue} 40/g"
-	
-	# zathura and sioyek
-	reader-colors
 
 	# discord
 	if [[ -f "$discord" ]]; then 
@@ -175,6 +182,18 @@ change_colors(){
 		-e "s/--bg-3: .*/--bg-3: ${bg_light};/g" \
 		-e "s/--bg-4: .*/--bg-4: ${bg_mix};/g"
 	fi 
+
+	# sniffnet
+	if [[ -f "$sniffnet" ]]; then 
+		cat > "$sniffnet" <<- EOF
+		primary= "${bg_mix}"
+		secondary= "${bright_black}"
+		outgoing= "${bright_red}"
+		text_body= "${foreground}"
+		text_headers= "${bright_blue}"
+		starred= "${bright_yellow}"
+		EOF
+	fi
 
 	# spotify
 	# Spotify can be themed using the xrdb backend i.e. ${xrdb:color0:#222}
@@ -203,7 +222,7 @@ change_colors(){
 	EOF
 	fi
 	
-	if [[ -f "$kde" ]]; then 
+	# KDE colors
 	cat > "$kde" <<- EOF	
 	[Colors:Selection]
 	BackgroundNormal=$background
@@ -225,7 +244,9 @@ change_colors(){
 	ForegroundPositive=$green
 	ForegroundVisited=$blue
 	EOF
-	fi
+	
+	# zathura and sioyek
+	reader-colors
 	
 	# resize and move wallpaper for use by other programs
 	ln -sf "$wallpaper" "$HOME"/.config/wpg/wallpapers/
@@ -256,7 +277,7 @@ transparent(){
 		alpha_rofi="ff"
 		alpha_dunst="ff" 
 	else 
-		sed -i "s/opacity =.*/opacity = 0.75/" "${alacritty%/*}/alacritty.toml"
+		sed -i "s/opacity =.*/opacity = 0.85/" "${alacritty%/*}/alacritty.toml"
 		sed -i "s/frame_width = .*/frame_width = 3/" "$dunst"
 		sed -i "/opacity/s/^#//" "$HOME"/.config/hypr/hyprland.conf
 		alpha_jg="70"
@@ -349,24 +370,39 @@ wall() {
 
 restore() {
 	run
-	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+
+	case "$XDG_SESSION_TYPE" in
+	x11)
 		feh --no-fehbg --bg-fill "$wallpaper"
-	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-		swww query || swww-daemon -q & disown
-		if [[ "$(swww query | awk '{print $8}')" != "$wallpaper" ]]; then
-		#main &
-		swww img "$wallpaper" \
-			--transition-step 100 \
-			--transition-fps 120 \
-			--transition-angle 30 \
-			--transition-type any \
-			--transition-duration 1 & disown
+		;;
+	wayland)
+		# Apply Gtk Theme
+		gsettings set org.gnome.desktop.interface icon-theme "$icon_theme"
+		gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
+		gsettings set org.gnome.desktop.interface font-name "$font_name"
+		gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
+
+		# Set cursor for Hyprland
+		[[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]] && hyprctl setcursor "$cursor_theme" 24
+
+		# Start swww if not running
+		swww query &>/dev/null || (swww-daemon -q & disown)
+
+		current_wallpaper="$(swww query | awk -F 'image: ' '{print $2}')"
+		if [[ "$current_wallpaper" != "$wallpaper" ]]; then
+			swww img "$wallpaper" \
+				--transition-step 100 \
+				--transition-fps 120 \
+				--transition-angle 30 \
+				--transition-type any \
+				--transition-duration 1 & disown
 		fi
-    fi
+		;;
+	esac
 }
 
 setup(){
-	images=($(find $Wallpapers -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \)))
+	images=($(find $wallpapers_dir -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \)))
     for ((i=0; i<${#images[@]}; i++)); do
 		wpg -A "${images[i]}" && rm "${images[i]}""_wal_sample.png"
 	done
@@ -374,13 +410,9 @@ setup(){
 
 # Set Random Wallpaper from ~/Pictures/Wallpaper
 random(){
-	if [[ "$(ls -A $Wallpapers)" ]]; then 
-        #if command -v waypaper >/dev/null 2>&1; then
-		#	waypaper --random
-		#else
-            image="$(find "$Wallpapers" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -exec shuf -ezn 1 {} + | xargs -0)"
-            wall "$image"
-        #fi
+	if [[ "$(ls -A $wallpapers_dir)" ]]; then 
+		image="$(fd -e jpg -e jpeg -e png . "$wallpapers_dir" -0 | shuf -zn1 | tr -d '\0')"
+		wall "$image"
 	else
 		notify-send -u low -r 43 "No Wallpapers Were Found in:" "~/Pictures/Wallpapers"
 	fi
@@ -389,19 +421,21 @@ random(){
 # This function uses nsxiv or waypaper as a wallpaper selector for wpg.
 # To set a wallpaper in nsxiv, select a wallpaper by pressing "m" and then quitting.
 pick() {
-	if [[ -z "$(ls -A "$Wallpapers" 2>/dev/null)" ]]; then
-		notify-send -u low -r 43 "No Wallpapers Found" "$Wallpapers"
+	if [[ -z "$(ls -A "$wallpapers_dir" 2>/dev/null)" ]]; then
+		notify-send -u low -r 43 "No Wallpapers Found" "$wallpapers_dir"
 		return 1
 	fi
 
 	if command -v waypaper >/dev/null 2>&1; then
 		[[ -z $(pgrep waypaper) ]] && waypaper || echo "Chill!"
 	else
-		wal=$(nsxiv -torb "$Wallpapers") || return 1
+		wal=$(nsxiv -torb "$wallpapers_dir") || return 1
 		[[ -n "$wal" ]] && wall "$wal"
 	fi
 }
 
+
+# Needs fixing
 dynamic(){
 	dynmaic_wall="$HOME/Pictures/Dynamic"
 	if [[ -d "$dynmaic_wall" ]]; then 
@@ -423,31 +457,54 @@ dynamic(){
 	fi
 }
 	
-## Send a signal to phone to change wallpaper (requires automate to be set up)
-phone(){
+## Send a signal to phone to change wallpaper (requires Automate to be set up)
+phone() {
 	run
-	if command -v kdeconnect-cli &> /dev/null; then
-		device_id="$(kdeconnect-cli -a --id-only)"
-		if [[ -n "$device_id" ]]; then
-			cp "$wallpaper" /tmp/wallpaper.jpg
-			kdeconnect-cli -d "$device_id" --share /tmp/wallpaper.jpg && 
-			kdeconnect-cli -d "$device_id" --ping
-		fi
-		exit
-	else
+
+	if ! command -v kdeconnect-cli &>/dev/null; then
 		echo "KDE Connect is not installed"
+		return 1
+	fi
+
+	device_id="$(kdeconnect-cli -a --id-only | head -n1)"
+	if [[ -z "$device_id" ]]; then
+		echo "No KDE Connect device found"
+		return 1
+	fi
+
+	tmp_wallpaper="/tmp/wallpaper.jpg"
+	cp "$wallpaper" "$tmp_wallpaper"
+
+	if kdeconnect-cli -d "$device_id" --share "$tmp_wallpaper" &&
+	   kdeconnect-cli -d "$device_id" --ping; then
+		echo "Wallpaper sent and pinged successfully"
+	else
+		echo "Failed to share wallpaper or ping device"
+		return 1
 	fi
 }
-	
-misc(){
-	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
-		xfconf-query -c xsettings -p /Net/ThemeName -s "Dummy" &&
-		xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 
+	
+partial(){
+	change_colors
+
+	if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then 
+		# Reload GTK
+		xfconf-query -c xsettings -p /Net/ThemeName -s "Dummy" &&
+		xfconf-query -c xsettings -p /Net/ThemeName -s "$gtk_theme"
+		
+		restart "copyq --start-server"
+		restart "dunst"
 		conky.sh restart &
+		#pkill dunst; dunst > /dev/null 2>&1 & disown
+		
 		"$HOME/.config/polybar/launch.sh" &> /dev/null &
 		[[ "$XDG_CURRENT_DESKTOP" == "bspwm" ]] && "$HOME"/.config/bspwm/bsp-border &
 	elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then	
+		# Reload GTK
+		gsettings set org.gnome.desktop.interface gtk-theme "Dummy"
+		gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
+		
 		# Quickshell
 		if [[ -n $(pgrep -f "qs|quickshell") ]]; then
 			ln -sf "$HOME"/.cache/wal/colors-qs.json "$HOME"/.local/state/quickshell/user/generated/colors.json
@@ -455,25 +512,16 @@ misc(){
 				--screen-height "1080" --width 300 --height 200 \
 				"$wallpaper" > "$HOME"/.local/state/quickshell/user/generated/wallpaper/least_busy_region.json &
 	    fi
-	    
-		gsettings set org.gnome.desktop.interface gtk-theme "Dummy"
-		gsettings set org.gnome.desktop.interface gtk-theme "FlatColor"
 	fi
-}
-
-partial(){
-	change_colors
-	misc
-	qt_colors
-	pkill dunst; dunst > /dev/null 2>&1 & disown
 	check spicetify -q refresh &
 	check pywalfox update >/dev/null 2>&1 &
 	check razer-cli -a &
 }
+
 main(){
 	partial
+	qt_colors
 	papirus-folder.sh ${red} &
-	restart copyq --start-server &
 	copyWal
 	magick "$wallpaper" -scale 20% -blur 0x2 -resize \
 	"$(xdpyinfo | awk '/dimensions/{print $2}')" \
@@ -550,14 +598,6 @@ help(){
     echo "  --restart        Restart apps and reload colors"	
 }
 
-# Source theme file
-if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
-	source "$HOME/.cache/wal/colors.sh"
-else
-	echo "[!] Theme file not found"
-	exit 1
-fi
-
 case "$1" in
 	-h|--help)
 		help
@@ -624,5 +664,3 @@ case "$1" in
 		help
 		;;
 esac
-
-#"$@"
