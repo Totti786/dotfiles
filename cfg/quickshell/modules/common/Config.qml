@@ -66,6 +66,11 @@ Singleton {
                 property bool extraBackgroundTint: false
                 property int fakeScreenRounding: 1 // 0: None | 1: Always | 2: When not fullscreen
                 property bool transparency: false
+                property JsonObject wallpaperTheming: JsonObject {
+                    property bool enableAppsAndShell: true
+                    property bool enableQtApps: true
+                    property bool enableTerminal: true
+                }
                 property JsonObject palette: JsonObject {
                     property string type: "auto" // Allowed: auto, scheme-content, scheme-expressive, scheme-fidelity, scheme-fruit-salad, scheme-monochrome, scheme-neutral, scheme-rainbow, scheme-tonal-spot
                 }
@@ -122,7 +127,7 @@ Singleton {
                     property int shown: 10
                     property bool showAppIcons: true
                     property bool alwaysShowNumbers: false
-                    property int showNumberDelay: 300 // milliseconds
+                    property int showNumberDelay: 50 // milliseconds
                 }
                 property JsonObject weather: JsonObject {
                     property bool enable: false
@@ -148,7 +153,7 @@ Singleton {
                 property bool pinnedOnStartup: false
                 property bool hoverToReveal: true // When false, only reveals on empty workspace
                 property list<string> pinnedApps: [ // IDs of pinned entries
-                    "thunar", "alacritty","firefox"]
+                    "alacritty", "firefox", "thunar"]
             }
 
             property JsonObject language: JsonObject {
@@ -211,7 +216,7 @@ Singleton {
             property JsonObject time: JsonObject {
                 // https://doc.qt.io/qt-6/qtime.html#toString
                 property string format: "h:mm AP"
-                property string dateFormat: "dddd, dd/MM"
+                property string dateFormat: "ddd, dd/MM"
             }
 
             property JsonObject windows: JsonObject {

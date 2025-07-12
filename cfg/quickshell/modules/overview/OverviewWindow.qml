@@ -42,8 +42,8 @@ Item { // Window
     
     x: initX
     y: initY
-    width: Math.round(Math.min(windowData?.size[0] * root.scale, (restrictToWorkspace ? windowData?.size[0] : availableWorkspaceWidth - x + xOffset)))
-    height: Math.round(Math.min(windowData?.size[1] * root.scale, (restrictToWorkspace ? windowData?.size[1] : availableWorkspaceHeight - y + yOffset)))
+    width: windowData?.size[0] * root.scale
+    height: windowData?.size[1] * root.scale
 
     layer.enabled: true
     layer.effect: OpacityMask {
@@ -91,7 +91,14 @@ Item { // Window
 
             Image {
                 id: windowIcon
-                property var iconSize: Math.min(targetWindowWidth, targetWindowHeight) * (root.compactMode ? root.iconToWindowRatioCompact : root.iconToWindowRatio)
+                property var iconSize: {
+                    // console.log("-=-=-", root.toplevel.title, "-=-=-")
+                    // console.log("Target window size:", targetWindowWidth, targetWindowHeight)
+                    // console.log("Icon ratio:", root.compactMode ? root.iconToWindowRatioCompact : root.iconToWindowRatio)
+                    // console.log("Scale:", root.monitorData.scale)
+                    // console.log("Final:", Math.min(targetWindowWidth, targetWindowHeight) * (root.compactMode ? root.iconToWindowRatioCompact : root.iconToWindowRatio) / root.monitorData.scale)
+                    return Math.min(targetWindowWidth, targetWindowHeight) * (root.compactMode ? root.iconToWindowRatioCompact : root.iconToWindowRatio) / root.monitorData.scale;
+                }
                 // mipmap: true
                 Layout.alignment: Qt.AlignHCenter
                 source: root.iconPath

@@ -17,7 +17,6 @@ Singleton {
     property var substitutions: ({
         "code-url-handler": "visual-studio-code",
         "Code": "visual-studio-code",
-        "float": "Alacritty",
         "gnome-tweaks": "org.gnome.tweaks",
         "pavucontrol-qt": "pavucontrol",
         "wps": "wps-office2019-kprometheus",
@@ -34,6 +33,10 @@ Singleton {
         {
             "regex": /waydroid.*/,
             "replace": "waydroid"
+        },
+        {
+            "regex": /Alacritty.*/,
+            "replace": "Alacritty"
         },
         {
             "regex": /Minecraft.*/,

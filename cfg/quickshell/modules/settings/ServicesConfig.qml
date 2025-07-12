@@ -137,4 +137,97 @@ ContentPage {
             }
         }
     }
+
+    ContentSection {
+        title: "Search"
+
+        ConfigSwitch {
+            text: "Use Levenshtein distance-based algorithm instead of fuzzy"
+            checked: Config.options.search.sloppy
+            onCheckedChanged: {
+                Config.options.search.sloppy = checked;
+            }
+            StyledToolTip {
+                content: "Could be better if you make a ton of typos,\nbut results can be weird and might not work with acronyms\n(e.g. \"GIMP\" might not give you the paint program)"
+            }
+        }
+
+        ContentSubsection {
+            title: "Prefixes"
+            ConfigRow {
+                uniform: true
+
+                MaterialTextField {
+                    Layout.fillWidth: true
+                    placeholderText: "Action"
+                    text: Config.options.search.prefix.action
+                    wrapMode: TextEdit.Wrap
+                    onTextChanged: {
+                        Config.options.search.prefix.action = text;
+                    }
+                }
+                MaterialTextField {
+                    Layout.fillWidth: true
+                    placeholderText: "Clipboard"
+                    text: Config.options.search.prefix.clipboard
+                    wrapMode: TextEdit.Wrap
+                    onTextChanged: {
+                        Config.options.search.prefix.clipboard = text;
+                    }
+                }
+                MaterialTextField {
+                    Layout.fillWidth: true
+                    placeholderText: "Emojis"
+                    text: Config.options.search.prefix.emojis
+                    wrapMode: TextEdit.Wrap
+                    onTextChanged: {
+                        Config.options.search.prefix.emojis = text;
+                    }
+                }
+            }
+        }
+        ContentSubsection {
+            title: "Web search"
+            MaterialTextField {
+                Layout.fillWidth: true
+                placeholderText: "Base URL"
+                text: Config.options.search.engineBaseUrl
+                wrapMode: TextEdit.Wrap
+                onTextChanged: {
+                    Config.options.search.engineBaseUrl = text;
+                }
+            }
+        }
+    }
+
+    ContentSection {
+        title: "Time"
+
+        ContentSubsection {
+            title: "Format"
+            tooltip: ""
+
+            ConfigSelectionArray {
+                currentValue: Config.options.time.format
+                configOptionName: "time.format"
+                onSelected: newValue => {
+                    Config.options.time.format = newValue;
+                }
+                options: [
+                    {
+                        displayName: "24h",
+                        value: "hh:mm"
+                    },
+                    {
+                        displayName: "12h am/pm",
+                        value: "h:mm ap"
+                    },
+                    {
+                        displayName: "12h AM/PM",
+                        value: "h:mm AP"
+                    },
+                ]
+            }
+        }
+    }
 }

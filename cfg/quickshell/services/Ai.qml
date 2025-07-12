@@ -19,7 +19,7 @@ Singleton {
     readonly property string apiKeyEnvVarName: "API_KEY"
     property Component aiMessageComponent: AiMessageData {}
     property string systemPrompt: Config.options?.ai?.systemPrompt ?? ""
-    property var messages: []
+    // property var messages: []
     property var messageIDs: []
     property var messageByID: ({})
     readonly property var apiKeys: KeyringStorage.keyringData?.apiKeys ?? {}
@@ -39,6 +39,7 @@ Singleton {
     property list<var> defaultPrompts: []
     property list<var> userPrompts: []
     property list<var> promptFiles: [...defaultPrompts, ...userPrompts]
+    property list<var> savedChats: []
 
     // Model properties:
     // - name: Name of the model
@@ -292,6 +293,20 @@ Singleton {
         }
     }
 
+    Process {
+        id: getSavedChats
+        running: true
+        command: ["ls", "-1", Directories.aiChats]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (text.length === 0) return;
+                root.savedChats = text.split("\n")
+                    .filter(fileName => fileName.endsWith(".json"))
+                    .map(fileName => `${Directories.aiChats}/${fileName}`)
+            }
+        }
+    }
+
     FileView {
         id: promptLoader
         watchChanges: false;
@@ -317,6 +332,7 @@ Singleton {
         const aiMessage = aiMessageComponent.createObject(root, {
             "role": role,
             "content": message,
+            "rawContent": message,
             "thinking": false,
             "done": true,
         });
@@ -445,6 +461,7 @@ Singleton {
                 root.postResponseHook();
                 root.postResponseHook = null; // Reset hook after use
             }
+            root.saveChat("lastSession")
         }
 
         function buildGeminiRequestData(model, messages) {
@@ -476,7 +493,7 @@ Singleton {
                     return {
                         "role": geminiApiRoleName,
                         "parts": [{ 
-                            text: message.content,
+                            text: message.rawContent,
                         }]
                     }
                 }),
@@ -501,7 +518,7 @@ Singleton {
                     ...messages.filter(message => (message.role != Ai.interfaceRole)).map(message => {
                         return {
                             "role": message.role,
-                            "content": message.content,
+                            "content": message.rawContent,
                         }
                     }),
                 ],
@@ -533,6 +550,7 @@ Singleton {
                 "role": "assistant",
                 "model": currentModelId,
                 "content": "",
+                "rawContent": "",
                 "thinking": true,
                 "done": false,
             });
@@ -577,12 +595,15 @@ Singleton {
                     const functionCall = dataJson.candidates[0]?.content?.parts[0]?.functionCall;
                     requester.message.functionName = functionCall.name;
                     requester.message.functionCall = functionCall.name;
-                    requester.message.content += `\n\n[[ Function: ${functionCall.name}(${JSON.stringify(functionCall.args, null, 2)}) ]]\n`;
+                    const newContent = `\n\n[[ Function: ${functionCall.name}(${JSON.stringify(functionCall.args, null, 2)}) ]]\n`
+                    requester.message.rawContent += newContent;
+                    requester.message.content += newContent;
                     root.handleGeminiFunctionCall(functionCall.name, functionCall.args);
                     return
                 }
                 // Normal text response
                 const responseContent = dataJson.candidates[0]?.content?.parts[0]?.text
+                requester.message.rawContent += responseContent;
                 requester.message.content += responseContent;
                 const annotationSources = dataJson.candidates[0]?.groundingMetadata?.groundingChunks?.map(chunk => {
                     return {
@@ -606,6 +627,7 @@ Singleton {
                 // console.log(JSON.stringify(requester.message, null, 2));
             } catch (e) {
                 console.log("[AI] Could not parse response from stream: ", e);
+                requester.message.rawContent += requester.geminiBuffer;
                 requester.message.content += requester.geminiBuffer
             } finally {
                 requester.geminiBuffer = "";
@@ -647,15 +669,19 @@ Singleton {
             if (responseContent && responseContent.length > 0) {
                 if (requester.isReasoning) {
                     requester.isReasoning = false;
-                    requester.message.content += "\n\n</think>\n\n";
+                    const endBlock = "\n\n</think>\n\n";
+                    requester.message.content += endBlock;
+                    requester.message.rawContent += endBlock;
                 }
                 newContent = dataJson.choices[0]?.delta?.content || dataJson.message.content;
             } else if (responseReasoning && responseReasoning.length > 0) {
                 // console.log("Reasoning content: ", dataJson.choices[0].delta.reasoning);
                 if (!requester.isReasoning) {
                     requester.isReasoning = true;
-                    requester.message.content += "\n\n<think>\n\n";
-                } 
+                    const startBlock = "\n\n<think>\n\n";
+                    requester.message.rawContent += startBlock;
+                    requester.message.content += startBlock;
+                }
                 newContent = dataJson.choices[0].delta.reasoning || dataJson.choices[0].delta.reasoning_content;
             }
 
@@ -682,10 +708,12 @@ Singleton {
                     }
                     else {
                         console.log("Unknown API format: ", requester.apiFormat);
+                        requester.message.rawContent += data;
                         requester.message.content += data;
                     }
                 } catch (e) {
                     console.log("[AI] Could not parse response from stream: ", e);
+                    requester.message.rawContent += data;
                     requester.message.content += data;
                 }
             }
@@ -697,8 +725,9 @@ Singleton {
 
             try { // to parse full response into json for error handling
                 // console.log("Full response: ", requester.message.content + "]"); 
-                const parsedResponse = JSON.parse(requester.message.content + "]");
-                requester.message.content = `\`\`\`json\n${JSON.stringify(parsedResponse, null, 2)}\n\`\`\``;
+                const parsedResponse = JSON.parse(requester.message.rawContent + "]");
+                requester.message.rawContent = `\`\`\`json\n${JSON.stringify(parsedResponse, null, 2)}\n\`\`\``;
+                requester.message.content = requester.message.rawContent;
             } catch (e) { 
                 // console.log("[AI] Could not parse response on exit: ", e);
             }
@@ -719,6 +748,7 @@ Singleton {
         const aiMessage = aiMessageComponent.createObject(root, {
             "role": "user",
             "content": `[[ Output of ${name} ]]`,
+            "rawContent": `[[ Output of ${name} ]]`,
             "functionName": name,
             "functionResponse": output,
             "thinking": false,
@@ -771,4 +801,80 @@ Singleton {
         else root.addMessage(qsTr("Unknown function call: {0}"), "assistant");
     }
 
+    function chatToJson() {
+        return root.messageIDs.map(id => {
+            const message = root.messageByID[id]
+            return ({
+                "role": message.role,
+                "rawContent": message.rawContent,
+                "model": message.model,
+                "thinking": false,
+                "done": true,
+                "annotations": message.annotations,
+                "annotationSources": message.annotationSources,
+                "functionName": message.functionName,
+                "functionCall": message.functionCall,
+                "functionResponse": message.functionResponse,
+                "visibleToUser": message.visibleToUser,
+            })
+        })
+    }
+
+    FileView {
+        id: chatSaveFile
+        property string chatName: "chat"
+        path: `${Directories.aiChats}/${chatName}.json`
+        blockLoading: true
+    }
+
+    /**
+     * Saves chat to a JSON list of message objects.
+     * @param chatName name of the chat
+     */
+    function saveChat(chatName) {
+        chatSaveFile.chatName = chatName.trim()
+        const saveContent = JSON.stringify(root.chatToJson())
+        chatSaveFile.setText(saveContent)
+        getSavedChats.running = true;
+    }
+
+    /**
+     * Loads chat from a JSON list of message objects.
+     * @param chatName name of the chat
+     */
+    function loadChat(chatName) {
+        try {
+            chatSaveFile.chatName = chatName.trim()
+            chatSaveFile.reload()
+            const saveContent = chatSaveFile.text()
+            // console.log(saveContent)
+            const saveData = JSON.parse(saveContent)
+            root.clearMessages()
+            root.messageIDs = saveData.map((_, i) => {
+                return i
+            })
+            console.log(JSON.stringify(messageIDs))
+            for (let i = 0; i < saveData.length; i++) {
+                const message = saveData[i];
+                root.messageByID[i] = root.aiMessageComponent.createObject(root, {
+                    "role": message.role,
+                    "rawContent": message.rawContent,
+                    "content": message.rawContent,
+                    "model": message.model,
+                    "thinking": message.thinking,
+                    "done": message.done,
+                    "annotations": message.annotations,
+                    "annotationSources": message.annotationSources,
+                    "functionName": message.functionName,
+                    "functionCall": message.functionCall,
+                    "functionResponse": message.functionResponse,
+                    "visibleToUser": message.visibleToUser,
+                });
+            }
+        } catch (e) {
+            console.log("[AI] Could not load chat: ", e);
+        } finally {
+            getSavedChats.running = true;
+        }
+    }
 }
