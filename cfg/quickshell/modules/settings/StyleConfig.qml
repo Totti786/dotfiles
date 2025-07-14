@@ -144,7 +144,10 @@ ContentPage {
                     text: "Enable"
                     checked: Config.options.appearance.transparency
                     onCheckedChanged: {
-                        Config.options.appearance.transparency = checked;
+                        if (Config.options.appearance.transparency !== checked) {
+				            Config.options.appearance.transparency = checked;
+				            Quickshell.execDetached(["bash", "-c", `wpgtk --trans`])
+				        }
                     }
                     StyledToolTip {
                         content: "Might look ass. Unsupported."
