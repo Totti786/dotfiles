@@ -16,7 +16,7 @@ Singleton {
     property string syntaxHighlightingTheme
 
     // Extremely conservative transparency values for consistency and readability
-    property real transparency: Config.options?.appearance.transparency ? (m3colors.darkmode ? 0.2 : 0.1) : 0
+    property real transparency: Config.options?.appearance.transparency ? (m3colors.darkmode ? 0.1 : 0.07) : 0
     property real contentTransparency: Config.options?.appearance.transparency ? (m3colors.darkmode ? 0.55 : 0.55) : 0
 
     m3colors: QtObject {
@@ -168,6 +168,7 @@ Singleton {
             property string iconNerd: "SpaceMono NF"
             property string monospace: "JetBrains Mono NF"
             property string reading: "Readex Pro"
+            property string expressive: "Space Grotesk"
         }
         property QtObject pixelSize: QtObject {
             property int smallest: 10

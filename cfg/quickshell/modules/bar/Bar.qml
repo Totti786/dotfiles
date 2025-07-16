@@ -3,7 +3,7 @@ import "root:/services"
 import "root:/modules/common/"
 import "root:/modules/common/widgets"
 import "root:/modules/common/functions/color_utils.js" as ColorUtils
-import "root:/modules/bar/weather"
+import "./weather"
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -424,8 +424,8 @@ Scope {
                                         animation: Appearance.animation.elementMoveFast.colorAnimation.createObject(this)
                                     }
 
-                                    onPressed: {                                    
-										Hyprland.dispatch('global quickshell:sidebarLeftOpen');
+                                    onPressed: {
+                                        Hyprland.dispatch('global quickshell:sidebarRightToggle');
                                     }
 
                                     RowLayout {
