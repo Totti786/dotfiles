@@ -7,7 +7,6 @@ else
 	exit 1
 fi
 	
-material_pywal="$HOME/.cache/wal/material_colors.sh"
 material_qs="$HOME/.cache/wal/colors-qs.json"
 
 # Define color manipulation using Pastel
@@ -37,7 +36,7 @@ shadow="#000000"
 scrim="#000000"
 surfaceTint=$(pastel lighten 0.2 "$color1" | pastel format hex)
 primary=$(pastel lighten 0.1 "$color1" | pastel format hex)
-onPrimary=$(pastel darken 0.2 "$color2" | pastel format hex)
+onPrimary=$(pastel mix -f 0.2 "$color2" "$color0" | pastel format hex)
 primaryContainer=$(pastel darken 0.1 "$color4" | pastel format hex)
 onPrimaryContainer=$(pastel lighten 0.4 "$color4" | pastel format hex)
 inversePrimary=$(pastel complement "$color4" | pastel format hex)
@@ -46,7 +45,7 @@ onSecondary=$(pastel lighten 0.05 "$color7" | pastel format hex)
 secondaryContainer=$(pastel darken 0.05 "$color3" | pastel format hex)
 onSecondaryContainer=$(pastel mix -f 0.8 "$color7" "$color3" | pastel format hex)
 tertiary="$color5"
-onTertiary=$(pastel darken 0.2 "$color2" | pastel format hex)
+onTertiary=$(pastel mix -f 0.1 "$color2" "$color0" | pastel format hex)
 tertiaryContainer=$(pastel darken 0.1 "$color2" | pastel format hex)
 onTertiaryContainer=$(pastel lighten 0.5 "$color4" | pastel format hex)
 error="#FFB4AB"
@@ -57,71 +56,6 @@ success="#B5CCBA"
 onSuccess="#213528"
 successContainer="#374B3E"
 onSuccessContainer="#D1E9D6"
-
-cat << EOF > "$material_pywal"
-primary_paletteKeyColor="$primary_paletteKeyColor"
-secondary_paletteKeyColor="$secondary_paletteKeyColor"
-tertiary_paletteKeyColor="$tertiary_paletteKeyColor"
-neutral_paletteKeyColor="$neutral_paletteKeyColor"
-neutral_variant_paletteKeyColor="$neutral_variant_paletteKeyColor"
-background="$background"
-onBackground="$onBackground"
-surface="$surface"
-surfaceDim="$surfaceDim"
-surfaceBright="$surfaceBright"
-surfaceContainerLowest="$surfaceContainerLowest"
-surfaceContainerLow="$surfaceContainerLow"
-surfaceContainer="$surfaceContainer"
-surfaceContainerHigh="$surfaceContainerHigh"
-surfaceContainerHighest="$surfaceContainerHighest"
-onSurface="$onSurface"
-surfaceVariant="$surfaceVariant"
-onSurfaceVariant="$onSurfaceVariant"
-inverseSurface="$inverseSurface"
-inverseOnSurface="$inverseOnSurface"
-outline="$outline"
-outlineVariant="$outlineVariant"
-shadow="$shadow"
-scrim="$scrim"
-surfaceTint="$surfaceTint"
-primary="$primary"
-onPrimary="$onPrimary"
-primaryContainer="$primaryContainer"
-onPrimaryContainer="$onPrimaryContainer"
-inversePrimary="$inversePrimary"
-secondary="$secondary"
-onSecondary="$onSecondary"
-secondaryContainer="$secondaryContainer"
-onSecondaryContainer="$onSecondaryContainer"
-tertiary="$tertiary"
-onTertiary="$onTertiary"
-tertiaryContainer="$tertiaryContainer"
-onTertiaryContainer="$onTertiaryContainer"
-error="$error"
-onError="$onError"
-errorContainer="$errorContainer"
-onErrorContainer="$onErrorContainer"
-success="$success"
-onSuccess="$onSuccess"
-successContainer="$successContainer"
-onSuccessContainer="$onSuccessContainer"
-term0="$color0"
-term1="$color1"
-term2="$color2"
-term3="$color3"
-term4="$color4"
-term5="$color5"
-term6="$color6"
-term7="$color7"
-term8="$color8"
-term9="$color9"
-term10="$color10"
-term11="$color11"
-term12="$color12"
-term13="$color13"
-term14="$color14"
-term15="$color15"
-EOF
 
 # Output in JSON format
 cat << EOF > "$material_qs"
