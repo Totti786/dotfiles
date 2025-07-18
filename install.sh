@@ -248,6 +248,17 @@ wallpapers() {
     fi
 }
 
+enable_autologin(){
+	session_name=hyprland
+	
+	sed -i -e "s/Session=.*/Session=$session_name/g" /etc/sddm.conf.d/sddm.conf
+	sed -i -e "s/User=.*/User=$(whoami)/g" /etc/sddm.conf.d/sddm.conf
+	if [[ "$session_name" == "hyprland" ]]; then
+		echo "exec-once = bash -c 'if [ "$(cut -d. -f1 /proc/uptime)" -lt 15 ]; then lockscreen; fi'" >> "$HOME/.config/hypr/custom.conf"
+	fi
+}
+
+
 fixes(){
 	sudo cp "$dir"/deps/fixes/quickshell.service /usr/lib/systemd/user/
 	sudo cp "$dir"/deps/fixes/wayland-notif /usr/local/bin/
@@ -267,7 +278,7 @@ update(){
 	cp "$dir"/deps/.zprofile "$dir"/deps/.zshrc "$dir"/deps/.gtkrc-2.0 "$dir"/deps/.theme "$HOME"/
 	## Move udpated scripts and configs
 	cp -r "$dir"/bin/.local/ "$HOME"/
-	rsync -a --exclude '/hypr/custom.conf' --exclude '/hypr/monitors.conf' "$dir"/cfg/* "$HOME"/.config/
+	rsync -a --delete --exclude '/hypr/custom.conf' --exclude '/hypr/monitors.conf' "$dir"/cfg/* "$HOME"/.config/
 	# Mark scripts as executable
 	file_check
 }
