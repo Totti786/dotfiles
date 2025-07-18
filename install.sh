@@ -278,7 +278,22 @@ update(){
 	cp "$dir"/deps/.zprofile "$dir"/deps/.zshrc "$dir"/deps/.gtkrc-2.0 "$dir"/deps/.theme "$HOME"/
 	## Move udpated scripts and configs
 	cp -r "$dir"/bin/.local/ "$HOME"/
-	rsync -a --delete --exclude '/hypr/custom.conf' --exclude '/hypr/monitors.conf' "$dir"/cfg/* "$HOME"/.config/
+	rsync -a --delete \
+	  --filter='protect xfce4/**' \
+	  --filter='protect qt5ct/**' \
+	  --filter='protect qt6ct/**' \
+	  --filter='protect mpv/**' \
+	  --filter='protect systemd/**' \
+	  --filter='protect wpg/**' \
+	  --filter='protect spicetify/**' \
+	  --filter='protect copyq/**' \
+	  --filter='protect Equicord/**' \
+	  --filter='protect geany/**' \
+	  --filter='protect fontconfig/**' \
+	  --filter='protect pipewire/**' \
+	  --exclude '/hypr/custom.conf' \
+	  --exclude '/hypr/monitors.conf' \
+	  "$dir"/cfg/* "$HOME"/.config/
 	# Mark scripts as executable
 	file_check
 }
