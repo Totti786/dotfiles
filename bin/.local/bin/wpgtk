@@ -354,12 +354,22 @@ wall() {
 	    if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
 			feh --no-fehbg --bg-fill "$wall"
 		elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-            swww query || swww-daemon -q & disown
-			swww img "$wall" \
-				--transition-step 120 \
-				--transition-fps 120 \
-				--transition-type random \
-				--transition-duration 1 & disown
+            #swww query || swww-daemon -q & disown
+			#swww img "$wall" \
+				#--transition-step 120 \
+				#--transition-fps 120 \
+				#--transition-type grow \
+				#--transition-duration 1 & disown
+				
+			 Update wallpaper path in config
+			SHELL_CONFIG_FILE="$HOME/.config/illogical-impulse/config.json"
+            if [ -f "$SHELL_CONFIG_FILE" ]; then
+                jq --arg path "$wallpaper" '.background.wallpaperPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
+                
+                "$HOME"/.config/quickshell/scripts/images/least_busy_region.py --screen-width "1920" \
+				--screen-height "1080" --width 300 --height 200 \
+				"$wallpaper" > "$HOME"/.local/state/quickshell/user/generated/wallpaper/least_busy_region.json &
+            fi
 	    fi
     fi
 
@@ -383,20 +393,20 @@ restore() {
 		gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
 
 		# Set cursor for Hyprland
-		[[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]] && hyprctl setcursor "$cursor_theme" 24
+		[[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]] && hyprctl setcursor "$cursor_theme" 24 &> /dev/null
 
-		# Start swww if not running
-		swww query &>/dev/null || (swww-daemon -q & disown)
+		## Start swww if not running
+		#swww query &>/dev/null || (swww-daemon -q & disown)
 
-		current_wallpaper="$(swww query | awk -F 'image: ' '{print $2}')"
-		if [[ "$current_wallpaper" != "$wallpaper" ]]; then
-			swww img "$wallpaper" \
-				--transition-step 100 \
-				--transition-fps 120 \
-				--transition-angle 30 \
-				--transition-type any \
-				--transition-duration 1 & disown
-		fi
+		#current_wallpaper="$(swww query | awk -F 'image: ' '{print $2}')"
+		#if [[ "$current_wallpaper" != "$wallpaper" ]]; then
+			#swww img "$wallpaper" \
+				#--transition-step 100 \
+				#--transition-fps 120 \
+				#--transition-angle 30 \
+				#--transition-type any \
+				#--transition-duration 1 & disown
+		#fi
 		;;
 	esac
 }
@@ -507,10 +517,7 @@ partial(){
 		
 		# Quickshell
 		if [[ -n $(pgrep -f "qs|quickshell") ]]; then
-			ln -sf "$HOME"/.cache/wal/colors-qs.json "$HOME"/.local/state/quickshell/user/generated/colors.json
-			"$HOME"/.config/quickshell/scripts/least_busy_region.py --screen-width "1920" \
-				--screen-height "1080" --width 300 --height 200 \
-				"$wallpaper" > "$HOME"/.local/state/quickshell/user/generated/wallpaper/least_busy_region.json &
+			ln -sf "$HOME"/.cache/wal/colors-qs.json "$HOME"/.local/state/quickshell/user/generated/colors.json			
 	    fi
 	fi
 	check spicetify -q refresh &
