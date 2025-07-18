@@ -134,7 +134,7 @@ Scope {
                                     toggled: false
                                     buttonIcon: "wallpaper"
                                     onClicked: {
-										Quickshell.execDetached(["bash", "-c", `alacritty --hold -e ~/.config/quickshell/scripts/dots-update.sh --wall`])
+										Quickshell.execDetached(["bash", "-c", `alacritty --hold -e ${Directories.scriptPath}/dots-update.sh --wall`])
                                         Hyprland.dispatch(`global quickshell:sidebarRightClose`)
                                     }
                                     StyledToolTip {
@@ -145,7 +145,7 @@ Scope {
                                     toggled: false
                                     buttonIcon: "system_update_alt"
                                     onClicked: {
-										Quickshell.execDetached(["bash", "-c", `alacritty --hold -e ~/.config/quickshell/scripts/dots-update.sh --dots`])
+										Quickshell.execDetached(["bash", "-c", `alacritty --hold -e ${Directories.scriptPath}/dots-update.sh --dots`])
                                         Hyprland.dispatch(`global quickshell:sidebarRightClose`)
                                     }
                                     StyledToolTip {
