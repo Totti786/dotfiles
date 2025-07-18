@@ -104,7 +104,7 @@ xdg-desktop-portal-hyprland python-pywayland wl-clipboard
 ```
 
 ## Credits
-- [end-4](https://github.com/end-4) for his amazing ags configs
+- [end-4](https://github.com/end-4) for his amazing quickshell configs
 - [beyond9thousand](https://github.com/beyond9thousand) for his Readme and the system tray script idea
 - [adi1090x](https://github.com/adi1090x) for his awesome rofi themes and some other scripts from Archcraft
 - [vaxerski](https://github.com/vaxerski) for all of his awesome work on Hyprland
