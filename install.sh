@@ -279,6 +279,7 @@ update(){
 	## Move udpated scripts and configs
 	cp -r "$dir"/bin/.local/ "$HOME"/
 	rsync -a --delete \
+	  --filter='protect gtk-3.0/bookmarks' \
 	  --filter='protect xfce4/**' \
 	  --filter='protect qt5ct/**' \
 	  --filter='protect qt6ct/**' \
