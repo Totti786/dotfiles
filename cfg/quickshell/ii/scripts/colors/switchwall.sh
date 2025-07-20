@@ -38,13 +38,13 @@ handle_kde_material_you_colors() {
 pre_process() {
     local mode_flag="$1"
     # Set GNOME color-scheme if mode_flag is dark or light
-    if [[ "$mode_flag" == "dark" ]]; then
-        gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-        gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
-    elif [[ "$mode_flag" == "light" ]]; then
-        gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
-        gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3'
-    fi
+    #if [[ "$mode_flag" == "dark" ]]; then
+        #gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+        #gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
+    #elif [[ "$mode_flag" == "light" ]]; then
+        #gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+        #gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3'
+    #fi
 
     if [ ! -d "$CACHE_DIR"/user/generated ]; then
         mkdir -p "$CACHE_DIR"/user/generated
