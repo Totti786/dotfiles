@@ -56,9 +56,9 @@ Item { // Wrapper
             }
         },
         {
-            action: "konachanwall",
+            action: "random",
             execute: () => {
-                Quickshell.execDetached([Quickshell.configPath("scripts/colors/random_konachan_wall.sh")]);
+                Quickshell.execDetached(["wpgtk", "--random"]);
             }
         },
         {

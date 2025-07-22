@@ -19,7 +19,6 @@ Scope {
     readonly property real fixedClockY: Config.options.background.clockY
 
     Variants {
-        // For each monitor
         model: Quickshell.screens
 
         PanelWindow {
@@ -33,6 +32,11 @@ Scope {
             property int lastWorkspaceId: relevantWindows[relevantWindows.length - 1]?.workspace.id || 10
             // Wallpaper
             property string wallpaperPath: Config.options.background.wallpaperPath
+            property bool wallpaperIsVideo: Config.options.background.wallpaperPath.endsWith(".mp4")
+                || Config.options.background.wallpaperPath.endsWith(".webm")
+                || Config.options.background.wallpaperPath.endsWith(".mkv")
+                || Config.options.background.wallpaperPath.endsWith(".avi")
+                || Config.options.background.wallpaperPath.endsWith(".mov")            
             property real preferredWallpaperScale: Config.options.background.parallax.workspaceZoom
             property real effectiveWallpaperScale: 1 // Some reasonable init value, to be updated
             property int wallpaperWidth: modelData.width // Some reasonable init value, to be updated
@@ -52,7 +56,8 @@ Scope {
             // Layer props
             screen: modelData
             exclusionMode: ExclusionMode.Ignore
-            WlrLayershell.layer: WlrLayer.Bottom
+            WlrLayershell.layer: GlobalStates.screenLocked ? WlrLayer.Top : WlrLayer.Bottom
+            // WlrLayershell.layer: WlrLayer.Bottom
             WlrLayershell.namespace: "quickshell:background"
             anchors {
                 top: true
@@ -112,7 +117,7 @@ Scope {
                 property int contentHeight: 300
                 property int horizontalPadding: bgRoot.movableXSpace
                 property int verticalPadding: bgRoot.movableYSpace
-                command: [Quickshell.configPath("scripts/images/least_busy_region.py"),
+                command: [Quickshell.shellPath("scripts/images/least_busy_region.py"),
                     "--screen-width", bgRoot.screen.width,
                     "--screen-height", bgRoot.screen.height,
                     "--width", contentWidth,
@@ -137,6 +142,7 @@ Scope {
 
             // Wallpaper
             Image {
+                visible: !bgRoot.wallpaperIsVideo
                 property real value // 0 to 1, for offset
                 value: {
                     // Range = half-groups that workspaces span on
@@ -186,7 +192,7 @@ Scope {
                     ColumnLayout {
                         id: clockColumn
                         anchors.centerIn: parent
-                        spacing: -5
+                        spacing: 0
 
                         StyledText {
                             Layout.fillWidth: true
@@ -203,6 +209,7 @@ Scope {
                         }
                         StyledText {
                             Layout.fillWidth: true
+                            Layout.topMargin: -5
                             horizontalAlignment: bgRoot.textHorizontalAlignment
                             font {
                                 family: Appearance.font.family.expressive
@@ -215,6 +222,60 @@ Scope {
                             text: DateTime.date
                         }
                     }
+
+                    RowLayout {
+                        anchors {
+                            top: clockColumn.bottom
+                            left: bgRoot.textHorizontalAlignment === Text.AlignLeft ? clockColumn.left : undefined
+                            right: bgRoot.textHorizontalAlignment === Text.AlignRight ? clockColumn.right : undefined
+                            horizontalCenter: bgRoot.textHorizontalAlignment === Text.AlignHCenter ? clockColumn.horizontalCenter : undefined
+                            topMargin: 5
+                            leftMargin: -5
+                            rightMargin: -5
+                        }
+                        opacity: GlobalStates.screenLocked ? 1 : 0
+                        visible: opacity > 0
+                        Behavior on opacity {
+                            animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
+                        }
+                        Item { Layout.fillWidth: bgRoot.textHorizontalAlignment !== Text.AlignLeft; implicitWidth: 1 }
+                        MaterialSymbol {
+                            text: "lock"
+                            Layout.fillWidth: false
+                            iconSize: Appearance.font.pixelSize.huge
+                            color: bgRoot.colText
+                        }
+                        StyledText {
+                            Layout.fillWidth: false
+                            text: "Locked"
+                            color: bgRoot.colText
+                            font {
+                                pixelSize: Appearance.font.pixelSize.larger
+                            }
+                        }
+                        Item { Layout.fillWidth: bgRoot.textHorizontalAlignment !== Text.AlignRight; implicitWidth: 1 }
+
+                    }
+                }
+            }
+
+            // Password prompt
+            StyledText {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    bottom: parent.bottom
+                    bottomMargin: 30
+                }
+                opacity: (GlobalStates.screenLocked && !GlobalStates.screenLockContainsCharacters) ? 1 : 0
+                scale: opacity
+                visible: opacity > 0
+                Behavior on opacity {
+                    animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
+                }
+                text: "Enter password"
+                color: CF.ColorUtils.transparentize(bgRoot.colText, 0.3)
+                font {
+                    pixelSize: Appearance.font.pixelSize.normal
                 }
             }
         }

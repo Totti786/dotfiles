@@ -14,9 +14,8 @@ terminalscheme="$SCRIPT_DIR/terminal/scheme-base.json"
 
 handle_kde_material_you_colors() {
     # Check if Qt app theming is enabled in config
-    CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
-    if [ -f "$CONFIG_FILE" ]; then
-        enable_qt_apps=$(jq -r '.appearance.wallpaperTheming.enableQtApps' "$CONFIG_FILE")
+    if [ -f "$SHELL_CONFIG_FILE" ]; then
+        enable_qt_apps=$(jq -r '.appearance.wallpaperTheming.enableQtApps' "$SHELL_CONFIG_FILE")
         if [ "$enable_qt_apps" == "false" ]; then
             return
         fi
@@ -152,6 +151,13 @@ EOF
     mv "$RESTORE_SCRIPT.tmp" "$RESTORE_SCRIPT"
 }
 
+set_wallpaper_path() {
+    local path="$1"
+    if [ -f "$SHELL_CONFIG_FILE" ]; then
+        jq --arg path "$path" '.background.wallpaperPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
+    fi
+}
+
 switch() {
     imgpath="$1"
     mode_flag="$2"
@@ -205,6 +211,10 @@ switch() {
                 exit 0
             fi
 
+            # Set wallpaper path
+            set_wallpaper_path "$imgpath"
+
+            # Set video wallpaper
             local video_path="$imgpath"
             monitors=$(hyprctl monitors -j | jq -r '.[] | .name')
             for monitor in $monitors; do
@@ -229,9 +239,7 @@ switch() {
             matugen_args=(image "$imgpath")
             generate_colors_material_args=(--path "$imgpath")
             # Update wallpaper path in config
-            if [ -f "$SHELL_CONFIG_FILE" ]; then
-                jq --arg path "$imgpath" '.background.wallpaperPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
-            fi
+            set_wallpaper_path "$imgpath"
             remove_restore
         fi
     fi
@@ -254,9 +262,8 @@ switch() {
     pre_process "$mode_flag"
 
     # Check if app and shell theming is enabled in config
-    CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
-    if [ -f "$CONFIG_FILE" ]; then
-        enable_apps_shell=$(jq -r '.appearance.wallpaperTheming.enableAppsAndShell' "$CONFIG_FILE")
+    if [ -f "$SHELL_CONFIG_FILE" ]; then
+        enable_apps_shell=$(jq -r '.appearance.wallpaperTheming.enableAppsAndShell' "$SHELL_CONFIG_FILE")
         if [ "$enable_apps_shell" == "false" ]; then
             echo "App and shell theming disabled, skipping matugen and color generation"
             return
@@ -285,7 +292,7 @@ main() {
     noswitch_flag=""
 
     get_type_from_config() {
-        jq -r '.appearance.palette.type' "$XDG_CONFIG_HOME/illogical-impulse/config.json" 2>/dev/null || echo "auto"
+        jq -r '.appearance.palette.type' "$SHELL_CONFIG_FILE" 2>/dev/null || echo "auto"
     }
 
     detect_scheme_type_from_image() {
