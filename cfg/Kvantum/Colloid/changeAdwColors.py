@@ -1,24 +1,16 @@
-#!/usr/bin/env python3
-
-import os
 import re
-import shutil
-import subprocess
+import os
 
-def get_colors_from_bash(bash_file):
+def get_colors_from_bash(scss_file):
     colors = {}
-    with open(bash_file, 'r') as file:
+    with open(scss_file, 'r') as file:
         for line in file:
-            match = re.match(r'(\w+)=\"(#(?:[0-9A-Fa-f]{6}|[0-9A-Fa-f]{3}))\"', line)
+            match = re.match(r'\$(\w+):\s*(#[0-9A-Fa-f]{6});', line)
             if match:
                 colors[match.group(1)] = match.group(2)
     return colors
 
 def update_config_colors(config_file, colors, mappings):
-    """Updates the Kvantum config file with mapped colors."""
-    if not os.path.exists(config_file):
-        return
-    
     with open(config_file, 'r') as file:
         config_content = file.read()
 
@@ -35,44 +27,14 @@ def update_config_colors(config_file, colors, mappings):
     with open(config_file, 'w') as file:
         file.write(config_content)
 
-def get_light_dark(state_file):
-    """Reads the colormode.txt file, defaults to 'dark' if not found."""
-    if not os.path.exists(state_file):
-        return "dark"  # Default to dark mode if the file doesn't exist
-    
-    with open(state_file, 'r') as file:
-        return file.readline().strip() or "dark"
-
-def apply_theme(xdg_config_home, lightdark):
-    """Copies the correct Kvantum theme based on colormode.txt and runs the SVG script if available."""
-    theme_dir = os.path.join(xdg_config_home, "Kvantum", "Colloid")
-    material_adw_path = os.path.join(xdg_config_home, "Kvantum", "MaterialAdw", "MaterialAdw.kvconfig")
-    
-    if not os.path.isdir(theme_dir):
-        subprocess.run(["notify-send", "Colloid-kde theme required", f"The folder '{theme_dir}' does not exist."])
-        return
-
-    if lightdark == "light":
-        shutil.copy(os.path.join(theme_dir, "Colloid.kvconfig"), material_adw_path)
-        script = os.path.join(xdg_config_home, "Kvantum", "Colloid", "adwsvg.py")
-    else:
-        shutil.copy(os.path.join(theme_dir, "ColloidDark.kvconfig"), material_adw_path)
-        script = os.path.join(xdg_config_home, "Kvantum", "Colloid", "adwsvgDark.py")
-
-    if os.path.exists(script):
-        subprocess.run(["python3", script])
-    else:
-        print(f"Warning: {script} not found, skipping execution.")
-
 if __name__ == "__main__":
     xdg_config_home = os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config"))
     xdg_cache_home = os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache"))
-    xdg_state_home = os.environ.get("XDG_STATE_HOME", os.path.expanduser("~/.local/state"))
 
-    colors_file = os.path.join(xdg_cache_home, "wal", "material_colors.sh")
     config_file = os.path.join(xdg_config_home, "Kvantum", "MaterialAdw", "MaterialAdw.kvconfig")
-    state_file = os.path.join(xdg_state_home, "ags", "user", "colormode.txt")
+    colors_file = os.path.join(xdg_cache_home, "wal", "material_colors.sh")
 
+    # Define your mappings here
     mappings = {
         'window.color': 'background',
         'base.color': 'background',
@@ -99,11 +61,7 @@ if __name__ == "__main__":
         'text.toggle.color': 'onSecondaryContainer',
         'text.disabled.color': 'surfaceDim',
     }
-
-    lightdark = get_light_dark(state_file)
-    apply_theme(xdg_config_home, lightdark)
-
+    
     colors = get_colors_from_bash(colors_file)
     update_config_colors(config_file, colors, mappings)
-
-    print("Kvantum theme and colors updated successfully!")
+    print("Config colors updated successfully!")

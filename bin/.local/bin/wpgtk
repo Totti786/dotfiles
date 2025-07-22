@@ -255,6 +255,7 @@ change_colors(){
 qt_colors(){
 	material
 	python "$config/Kvantum/Colloid/changeAdwColors.py" &> /dev/null
+	python "$config/Kvantum/Colloid/adwsvgDark.py" &> /dev/null
 }
 
 toggle_transparency(){
