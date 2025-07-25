@@ -122,9 +122,11 @@ Singleton {
                 property JsonObject utilButtons: JsonObject {
                     property bool showScreenSnip: true
                     property bool showColorPicker: true
+                    property bool showScreenRecord: false
                     property bool showMicToggle: false
                     property bool showKeyboardToggle: false
                     property bool showDarkModeToggle: false
+                    property bool showPerformanceProfileToggle: false
                 }
                 property JsonObject tray: JsonObject {
                     property bool monochromeIcons: false
@@ -175,9 +177,9 @@ Singleton {
             property JsonObject light: JsonObject {
                 property JsonObject night: JsonObject {
                     property bool automatic: true
-                    property string from: "19:00" // Format: "HH:mm", 24-hour time
+                    property string from: "22:00" // Format: "HH:mm", 24-hour time
                     property string to: "06:30"   // Format: "HH:mm", 24-hour time
-                    property int colorTemperature: 5000
+                    property int colorTemperature: 4600
                 }
             }
 
