@@ -47,7 +47,7 @@ alias gp='git push origin master'
 
 # pacman 
 #alias pacs='sudo pacman -S'
-alias pacs='yay -S $1'
+alias pacs='yay -S'
 alias pacr='sudo pacman -Rcns'
 alias pacu='sudo pacman -Syu'
 
@@ -55,10 +55,10 @@ alias pacu='sudo pacman -Syu'
 alias paci="yay -Slq | fzf --prompt='➜ ' --color=16 -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print \$2}\")' | xargs -ro yay -S --needed"
 
 # pacman remove
-alias pacrr="yay -Qq | fzf --prompt='➜ ' --color=16 -m --preview 'yay -Qi {1}' | xargs -ro yay -Rns"
+alias pacrr="yay -Qq | fzf --prompt='➜ ' --color=16 -m --preview 'yay -Qli {1}' | xargs -ro yay -Rns"
 
 # pacman view
-alias pac="yay -Qq | fzf --prompt='➜ ' --color=16 -m --preview 'yay -Qi {1}'"
+alias pac="yay -Qq | fzf --prompt='➜ ' --color=16 -m --preview 'yay -Qli {1}'"
 
 # pacman clear
 alias pacc='yay -Qtdq | yay -Rns -'
