@@ -1,11 +1,11 @@
 import re
 import os
 
-def get_colors_from_bash(scss_file):
+def get_colors_from_bash(bash_file):
     colors = {}
-    with open(scss_file, 'r') as file:
+    with open(bash_file, 'r') as file:
         for line in file:
-            match = re.match(r'\$(\w+):\s*(#[0-9A-Fa-f]{6});', line)
+            match = re.match(r'(\w+)=\"(#(?:[0-9A-Fa-f]{6}|[0-9A-Fa-f]{3}))\"', line)
             if match:
                 colors[match.group(1)] = match.group(2)
     return colors
@@ -29,10 +29,11 @@ def update_config_colors(config_file, colors, mappings):
 
 if __name__ == "__main__":
     xdg_config_home = os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config"))
+    xdg_state_home = os.environ.get("XDG_STATE_HOME", os.path.expanduser("~/.local/state"))
     xdg_cache_home = os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache"))
 
     config_file = os.path.join(xdg_config_home, "Kvantum", "MaterialAdw", "MaterialAdw.kvconfig")
-    colors_file = os.path.join(xdg_cache_home, "wal", "material_colors.sh")
+    bash_file = os.path.join(xdg_cache_home, "wal", "material_colors.sh")
 
     # Define your mappings here
     mappings = {
@@ -42,7 +43,7 @@ if __name__ == "__main__":
         'button.color': 'surfaceContainer',
         'light.color': 'surfaceContainerLow',
         'mid.light.color': 'surfaceContainer',
-        'dark.color': 'surfaceBright',
+        'dark.color': 'surfaceContainerHighest',
         'mid.color': 'surfaceContainerHigh',
         'highlight.color': 'primary',
         'inactive.highlight.color': 'primary',
@@ -53,15 +54,18 @@ if __name__ == "__main__":
         'tooltip.text.color': 'onBackground',
         'highlight.text.color': 'onSurface',
         'link.color': 'tertiary',
-        'link.visited.color': 'tertiary',
+        'link.visited.color': 'tertiaryFixed',
         'progress.indicator.text.color': 'onBackground',
         'text.normal.color': 'onBackground',
         'text.focus.color': 'onBackground',
-        'text.press.color': 'onSecondaryContainer',
-        'text.toggle.color': 'onSecondaryContainer',
+        'text.press.color': 'onsecondarycontainer',
+        'text.toggle.color': 'onsecondarycontainer',
         'text.disabled.color': 'surfaceDim',
+
+
+        # Add more mappings as needed
     }
     
-    colors = get_colors_from_bash(colors_file)
+    colors = get_colors_from_bash(bash_file)
     update_config_colors(config_file, colors, mappings)
     print("Config colors updated successfully!")
