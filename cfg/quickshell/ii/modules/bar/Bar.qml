@@ -107,7 +107,7 @@ Scope {
                         color: showBarBackground ? Appearance.colors.colLayer0 : "transparent"
                         radius: Config.options.bar.cornerStyle === 1 ? Appearance.rounding.windowRounding : 0
                         border.width: Config.options.bar.cornerStyle === 1 ? 0 : 0
-                        border.color: Appearance.m3colors.m3outlineVariant
+                        border.color: Appearance.colors.colLayer0Border
                     }
 
                     MouseArea { // Left side | scroll to change brightness
@@ -131,12 +131,11 @@ Scope {
                             barLeftSideMouseArea.trackingScroll = false;
                         }
                         onPressed: event => {
-							if (event.button === Qt.LeftButton) {
-								Hyprland.dispatch('global quickshell:sidebarLeftOpen');
-							}
-							else if (event.button === Qt.RightButton) {
+                            if (event.button === Qt.LeftButton) {
+                                Hyprland.dispatch('global quickshell:sidebarLeftOpen');
+                            } else if (event.button === Qt.RightButton) {
 								Quickshell.execDetached(["bash", "-c", `clight.sh --capture`])
-							}
+                            }
                         }
                         // Scroll to change brightness
                         WheelHandler {
@@ -340,18 +339,17 @@ Scope {
                             barRightSideMouseArea.hovered = false;
                             barRightSideMouseArea.trackingScroll = false;
                         }
-                        onPressed: event => {                            
-							if (event.button === Qt.LeftButton) {
-								Hyprland.dispatch('global quickshell:sidebarRightOpen');
-							} else if (event.button === Qt.RightButton) {
-								MprisController.activePlayer.togglePlaying()
+                        onPressed: event => {
+                            if (event.button === Qt.LeftButton) {
+                                Hyprland.dispatch('global quickshell:sidebarRightOpen');
+                            } else if (event.button === Qt.RightButton) {
+                                MprisController.activePlayer.togglePlaying()
 							}else if (event.button === Qt.BackButton) {
-								MprisController.activePlayer.previous();
+                                MprisController.activePlayer.previous();
 							} else if (event.button === Qt.ForwardButton) {
-								MprisController.activePlayer.next();
-							}
-						}
-                        
+                                MprisController.activePlayer.next();
+                            }
+                        }
                         // Scroll to change volume
                         WheelHandler {
                             onWheel: event => {
