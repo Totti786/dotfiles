@@ -95,14 +95,14 @@ process_media(){
 		"movies")
 			media_directory="$movies_directory"
 			# Find media files directly
-			readarray -t lines < <(find -L "$media_directory" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort)
+			readarray -t lines < <(find -L "$media_directory" -type f -iregex '.*\.\(mp4\|mkv\)' | sort)
 			;;
 		"shows" | "anime")
 		[[ "$player" == "syncplay" ]] && exec_command="$0 -s --episode" || exec_command="$0 --episode"
 			media_directory="$([ "$media_type" = "shows" ] && echo "$shows_directory" || echo "$anime_directory")"
 			# Find directories containing media files
 			readarray -t lines < <(find "$media_directory" -mindepth 1 -maxdepth 1 -print0 | while IFS= read -r -d '' dir; do
-				if find -L "$dir" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -print -quit | grep -q .; then echo "$dir" ;fi done | sort)
+				if find -L "$dir" -type f -iregex '.*\.\(mp4\|mkv\)' -print -quit | grep -q .; then echo "$dir" ;fi done | sort)
 			;;
 		*)
 			echo "Invalid media type specified."
@@ -298,12 +298,12 @@ play_media() {
 	case "$player" in
 		"syncplay")
 			# Generate the playlist for syncplay
-			find -L "${file_path%/*}" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -printf "%f\n" | sort -V | awk -v start="${file_path##*/}" 'BEGIN{found=0} {if ($0 == start) found=1} found'  > "$playlist"
+			find -L "${file_path%/*}" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' -printf "%f\n" | sort -V | awk -v start="${file_path##*/}" 'BEGIN{found=0} {if ($0 == start) found=1} found'  > "$playlist"
 			syncplay --player-path "$(command -v mpv)" --load-playlist-from-file "$playlist" "$file_path" -- "${player_cmd[@]}" >/dev/null 2>&1
 			;;
 		"mpv")
 			# Generate the playlist for mpv
-			find -L "${file_path%/*}" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort -V | awk -v start="$file_path" 'BEGIN{found=0} {if ($0 == start) found=1} found' > "$playlist"
+			find -L "${file_path%/*}" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | sort -V | awk -v start="$file_path" 'BEGIN{found=0} {if ($0 == start) found=1} found' > "$playlist"
 			mpv "${player_cmd[@]}" "$playlist" >/dev/null 2>&1
 			;;
 		*)
@@ -434,7 +434,7 @@ prompt(){
 				play_media "$file_path"
 				save_history "$show"
 				prompt "$show"
-	      ;;
+				;;
 			"Select")
 				select_episode "$show"
 				;;
@@ -478,14 +478,14 @@ play_history(){
 
 		# Create a regex pattern for matching the episode files
 		next_episode_pattern="([sS][0-9]+[eE]$next_episode_number| - $next_episode_number - | - $next_episode_number[[:space:]]| - $next_episode_number[^a-zA-Z0-9]|[_\.x-]$next_episode_number[^a-zA-Z0-9])"
-		next_episode_file=$(find -L "$selected_directory" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort -V | grep -Ei "$next_episode_pattern")	
+		next_episode_file=$(find -L "$selected_directory" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | sort -V | grep -Ei "$next_episode_pattern")	
 	}
 
 	get_next_season(){
 		# Check if there is another season available
 		next_season_dir="$(echo "$season_dirs" | grep -FA1 "$selected_directory" | tail -n1 | grep -vxF "$selected_directory")"
 		if [[ -n "$next_season_dir" ]]; then 
-			first_episode_file=$(find -L "$next_season_dir" -maxdepth 1 -type f \( -iname "*.mp4" -o -iname "*.mkv" \) | sort -V | head -n1)
+			first_episode_file=$(find -L "$next_season_dir" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | sort -V | head -n1)
 		#else
 			#sed -i "/$title/d" "$media_history" 
 		fi
@@ -508,7 +508,7 @@ play_history(){
 			fi
 
 			# If no subdirectories were found with video files, check if the current directory has videos
-			if [[ -z "$subdirs" ]] || [[ -n $(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)'  | grep .) ]]; then
+			if [[ -z "$subdirs" ]] || [[ -n $(find -L "$line" -maxdepth 1 -type f -iregex '.*\.\(mp4\|mkv\)' | grep .) ]]; then
 				season_dirs+="${line}"$'\n'
 			fi
 		done
@@ -675,12 +675,18 @@ select_episode(){
 				selected_directory="$show/$season_dir"
 				#echo 1
 			else
-				# If there are multiple seasons, search within the available season directories
-				season_dir=$(echo "$season_dirs" | grep -E -i "$season_pattern" | head -n 1)
-				selected_directory="$season_dir"
-				# Update show variable based on the selected season directory
-				grep -Fq "$season_dir" <<< "$show" && show="$season_dir" || show="${season_dir%/*}"
-				#echo 2
+				# Account for same season with multiple paths
+				if [[ "$(echo "$seasons_list" | uniq | wc -l)" -eq 1 ]]; then
+					selected_directory=""
+					#echo '2.1'
+				else
+					# If there are multiple seasons, search within the available season directories
+					season_dir=$(echo "$season_dirs" | grep -E -i "$season_pattern" | head -n 1)
+					selected_directory="$season_dir"
+					# Update show variable based on the selected season directory
+					grep -Fq "$season_dir" <<< "$show" && show="$season_dir" || show="${season_dir%/*}"
+					#echo '2.2'
+				fi
 			fi
 		else
 			# If no season number is found, use the season name for lookup
