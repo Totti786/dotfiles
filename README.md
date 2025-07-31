@@ -54,13 +54,30 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)			| Primary Font        |
 | [`Material Symbols`](https://github.com/google/material-design-icons)					| Icons Font          |
 
-## Configuration
 
-## Scripted Install
+## Scripted Installation
 
-In Progress...
+1. **Clone the repository**  
 
-## Manual Install
+```bash
+git clone --depth=1 https://github.com/Totti786/dotfiles.git
+```
+
+2. **Navigate to the project directory**
+Change into the cloned directory:
+
+```bash
+cd dotfiles
+```
+
+3. **Run the installation script**
+Launch the installer and follow the interactive menu:
+
+```bash
+./install.sh
+```
+
+## Manual Installation
 
 ## Dependencies
 
