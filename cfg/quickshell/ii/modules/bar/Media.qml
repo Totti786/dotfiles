@@ -39,7 +39,7 @@ Item {
             } else if (event.button === Qt.ForwardButton) {
                 activePlayer.next();
             } else if (event.button === Qt.LeftButton) {
-                Hyprland.dispatch("global quickshell:mediaControlsToggle")
+                GlobalStates.mediaControlsOpen = !GlobalStates.mediaControlsOpen
             }
         }
         onWheel: (wheel) => {
