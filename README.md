@@ -5,7 +5,7 @@ You are expected to have a basic understanding of the unix system. If you are ne
 - [Information](#information)
 - [Specifications](#specifications)
 - [Fonts](#fonts)
-- [Configuration](#configuration)
+- [Installation](#installation)
 - [Dependencies](#dependencies)
   - [Packages](#packages)
 - [Credits](#credits)
@@ -54,6 +54,7 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | [`JetBrainsMono Nerd Font`](https://github.com/jtbx/jetbrainsmono-nerdfont)			| Primary Font        |
 | [`Material Symbols`](https://github.com/google/material-design-icons)					| Icons Font          |
 
+## Installation
 
 ## Scripted Installation
 
@@ -92,32 +93,32 @@ You are required to have the [Chaotic-AUR](https://aur.chaotic.cx/) repo added o
 
 ```bash
 yay -Syu --needed \
-acpi acpilight alacritty appimagelauncher aur/qt5gtk2 aur/qt6gtk2 autotiling axel base-devel \
-bc blueman bluez bluez-utils brightnessctl bspwm clight conky copyq dmenu drawing dunst \
-envycontrol fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf \
-gammastep geany gnome-bluetooth-3.0 gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
-gpick gpu-screen-recorder-git grep htop i3lock-color i3-resurrect i3-wm imagemagick jgmenu jq \
-kdeconnect libplasma linux-wifi-hotspot man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet \
-networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv nvtop obconf openbox openssh \
-openvpn paper papirus-icon-theme pastel pavucontrol perl picom-git plank plasma-browser-integration \
-playerctl polkit-gnome polybar python-gtts python-materialyoucolor-git python-pipx python-wheel \
-qbittorrent qt5ct rhythmbox rofi-wayland rtorrent ruby-fusuma ruby-fusuma-plugin-sendkey \
-ruby-fusuma-plugin-wmctrl scrot sioyek-git snapshot stalonetray sxhkd termdown thunar \
-thunar-archive-plugin thunar-media-tags-plugin thunar-volman timeshift translate-shell \
-ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols \
-ttf-nerd-fonts-symbols-common tumbler viewnior waypaper-git wget wmctrl xcape xclip xdg-autostart \
-xdg-user-dirs xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xiccd xorg-xdpyinfo \
-xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo xqp xss-lock yad ytfzf zathura zathura-cb \
-zathura-pdf-mupdf zenity zscroll-git zsh 
-
+acpi alacritty appimagelauncher autotiling axel base-devel bc blueman bluez bluez-utils \
+brightnessctl bspwm btop clight conky copyq dmenu drawing dunst envycontrol fd feh file-roller\
+firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep geany gnome-calculator \
+gnome-disk-utility gnome-epub-thumbnailer gping gpu-screen-recorder jq gpick grep python-gtts \
+html-xml-utils htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot \
+kvantum kvantum-qt5 loupe man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet \
+networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv nvtop oh-my-zsh-git openbox \
+openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct rhythmbox rofi-wayland ruby-fusuma \
+ruby-fusuma-plugin-sendkey scrot sioyek-git stalonetray subliminal-git snapshot sxhkd termdown thunar \
+thunar-archive-plugin papers perl picom-git plank playerctl polkit-gnome polybar python-pyxdg python-screeninfo\
+python-wheel qbittorrent thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
+ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift tumbler \
+translate-shell waypaper wget wmctrl xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool \
+xfce4-power-manager xfce4-settings xiccd xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot \
+xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh zsh-autosuggestions \
+zsh-syntax-highlighting
 ```
-If you want to install hyprland, you need the following packages as well:
 
+If you want to install hyprland, you need the following packages as well:
+	
 ```bash
 yay -Syu --needed \
-aylurs-gtk-shell-git dart-sass gnome-control-center grim hypridle hyprland \
-hyprlock aur/hyprpicker nwg-displays slurp swww ttf-readex-pro \
-xdg-desktop-portal-hyprland python-pywayland wl-clipboard
+better-control-git cliphist grim hypridle hyprland hyprlock hyprpicker hyprsunset \
+nwg-displays sassc slurp swappy swww quickshell-git python-opencv xdg-desktop-portal-hyprland \
+python-materialyoucolor-git python-pywayland ttf-rubik-vf ttf-gabarito-git wl-clipboard \
+syntax-highlighting tty-clock unimatrix-git 
 ```
 
 ## Credits
