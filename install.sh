@@ -11,21 +11,22 @@ fi
 #---- Programs List ----------------------
 
 declare -a minimal=(
-	acpi alacritty appimagelauncher autotiling axel base-devel bc blueman bluez \
-	bluez-utils brightnessctl bspwm btop clight conky copyq dmenu drawing dunst envycontrol \
-	fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep \
-	geany gnome-bluetooth-3.0 gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
-	gping gpu-screen-recorder jq gpick grep python-gtts html-xml-utils htop i3lock-color i3-wm \
-	imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot kvantum kvantum-qt5 loupe man moreutils \
-	mpv mpv-mpris mugshot ncdu network-manager-applet networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji \
-	nsxiv nvtop oh-my-zsh-git openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct \
-	rhythmbox rofi-wayland ruby-fusuma ruby-fusuma-plugin-sendkey scrot sioyek-git stalonetray subliminal-git snapshot sxhkd termdown thunar thunar-archive-plugin papers perl \
-	picom-git plank playerctl polkit-gnome polybar python-pyxdg python-screeninfo python-wheel qbittorrent thunar-media-tags-plugin \
-	thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols \
-	ttf-nerd-fonts-symbols-common timeshift tumbler translate-shell waypaper wget wmctrl xcape xclip xdg-autostart xdg-user-dirs \
-	xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xiccd xorg-xdpyinfo xorg-xkill xorg-xrandr \
-	xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh\
-	zsh-autosuggestions zsh-syntax-highlighting
+	acpi alacritty appimagelauncher autotiling axel base-devel bc blueman bluez bluez-utils \
+	brightnessctl bspwm btop clight conky copyq dmenu drawing dunst envycontrol fd feh file-roller\
+	firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep geany gnome-calculator \
+	gnome-disk-utility gnome-epub-thumbnailer gping gpu-screen-recorder jq gpick grep python-gtts \
+	html-xml-utils htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot \
+	kvantum kvantum-qt5 loupe man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet \
+	networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv nvtop oh-my-zsh-git openbox \
+	openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct rhythmbox rofi-wayland ruby-fusuma \
+	ruby-fusuma-plugin-sendkey scrot sioyek-git stalonetray subliminal-git snapshot sxhkd termdown thunar \
+	thunar-archive-plugin papers perl picom-git plank playerctl polkit-gnome polybar python-pyxdg python-screeninfo\
+	python-wheel qbittorrent thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
+	ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift tumbler \
+	translate-shell waypaper wget wmctrl xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool \
+	xfce4-power-manager xfce4-settings xiccd xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot \
+	xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh zsh-autosuggestions \
+	zsh-syntax-highlighting
 )
 
 declare -a extra=(
@@ -37,8 +38,9 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	cliphist grim hypridle hyprland hyprlock hyprpicker nwg-displays sassc slurp swappy swww quickshell-git python-opencv \
-	xdg-desktop-portal-hyprland python-materialyoucolor-git python-pywayland wl-clipboard syntax-highlighting
+	cliphist grim hypridle hyprland hyprlock hyprpicker hyprsunset nwg-displays sassc slurp swappy swww \
+	quickshell-git python-opencv xdg-desktop-portal-hyprland python-materialyoucolor-git python-pywayland \
+	wl-clipboard syntax-highlighting
 )
 
 declare -a aur=(
@@ -80,19 +82,19 @@ checkrepo(){
 	sudo sed -i "s/#ParallelDownloads = .*/ParallelDownloads = 10/g" /etc/pacman.conf
 	sudo sed -i "s/#Color/Color/g" /etc/pacman.conf
 	sudo sed -i "s/#VerbosePkgLists/VerbosePkgLists/g" /etc/pacman.conf
-	}
+}
 
 install_minimal(){
 	yay -Syu ${minimal[@]} ${aur[@]} --needed --noconfirm
-	}
+}
 
 install_wayland(){
 	yay -Syu ${minimal[@]} ${wayland[@]} ${aur[@]} --needed --noconfirm
-	}
+}
 	
 install_full(){
 	yay -Syu ${minimal[@]} ${wayland[@]} ${aur[@]} ${additional[@]} --needed --noconfirm
-	}
+}
 
 wayland_install(){
 	checkrepo &&
@@ -104,7 +106,7 @@ wayland_install(){
 	install_sddm
 	install_zsh
 	install_wpgtk
-	}
+}
 
 x11_install(){
 	checkrepo &&
@@ -116,7 +118,7 @@ x11_install(){
 	install_sddm
 	install_zsh
 	install_wpgtk
-	}
+}
 
 move_configs(){
 	cp -r "$dir"/cfg/* "$HOME"/.config && echo "moved config files"
@@ -124,7 +126,7 @@ move_configs(){
 	cp -r "$dir"/deps/.zprofile "$HOME"
 
     mkdir -p "$HOME/.local/share/icons"
-	}
+}
 
 change_theme(){
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
@@ -136,7 +138,7 @@ change_theme(){
 		sudo chgrp -R $(whoami) /usr/share/icons/Papirus
 		sudo chmod -R ug+rwX /usr/share/icons/Papirus
 	fi
-	}
+}
 
 install_wpgtk(){
 	sh "$dir"/bin/.local/bin/wpgtk --run &&
@@ -147,13 +149,13 @@ install_wpgtk(){
 	else
 		"$dir"/bin/.local/bin/wpgtk --set "$dir"/deps/background.jpg
 	fi
-	}
+}
 
 #---- Additional configurations ----------
 
 install_zsh(){
 	## Check and set Zsh as the default shell
-	#[[ "$(awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd) " =~ "zsh " ]] || chsh -s $(which zsh)
+	[[ "$(awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd) " =~ "zsh " ]] || chsh -s $(which zsh)
 
 	## Install Oh My Zsh
 	#if [ ! -d "$HOME"/.oh-my-zsh/ ]; then
@@ -167,7 +169,7 @@ install_zsh(){
 
 	#[[ "${plugins[*]} " =~ "zsh-syntax-highlighting " ]] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 	cp "$dir"/deps/.zshrc "$HOME"
-	}
+}
 
 install_sddm(){
 	# Check if SDDM is installed and install if not
@@ -208,7 +210,7 @@ install_sddm(){
 	# Enable SDDM
 	echo "Enabling SDDM"
 	sudo systemctl enable sddm
-	}
+}
 
 file_check(){
 	# Define directories to search
@@ -223,12 +225,12 @@ file_check(){
 	        fi
 	    done
 	done
-	}
+}
 
 install_firefox_theme(){
 	cp -rb "$dir"/deps/firefox/user.js "$HOME"/.mozilla/firefox/*.default-release/ && echo "User Profile Copied Successfully"
 	cp -rb "$dir"/deps/firefox/chrome "$HOME"/.mozilla/firefox/*.default-release/ && echo "Chrome CSS Copied Successfully"
-	}
+}
 
 
 # Update or clone the wallpapers repository
