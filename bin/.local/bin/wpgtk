@@ -24,6 +24,15 @@ kde="$config/kdeglobals"
 sniffnet="$config/sniffnet/colors.toml"
 wallpapers_dir="$HOME/Pictures/Wallpapers"
 
+# Check if wpg is installed
+if [[ ! -f "/usr/bin/wpg" ]]; then
+	echo "[!] 'wpgtk' is not installed."
+	echo "Installing from the AUR..." 
+	yay -S wpgtk --noconfirm
+	# this command installs gtk, and openbox themes
+	wpg-install.sh -g -o
+fi
+
 # Source theme file
 if [[ -f "$HOME/.cache/wal/colors.sh" ]]; then
 	source "$HOME/.cache/wal/colors.sh"
@@ -543,14 +552,6 @@ main(){
 
 ## Check if wpg is installed and get colors
 run(){
-	if [[ ! -f "/usr/bin/wpg" ]]; then
-		echo "[!] 'wpgtk' is not installed."
-		echo "Installing from the AUR..." 
-		yay -S wpgtk --noconfirm
-		# this command installs gtk, and openbox themes
-		wpg-install.sh -g -o
-	fi
-
 	# Normal colors
 	background="$(printf "%s\n" "$background")"
 	foreground="$(printf "%s\n" "$foreground")"
