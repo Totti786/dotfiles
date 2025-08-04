@@ -129,6 +129,7 @@ move_configs(){
 }
 
 change_theme(){
+	dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 	xfconf-query -c xsettings -p /Net/ThemeName -s "FlatColor"
 	xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus"	
 	cat "$dir/cfg/plank/plank.conf" | dconf load /net/launchpad/plank/docks/
