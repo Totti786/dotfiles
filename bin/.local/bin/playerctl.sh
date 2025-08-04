@@ -201,18 +201,6 @@ case "$1" in
                 ;;
         esac
         ;;
-    "--scroll")
-		command -v zscroll >/dev/null || echo '[!] zscroll is not installed'
-		# zscroll is used to scroll text in Polybar
-		zscroll -l 50 \
-	        --delay 0.7 \
-	        --scroll-padding " " \
-	        --match-command "$0 --status" \
-	        --match-text "Playing" "--scroll 1" \
-	        --match-text "Paused" "--scroll 0" \
-	        --update-check true "$0 --polybar" &
-		wait
-        ;;
     *)
 		echo "${0##*/}: invalid option $1"
     ;;
