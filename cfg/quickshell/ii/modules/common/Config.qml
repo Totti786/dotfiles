@@ -213,6 +213,7 @@ Singleton {
             }
 
             property JsonObject overview: JsonObject {
+                property bool enable: true
                 property real scale: 0.18 // Relative to screen size
                 property real rows: 2
                 property real columns: 5
@@ -235,6 +236,7 @@ Singleton {
             }
 
             property JsonObject sidebar: JsonObject {
+                property bool keepRightSidebarLoaded: true
                 property JsonObject translator: JsonObject {
                     property int delay: 300 // Delay before sending request. Reduces (potential) rate limits and lag.
                 }
