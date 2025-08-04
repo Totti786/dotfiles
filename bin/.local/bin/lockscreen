@@ -28,7 +28,7 @@ if [[ "$XDG_SESSION_TYPE" == "x11" ]] && [[ -z $(pgrep i3lock) ]]; then
 	: ${green:="#7ba5dd"}
 	: ${magenta:="#ee6a70"}
 
-    i3lock -n -c 00000000 -F -e \
+    i3lock -n -c 00000000 -F \
 		--pass-media-keys \
 		--pass-screen-keys \
 		--pass-power-keys \
