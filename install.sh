@@ -45,7 +45,7 @@ declare -a wayland=(
 
 declare -a aur=(
 	better-control-git i3-resurrect mpv-thumbfast-git mpv-uosc-git ttf-rubik-vf ttf-gabarito-git \
-	tty-clock unimatrix-git xqp zscroll-git
+	tty-clock unimatrix-git xqp
 )
 
 declare -a additional=(
