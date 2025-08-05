@@ -17,7 +17,7 @@ Rectangle {
     property bool collapsed: Persistent.states.sidebar.bottomGroup.collapsed
     property var tabs: [
         {"type": "calendar", "name": Translation.tr("Calendar"), "icon": "calendar_month", "widget": calendarWidget}, 
-        {"type": "todo", "name": Translation.tr("To Do"), "icon": "done_outline", "widget": todoWidget}
+        {"type": "todo", "name": Translation.tr("To Do"), "icon": "done_outline", "widget": todoWidget},
     ]
 
     Behavior on implicitHeight {
