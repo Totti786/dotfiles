@@ -27,12 +27,11 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 ## Specifications
 
 | Feature                | Package                                                 |
-| --------------------   | ------------------------------------------------------- |
+| ---------------------- | ------------------------------------------------------- |
 | Floating Window Manager| [`openbox`](https://github.com/danakj/openbox)          |
 | Tiling Window Manager  | [`bspwm`](https://github.com/baskerville/bspwm)         |
 | Tiling Window Manager  | [`i3`](https://github.com/i3/i3)					       |
-| Hyprland Window Manager| [`Hyprland`](https://github.com/hyprwm/Hyprland)		   |
-| Aylur's Gtk Shell		 | [`ags`](https://github.com/Aylur/ags)				   |
+| Hyprland 				 | [`Hyprland`](https://github.com/hyprwm/Hyprland)		   |
 | Compositor             | [`picom`](https://github.com/yshui/picom)  			   |
 | Terminal               | [`alacritty`](https://github.com/alacritty/alacritty)   |
 | Shell                  | [`zsh`](https://www.zsh.org/)                           |
@@ -41,7 +40,6 @@ My configuration is personalized to utilize keyboard shortcuts as well as mouse 
 | Panel                  | [`polybar`](https://github.com/polybar/polybar)         |
 | System Tray            | [`stalonetray`](https://github.com/kolbusa/stalonetray) |
 | Dock                   | [`plank`](https://github.com/ricotz/plank)              |
-| Widgets                | [`eww`](https://github.com/elkowar/eww)       	       |
 | Notification Daemon    | [`dunst`](https://github.com/dunst-project/dunst)       |
 | Application Launcher   | [`rofi-wayland`](https://github.com/lbonn/rofi)         |
 | Right Click Menu       | [`jgmenu`](https://github.com/johanmalm/jgmenu)         |
