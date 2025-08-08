@@ -28,9 +28,15 @@ wallpapers_dir="$HOME/Pictures/Wallpapers"
 if [[ ! -f "/usr/bin/wpg" ]]; then
 	echo "[!] 'wpgtk' is not installed."
 	echo "Installing from the AUR..." 
-	yay -S wpgtk --noconfirm
-	# this command installs gtk, and openbox themes
-	wpg-install.sh -g -o
+	if command -v yay &> /dev/null; then 
+		# Install wpgtk using yay
+		yay -S wpgtk --noconfirm
+		
+		# Install gtk, and openbox themes
+		wpg-install.sh -g -o
+	else
+		echo "[!] AUR Helper yay not available"
+	fi
 fi
 
 # Source theme file
@@ -139,16 +145,16 @@ change_colors(){
 	
 	if [[ -f "$hypr" ]]; then 
 	# hypr	
-	cat > "$hypr" <<- EOF 
-	\$black		= rgba(${black:1}aa)
-	\$red 		= rgba(${red:1}ff)
-	\$green		= rgba(${green:1}ff)
-	\$yellow 	= rgba(${yellow:1}ff)
-	\$blue 		= rgba(${blue:1}ff)
-	\$magenta 	= rgba(${magenta:1}ff)
-	\$cyan 		= rgba(${cyan:1}ff)
-	\$white     	= rgba(${white:1}ff)
-	EOF
+		cat > "$hypr" <<- EOF 
+		\$black		= rgba(${black:1}aa)
+		\$red 		= rgba(${red:1}ff)
+		\$green		= rgba(${green:1}ff)
+		\$yellow 	= rgba(${yellow:1}ff)
+		\$blue 		= rgba(${blue:1}ff)
+		\$magenta 	= rgba(${magenta:1}ff)
+		\$cyan 		= rgba(${cyan:1}ff)
+		\$white     	= rgba(${white:1}ff)
+		EOF
 	fi
 	
 	# copyq 
@@ -207,28 +213,28 @@ change_colors(){
 	# spotify
 	# Spotify can be themed using the xrdb backend i.e. ${xrdb:color0:#222}
 	if [[ -f "$spotify" ]]; then 
-	cat > "$spotify" <<- EOF
-	[pywal]
-	text               = ${bright_white:1}
-	subtext            = ${bright_white:1}
-	main               = ${bg_light:1}
-	main-elevated      = ${bg_mix:1}
-	highlight          = ${magenta:1}
-	highlight-elevated = ${bright_magenta:1}
-	sidebar            = ${bg_mix:1}
-	player             = ${blue:1}
-	card               = ${green:1}
-	shadow             = ${bright_black:1}
-	selected-row       = ${green:1}
-	button             = ${red:1}
-	button-active      = ${bright_red:1}
-	button-disabled    = ${blue:1}
-	tab-active         = ${yellow:1}
-	notification       = ${cyan:1}
-	notification-error = ${bright_red:1}
-	equalizer          = ${white:1}
-	misc               = ${red:1}
-	EOF
+		cat > "$spotify" <<- EOF
+		[pywal]
+		text               = ${bright_white:1}
+		subtext            = ${bright_white:1}
+		main               = ${bg_light:1}
+		main-elevated      = ${bg_mix:1}
+		highlight          = ${magenta:1}
+		highlight-elevated = ${bright_magenta:1}
+		sidebar            = ${bg_mix:1}
+		player             = ${blue:1}
+		card               = ${green:1}
+		shadow             = ${bright_black:1}
+		selected-row       = ${green:1}
+		button             = ${red:1}
+		button-active      = ${bright_red:1}
+		button-disabled    = ${blue:1}
+		tab-active         = ${yellow:1}
+		notification       = ${cyan:1}
+		notification-error = ${bright_red:1}
+		equalizer          = ${white:1}
+		misc               = ${red:1}
+		EOF
 	fi
 	
 	# KDE colors
@@ -364,14 +370,7 @@ wall() {
 	    if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
 			feh --no-fehbg --bg-fill "$wall"
 		elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-            #swww query || swww-daemon -q & disown
-			#swww img "$wall" \
-				#--transition-step 120 \
-				#--transition-fps 120 \
-				#--transition-type grow \
-				#--transition-duration 1 & disown
-				
-			# Update wallpaper path in config
+         	# Update wallpaper path in config
 			SHELL_CONFIG_FILE="$HOME/.config/illogical-impulse/config.json"
             if [ -f "$SHELL_CONFIG_FILE" ]; then
                 jq --arg path "$wallpaper" '.background.wallpaperPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
@@ -379,6 +378,13 @@ wall() {
                 "$HOME"/.config/quickshell/ii/scripts/images/least_busy_region.py --screen-width "1920" \
 				--screen-height "1080" --width 300 --height 200 \
 				"$wallpaper" > "$HOME"/.local/state/quickshell/user/generated/wallpaper/least_busy_region.json &
+            else
+               swww query || swww-daemon -q & disown
+				swww img "$wall" \
+				--transition-step 120 \
+				--transition-fps 120 \
+				--transition-type grow \
+				--transition-duration 1 & disown
             fi
 	    fi
     fi
@@ -408,19 +414,20 @@ restore() {
 		SHELL_CONFIG_FILE="$HOME/.config/illogical-impulse/config.json"
 		if [ -f "$SHELL_CONFIG_FILE" ]; then
 			jq --arg path "$wallpaper" '.background.wallpaperPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
+		else
+			# Start swww if not running
+			swww query &>/dev/null || (swww-daemon -q & disown)
+	
+			current_wallpaper="$(swww query | awk -F 'image: ' '{print $2}')"
+			if [[ "$current_wallpaper" != "$wallpaper" ]]; then
+				swww img "$wallpaper" \
+					--transition-step 100 \
+					--transition-fps 120 \
+					--transition-angle 30 \
+					--transition-type any \
+					--transition-duration 1 & disown
+			fi
 		fi
-		## Start swww if not running
-		#swww query &>/dev/null || (swww-daemon -q & disown)
-
-		#current_wallpaper="$(swww query | awk -F 'image: ' '{print $2}')"
-		#if [[ "$current_wallpaper" != "$wallpaper" ]]; then
-			#swww img "$wallpaper" \
-				#--transition-step 100 \
-				#--transition-fps 120 \
-				#--transition-angle 30 \
-				#--transition-type any \
-				#--transition-duration 1 & disown
-		#fi
 		;;
 	esac
 }
