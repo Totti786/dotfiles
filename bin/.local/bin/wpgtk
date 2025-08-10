@@ -372,14 +372,15 @@ wall() {
 		elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
          	# Update wallpaper path in config
 			SHELL_CONFIG_FILE="$HOME/.config/illogical-impulse/config.json"
-            if [ -f "$SHELL_CONFIG_FILE" ]; then
+            if pgrep -f "qs -c ii" >/dev/null; then
+				[[ "$(pgrep swww)" ]] && pkill swww
                 jq --arg path "$wallpaper" '.background.wallpaperPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
                 
                 "$HOME"/.config/quickshell/ii/scripts/images/least_busy_region.py --screen-width "1920" \
 				--screen-height "1080" --width 300 --height 200 \
 				"$wallpaper" > "$HOME"/.local/state/quickshell/user/generated/wallpaper/least_busy_region.json &
             else
-               swww query || swww-daemon -q & disown
+				swww query || swww-daemon -q & disown
 				swww img "$wall" \
 				--transition-step 120 \
 				--transition-fps 120 \
@@ -412,7 +413,8 @@ restore() {
 		[[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]] && hyprctl setcursor "$cursor_theme" 24 &> /dev/null
 
 		SHELL_CONFIG_FILE="$HOME/.config/illogical-impulse/config.json"
-		if [ -f "$SHELL_CONFIG_FILE" ]; then
+		if pgrep -f "qs -c ii" >/dev/null; then
+			[[ "$(pgrep swww)" ]] && pkill swww
 			jq --arg path "$wallpaper" '.background.wallpaperPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
 		else
 			# Start swww if not running
