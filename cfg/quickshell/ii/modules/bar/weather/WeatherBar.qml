@@ -21,7 +21,7 @@ MouseArea {
         
         MaterialSymbol {
             fill: 0
-            text: WeatherIcons.codeToName[Weather.data?.wCode] ?? "question_mark"
+            text: WeatherIcons.codeToName[Weather.data.wCode]
             iconSize: Appearance.font.pixelSize.large
             color: Appearance.colors.colOnLayer1
             Layout.alignment: Qt.AlignVCenter
@@ -31,42 +31,17 @@ MouseArea {
             visible: true
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.colors.colOnLayer1
-            text: Weather.data?.temp ?? "--°"
+            text: Weather.data.temp
             Layout.alignment: Qt.AlignVCenter
         }
     }
 
-    LazyLoader {
-        id: popupLoader
-        active: root.containsMouse
-
-        component: PanelWindow {
-            id: popupWindow
-            visible: true
-            implicitWidth: weatherPopup.implicitWidth
-            implicitHeight: weatherPopup.implicitHeight
-
-            color: "transparent"
-            exclusiveZone: 0
-
-            anchors.top: true
-            anchors.left: true
-
-            margins {
-                left: root.mapToGlobal(Qt.point(
-                    (root.width - weatherPopup.implicitWidth) / 2,
-                    0
-                )).x
-                top: root.mapToGlobal(Qt.point(0, root.height)).y - 25
-            }
-
-            mask: Region {
-                item: weatherPopup
-            }
-            
-            WeatherPopup {
-                id: weatherPopup
-            }
+    StyledPopup {
+        hoverTarget: root
+        offsetY: -25
+        contentComponent: WeatherPopup {
+            id: weatherPopup
+            anchors.centerIn: parent
         }
     }
 }

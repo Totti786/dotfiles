@@ -13,7 +13,7 @@ Rectangle {
     implicitHeight: columnLayout.implicitHeight + margin * 2
     color: Appearance.colors.colLayer0
     radius: Appearance.rounding.small
-    border.width: 1
+    border.width: 0
     border.color: Appearance.colors.colLayer0Border
     clip: true
 

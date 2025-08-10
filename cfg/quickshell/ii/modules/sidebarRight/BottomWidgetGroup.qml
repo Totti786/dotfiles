@@ -4,6 +4,7 @@ import qs
 import qs.services
 import "./calendar"
 import "./todo"
+import "./pomodoro"
 import QtQuick
 import QtQuick.Layouts
 
@@ -18,6 +19,7 @@ Rectangle {
     property var tabs: [
         {"type": "calendar", "name": Translation.tr("Calendar"), "icon": "calendar_month", "widget": calendarWidget}, 
         {"type": "todo", "name": Translation.tr("To Do"), "icon": "done_outline", "widget": todoWidget},
+        {"type": "timer", "name": Translation.tr("Timer"), "icon": "schedule", "widget": pomodoroWidget},
     ]
 
     Behavior on implicitHeight {
@@ -234,6 +236,15 @@ Rectangle {
     Component {
         id: todoWidget
         TodoWidget {
+            anchors.fill: parent
+            anchors.margins: 5
+        }
+    }
+
+    // Pomodoro component
+    Component {
+        id: pomodoroWidget
+        PomodoroWidget {
             anchors.fill: parent
             anchors.margins: 5
         }

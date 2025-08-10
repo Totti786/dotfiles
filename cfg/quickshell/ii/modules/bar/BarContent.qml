@@ -72,10 +72,10 @@ Item { // Bar content region
         }
         onPressed: event => {
             if (event.button === Qt.LeftButton) {
-				GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
-			} else if (event.button === Qt.RightButton) {
-				Quickshell.execDetached(["bash", "-c", `clight.sh --capture`])
-			}
+                GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
+            } else if (event.button === Qt.RightButton) {
+                Quickshell.execDetached(["bash", "-c", `clight.sh --capture`])
+                }
         }
         // Scroll to change brightness
         WheelHandler {
