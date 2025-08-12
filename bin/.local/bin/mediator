@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Define cache and file paths
-data_dir="$HOME/.local/share/rofi-media"
+data_dir="$HOME/.local/share/mediator"
 shortcuts="$HOME/.local/share/applications/media"
 watchlater_dir="$data_dir/watch_later"
 media_history="$data_dir/media_history.txt"
@@ -13,7 +13,7 @@ mkdir -p "$shortcuts"
 mkdir -p "$watchlater_dir"
 
 configuration(){
-	[[ -f "$config_file" ]] && . "${config_file}" || echo  "# rofi-media config file" >> "${config_file}"
+	[[ -f "$config_file" ]] && . "${config_file}" || echo  "# mediator config file" >> "${config_file}"
 	
 	[[ -z "$anime_directory" ]] && anime_directory="$HOME/Videos/Anime"
 	[[ -z "$movies_directory" ]] && movies_directory="$HOME/Videos/Movies"
@@ -116,10 +116,10 @@ process_media(){
 	IFS=$'\n' posters=($(find "$data_dir"/"$media_type" -type f -iname "*.jpg" 2> /dev/null))
 
 	if [[ ${#lines[@]} -eq 0 ]]; then
-		notify-send -r 12 -u low -a rofi-media "rofi-media" "No files were found in $media_directory"
+		notify-send -r 12 -u low -a mediator "mediator" "No files were found in $media_directory"
 		return
 	elif [[ ${#lines[@]} -gt "$(cut -f2 "$saved_lines" 2> /dev/null | wc -l)" ]]; then
-		notify-send -r 12 -u low -a rofi-media "rofi-media" "Updating List..."
+		notify-send -r 12 -u low -a mediator "mediator" "Updating List..."
 	fi
 
 	# Declare an associative array
@@ -208,7 +208,7 @@ process_media(){
 	done
 
 	wait
-	rofi -show drun -drun-categories "${media_type^}" -theme rofi-media 2>/dev/null
+	rofi -show drun -drun-categories "${media_type^}" -theme mediator 2>/dev/null
 }
 
 prompt_menu() {
