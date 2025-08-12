@@ -23,6 +23,7 @@ hypr="$config/hypr/colors.conf"
 kde="$config/kdeglobals"
 sniffnet="$config/sniffnet/colors.toml"
 wallpapers_dir="$HOME/Pictures/Wallpapers"
+SHELL_CONFIG_FILE="$HOME/.config/illogical-impulse/config.json"
 
 # Check if wpg is installed
 if [[ ! -f "/usr/bin/wpg" ]]; then
@@ -300,7 +301,7 @@ transparent(){
 		alpha_rofi="70"
 		alpha_dunst="99"
 	fi
-	sed -i "s/\"transparency\": [^,]*/\"transparency\": $transparency/" "$HOME/.config/illogical-impulse/config.json"
+	jq --arg value "$transparency" '.appearance.transparency.enable = $value' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
 }
 
 # this functions should only be used if you have a system with a seperate home partition 
