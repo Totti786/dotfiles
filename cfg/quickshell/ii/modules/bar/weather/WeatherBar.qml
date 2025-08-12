@@ -18,10 +18,10 @@ MouseArea {
     RowLayout {
         id: rowLayout
         anchors.centerIn: parent
-        
+
         MaterialSymbol {
             fill: 0
-            text: WeatherIcons.codeToName[Weather.data.wCode]
+            text: WeatherIcons.codeToName[Weather.data.wCode] ?? "cloud"
             iconSize: Appearance.font.pixelSize.large
             color: Appearance.colors.colOnLayer1
             Layout.alignment: Qt.AlignVCenter
@@ -31,17 +31,13 @@ MouseArea {
             visible: true
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.colors.colOnLayer1
-            text: Weather.data.temp
+            text: Weather.data?.temp ?? "--°"
             Layout.alignment: Qt.AlignVCenter
         }
     }
 
-    StyledPopup {
+    WeatherPopup {
+        id: weatherPopup
         hoverTarget: root
-        offsetY: -25
-        contentComponent: WeatherPopup {
-            id: weatherPopup
-            anchors.centerIn: parent
-        }
     }
 }

@@ -140,10 +140,10 @@ ContentPage {
             ConfigRow {
                 ConfigSwitch {
                     text: Translation.tr("Enable")
-                    checked: Config.options.appearance.transparency
+                    checked: Config.options.appearance.transparency.enable
                     onCheckedChanged: {
-                        if (Config.options.appearance.transparency !== checked) {
-				            Config.options.appearance.transparency = checked;
+                        if (Config.options.appearance.transparency.enable !== checked) {
+				            Config.options.appearance.transparency.enable = checked;
 				            Quickshell.execDetached(["bash", "-c", `wpgtk --trans`])
 				        }
                     }
