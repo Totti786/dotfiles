@@ -40,7 +40,7 @@ super + {x,s}
 
 # Rofi Media
 super + {a,n,m}
-	rofi-media --{anime,shows,movies}
+	mediator --{anime,shows,movies}
 
 # Rofi Applets
 super + {r,b,y}	
