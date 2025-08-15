@@ -162,6 +162,7 @@ Variants {
                 animation: Appearance.animation.elementMoveEnter.numberAnimation.createObject(this)
             }
             property real value // 0 to 1, for offset
+            cache: false
             asynchronous: true
             value: {
                 // Range = groups that workspaces span on
@@ -264,14 +265,16 @@ Variants {
                     Layout.fillWidth: false
                     iconSize: Appearance.font.pixelSize.huge
                     color: bgRoot.colText
+                    style: Text.Raised
+                    styleColor: Appearance.colors.colShadow
                 }
                 StyledText {
                     Layout.fillWidth: false
                     text: "Locked"
                     color: bgRoot.colText
-                    font {
-                        pixelSize: Appearance.font.pixelSize.larger
-                    }
+                    font.pixelSize: Appearance.font.pixelSize.larger
+                    style: Text.Raised
+                    styleColor: Appearance.colors.colShadow
                 }
                 Item { Layout.fillWidth: bgRoot.textHorizontalAlignment !== Text.AlignRight; implicitWidth: 1 }
 
@@ -293,9 +296,9 @@ Variants {
             }
             text: GlobalStates.screenUnlockFailed ? Translation.tr("Incorrect password") : Translation.tr("Enter password")
             color: GlobalStates.screenUnlockFailed ? Appearance.colors.colError : bgRoot.colText
-            font {
-                pixelSize: Appearance.font.pixelSize.normal
-            }
+            style: Text.Raised
+            styleColor: Appearance.colors.colShadow
+            font.pixelSize: Appearance.font.pixelSize.normal
         }
     }
 }
