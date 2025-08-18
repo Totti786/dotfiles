@@ -126,6 +126,8 @@ Singleton {
                     property real workspaceZoom: 1.07 // Relative to your screen, not wallpaper size
                     property bool enableSidebar: true
                 }
+                property string mantra: ""
+                property bool hideWhenFullscreen: true
             }
 
             property JsonObject bar: JsonObject {
@@ -182,6 +184,11 @@ Singleton {
                 property int critical: 5
                 property bool automaticSuspend: true
                 property int suspend: 3
+            }
+
+            property JsonObject conflictKiller: JsonObject {
+                property bool autoKillNotificationDaemons: false
+                property bool autoKillTrays: false
             }
 
             property JsonObject dock: JsonObject {
