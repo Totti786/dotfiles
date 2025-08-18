@@ -540,7 +540,7 @@ partial(){
 		gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
 		
 		# Quickshell
-		if [[ -n $(pgrep -f "qs|quickshell") ]]; then
+		if pgrep -f "qs -c ii" >/dev/null; then
 			ln -sf "$HOME"/.cache/wal/colors-qs.json "$HOME"/.local/state/quickshell/user/generated/colors.json			
 	    fi
 	fi
