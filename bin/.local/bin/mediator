@@ -142,20 +142,22 @@ process_media(){
 			# Extract the name of the file from the path
 			local name="${line##*/}"
 			# Remove the file extension from the name
-			local name="${name%.*}"
+			[[ "$name" == *.[A-Za-z0-9]* ]] && name="${name%.*}"
 
 			# Extract the year and remove everything after it
 			if [[ "$name" =~ ([1][9][0-9]{2}|20[0-9]{2}) ]]; then
 				# Get the year if present and strip the title of extra info
 				year="${BASH_REMATCH[1]}"
-				title=$(echo "$name" | sed -e "s/$year.*//" -e 's/[(].*$//' -e 's/^\[.*\] \(.*\) - .*/\1/' -e 's/ - / /g' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
+				title=$(echo "$name" | sed -e "s/$year.*//" -e 's/[(].*$//' -e 's/^\[.*\] \(.*\) - .*/\1/' -e 's/ - / /g' -e 's/\[[^]]*\]//g' \
+						-e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/\.\([^[:space:]]\)/ \1/g' -e 's/[ _()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
 						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\|[Ss][0-9]\{1,2\}[Ee][0-9]\{1,2\}\)[[:space:]]\{0,\}.*$//')
 				# Check if title is empty or only contains the year
 				# If title is empty or only contains spaces, set title to the year itself
 				[[ -z "$title" || "$title" =~ ^[[:space:]]*$ ]] && title="$year"
 			else
 				# Remove trailing spaces
-				title=$(echo "$name" | sed -e 's/[(].*$//' -e 's/^\[.*\] \(.*\) - .*/\1/'  -e 's/ - / /g' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
+				title=$(echo "$name" | sed -e 's/[(].*$//' -e 's/^\[.*\] \(.*\) - .*/\1/'  -e 's/ - / /g' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' \
+						-e 's/{[^}]*}//g' -e 's/\.\([^[:space:]]\)/ \1/g' -e 's/[ _()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
 						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\|[Ss][0-9]\{1,2\}[Ee][0-9]\{1,2\}\)[[:space:]]\{0,\}.*$//')
 				year=""
 			fi
@@ -172,7 +174,7 @@ process_media(){
 		# Set the clean version of the title in the player
 		if [[ "$media_type" == "movies" ]]; then
 			if [[ "$player" == "syncplay" ]]; then
-				exec_command="syncplay --player-path "$(command -v mpv)" \"$line\""
+				exec_command="syncplay --player-path $(command -v mpv) \"$line\""
 				#exec_command+=" --force-media-title=\"$title\" --title=\"$title\" \"$line\""
 			else
 				exec_command="mpv --speed=$speed --write-filename-in-watch-later-config --save-position-on-quit"
@@ -546,15 +548,18 @@ get_episodes(){
 			# Handle part and season combinations (e.g., S01P01, Season 1 - Part 1)
 			season_pattern="([sS]0?$season_number[Pp]0?$part_number|[sS]$season_number[Pp]$part_number|Season[[:space:]]*$season_number[[:space:]]*[-]?[[:space:]]*Part[[:space:]]*$part_number)"
 		else
-			# Handle regular season formats (e.g., S01, Season 1)
-			season_pattern="([sS]0?$season_number|[sS]$season_number|Season[[:space:]]*$season_number|^0?$season_number$)"
+			# Handle regular season formats (e.g., S01, Season 1) # Fix when Season 01
+			season_pattern="\\b([sS]0?$season_number|Season[[:space:]]*0?$season_number|0?$season_number)\\b"
 		fi
 
 		# Check if a valid season number is extracted
 		if [[ -n "$season_number" ]]; then
 			if [[ "$number_of_seasons" -eq 1 ]]; then
+			echo "$season_number"
+			echo "$season_pattern"
 				# If there's only one season, search within the show directory
-				season_dir=$(find -L "$show" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort | grep -E -i "$season_pattern" | head -n 1)
+				season_dir=$(find -L "$show" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort | grep -E -i "$season_pattern" | head -n1)
+				echo "$season_dir"
 				selected_directory="$show/$season_dir"
 				#echo 1
 			else
