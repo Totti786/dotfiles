@@ -149,7 +149,7 @@ process_media(){
 				# Get the year if present and strip the title of extra info
 				year="${BASH_REMATCH[1]}"
 				title=$(echo "$name" | sed -e "s/$year.*//" -e 's/[(].*$//' -e 's/^\[.*\] \(.*\) - .*/\1/' -e 's/ - / /g' -e 's/\[[^]]*\]//g' \
-						-e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/\.\([^[:space:]]\)/ \1/g' -e 's/[ _()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
+						-e 's/([^)]*)//g' -e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
 						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\|[Ss][0-9]\{1,2\}[Ee][0-9]\{1,2\}\)[[:space:]]\{0,\}.*$//')
 				# Check if title is empty or only contains the year
 				# If title is empty or only contains spaces, set title to the year itself
@@ -157,7 +157,7 @@ process_media(){
 			else
 				# Remove trailing spaces
 				title=$(echo "$name" | sed -e 's/[(].*$//' -e 's/^\[.*\] \(.*\) - .*/\1/'  -e 's/ - / /g' -e 's/\[[^]]*\]//g' -e 's/([^)]*)//g' \
-						-e 's/{[^}]*}//g' -e 's/\.\([^[:space:]]\)/ \1/g' -e 's/[ _()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
+						-e 's/{[^}]*}//g' -e 's/[._()]/ /g' -e 's/[[:space:]]\+/ /g; s/^[ \t]*//; s/[ \t]*$//' \
 						-e 's/[[:space:]]\([Ss][Ee][Aa][Ss][Oo][Nn] [[:digit:]]\{1,2\}\|[Ss][0-9]\{1,2\}\(-[0-9]\{1,2\}\)\?\|[Ss][0-9]\{1,2\}[Ee][0-9]\{1,2\}\)[[:space:]]\{0,\}.*$//')
 				year=""
 			fi
