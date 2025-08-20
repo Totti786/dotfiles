@@ -2,6 +2,8 @@ import "./weather"
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Io
+import Quickshell.Hyprland
 import Quickshell.Services.UPower
 import qs
 import qs.services
@@ -58,13 +60,17 @@ Item { // Bar content region
         }
         implicitWidth: leftSectionRowLayout.implicitWidth
         implicitHeight: Appearance.sizes.baseBarHeight
+		acceptedButtons: Qt.LeftButton | Qt.RightButton
 
         onScrollDown: root.brightnessMonitor.setBrightness(root.brightnessMonitor.brightness - 0.05)
         onScrollUp: root.brightnessMonitor.setBrightness(root.brightnessMonitor.brightness + 0.05)
         onMovedAway: GlobalStates.osdBrightnessOpen = false
         onPressed: event => {
-            if (event.button === Qt.LeftButton)
+            if (event.button === Qt.LeftButton) {
                 GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
+            } else if (event.button === Qt.RightButton) {
+				Quickshell.execDetached(["clight.sh", "--capture"])
+            }
         }
 
         // Visual content
@@ -82,38 +88,10 @@ Item { // Bar content region
             anchors.fill: parent
             spacing: 10
 
-            RippleButton {
-                // Left sidebar button
-                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            LeftSidebarButton { // Left sidebar button
+                Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: Appearance.rounding.screenRounding
-                Layout.fillWidth: false
-                property real buttonPadding: 5
-                implicitWidth: distroIcon.width + buttonPadding * 2
-                implicitHeight: distroIcon.height + buttonPadding * 2
-
-                buttonRadius: Appearance.rounding.full
                 colBackground: barLeftSideMouseArea.hovered ? Appearance.colors.colLayer1Hover : ColorUtils.transparentize(Appearance.colors.colLayer1Hover, 1)
-                colBackgroundHover: Appearance.colors.colLayer1Hover
-                colRipple: Appearance.colors.colLayer1Active
-                colBackgroundToggled: Appearance.colors.colSecondaryContainer
-                colBackgroundToggledHover: Appearance.colors.colSecondaryContainerHover
-                colRippleToggled: Appearance.colors.colSecondaryContainerActive
-                toggled: GlobalStates.sidebarLeftOpen
-                property color colText: toggled ? Appearance.m3colors.m3onSecondaryContainer : Appearance.colors.colOnLayer0
-
-                onPressed: {
-                    GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
-                }
-
-                CustomIcon {
-                    id: distroIcon
-                    anchors.centerIn: parent
-                    width: 19.5
-                    height: 19.5
-                    source: Config.options.bar.topLeftIcon == 'distro' ? SystemInfo.distroIcon : `${Config.options.bar.topLeftIcon}-symbolic`
-                    colorize: true
-                    color: Appearance.colors.colOnLayer0
-                }
             }
 
             ActiveWindow {
@@ -157,7 +135,6 @@ Item { // Bar content region
         BarGroup {
             id: middleCenterGroup
             padding: workspacesWidget.widgetPadding
-            Layout.fillHeight: true
 
             Workspaces {
                 id: workspacesWidget
@@ -185,7 +162,6 @@ Item { // Bar content region
             implicitWidth: rightCenterGroupContent.implicitWidth
             implicitHeight: rightCenterGroupContent.implicitHeight
             Layout.preferredWidth: root.centerSideModuleWidth
-            Layout.fillHeight: true
 
             onPressed: {
                 GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
@@ -240,6 +216,8 @@ Item { // Bar content region
         onPressed: event => {
             if (event.button === Qt.LeftButton) {
                 GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
+            } else if (event.button === Qt.RightButton) {
+                MprisController.activePlayer.togglePlaying();
             }
         }
 
@@ -356,8 +334,7 @@ Item { // Bar content region
 
             // Weather
             Loader {
-                Layout.leftMargin: 8
-                Layout.fillHeight: true
+                Layout.leftMargin: 4
                 active: Config.options.bar.weather.enable
 
                 sourceComponent: BarGroup {

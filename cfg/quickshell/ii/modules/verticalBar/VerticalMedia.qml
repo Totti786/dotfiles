@@ -29,17 +29,26 @@ MouseArea {
 
     acceptedButtons: Qt.MiddleButton | Qt.BackButton | Qt.ForwardButton | Qt.RightButton | Qt.LeftButton
     hoverEnabled: true
-    onPressed: (event) => {
-        if (event.button === Qt.MiddleButton) {
-            activePlayer.togglePlaying();
-        } else if (event.button === Qt.BackButton) {
-            activePlayer.previous();
-        } else if (event.button === Qt.ForwardButton || event.button === Qt.RightButton) {
-            activePlayer.next();
-        } else if (event.button === Qt.LeftButton) {
-            GlobalStates.mediaControlsOpen = !GlobalStates.mediaControlsOpen
+	onPressed: (event) => {
+		if (event.button === Qt.MiddleButton) {
+			Hyprland.dispatch("exec playerctld shift")
+		} else if (event.button === Qt.RightButton) {
+			activePlayer.togglePlaying();
+		} else if (event.button === Qt.BackButton) {
+			activePlayer.previous();
+		} else if (event.button === Qt.ForwardButton) {
+			activePlayer.next();
+		} else if (event.button === Qt.LeftButton) {
+			GlobalStates.mediaControlsOpen = !GlobalStates.mediaControlsOpen
+		}
+	}
+	onWheel: (wheel) => {
+        if (wheel.angleDelta.y > 0) {
+            Hyprland.dispatch("exec playerctl volume 0.05+")
+        } else if (wheel.angleDelta.y < 0) {
+            Hyprland.dispatch("exec playerctl volume 0.05-")
         }
-    }
+	}
 
     ClippedFilledCircularProgress {
         id: mediaCircProg
