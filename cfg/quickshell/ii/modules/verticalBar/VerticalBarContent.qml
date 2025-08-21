@@ -205,6 +205,7 @@ Item { // Bar content region
                 vertical: true
                 Layout.fillWidth: true
                 Layout.fillHeight: false
+                invertSide: Config?.options.bar.bottom
             }
 
             RippleButton { // Right sidebar button

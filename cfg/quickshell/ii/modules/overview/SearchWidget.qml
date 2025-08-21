@@ -83,7 +83,11 @@ Item { // Wrapper
         id: nonAppResultsTimer
         interval: Config.options.search.nonAppResultDelay
         onTriggered: {
-            mathProcess.calculateExpression(root.searchingText);
+            let expr = root.searchingText;
+            if (expr.startsWith(Config.options.search.prefix.math)) {
+                expr = expr.slice(Config.options.search.prefix.math.length);
+            }
+            mathProcess.calculateExpression(expr);
         }
     }
 
@@ -411,9 +415,11 @@ Item { // Wrapper
                         result = result.concat(launcherActionObjects);
 
                         /// Math result, command, web search ///
-                        if (!startsWithShellCommandPrefix) result.push(commandResultObject);
-                        if (!startsWithNumber && !startsWithMathPrefix) result.push(mathResultObject);
-                        if (!startsWithWebSearchPrefix) result.push(webSearchResultObject);
+                        if (Config.options.search.prefix.showDefaultActionsWithoutPrefix) {
+                            if (!startsWithShellCommandPrefix) result.push(commandResultObject);
+                            if (!startsWithNumber && !startsWithMathPrefix) result.push(mathResultObject);
+                            if (!startsWithWebSearchPrefix) result.push(webSearchResultObject);
+                        }
 
                         return result;
                     }

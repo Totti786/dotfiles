@@ -20,7 +20,7 @@ MouseArea { // Right side | scroll to change volume
     property real lastScrollY: 0
     property bool trackingScroll: false
 
-	acceptedButtons: Qt.LeftButton | Qt.RightButton
+    acceptedButtons: Qt.LeftButton | Qt.RightButton
     hoverEnabled: true
 
     onEntered: {

@@ -2,8 +2,6 @@ import "./weather"
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import Quickshell.Io
-import Quickshell.Hyprland
 import Quickshell.Services.UPower
 import qs
 import qs.services
@@ -60,7 +58,7 @@ Item { // Bar content region
         }
         implicitWidth: leftSectionRowLayout.implicitWidth
         implicitHeight: Appearance.sizes.baseBarHeight
-		acceptedButtons: Qt.LeftButton | Qt.RightButton
+	acceptedButtons: Qt.LeftButton | Qt.RightButton
 
         onScrollDown: root.brightnessMonitor.setBrightness(root.brightnessMonitor.brightness - 0.05)
         onScrollUp: root.brightnessMonitor.setBrightness(root.brightnessMonitor.brightness + 0.05)
@@ -325,6 +323,7 @@ Item { // Bar content region
                 visible: root.useShortenedForm === 0
                 Layout.fillWidth: false
                 Layout.fillHeight: true
+                invertSide: Config?.options.bar.bottom
             }
 
             Item {

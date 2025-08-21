@@ -163,6 +163,8 @@ Singleton {
                 }
                 property JsonObject tray: JsonObject {
                     property bool monochromeIcons: false
+                    property bool invertPinnedItems: false // Makes the below a whitelist for the tray and blacklist for the pinned area
+                    property list<string> pinnedItems: [ "Fcitx" ]
                 }
                 property JsonObject workspaces: JsonObject {
                     property bool monochromeIcons: false
@@ -265,6 +267,7 @@ Singleton {
                 property list<string> excludedSites: ["quora.com"]
                 property bool sloppy: false // Uses levenshtein distance based scoring instead of fuzzy sort. Very weird.
                 property JsonObject prefix: JsonObject {
+                    property bool showDefaultActionsWithoutPrefix: true
                     property string action: "/"
                     property string clipboard: ";"
                     property string emojis: ":"
