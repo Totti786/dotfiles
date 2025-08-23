@@ -103,13 +103,13 @@ Singleton {
                     // Prevent sudden bangs
                     property bool enable: false
                     property real maxAllowedIncrease: 10
-                    property real maxAllowed: 90 // Realistically should already provide some protection when it's 99...
+                    property real maxAllowed: 99
                 }
             }
 
             property JsonObject apps: JsonObject {
                 property string bluetooth: "better-control -b"
-                property string network: "better-control -w"
+                property string network: "nmgui"
                 property string networkEthernet: "nm-connection-editor"
                 property string taskManager: "missioncenter"
                 property string terminal: "alacritty" // This is only for shell actions
@@ -190,8 +190,8 @@ Singleton {
             }
 
             property JsonObject conflictKiller: JsonObject {
-                property bool autoKillNotificationDaemons: false
-                property bool autoKillTrays: false
+                property bool autoKillNotificationDaemons: true
+                property bool autoKillTrays: true
             }
 
             property JsonObject dock: JsonObject {
@@ -295,6 +295,7 @@ Singleton {
             property JsonObject time: JsonObject {
                 // https://doc.qt.io/qt-6/qtime.html#toString
                 property string format: "h:mm AP"
+                property string shortDateFormat: "dd/MM"
                 property string dateFormat: "ddd, dd/MM"
                 property JsonObject pomodoro: JsonObject {
                     property string alertSound: ""
