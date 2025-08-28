@@ -48,7 +48,7 @@ MouseArea {
         } else if (wheel.angleDelta.y < 0) {
             Hyprland.dispatch("exec playerctl volume 0.05-")
         }
-	}
+    }
 
     ClippedFilledCircularProgress {
         id: mediaCircProg

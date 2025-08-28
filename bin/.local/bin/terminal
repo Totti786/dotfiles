@@ -6,11 +6,7 @@
 CONFIG="$HOME/.config/alacritty/alacritty.toml"
 
 if [ "$1" == "--float" ]; then
-	if [ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]; then
-		alacritty --config-file "$CONFIG" "${@:2}"
-	else
-		alacritty --class 'Alacritty-float,Alacritty' --config-file "$CONFIG" "${@:2}"
-	fi
+	alacritty --class 'Alacritty-float,Alacritty' --config-file "$CONFIG" "${@:2}"
 elif [ "$1" == "--full" ]; then
 	alacritty --class 'Alacritty,fullscreen' --config-file "$CONFIG" \
 	-o 'window.startup_mode="Fullscreen"' window.padding.x=10 window.padding.y=10 \

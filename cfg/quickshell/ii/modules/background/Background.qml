@@ -18,6 +18,8 @@ Variants {
     readonly property bool fixedClockPosition: Config.options.background.fixedClockPosition
     readonly property real fixedClockX: Config.options.background.clockX
     readonly property real fixedClockY: Config.options.background.clockY
+    readonly property real clockSizePadding: 20
+    readonly property real screenSizePadding: 50
     model: Quickshell.screens
 
     PanelWindow {
@@ -27,7 +29,7 @@ Variants {
 
         // Hide when fullscreen
         property list<HyprlandWorkspace> workspacesForMonitor: Hyprland.workspaces.values.filter(workspace=>workspace.monitor && workspace.monitor.name == monitor.name)
-        property var activeWorkspaceWithFullscreen: workspacesForMonitor.filter(workspace=>((workspace.toplevels.values.filter(window=>window.wayland.fullscreen)[0] != undefined) && workspace.active))[0]
+        property var activeWorkspaceWithFullscreen: workspacesForMonitor.filter(workspace=>((workspace.toplevels.values.filter(window=>window.wayland?.fullscreen)[0] != undefined) && workspace.active))[0]
         visible: GlobalStates.screenLocked || (!(activeWorkspaceWithFullscreen != undefined)) || !Config?.options.background.hideWhenFullscreen
 
         // Workspaces
@@ -115,10 +117,10 @@ Variants {
         function updateClockPosition() {
             // Somehow all this manual setting is needed to make the proc correctly use the new values
             leastBusyRegionProc.path = bgRoot.wallpaperPath
-            leastBusyRegionProc.contentWidth = clock.implicitWidth
-            leastBusyRegionProc.contentHeight = clock.implicitHeight
-            leastBusyRegionProc.horizontalPadding = bgRoot.movableXSpace + 100
-            leastBusyRegionProc.verticalPadding = bgRoot.movableYSpace + 100
+            leastBusyRegionProc.contentWidth = clock.implicitWidth + root.clockSizePadding * 2
+            leastBusyRegionProc.contentHeight = clock.implicitHeight + root.clockSizePadding * 2
+            leastBusyRegionProc.horizontalPadding = bgRoot.movableXSpace + root.screenSizePadding * 2
+            leastBusyRegionProc.verticalPadding = bgRoot.movableYSpace + root.screenSizePadding * 2
             leastBusyRegionProc.running = false;
             leastBusyRegionProc.running = true;
         }
@@ -163,6 +165,7 @@ Variants {
             }
             cache: false
             asynchronous: true
+            retainWhileLoading: true
             // Range = groups that workspaces span on
             property int chunkSize: Config?.options.bar.workspaces.shown ?? 10;
             property int lower: Math.floor(bgRoot.firstWorkspaceId / chunkSize) * chunkSize;
@@ -204,9 +207,11 @@ Variants {
                 }
             }
             sourceSize {
-                width: bgRoot.screen.width * bgRoot.effectiveWallpaperScale
-                height: bgRoot.screen.height * bgRoot.effectiveWallpaperScale
+                width: bgRoot.screen.width * bgRoot.effectiveWallpaperScale * bgRoot.monitor.scale
+                height: bgRoot.screen.height * bgRoot.effectiveWallpaperScale * bgRoot.monitor.scale
             }
+            width: bgRoot.wallpaperWidth / bgRoot.wallpaperToScreenRatio * bgRoot.effectiveWallpaperScale
+            height: bgRoot.wallpaperHeight / bgRoot.wallpaperToScreenRatio * bgRoot.effectiveWallpaperScale
         }
 
         // The clock
@@ -312,26 +317,6 @@ Variants {
                 Item { Layout.fillWidth: bgRoot.textHorizontalAlignment !== Text.AlignRight; implicitWidth: 1 }
 
             }
-        }
-
-        // Password prompt
-        StyledText {
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                bottom: parent.bottom
-                bottomMargin: 30
-            }
-            opacity: (GlobalStates.screenLocked && !GlobalStates.screenLockContainsCharacters) ? 1 : 0
-            scale: opacity
-            visible: opacity > 0
-            Behavior on opacity {
-                animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
-            }
-            text: GlobalStates.screenUnlockFailed ? Translation.tr("Incorrect password") : Translation.tr("Enter password")
-            color: GlobalStates.screenUnlockFailed ? Appearance.colors.colError : bgRoot.colText
-            style: Text.Raised
-            styleColor: Appearance.colors.colShadow
-            font.pixelSize: Appearance.font.pixelSize.normal
         }
     }
 }
