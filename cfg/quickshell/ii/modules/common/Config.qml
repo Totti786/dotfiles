@@ -108,7 +108,7 @@ Singleton {
             }
 
             property JsonObject apps: JsonObject {
-                property string bluetooth: "better-control -b"
+                property string bluetooth: "blueman-manager"
                 property string network: "nmgui"
                 property string networkEthernet: "nm-connection-editor"
                 property string taskManager: "missioncenter"
