@@ -81,6 +81,28 @@ Item {
 
                 ButtonGroup {
                     QuickToggleButton {
+						toggled: false
+						buttonIcon: "wallpaper"
+						onClicked: {
+							Quickshell.execDetached(["bash", "-c", `alacritty --hold -e ${Directories.scriptPath}/dots-update.sh --wall`])
+							Hyprland.dispatch(`global quickshell:sidebarRightClose`)
+						}
+						StyledToolTip {
+							content: Translation.tr("Update Wallpapers")
+						}
+					}
+					QuickToggleButton {
+						toggled: false
+						buttonIcon: "system_update_alt"
+						onClicked: {
+							Quickshell.execDetached(["bash", "-c", `alacritty --hold -e ${Directories.scriptPath}/dots-update.sh --dots`])
+							Hyprland.dispatch(`global quickshell:sidebarRightClose`)
+						}
+						StyledToolTip {
+							content: Translation.tr("Update System & Configs")
+						}
+					}                
+                    QuickToggleButton {
                         toggled: false
                         buttonIcon: "restart_alt"
                         onClicked: {
