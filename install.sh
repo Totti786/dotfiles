@@ -44,7 +44,7 @@ declare -a wayland=(
 )
 
 declare -a aur=(
-	better-control-git i3-resurrect mpv-thumbfast-git mpv-uosc-git ttf-rubik-vf ttf-gabarito-git \
+	i3-resurrect mpv-thumbfast-git mpv-uosc-git ttf-rubik-vf ttf-gabarito-git \
 	tty-clock unimatrix-git xqp
 )
 
@@ -261,8 +261,7 @@ enable_autologin(){
 	fi
 }
 
-
-fixes(){
+fixes(){b
 	sudo cp "$dir"/deps/fixes/quickshell.service /usr/lib/systemd/user/
 	sudo cp "$dir"/deps/fixes/wayland-notif /usr/local/bin/
 	sudo cp "$dir"/deps/fixes/org.notifications.quichshell.service /usr/share/dbus-1/services/
