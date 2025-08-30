@@ -12,6 +12,7 @@ DialogListItem {
     pointingHandCursor: !expanded
 
     onClicked: expanded = !expanded
+    altAction: () => expanded = !expanded
     
     component ActionButton: DialogButton {
         colBackground: Appearance.colors.colPrimary
@@ -58,7 +59,7 @@ DialogListItem {
                         if (!root.device?.paired) return "";
                         let statusText = root.device?.connected ? Translation.tr("Connected") : Translation.tr("Paired");
                         if (!root.device?.batteryAvailable) return statusText;
-                        statusText += ` • ${root.device?.battery * 100}%`;
+                        statusText += ` • ${Math.round(root.device?.battery * 100)}%`;
                         return statusText;
                     }
                 }
