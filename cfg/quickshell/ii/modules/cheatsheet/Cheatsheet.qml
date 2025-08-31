@@ -73,7 +73,7 @@ Scope { // Scope
                 id: cheatsheetBackground
                 anchors.centerIn: parent
                 color: Appearance.colors.colLayer0
-                border.width: 1
+                border.width: 0
                 border.color: Appearance.colors.colLayer0Border
                 radius: Appearance.rounding.windowRounding
                 property real padding: 30

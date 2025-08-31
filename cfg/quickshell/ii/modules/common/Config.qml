@@ -119,6 +119,7 @@ Singleton {
                 property bool fixedClockPosition: false
                 property real clockX: -500
                 property real clockY: -500
+                property bool showClock: true
                 property string wallpaperPath: ""
                 property string thumbnailPath: ""
                 property JsonObject parallax: JsonObject {
@@ -300,7 +301,7 @@ Singleton {
                     property bool enable: true
                     property bool bottom: false
                     property bool valueScroll: true
-                    property bool clickless: false
+                    property bool clickless: true
                     property real cornerRegionWidth: 60
                     property real cornerRegionHeight: 2
                     property bool visualize: false
