@@ -32,7 +32,7 @@ style = "Regular"
 [window]
 decorations = "full"
 dynamic_title = true
-opacity = 1.0
+opacity = 0.85
 [window.dimensions]
 columns = 95
 lines = 23

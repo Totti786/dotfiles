@@ -37,7 +37,7 @@ ShellRoot {
     property bool enableBackground: true
     property bool enableCheatsheet: true
     property bool enableDock: true
-    property bool enableLock: false
+    property bool enableLock: true
     property bool enableMediaControls: true
     property bool enableNotificationPopup: true
     property bool enableOnScreenDisplayBrightness: true
