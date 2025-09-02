@@ -58,6 +58,7 @@ ContentPage {
 
     // Wallpaper selection
     ContentSection {
+        icon: "format_paint"
         title: Translation.tr("Wallpaper & Colors")
         Layout.fillWidth: true
 
@@ -65,13 +66,14 @@ ContentPage {
             Layout.fillWidth: true
 
             Item {
-                implicitWidth: 300
+                implicitWidth: 340
                 implicitHeight: 200
-                Image {
+                
+                StyledImage {
                     id: wallpaperPreview
                     anchors.fill: parent
-                    sourceSize.width: 300
-                    sourceSize.height: 200
+                    sourceSize.width: parent.implicitWidth
+                    sourceSize.height: parent.implicitHeight
                     fillMode: Image.PreserveAspectCrop
                     source: Config.options.background.wallpaperPath
                     layer.enabled: true
@@ -156,8 +158,8 @@ ContentPage {
                     checked: Config.options.appearance.transparency.enable
                     onCheckedChanged: {
                         if (Config.options.appearance.transparency.enable !== checked) {
-				            Quickshell.execDetached(["wpgtk", "--trans"])
-				        }
+                              Quickshell.execDetached(["wpgtk", "--trans"])
+                        }
                     }
                     StyledToolTip {
                         content: Translation.tr("Might look ass. Unsupported.")
@@ -214,6 +216,7 @@ ContentPage {
     }
 
     ContentSection {
+        icon: "screenshot_monitor"
         title: Translation.tr("Bar & screen")
 
         ConfigRow {
@@ -228,18 +231,22 @@ ContentPage {
                     options: [
                         {
                             displayName: Translation.tr("Top"),
+                            icon: "arrow_upward",
                             value: 0 // bottom: false, vertical: false
                         },
                         {
                             displayName: Translation.tr("Left"),
+                            icon: "arrow_back",
                             value: 2 // bottom: false, vertical: true
                         },
                         {
                             displayName: Translation.tr("Bottom"),
+                            icon: "arrow_downward",
                             value: 1 // bottom: true, vertical: false
                         },
                         {
                             displayName: Translation.tr("Right"),
+                            icon: "arrow_forward",
                             value: 3 // bottom: true, vertical: true
                         }
                     ]
@@ -256,14 +263,17 @@ ContentPage {
                     options: [
                         {
                             displayName: Translation.tr("Hug"),
+                            icon: "line_curve",
                             value: 0
                         },
                         {
                             displayName: Translation.tr("Float"),
+                            icon: "page_header",
                             value: 1
                         },
                         {
-                            displayName: Translation.tr("Plain rectangle"),
+                            displayName: Translation.tr("Rect"),
+                            icon: "toolbar",
                             value: 2
                         }
                     ]
@@ -283,14 +293,17 @@ ContentPage {
                     options: [
                         {
                             displayName: Translation.tr("No"),
+                            icon: "close",
                             value: 0
                         },
                         {
                             displayName: Translation.tr("Yes"),
+                            icon: "check",
                             value: 1
                         },
                         {
                             displayName: Translation.tr("When not fullscreen"),
+                            icon: "fullscreen_exit",
                             value: 2
                         }
                     ]
