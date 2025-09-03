@@ -14,12 +14,12 @@ ContentPage {
     forceWidth: true
 
     Process {
-        id: konachanWallProc
+        id: walldlProc
         property string status: ""
-        command: ["bash", "-c", FileUtils.trimFileProtocol(`${Directories.scriptPath}/colors/random_konachan_wall.sh`)]
+        command: ["bash", "-c", `wpgtk --set "$(walldl -p -m toplist)"`]
         stdout: SplitParser {
             onRead: data => {
-                konachanWallProc.status = data.trim();
+                walldlProc.status = data.trim();
             }
         }
     }
@@ -93,12 +93,12 @@ ContentPage {
                     Layout.fillWidth: true
                     buttonRadius: Appearance.rounding.small
                     materialIcon: "wallpaper"
-                    mainText: konachanWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Konachan")
+                    mainText: walldlProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Wallhaven")
                     onClicked: {
-                        konachanWallProc.running = true;
+                        walldlProc.running = true;
                     }
                     StyledToolTip {
-                        content: Translation.tr("Random SFW Anime wallpaper from Konachan\nImage is saved to ~/Pictures/Wallpapers")
+                        content: Translation.tr("Random wallpaper from Wallhaven\nImage is saved to ~/Pictures/Wallpapers/walldl")
                     }
                 }
                 RippleButtonWithIcon {
@@ -108,7 +108,7 @@ ContentPage {
                         content: Translation.tr("Pick wallpaper image on your system")
                     }
                     onClicked: {
-                        Quickshell.execDetached(`${Directories.wallpaperSwitchScriptPath}`);
+						Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperPickScriptPath} --pick`]);
                     }
                     mainContentComponent: Component {
                         RowLayout {
@@ -121,17 +121,17 @@ ContentPage {
                             RowLayout {
                                 spacing: 3
                                 KeyboardKey {
-                                    key: "Ctrl"
+                                    key: "󰖳"
                                 }
                                 KeyboardKey {
-                                    key: "󰖳"
+                                    key: "Shift"
                                 }
                                 StyledText {
                                     Layout.alignment: Qt.AlignVCenter
                                     text: "+"
                                 }
                                 KeyboardKey {
-                                    key: "T"
+                                    key: "W"
                                 }
                             }
                         }
@@ -168,51 +168,61 @@ ContentPage {
             }
         }
 
-        ConfigSelectionArray {
-            currentValue: Config.options.appearance.palette.type
-            onSelected: newValue => {
-                Config.options.appearance.palette.type = newValue;
-                Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperSwitchScriptPath} --noswitch`]);
-            }
-            options: [
-                {
-                    "value": "auto",
-                    "displayName": Translation.tr("Auto")
-                },
-                {
-                    "value": "scheme-content",
-                    "displayName": Translation.tr("Content")
-                },
-                {
-                    "value": "scheme-expressive",
-                    "displayName": Translation.tr("Expressive")
-                },
-                {
-                    "value": "scheme-fidelity",
-                    "displayName": Translation.tr("Fidelity")
-                },
-                {
-                    "value": "scheme-fruit-salad",
-                    "displayName": Translation.tr("Fruit Salad")
-                },
-                {
-                    "value": "scheme-monochrome",
-                    "displayName": Translation.tr("Monochrome")
-                },
-                {
-                    "value": "scheme-neutral",
-                    "displayName": Translation.tr("Neutral")
-                },
-                {
-                    "value": "scheme-rainbow",
-                    "displayName": Translation.tr("Rainbow")
-                },
-                {
-                    "value": "scheme-tonal-spot",
-                    "displayName": Translation.tr("Tonal Spot")
-                }
-            ]
-        }
+		ConfigSelectionArray {
+		    currentValue: Config.options.appearance.palette.type
+		    onSelected: newValue => {
+		        Config.options.appearance.palette.type = newValue;
+		
+		        if (newValue === "pywal") {
+		            Quickshell.execDetached(["bash", "-c", `wpgtk --restart`]);
+		        } else {
+		            Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperSwitchScriptPath} --noswitch`]);
+		        }
+		    }
+		
+		    options: [
+		        {
+		            "value": "auto",
+		            "displayName": Translation.tr("Auto")
+		        },
+		        {
+		            "value": "scheme-content",
+		            "displayName": Translation.tr("Content")
+		        },
+		        {
+		            "value": "scheme-expressive",
+		            "displayName": Translation.tr("Expressive")
+		        },
+		        {
+		            "value": "scheme-fidelity",
+		            "displayName": Translation.tr("Fidelity")
+		        },
+		        {
+		            "value": "scheme-fruit-salad",
+		            "displayName": Translation.tr("Fruit Salad")
+		        },
+		        {
+		            "value": "scheme-monochrome",
+		            "displayName": Translation.tr("Monochrome")
+		        },
+		        {
+		            "value": "scheme-neutral",
+		            "displayName": Translation.tr("Neutral")
+		        },
+		        {
+		            "value": "scheme-rainbow",
+		            "displayName": Translation.tr("Rainbow")
+		        },
+		        {
+		            "value": "scheme-tonal-spot",
+		            "displayName": Translation.tr("Tonal Spot")
+		        },
+		        {
+		            "value": "pywal",   // <-- make this a unique value
+		            "displayName": Translation.tr("Pywal")
+		        }
+		    ]
+		}
     }
 
     ContentSection {
