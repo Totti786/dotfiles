@@ -279,6 +279,7 @@ Item { // Bar content region
                             text: HyprlandXkb.currentLayoutCode
                             font.pixelSize: Appearance.font.pixelSize.small
                             color: rightSidebarButton.colText
+                            animateChange: true
                         }
                     }
                     MaterialSymbol {
