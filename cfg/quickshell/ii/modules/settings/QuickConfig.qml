@@ -16,7 +16,7 @@ ContentPage {
     Process {
         id: walldlProc
         property string status: ""
-        command: ["bash", "-c", `wpgtk --set "$(walldl -p -m toplist)"`]
+        command: ["bash", "-c", `wpgtk --walldl`]
         stdout: SplitParser {
             onRead: data => {
                 walldlProc.status = data.trim();
@@ -108,7 +108,7 @@ ContentPage {
                         content: Translation.tr("Pick wallpaper image on your system")
                     }
                     onClicked: {
-						Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperPickScriptPath} --pick`]);
+                        Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperPickScriptPath} --pick`]);
                     }
                     mainContentComponent: Component {
                         RowLayout {
