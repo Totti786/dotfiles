@@ -18,7 +18,7 @@ declare -a minimal=(
 	python-gtts html-xml-utils htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot \
 	kvantum kvantum-qt5 loupe man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet \
 	networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv nvtop oh-my-zsh-git openbox \
-	openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct rhythmbox rofi-wayland ruby-fusuma \
+	openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct rhythmbox rofi ruby-fusuma \
 	ruby-fusuma-plugin-sendkey scrot sioyek-git stalonetray subliminal-git snapshot sxhkd termdown thunar \
 	thunar-archive-plugin papers perl picom-git plank playerctl polkit-gnome polybar python-pyxdg python-screeninfo\
 	python-wheel qbittorrent thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
