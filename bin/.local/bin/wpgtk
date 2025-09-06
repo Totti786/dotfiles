@@ -621,6 +621,12 @@ help(){
     echo "  --restart        Restart apps and reload colors"	
 }
 
+modify_colors(){
+	wpg --${1} "$wallpaper" "$2"	
+	wpg -s "$wallpaper"
+	rm "${wallpaper}_wal_sample.png"
+}
+
 case "$1" in
 	-h|--help)
 		help
@@ -635,6 +641,10 @@ case "$1" in
 		;;
 	--random)
 		random
+		exit 0
+		;;
+	--walldl)
+		wall "$(walldl -p -m toplist)"
 		exit 0
 		;;
 	--purge)
@@ -656,6 +666,10 @@ case "$1" in
 		;;
 	--colors)
 		run
+		exit 0
+		;;
+	--modify)
+		modify_colors "$2" "$3"
 		exit 0
 		;;
 	--trans)
