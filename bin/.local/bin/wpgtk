@@ -678,6 +678,7 @@ case "$1" in
 		;;
 	--matugen)
 		wpg -i "$wallpaper" ~/.cache/wal/colors.json && wpg -s "$wallpaper"
+		rm "${wallpaper}_wal_sample.png"
 		exit 0
 		;;
 	--material)
