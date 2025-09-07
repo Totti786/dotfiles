@@ -376,6 +376,7 @@ wall() {
             if pgrep -f "qs -c ii" >/dev/null; then
 				[[ "$(pgrep swww)" ]] && pkill swww
                 jq --arg path "$wallpaper" '.background.wallpaperPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
+                jq --arg value "pywal" '.appearance.palette.type = $value' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
                 
                 "$HOME"/.config/quickshell/ii/scripts/images/least_busy_region.py --screen-width "1920" \
 				--screen-height "1080" --width 300 --height 200 \
@@ -691,6 +692,13 @@ case "$1" in
 		;;
 	--lock)
 		lockPerms
+		exit 0
+		;;
+	--reset)
+		wpg -R "$wallpaper"
+		wpg -A "$wallpaper" && wpg -s "$wallpaper"
+		rm "${wallpaper}_wal_sample.png"
+		main
 		exit 0
 		;;
 	--reload)
