@@ -1,0 +1,15 @@
+[config]
+version_check = false
+
+[templates.m3colors]
+input_path = '~/.config/matugen/templates/colors.json'
+output_path = '~/.local/state/quickshell/user/generated/colors.json'
+
+[templates.pywal]
+input_path = '~/.config/matugen/templates/pywal.json'
+output_path = '~/.cache/wal/colors.json'
+post_hook = 'wpgtk --matugen'
+
+[templates.wallpaper]
+input_path = '~/.config/matugen/templates/wallpaper.txt'
+output_path = '~/.local/state/quickshell/user/generated/wallpaper/path.txt'
