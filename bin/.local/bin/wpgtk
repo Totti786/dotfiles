@@ -676,6 +676,10 @@ case "$1" in
 		toggle_transparency
 		exit 0
 		;;
+	--matugen)
+		wpg -i "$wallpaper" ~/.cache/wal/colors.json && wpg -s "$wallpaper"
+		exit 0
+		;;
 	--material)
 		material
 		exit 0
