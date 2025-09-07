@@ -174,7 +174,7 @@ ContentPage {
 		        Config.options.appearance.palette.type = newValue;
 		
 		        if (newValue === "pywal") {
-		            Quickshell.execDetached(["bash", "-c", `wpgtk --restart`]);
+		            Quickshell.execDetached(["bash", "-c", `wpgtk --reset`]);
 		        } else {
 		            Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperSwitchScriptPath} --noswitch`]);
 		        }
