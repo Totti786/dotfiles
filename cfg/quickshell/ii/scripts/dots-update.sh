@@ -24,6 +24,7 @@ if [[ "$1" == "--dots" ]]; then
 	rm "$HOME/.config/wpg/schemes/_home_$(whoami)__dotfiles_deps_background_jpg_dark_wal__1.1.0.json"
 	## change wallpaper and update color scheme
 	"$dots"/bin/.local/bin/wpgtk --set "$dots"/deps/background.jpg
+	wpgtk --restart &&
 	tput -x clear
 	echo "Update is complete!"
 	echo "You can now close this window"
