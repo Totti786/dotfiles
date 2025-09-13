@@ -99,6 +99,10 @@ Singleton {
     function guessIcon(str) {
         if (!str || str.length == 0) return "image-missing";
 
+        // Quickshell's desktop entry lookup
+        const entry = DesktopEntries.heuristicLookup(str);
+        if (entry) return entry.icon;
+
         // Normal substitutions
         if (substitutions[str]) return substitutions[str];
         if (substitutions[str.toLowerCase()]) return substitutions[str.toLowerCase()];
