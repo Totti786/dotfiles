@@ -11,22 +11,21 @@ fi
 #---- Programs List ----------------------
 
 declare -a minimal=(
-	acpi alacritty appimagelauncher autotiling axel base-devel bc blueman bluez bluez-utils \
-	brightnessctl bspwm btop clight conky copyq dmenu drawing dunst envycontrol fcitx5 fcitx5-configtool \
-	fd feh file-roller firefox flameshot fluent-cursor-theme-git font-manager fzf gammastep geany \
-	gnome-calculator gnome-disk-utility gnome-epub-thumbnailer gping gpu-screen-recorder jq gpick grep \
-	python-gtts html-xml-utils htop i3lock-color i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspot \
-	kvantum kvantum-qt5 loupe man moreutils mpv mpv-mpris mugshot ncdu network-manager-applet \
-	networkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji nsxiv nvtop oh-my-zsh-git openbox \
-	openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct rhythmbox rofi ruby-fusuma \
-	ruby-fusuma-plugin-sendkey scrot sioyek-git stalonetray subliminal-git snapshot sxhkd termdown thunar \
-	thunar-archive-plugin papers perl picom-git plank playerctl polkit-gnome polybar python-pyxdg python-screeninfo\
-	python-wheel qbittorrent thunar-media-tags-plugin thunar-volman ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
-	ttf-material-symbols-variable-git ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common timeshift tumbler \
-	translate-shell waypaper wget wmctrl xcape xclip xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool \
-	xfce4-power-manager xfce4-settings xiccd xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot \
-	xorg-xwininfo xss-lock yad ytfzf zathura zathura-cb zathura-pdf-mupdf zenity zsh zsh-autosuggestions \
-	zsh-syntax-highlighting
+	acpi alacritty autotiling axel base-devel bc blueman bluez bluez-utils brightnessctl bspwm btop clight \
+	conky copyq dmenu drawing dunst envycontrol fcitx5 fcitx5-configtool fd feh file-roller firefox flameshot \
+	fluent-cursor-theme-git font-manager fzf gammastep geany gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
+	gping gpu-screen-recorder jq gpick grep python-gtts html-xml-utils htop i3lock-color i3-wm imagemagick \
+	jgmenu kdeconnect libplasma linux-wifi-hotspotkvantum kvantum-qt5 loupe man moreutils mpv mpv-mpris \
+	mugshot ncdu network-manager-appletnetworkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji \
+	nsxiv nvtop oh-my-zsh-git openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct \
+	rhythmbox rofi ruby-fusuma ruby-fusuma-plugin-sendkey scrot sioyek-git stalonetray subliminal-git \
+	snapshot sxhkd termdown thunar thunar-archive-plugin papers perl picom-git plank playerctl polkit-gnome \
+	polybar python-pyxdg python-screeninfo python-wheel qbittorrent thunar-media-tags-plugin thunar-volman \
+	ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-material-symbols-variable-git ttf-nerd-fonts-symbols \
+	ttf-nerd-fonts-symbols-common timeshift tumbler translate-shell waypaper wget wmctrl xcape xclip \
+	xdg-autostart xdg-user-dirs xdg-user-dirs-gtk xdo xdotool xfce4-power-manager xfce4-settings xiccd \
+	xorg-xdpyinfo xorg-xkill xorg-xrandr xorg-xrdb xorg-xsetroot xorg-xwininfo xss-lock yad ytfzf zathura \
+	zathura-cb zathura-pdf-mupdf zenity zsh zsh-autosuggestions zsh-syntax-highlighting
 )
 
 declare -a extra=(
