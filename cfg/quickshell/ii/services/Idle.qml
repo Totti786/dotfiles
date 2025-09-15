@@ -2,6 +2,7 @@ import qs
 import qs.modules.common
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Wayland
 pragma Singleton
 
@@ -16,6 +17,11 @@ Singleton {
 
     function toggleInhibit() {
         Persistent.states.idle.inhibit = !Persistent.states.idle.inhibit
+    }
+
+    IpcHandler {
+        target: "idle"
+        function status(): real { return Persistent.states.idle.inhibit; }
     }
 
     IdleInhibitor {
@@ -35,6 +41,5 @@ Singleton {
                 item: null
             }
         }
-    }    
-
+    }
 }

@@ -135,6 +135,13 @@ Singleton {
                     property real workspaceZoom: 1.07 // Relative to your screen, not wallpaper size
                     property bool enableSidebar: true
                 }
+                property JsonObject blur: JsonObject {
+                    property bool enable: true
+                    property int radius: 100
+                    property bool centerClock: true
+                    property bool showLockedText: true
+                    property real extraZoom: 1.1
+                }
                 property string quote: ""
                 property bool hideWhenFullscreen: true
             }
@@ -228,7 +235,7 @@ Singleton {
                     property int touchpadScrollFactor: 100
                 }
                 property JsonObject deadPixelWorkaround: JsonObject { // Hyprland leaves out 1 pixel on the right for interactions
-                    property bool enable: true
+                    property bool enable: false
                 }
             }
 
@@ -332,7 +339,11 @@ Singleton {
                     property int longBreak: 900
                 }
             }
-
+            
+            property JsonObject wallpaperSelector: JsonObject {
+                property bool useSystemFileDialog: false
+            }
+            
             property JsonObject windows: JsonObject {
                 property bool showTitlebar: true // Client-side decoration for shell apps
                 property bool centerTitle: true
