@@ -98,14 +98,14 @@ ContentPage {
                         walldlProc.running = true;
                     }
                     StyledToolTip {
-                        content: Translation.tr("Random wallpaper from Wallhaven\nImage is saved to ~/Pictures/Wallpapers/walldl")
+                        text: Translation.tr("Random wallpaper from Wallhaven\nImage is saved to ~/Pictures/Wallpapers/walldl")
                     }
                 }
                 RippleButtonWithIcon {
                     Layout.fillWidth: true
                     materialIcon: "wallpaper"
                     StyledToolTip {
-                        content: Translation.tr("Pick wallpaper image on your system")
+                        text: Translation.tr("Pick wallpaper image on your system")
                     }
                     onClicked: {
                         Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperPickScriptPath} --pick`]);
@@ -162,7 +162,7 @@ ContentPage {
                         }
                     }
                     StyledToolTip {
-                        content: Translation.tr("Might look ass. Unsupported.")
+                        text: Translation.tr("Might look ass. Unsupported.")
                     }
                 }
             }

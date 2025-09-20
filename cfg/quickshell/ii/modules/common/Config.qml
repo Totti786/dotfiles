@@ -135,8 +135,8 @@ Singleton {
                     property real workspaceZoom: 1.07 // Relative to your screen, not wallpaper size
                     property bool enableSidebar: true
                 }
-                property JsonObject blur: JsonObject {
-                    property bool enable: true
+                property JsonObject lockBlur: JsonObject {
+                    property bool enable: false
                     property int radius: 100
                     property bool centerClock: true
                     property bool showLockedText: true
@@ -149,6 +149,7 @@ Singleton {
             property JsonObject bar: JsonObject {
                 property JsonObject autoHide: JsonObject {
                     property bool enable: false
+                    property int hoverRegionWidth: 2
                     property bool pushWindows: false
                     property JsonObject showWhenPressingSuper: JsonObject {
                         property bool enable: true
@@ -264,6 +265,10 @@ Singleton {
 
             property JsonObject networking: JsonObject {
                 property string userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+            }
+
+            property JsonObject notifications: JsonObject {
+                property int timeout: 7000
             }
 
             property JsonObject osd: JsonObject {

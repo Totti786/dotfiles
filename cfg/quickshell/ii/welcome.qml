@@ -108,6 +108,10 @@ ApplicationWindow {
                         text: "close"
                         iconSize: 20
                     }
+
+                    StyledToolTip {
+                        content: Translation.tr("Tip: Close a window with Super+Q")
+                    }
                 }
             }
         }
@@ -233,23 +237,25 @@ ApplicationWindow {
 
                     RowLayout {
                         Layout.alignment: Qt.AlignHCenter
-		                RippleButtonWithIcon {
-		                    id: rndWallBtn
-		                    Layout.fillWidth: true
-		                    buttonRadius: Appearance.rounding.small
-		                    materialIcon: "wallpaper"
-		                    mainText: walldlProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Wallhaven")
-		                    onClicked: {
-		                        walldlProc.running = true;
-		                    }
-		                    StyledToolTip {
-		                        content: Translation.tr("Random wallpaper from Wallhaven\nImage is saved to ~/Pictures/Wallpapers/walldl")
-		                    }
-		                }
+                        RippleButtonWithIcon {
+                            id: rndWallBtn
+                            visible: Config.options.policies.weeb === 1
+                            Layout.alignment: Qt.AlignHCenter
+                            buttonRadius: Appearance.rounding.small
+                            materialIcon: "wallpaper"
+                            mainText: konachanWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Konachan")
+                            onClicked: {
+                                console.log(konachanWallProc.command.join(" "));
+                                konachanWallProc.running = true;
+                            }
+                            StyledToolTip {
+                                text: Translation.tr("Random wallpaper from Wallhaven\nImage is saved to ~/Pictures/Wallpapers/walldl")
+                            }
+                        }
                         RippleButtonWithIcon {
                             materialIcon: "wallpaper"
                             StyledToolTip {
-                                content: Translation.tr("Pick wallpaper image on your system")
+                                text: Translation.tr("Pick wallpaper image on your system")
                             }
                             onClicked: {
                                 Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperPickScriptPath} --pick`]);

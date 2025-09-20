@@ -4,6 +4,7 @@ pragma ComponentBehavior: Bound
 // From https://github.com/caelestia-dots/shell with modifications.
 // License: GPLv3
 
+import qs.modules.common
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
@@ -103,14 +104,25 @@ Singleton {
             }
         }
 
-        function setBrightness(value: real): void {
-            value = Math.max(0.01, Math.min(1, value));
-            const rounded = Math.round(value * monitor.rawMaxBrightness);
-            if (Math.round(brightness * monitor.rawMaxBrightness) === rounded)
-                return;
-            brightness = value;
+        // We need a delay for DDC monitors because they can be quite slow and might act weird with rapid changes
+        property var setTimer: Timer {
+            id: setTimer
+            interval: monitor.isDdc ? 300 : 0
+            onTriggered: {
+                syncBrightness();
+            }
+        }
+
+        function syncBrightness() {
+            const rounded = Math.round(monitor.brightness * monitor.rawMaxBrightness);
             setProc.command = isDdc ? ["ddcutil", "-b", busNum, "setvcp", "10", rounded] : ["brightnessctl", "s", rounded, "--quiet"];
             setProc.startDetached();
+        }
+
+        function setBrightness(value: real): void {
+            value = Math.max(0.01, Math.min(1, value));
+            monitor.brightness = value;
+            setTimer.restart();
         }
 
         Component.onCompleted: {
@@ -127,12 +139,10 @@ Singleton {
 
         BrightnessMonitor {}
     }
-    
-	property string brightnessPath: "/sys/class/backlight/intel_backlight/brightness"
-	
+
 	FileView {
 	    id: brightnessFile
-	    path: root.brightnessPath
+	    path: Directories.brightnessPath
 	    watchChanges: true
 	
 	    onFileChanged: {
