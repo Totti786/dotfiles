@@ -76,6 +76,7 @@ ContentPage {
                     sourceSize.height: parent.implicitHeight
                     fillMode: Image.PreserveAspectCrop
                     source: Config.options.background.wallpaperPath
+                    cache: false
                     layer.enabled: true
                     layer.effect: OpacityMask {
                         maskSource: Rectangle {
@@ -92,7 +93,7 @@ ContentPage {
                     id: rndWallBtn
                     Layout.fillWidth: true
                     buttonRadius: Appearance.rounding.small
-                    materialIcon: "wallpaper"
+                    materialIcon: "ifl"
                     mainText: walldlProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Wallhaven")
                     onClicked: {
                         walldlProc.running = true;

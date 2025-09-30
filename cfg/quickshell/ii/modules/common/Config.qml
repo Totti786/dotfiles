@@ -122,12 +122,18 @@ Singleton {
             }
 
             property JsonObject background: JsonObject {
-                property bool fixedClockPosition: false
-                property real clockX: -500
-                property real clockY: -500
-                property bool showClock: true
+                property JsonObject clock: JsonObject {
+                    property bool fixedPosition: false
+                    property real x: -500
+                    property real y: -500
+                    property bool show: true
+                    property string style: "digital" // Options: "cookie", "digital"
+                    property real scale: 1
+                }
                 property string wallpaperPath: ""
                 property string thumbnailPath: ""
+                property string quote: ""
+                property bool hideWhenFullscreen: true
                 property JsonObject parallax: JsonObject {
                     property bool vertical: false
                     property bool autoVertical: false
@@ -135,15 +141,6 @@ Singleton {
                     property real workspaceZoom: 1.07 // Relative to your screen, not wallpaper size
                     property bool enableSidebar: true
                 }
-                property JsonObject lockBlur: JsonObject {
-                    property bool enable: false
-                    property int radius: 100
-                    property bool centerClock: true
-                    property bool showLockedText: true
-                    property real extraZoom: 1.1
-                }
-                property string quote: ""
-                property bool hideWhenFullscreen: true
             }
 
             property JsonObject bar: JsonObject {
@@ -216,6 +213,11 @@ Singleton {
                 property bool autoKillTrays: true
             }
 
+            property JsonObject crosshair: JsonObject {
+                // Valorant crosshair format. Use https://www.vcrdb.net/builder
+                property string code: "0;s;1;P;c;5;h;0;m;1;0l;4;0o;2;0a;1;0f;0;1b;0"
+            }
+
             property JsonObject dock: JsonObject {
                 property bool enable: true
                 property bool monochromeIcons: false
@@ -256,6 +258,17 @@ Singleton {
                     property string to: "06:30"   // Format: "HH:mm", 24-hour time
                     property int colorTemperature: 4600
                 }
+            }
+
+            property JsonObject lock: JsonObject {
+                property bool launchOnStartup: false
+                property JsonObject blur: JsonObject {
+                    property bool enable: false
+                    property real radius: 100
+                    property real extraZoom: 1.1
+                }
+                property bool centerClock: true
+                property bool showLockedText: true
             }
 
             property JsonObject media: JsonObject {
@@ -360,6 +373,18 @@ Singleton {
 
             property JsonObject screenshotTool: JsonObject {
                 property bool showContentRegions: true
+            }
+
+            property JsonObject workSafety: JsonObject {
+                property JsonObject enable: JsonObject {
+                    property bool wallpaper: true
+                    property bool clipboard: true
+                }
+                property JsonObject triggerCondition: JsonObject {
+                    property list<string> networkNameKeywords: ["airport", "cafe", "college", "company", "eduroam", "free", "guest", "public", "school", "university"]
+                    property list<string> fileKeywords: ["anime", "nsfw", "spoiler"]
+                    property list<string> linkKeywords: ["rule34", "gelbooru", "fanbox", "dlsite"]
+                }
             }
         }
     }

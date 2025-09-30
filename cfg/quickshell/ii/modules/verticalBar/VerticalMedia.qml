@@ -79,12 +79,15 @@ MouseArea {
         hoverTarget: root
         active: GlobalStates.mediaControlsOpen ? false : root.containsMouse
 
-        ColumnLayout {
+        Column {
             anchors.centerIn: parent
-            RowLayout {
-                spacing: 5
+            spacing: 4
+
+            Row {
+                spacing: 4
 
                 MaterialSymbol {
+                    anchors.verticalCenter: parent.verticalCenter
                     fill: 0
                     font.weight: Font.Medium
                     text: "music_note"
@@ -93,6 +96,7 @@ MouseArea {
                 }
 
                 StyledText {
+                    anchors.verticalCenter: parent.verticalCenter
                     text: "Media"
                     font {
                         weight: Font.Medium

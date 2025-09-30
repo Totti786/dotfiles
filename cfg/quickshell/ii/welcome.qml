@@ -242,7 +242,7 @@ ApplicationWindow {
                             visible: Config.options.policies.weeb === 1
                             Layout.alignment: Qt.AlignHCenter
                             buttonRadius: Appearance.rounding.small
-                            materialIcon: "wallpaper"
+                            materialIcon: "ifl"
                             mainText: konachanWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Konachan")
                             onClicked: {
                                 console.log(konachanWallProc.command.join(" "));

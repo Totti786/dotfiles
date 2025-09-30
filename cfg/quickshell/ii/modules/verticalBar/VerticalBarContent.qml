@@ -83,7 +83,7 @@ Item { // Bar content region
         }
     }
 
-    ColumnLayout { // Middle section
+    Column { // Middle section
         id: middleSection
         anchors.centerIn: parent
         spacing: 4
@@ -159,8 +159,6 @@ Item { // Bar content region
                 Layout.fillWidth: true
                 Layout.fillHeight: false
             }
-
-
             
         }
     }
@@ -272,23 +270,10 @@ Item { // Bar content region
                             color: rightSidebarButton.colText
                         }
                     }
-                    Loader {
-                        active: HyprlandXkb.layoutCodes.length > 1
-                        visible: active
-                        Layout.bottomMargin: indicatorsColumnLayout.realSpacing
+                    Bar.HyprlandXkbIndicator {
+                        vertical: true
                         Layout.alignment: Qt.AlignHCenter
-                        sourceComponent: Item {
-                            implicitHeight: layoutCodeText.implicitHeight
-                            StyledText {
-                                id: layoutCodeText
-                                anchors.centerIn: parent
-                                horizontalAlignment: Text.AlignHCenter
-                                text: HyprlandXkb.currentLayoutCode.split(":").join("\n")
-                                font.pixelSize: text.includes("\n") ? Appearance.font.pixelSize.smallie : Appearance.font.pixelSize.small
-                                color: rightSidebarButton.colText
-                                animateChange: true
-                            }
-                        }
+                        Layout.bottomMargin: indicatorsColumnLayout.realSpacing
                     }
                     MaterialSymbol {
                         Layout.bottomMargin: indicatorsColumnLayout.realSpacing
