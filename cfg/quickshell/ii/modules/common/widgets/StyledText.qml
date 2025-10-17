@@ -1,6 +1,5 @@
 import qs.modules.common
 import QtQuick
-import QtQuick.Layouts
 
 Text {
     id: root
@@ -11,7 +10,7 @@ Text {
     renderType: Text.NativeRendering
     verticalAlignment: Text.AlignVCenter
     font {
-        hintingPreference: Font.PreferFullHinting
+        hintingPreference: Font.PreferDefaultHinting
         family: Appearance?.font.family.main ?? "sans-serif"
         pixelSize: Appearance?.font.pixelSize.small ?? 15
     }

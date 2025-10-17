@@ -1,10 +1,8 @@
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Io
-import qs
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
@@ -104,6 +102,18 @@ ContentPage {
                 }
                 RippleButtonWithIcon {
                     Layout.fillWidth: true
+                    buttonRadius: Appearance.rounding.small
+                    materialIcon: "ifl"
+                    mainText: Translation.tr("Random Wallpaper")
+                    onClicked: {
+                        Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperPickScriptPath} --random`]);
+                    }
+                    StyledToolTip {
+                        text: Translation.tr("Random Wallpaper")
+                    }
+                }
+                RippleButtonWithIcon {
+                    Layout.fillWidth: true
                     materialIcon: "wallpaper"
                     StyledToolTip {
                         text: Translation.tr("Pick wallpaper image on your system")
@@ -154,18 +164,6 @@ ContentPage {
                     }
                 }
 
-                ConfigSwitch {
-                    text: Translation.tr("Transparency")
-                    checked: Config.options.appearance.transparency.enable
-                    onCheckedChanged: {
-                        if (Config.options.appearance.transparency.enable !== checked) {
-                              Quickshell.execDetached(["wpgtk", "--trans"])
-                        }
-                    }
-                    StyledToolTip {
-                        text: Translation.tr("Might look ass. Unsupported.")
-                    }
-                }
             }
         }
 
@@ -224,6 +222,20 @@ ContentPage {
 		        }
 		    ]
 		}
+ 
+        ConfigSwitch {
+            buttonIcon: "ev_shadow"
+            text: Translation.tr("Transparency")
+            checked: Config.options.appearance.transparency.enable
+            onCheckedChanged: {
+                if (Config.options.appearance.transparency.enable !== checked) {
+                    Quickshell.execDetached(["wpgtk", "--trans"])
+                }
+            }
+            StyledToolTip {
+                text: Translation.tr("Might look ass. Unsupported.")
+            }
+        }
     }
 
     ContentSection {

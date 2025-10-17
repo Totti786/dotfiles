@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # From https://github.com/difference-engine/thumbnail-generator-ubuntu (MIT License)
 # Since the script is small and the maintainers seem inactive to accept my PR (#11) I decided to just copy it over.

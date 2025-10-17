@@ -62,7 +62,12 @@ Scope {
 
             Loader {
                 id: sidebarCornerOpenInteractionLoader
-                active: (!cornerPanelWindow.fullscreen && Config.options.sidebar.cornerOpen.enable && (Config.options.sidebar.cornerOpen.bottom == cornerWidget.isBottom))
+                active: {
+                    if (!Config.options.sidebar.cornerOpen.enable) return false;
+                    if (!Config.options.bar.vertical && Config.options.sidebar.cornerOpen.bottom == Config.options.bar.bottom) return false;
+                    if (cornerPanelWindow.fullscreen) return false;
+                    return (Config.options.sidebar.cornerOpen.bottom == cornerWidget.isBottom);
+                }
                 anchors {
                     top: (cornerWidget.isTopLeft || cornerWidget.isTopRight) ? parent.top : undefined
                     bottom: (cornerWidget.isBottomLeft || cornerWidget.isBottomRight) ? parent.bottom : undefined
@@ -71,9 +76,16 @@ Scope {
                 }
 
                 sourceComponent: FocusedScrollMouseArea {
+                    id: mouseArea
                     implicitWidth: Config.options.sidebar.cornerOpen.cornerRegionWidth
                     implicitHeight: Config.options.sidebar.cornerOpen.cornerRegionHeight
                     hoverEnabled: true
+                    onMouseXChanged: {
+                        if (!Config.options.sidebar.cornerOpen.clicklessCornerEnd) return;
+                        if ((cornerWidget.isRight && mouseArea.mouseX >= mouseArea.width - 2)
+                            || (cornerWidget.isLeft && mouseArea.mouseX <= 2))
+                            screenCorners.actionForCorner[cornerPanelWindow.corner]();
+                    }
                     onEntered: {
                         if (Config.options.sidebar.cornerOpen.clickless)
                             screenCorners.actionForCorner[cornerPanelWindow.corner]();

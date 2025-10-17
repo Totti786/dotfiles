@@ -111,7 +111,7 @@ Item {
                                 id: workspaceArea
                                 anchors.fill: parent
                                 acceptedButtons: Qt.LeftButton
-                                onClicked: {
+                                onPressed: {
                                     if (root.draggingTargetWorkspace === -1) {
                                         GlobalStates.overviewOpen = false
                                         Hyprland.dispatch(`workspace ${workspaceValue}`)
@@ -188,7 +188,7 @@ Item {
                         }
                     }
 
-                    z: atInitPosition ? (root.windowZ + windowData?.floating) : root.windowDraggingZ
+                    z: Drag.active ? root.windowDraggingZ : (root.windowZ + windowData?.floating)
                     Drag.hotSpot.x: targetWindowWidth / 2
                     Drag.hotSpot.y: targetWindowHeight / 2
                     MouseArea {

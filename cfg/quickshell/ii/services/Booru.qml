@@ -2,7 +2,7 @@ pragma Singleton
 pragma ComponentBehavior: Bound
 
 import qs.modules.common
-import qs
+import qs.services
 import Quickshell;
 import QtQuick;
 
@@ -399,6 +399,9 @@ Singleton {
             }
             else if (xhr.readyState === XMLHttpRequest.DONE) {
                 console.log("[Booru] Request failed with status: " + xhr.status)
+                newResponse.message = root.failMessage
+                root.runningRequests--;
+                root.responses = [...root.responses, newResponse]
             }
             root.responseFinished()
         }

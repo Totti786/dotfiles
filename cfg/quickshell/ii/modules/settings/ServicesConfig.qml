@@ -1,11 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
-import qs
 import qs.services
 import qs.modules.common
-import qs.modules.common.functions
 import qs.modules.common.widgets
-import Quickshell
 
 ContentPage {
     forceWidth: true
@@ -47,6 +44,7 @@ ContentPage {
         title: Translation.tr("Resources")
 
         ConfigSpinBox {
+            icon: "av_timer"
             text: Translation.tr("Polling interval (ms)")
             value: Config.options.resources.updateInterval
             from: 100

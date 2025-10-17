@@ -7,7 +7,6 @@
 //@ pragma Env QT_SCALE_FACTOR=1
 
 pragma ComponentBehavior: "Bound"
-import qs
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
@@ -426,11 +425,13 @@ ShellRoot {
                         radius: 0 // TODO: figure out how to make the overlay thing work with rounding
                     }
                     StyledText {
+                        z: 2
                         anchors {
-                            bottom: selectionBorder.bottom
+                            top: selectionBorder.bottom
                             right: selectionBorder.right
                             margins: 8
                         }
+                        color: root.selectionBorderColor
                         text: `${Math.round(panelWindow.regionWidth)} x ${Math.round(panelWindow.regionHeight)}`
                     }
 

@@ -3,7 +3,6 @@ pragma ComponentBehavior: Bound
 import qs
 import qs.services
 import qs.modules.common
-import qs.modules.common.models
 import qs.modules.common.widgets
 import qs.modules.common.functions as CF
 import QtQuick
@@ -14,6 +13,8 @@ import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Hyprland
 
+import "./cookieClock"
+
 Variants {
     id: root
     readonly property bool fixedClockPosition: Config.options.background.clock.fixedPosition
@@ -22,6 +23,8 @@ Variants {
     readonly property real clockSizePadding: 20
     readonly property real screenSizePadding: 50
     readonly property string clockStyle: Config.options.background.clock.style
+    readonly property bool showCookieQuote: Config.options.background.showQuote && Config.options.background.quote !== "" && !GlobalStates.screenLocked && Config.options.background.clock.style === "cookie"
+    readonly property real clockParallaxFactor: Config.options.background.parallax.clockFactor // 0 = full parallax, 1 = no parallax
     model: Quickshell.screens
 
     PanelWindow {
@@ -178,6 +181,7 @@ Variants {
             StyledImage {
                 id: wallpaper
                 visible: opacity > 0 && !blurLoader.active
+                opacity: (status === Image.Ready && !bgRoot.wallpaperIsVideo) ? 1 : 0
                 cache: false
                 smooth: false
                 // Range = groups that workspaces span on
@@ -264,8 +268,16 @@ Variants {
                     top: wallpaper.top
                     horizontalCenter: undefined
                     verticalCenter: undefined
-                    leftMargin: bgRoot.movableXSpace + ((root.fixedClockPosition ? root.fixedClockX : bgRoot.clockX * bgRoot.effectiveWallpaperScale) - implicitWidth / 2)
-                    topMargin: bgRoot.movableYSpace + ((root.fixedClockPosition ? root.fixedClockY : bgRoot.clockY * bgRoot.effectiveWallpaperScale) - implicitHeight / 2)
+                    leftMargin: {
+                        const clockXOnWallpaper = bgRoot.movableXSpace + ((root.fixedClockPosition ? root.fixedClockX : bgRoot.clockX * bgRoot.effectiveWallpaperScale) - implicitWidth / 2)
+                        const extraMove = (wallpaper.effectiveValueX * 2 * bgRoot.movableXSpace) * (root.clockParallaxFactor - 1);
+                        return clockXOnWallpaper - extraMove;
+                    }
+                    topMargin: {
+                        const clockYOnWallpaper = bgRoot.movableYSpace + ((root.fixedClockPosition ? root.fixedClockY : bgRoot.clockY * bgRoot.effectiveWallpaperScale) - implicitHeight / 2)
+                        const extraMove = (wallpaper.effectiveValueY * 2 * bgRoot.movableYSpace) * (root.clockParallaxFactor - 1);
+                        return clockYOnWallpaper - extraMove;
+                    }
                     Behavior on leftMargin {
                         animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
                     }
@@ -313,7 +325,7 @@ Variants {
                             }
                             StyledText {
                                 // Somehow gets fucked up if made a ClockText???
-                                visible: Config.options.background.quote.length > 0
+                                visible: Config.options.background.showQuote && Config.options.background.quote.length > 0
                                 Layout.fillWidth: true
                                 horizontalAlignment: bgRoot.textHorizontalAlignment
                                 font {
@@ -332,10 +344,19 @@ Variants {
 
                     Loader {
                         id: cookieClockLoader
-                        visible: root.clockStyle === "cookie"
+                        visible: root.clockStyle === "cookie" 
                         active: visible
                         sourceComponent: CookieClock {}
                     }
+
+                    Loader {
+                        id: cookieQuoteLoader
+                        visible: root.showCookieQuote
+                        active: visible
+                        sourceComponent: CookieQuote {}
+                        anchors.horizontalCenter: cookieClockLoader.horizontalCenter
+                    }
+                    
                 }
 
                 Item {
@@ -390,13 +411,13 @@ Variants {
                                 id: safetyStatusText
                                 shown: bgRoot.wallpaperSafetyTriggered
                                 statusIcon: "hide_image"
-                                statusText: qsTr("Wallpaper safety enforced")
+                                statusText: Translation.tr("Wallpaper safety enforced")
                             }
                             ClockStatusText {
                                 id: lockStatusText
                                 shown: GlobalStates.screenLocked && Config.options.lock.showLockedText
                                 statusIcon: "lock"
-                                statusText: qsTr("Locked")
+                                statusText: Translation.tr("Locked")
                             }
                             Item {
                                 Layout.fillWidth: bgRoot.textHorizontalAlignment !== Text.AlignRight
@@ -409,7 +430,7 @@ Variants {
         }
     }
 
-    // Components
+    // ComponentsCookieClock {}
     component ClockText: StyledText {
         Layout.fillWidth: true
         horizontalAlignment: bgRoot.textHorizontalAlignment
