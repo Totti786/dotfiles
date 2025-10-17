@@ -13,10 +13,10 @@ fi
 declare -a minimal=(
 	acpi alacritty autotiling axel base-devel bc blueman bluez bluez-utils brightnessctl bspwm btop clight \
 	conky copyq dmenu drawing dunst envycontrol fcitx5 fcitx5-configtool fd feh file-roller firefox flameshot \
-	fluent-cursor-theme-git font-manager fzf gammastep geany gnome-calculator gnome-disk-utility gnome-epub-thumbnailer \
-	gping gpu-screen-recorder jq gpick grep python-gtts html-xml-utils htop i3lock-color i3-wm imagemagick \
-	jgmenu kdeconnect libplasma linux-wifi-hotspotkvantum kvantum-qt5 loupe man moreutils mpv mpv-mpris \
-	mugshot ncdu network-manager-appletnetworkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji \
+	fluent-cursor-theme-git font-manager fzf gammastep geany gnome-calculator gnome-desktop gnome-disk-utility \
+	gnome-epub-thumbnailer gping gpu-screen-recorder jq gpick grep python-gtts html-xml-utils htop i3lock-color \
+	i3-wm imagemagick jgmenu kdeconnect libplasma linux-wifi-hotspotkvantum kvantum-qt5 loupe man moreutils mpv \
+	mpv-mpris mugshot ncdu network-manager-appletnetworkmanager-openvpn noto-fonts noto-fonts-cjk noto-fonts-emoji \
 	nsxiv nvtop oh-my-zsh-git openbox openssh openvpn papirus-icon-theme pastel pavucontrol qt5ct qt6ct \
 	rhythmbox rofi ruby-fusuma ruby-fusuma-plugin-sendkey scrot sioyek-git stalonetray subliminal-git \
 	snapshot sxhkd termdown thunar thunar-archive-plugin papers perl picom-git plank playerctl polkit-gnome \
@@ -37,9 +37,9 @@ declare -a extra=(
 )
 
 declare -a wayland=(
-	cliphist grim hypridle hyprland hyprlock hyprpicker hyprsunset nwg-displays sassc slurp swappy swww \
-	quickshell-git python-opencv xdg-desktop-portal-hyprland python-materialyoucolor-git python-pywayland \
-	wl-clipboard syntax-highlighting
+	cliphist grim hypridle hyprland hyprlock hyprpicker hyprsunset nwg-displays slurp swappy swww \
+	quickshell-git python-opencv xdg-desktop-portal-hyprland python-pywayland wl-clipboard  matugen-git\
+	syntax-highlighting
 )
 
 declare -a aur=(
