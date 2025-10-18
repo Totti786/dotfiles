@@ -143,7 +143,7 @@
   "Conflicts with the shell's notification implementation": "يتعارض مع تنفيذ الإشعارات في الواجهة",
   "Unknown Album": "ألبوم غير معروف",
   "Pick wallpaper image on your system": "اختر صورة خلفية من نظامك",
-  "Used:": "مستخدم:",
+  "Used:": ":مستخدم",
   "Cheat sheet": "ورقة الغش",
   "Clock style": "نمط الساعة",
   "No audio source": "لا يوجد مصدر صوت",
@@ -339,7 +339,7 @@
   "24h": "24 ساعة",
   "Allows you to open sidebars by clicking or hovering screen corners regardless of bar position": "يسمح لك بفتح الأشرطة الجانبية بالنقر أو تمرير الماوس فوق زوايا الشاشة بغض النظر عن موضع الشريط",
   "Bar style": "نمط الشريط",
-  "Load:": "تحميل:",
+  "Load:": ":تحميل",
   "Open file link": "فتح رابط الملف",
   "Ignored if terminal theming is not enabled": "يتجاهل إذا لم يتم تمكين سمات الطرفية",
   "Shutdown": "إيقاف التشغيل",
@@ -356,7 +356,7 @@
   "Task Manager": "مدير المهام",
   "Charging:": "جاري الشحن:",
   "Illegal increment": "زيادة غير قانونية",
-  "Total:": "الإجمالي:",
+  "Total:": ":الإجمالي",
   "or": "أو",
   "Battery": "بطارية",
   "Timeout duration (if not defined by notification) (ms)": "مدة المهلة (إذا لم يتم تحديدها بواسطة الإشعار) (مللي ثانية)",
@@ -407,7 +407,7 @@
   "Shell & utilities theming must also be enabled": "يجب أيضاً تمكين سمات الواجهة والأدوات المساعدة",
   "Workspace": "مساحة العمل",
   "Translator": "مترجم",
-  "Free:": "متاح:",
+  "Free:": ":متاح",
   "🌿 Long break: %1 minutes": "🌿 استراحة طويلة: %1 دقيقة",
   "Value scroll": "تمرير القيمة",
   "Bar position": "موضع الشريط",
@@ -492,9 +492,11 @@
   "Open network portal": "فتح بوابة الشبكة",
   "<i>No further instruction provided</i>": "<i>لم يتم تقديم تعليمات إضافية</i>",
   "Locale code, e.g. fr_FR, de_DE, zh_CN...": "رمز اللغة المحلية، مثل fr_FR, de_DE, zh_CN...",
+  "Update System & Configs": "تحديث النظام",
+  "Update Wallpapers": "تحديث الخلفيات",
   "Select language": "تحديد اللغة",
   "Totti786": "Totti786",
-  "Pywal": "Pywal",
+  "Pywal": "باي وول",
   "Generate\\nTypically takes 2 minutes": "توليد\\nيستغرق عادةً دقيقتين",
   "Random wallpaper from Wallhaven\\nImage is saved to ~/Pictures/Wallpapers/walldl": "خلفية عشوائية من Wallhaven\\nيتم حفظ الصورة في ~/Pictures/Wallpapers/walldl",
   "Generate translation with Gemini": "توليد ترجمة باستخدام Gemini",

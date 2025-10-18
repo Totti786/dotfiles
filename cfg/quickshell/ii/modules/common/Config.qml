@@ -155,7 +155,7 @@ Singleton {
                         property string dialNumberStyle: "full"   // Options: "dots" , "numbers", "full" , "none"
                         property string hourHandStyle: "fill"     // Options: "classic", "fill", "hollow", "hide"
                         property string minuteHandStyle: "medium" // Options "classic", "thin", "medium", "bold", "hide"
-                        property string secondHandStyle: "dot"    // Options: "dot", "line" , "hide" 
+                        property string secondHandStyle: "dot"    // Options: "dot", "line", "classic", "hide"
                         property string dateStyle: "bubble"       // Options: "border", "rect", "bubble" , "hide"
                         property bool timeIndicators: true
                         property bool hourMarks: true
@@ -175,7 +175,7 @@ Singleton {
                     property bool enableWorkspace: true
                     property real workspaceZoom: 1.07 // Relative to your screen, not wallpaper size
                     property bool enableSidebar: true
-                    property real clockFactor: 0.8
+                    property real clockFactor: 1.2
                 }
             }
 
@@ -392,6 +392,7 @@ Singleton {
                     property real cornerRegionWidth: 60
                     property real cornerRegionHeight: 2
                     property bool visualize: false
+                    property bool clicklessCornerEnd: true
                 }
             }
 
