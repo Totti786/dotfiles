@@ -207,11 +207,11 @@ Singleton {
                 property JsonObject utilButtons: JsonObject {
                     property bool showScreenSnip: true
                     property bool showColorPicker: true
-                    property bool showScreenRecord: false
                     property bool showMicToggle: false
                     property bool showKeyboardToggle: false
                     property bool showDarkModeToggle: false
                     property bool showPerformanceProfileToggle: false
+                    property bool showScreenRecord: false
                 }
                 property JsonObject tray: JsonObject {
                     property bool monochromeIcons: false
@@ -245,6 +245,7 @@ Singleton {
             property JsonObject battery: JsonObject {
                 property int low: 20
                 property int critical: 5
+                property int full: 101
                 property bool automaticSuspend: true
                 property int suspend: 3
             }
@@ -303,7 +304,7 @@ Singleton {
 
             property JsonObject lock: JsonObject {
                 property bool useHyprlock: true
-                property bool launchOnStartup: false
+                property bool launchOnStartup: true
                 property JsonObject blur: JsonObject {
                     property bool enable: false
                     property real radius: 100
@@ -353,7 +354,7 @@ Singleton {
             property JsonObject search: JsonObject {
                 property int nonAppResultDelay: 30 // This prevents lagging when typing
                 property string engineBaseUrl: "https://www.google.com/search?q="
-                property list<string> excludedSites: ["quora.com"]
+                property list<string> excludedSites: ["quora.com", "facebook.com"]
                 property bool sloppy: false // Uses levenshtein distance based scoring instead of fuzzy sort. Very weird.
                 property JsonObject prefix: JsonObject {
                     property bool showDefaultActionsWithoutPrefix: true
@@ -364,6 +365,11 @@ Singleton {
                     property string math: "="
                     property string shellCommand: "$"
                     property string webSearch: "?"
+                }
+                property JsonObject imageSearch: JsonObject {
+                    property string imageSearchEngineBaseUrl: "https://lens.google.com/uploadbyurl?url="
+                    property string fileUploadApiEndpoint: "https://uguu.se/upload"
+                    property bool useCircleSelection: false
                 }
             }
 
@@ -394,6 +400,34 @@ Singleton {
                     property bool visualize: false
                     property bool clicklessCornerEnd: true
                 }
+
+                property JsonObject quickToggles: JsonObject {
+                    property string style: "android" // Options: classic, android
+                    property JsonObject android: JsonObject {
+                        property int columns: 5
+                        property list<var> toggles: [
+                            { type: "network", size: 2 },
+                            { type: "bluetooth", size: 2 },
+                            { type: "idleInhibitor", size: 1 },
+                            { type: "easyEffects", size: 1 },
+                            { type: "nightLight", size: 2 },
+                            { type: "darkMode", size: 2 }
+                        ]
+                    }
+                }
+
+                property JsonObject quickSliders: JsonObject {
+                    property bool enable: false
+                    property bool showMic: false
+                    property bool showVolume: true
+                    property bool showBrightness: true
+                }
+            }
+
+            property JsonObject sounds: JsonObject {
+                property bool battery: false
+                property bool pomodoro: false
+                property string theme: "freedesktop"
             }
 
             property JsonObject time: JsonObject {
@@ -402,7 +436,6 @@ Singleton {
                 property string shortDateFormat: "dd/MM"
                 property string dateFormat: "ddd, dd/MM"
                 property JsonObject pomodoro: JsonObject {
-                    property string alertSound: ""
                     property int breakTime: 300
                     property int cyclesBeforeLongBreak: 4
                     property int focus: 1500
