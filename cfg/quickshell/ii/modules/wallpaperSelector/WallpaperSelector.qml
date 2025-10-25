@@ -57,13 +57,14 @@ Scope {
         }
     }
 
-    function toggleWallpaperSelector() {
-        if (Config.options.wallpaperSelector.useSystemFileDialog) {
-            Wallpapers.openFallbackPicker(Appearance.m3colors.darkmode);
-            return;
-        }
+function toggleWallpaperSelector() {
+    if (Config.options.wallpaperSelector.useSystemFileDialog) {
         Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperPickScriptPath} --pick`]);
+        return;
     }
+    GlobalStates.wallpaperSelectorOpen = !GlobalStates.wallpaperSelectorOpen;
+}
+
 
     IpcHandler {
         target: "wallpaperSelector"
