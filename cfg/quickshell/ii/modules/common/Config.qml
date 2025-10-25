@@ -305,7 +305,7 @@ Singleton {
                     property int colorTemperature: 4600
                 }
                 property JsonObject antiFlashbang: JsonObject {
-                    property bool enable: true
+                    property bool enable: false
                 }
             }
 
