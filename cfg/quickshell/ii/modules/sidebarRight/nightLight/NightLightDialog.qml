@@ -108,7 +108,7 @@ WindowDialog {
                 Config.options.light.antiFlashbang.enable = checked;
             }
             StyledToolTip {
-                text: Translation.tr("Example use case: eroge on one workspace, dark Discord window on another")
+                text: Translation.tr("Example use case: bright window on one workspace, dark window on another")
             }
         }
     }
@@ -125,9 +125,24 @@ WindowDialog {
 
     Column {
         id: brightnessColumn
-        Layout.topMargin: -16
+        Layout.topMargin: -22
         Layout.fillWidth: true
         Layout.fillHeight: true
+
+		ConfigSwitch {
+			anchors {
+				left: parent.left
+				right: parent.right
+			}
+		    iconSize: Appearance.font.pixelSize.larger
+		    buttonIcon: "brightness_auto"
+		    text: Translation.tr("Automatic")
+		    checked: Quickshell.exec(["clight.sh", "--pause-status"]).trim() === "true"
+	
+		    onCheckedChanged: {
+		        Quickshell.execDetached(["clight.sh", "--toggle-pause"])
+		    }
+		}
 
         WindowDialogSlider {
             anchors {
