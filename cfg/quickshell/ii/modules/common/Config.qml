@@ -433,9 +433,10 @@ Singleton {
                             { "size": 2, "type": "network" },
                             { "size": 2, "type": "bluetooth"  },
                             { "size": 1, "type": "idleInhibitor" },
-                            { "size": 1, "type": "mic" },
-                            { "size": 2, "type": "audio" },
-                            { "size": 2, "type": "nightLight" }
+                            { "size": 1, "type": "audio" },
+                            { "size": 2, "type": "nightLight" },
+                            { "size": 1, "type": "gameMode" },
+                            { "size": 1, "type": "easyEffects" }
                         ]
                     }
                 }
