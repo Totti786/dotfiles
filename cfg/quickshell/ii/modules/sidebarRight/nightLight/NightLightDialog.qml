@@ -15,6 +15,7 @@ WindowDialog {
     id: root
     property var screen: root.QsWindow.window?.screen
     property var brightnessMonitor: Brightness.getMonitorForScreen(screen)
+    backgroundHeight: 600
 
     WindowDialogTitle {
         text: Translation.tr("Eye protection")
@@ -125,24 +126,9 @@ WindowDialog {
 
     Column {
         id: brightnessColumn
-        Layout.topMargin: -22
+        Layout.topMargin: -16
         Layout.fillWidth: true
         Layout.fillHeight: true
-
-		ConfigSwitch {
-			anchors {
-				left: parent.left
-				right: parent.right
-			}
-		    iconSize: Appearance.font.pixelSize.larger
-		    buttonIcon: "brightness_auto"
-		    text: Translation.tr("Automatic")
-		    checked: Quickshell.exec(["clight.sh", "--pause-status"]).trim() === "true"
-	
-		    onCheckedChanged: {
-		        Quickshell.execDetached(["clight.sh", "--toggle-pause"])
-		    }
-		}
 
         WindowDialogSlider {
             anchors {

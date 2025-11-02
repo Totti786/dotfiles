@@ -61,7 +61,7 @@ Item { // Bar content region
             if (event.button === Qt.LeftButton) {
                 GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
             } else if (event.button === Qt.RightButton) {
-				Quickshell.execDetached(["clight.sh", "--capture"])
+				Quickshell.execDetached(["auto-brightness"])
             }
         }
 

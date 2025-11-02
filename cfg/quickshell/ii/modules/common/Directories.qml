@@ -2,7 +2,7 @@ pragma Singleton
 pragma ComponentBehavior: Bound
 
 import qs.modules.common.functions
-import Qt.labs.platform
+import QtCore
 import QtQuick
 import Quickshell
 
@@ -42,7 +42,9 @@ Singleton {
     property string userAiPrompts: FileUtils.trimFileProtocol(`${Directories.shellConfig}/ai/prompts`)
     property string aiChats: FileUtils.trimFileProtocol(`${Directories.state}/user/ai/chats`)
     property string aiTranslationScriptPath: FileUtils.trimFileProtocol(`${Directories.scriptPath}/ai/gemini-translate.sh`)
+    property string recordScriptPath: FileUtils.trimFileProtocol(`${Directories.scriptPath}/videos/record.sh`)
     property string brightnessPath: "/sys/class/backlight/intel_backlight/brightness"
+
     // Cleanup on init
     Component.onCompleted: {
         Quickshell.execDetached(["mkdir", "-p", `${stateWallPath}`])

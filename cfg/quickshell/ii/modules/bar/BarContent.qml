@@ -27,7 +27,7 @@ Item { // Bar content region
 
     // Background shadow
     Loader {
-        active: Config.options.bar.showBackground && Config.options.bar.cornerStyle === 1
+        active: Config.options.bar.showBackground && Config.options.bar.cornerStyle === 1 && Config.options.bar.floatStyleShadow
         anchors.fill: barBackground
         sourceComponent: StyledRectangularShadow {
             anchors.fill: undefined // The loader's anchors act on this, and this should not have any anchor
@@ -67,7 +67,7 @@ Item { // Bar content region
             if (event.button === Qt.LeftButton) {
                 GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
             } else if (event.button === Qt.RightButton) {
-				Quickshell.execDetached(["clight.sh", "--capture"])
+				Quickshell.execDetached(["auto-brightness"])
             }
         }
 

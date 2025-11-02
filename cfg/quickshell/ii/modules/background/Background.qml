@@ -96,7 +96,10 @@ Variants {
             left: true
             right: true
         }
-        color: CF.ColorUtils.transparentize(CF.ColorUtils.mix(Appearance.colors.colLayer0, Appearance.colors.colPrimary, 0.75), (bgRoot.wallpaperIsVideo ? 1 : 0))
+        color: {
+            if (!bgRoot.wallpaperSafetyTriggered || bgRoot.wallpaperIsVideo) return "transparent";
+            return CF.ColorUtils.mix(Appearance.colors.colLayer0, Appearance.colors.colPrimary, 0.75)
+        }
         Behavior on color {
             animation: Appearance.animation.elementMoveFast.colorAnimation.createObject(this)
         }
@@ -329,7 +332,6 @@ Variants {
                                 Layout.fillWidth: true
                                 horizontalAlignment: bgRoot.textHorizontalAlignment
                                 font {
-                                    family: Appearance.font.family.main
                                     pixelSize: Appearance.font.pixelSize.normal
                                     weight: 350
                                     italic: true
@@ -442,7 +444,7 @@ Variants {
         color: bgRoot.colText
         style: Text.Raised
         styleColor: Appearance.colors.colShadow
-        animateChange: true
+        animateChange: Config.options.background.clock.digital.animateChange
     }
     component ClockStatusText: Row {
         id: statusTextRow
@@ -469,7 +471,6 @@ Variants {
             color: statusTextRow.textColor
             anchors.verticalCenter: statusTextRow.verticalCenter
             font {
-                family: Appearance.font.family.main
                 pixelSize: Appearance.font.pixelSize.large
                 weight: Font.Normal
             }

@@ -16,8 +16,6 @@ import QtQuick
  */
 Singleton {
     id: root
-    property real minimumBrightnessAllowed: 0.00001 // Setting to 0 would kind of turn off the screen. We don't want that.
-
     signal brightnessChanged()
 
     property var ddcMonitors: []
@@ -138,18 +136,18 @@ Singleton {
 
         // Fixed version with recursion protection
         function syncBrightness() {
-            const brightnessValue = Math.max(monitor.multipliedBrightness, root.minimumBrightnessAllowed)
-            const rounded = Math.round(brightnessValue * monitor.rawMaxBrightness);
+            const brightnessValue = Math.max(monitor.multipliedBrightness, 0)
+            const rawValueRounded = Math.max(Math.floor(brightnessValue * monitor.rawMaxBrightness), 1);
 
             // Mark that this change originated internally
             brightnessFile.internalChange = true;
-            brightnessFile.resetTimer.restart();
-            setProc.command = isDdc ? ["ddcutil", "-b", busNum, "setvcp", "10", rounded] : ["brightnessctl", "--class", "backlight", "s", rounded, "--quiet"];
+            //brightnessFile.resetTimer.restart();
+            setProc.command = isDdc ? ["ddcutil", "-b", busNum, "setvcp", "10", rawValueRounded] : ["brightnessctl", "--class", "backlight", "s", rawValueRounded, "--quiet"];
             setProc.startDetached();
         }
 
         function setBrightness(value: real): void {
-            value = Math.max(root.minimumBrightnessAllowed, Math.min(1, value));
+            value = Math.max(0, Math.min(1, value));
             monitor.brightness = value;
         }
 
@@ -178,9 +176,9 @@ Singleton {
         path: Directories.brightnessPath
         watchChanges: true
 
-        property bool internalChange: false
+        property bool internalChange: true
         property var resetTimer: Timer {
-            interval: 400
+            interval: 1000
             repeat: false
             onTriggered: brightnessFile.internalChange = false
         }
@@ -199,14 +197,12 @@ Singleton {
     property int workspaceAnimationDelay: 500
     property int contentSwitchDelay: 30
     property string screenshotDir: "/tmp/quickshell/brightness/antiflashbang"
-
     function brightnessMultiplierForLightness(x: real): real {
         // I hand picked some values and fitted an exponential curve for this
         // 6.600135 + 216.360356 * e^(-0.0811129189x)
         // Division by 100 is to normalize to [0, 1]
         return (6.600135 + 216.360356 * Math.pow(Math.E, -0.0811129189 * x)) / 100.0;
     }
-
     Variants {
         model: Quickshell.screens
         Scope {

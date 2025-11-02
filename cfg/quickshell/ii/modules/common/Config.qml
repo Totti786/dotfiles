@@ -164,6 +164,10 @@ Singleton {
                         property bool hourMarks: true
                         property bool dateInClock: true
                         property bool constantlyRotate: false
+                        property bool useSineCookie: false
+                    }
+                    property JsonObject digital: JsonObject {
+                        property bool animateChange: true
                     }
                     
                 }
@@ -194,6 +198,7 @@ Singleton {
                 }
                 property bool bottom: false // Instead of top
                 property int cornerStyle: 0 // 0: Hug | 1: Float | 2: Plain rectangle
+                property bool floatStyleShadow: true // Show shadow behind bar when cornerStyle == 1 (Float)
                 property bool borderless: false // true for no grouping of items
                 property string topLeftIcon: "spark" // Options: "distro" or any icon name in ~/.config/quickshell/ii/assets/icons
                 property bool showBackground: true
@@ -310,10 +315,10 @@ Singleton {
             }
 
             property JsonObject lock: JsonObject {
-                property bool useHyprlock: true
+                property bool useHyprlock: false
                 property bool launchOnStartup: true
                 property JsonObject blur: JsonObject {
-                    property bool enable: false
+                    property bool enable: true
                     property real radius: 100
                     property real extraZoom: 1.1
                 }
@@ -323,6 +328,7 @@ Singleton {
                     property bool unlockKeyring: true
                     property bool requirePasswordToPower: false
                 }
+                property bool materialShapeChars: true
             }
 
             property JsonObject media: JsonObject {
@@ -368,12 +374,17 @@ Singleton {
                 }
                 property JsonObject circle: JsonObject {
                     property int strokeWidth: 6
-                    property int padding: 40
+                    property int padding: 10
                 }
             }
 
             property JsonObject resources: JsonObject {
                 property int updateInterval: 3000
+            }
+
+            property JsonObject musicRecognition: JsonObject {
+                property int timeout: 16
+                property int interval: 4
             }
 
             property JsonObject search: JsonObject {
@@ -419,10 +430,11 @@ Singleton {
                     property bool bottom: false
                     property bool valueScroll: true
                     property bool clickless: true
-                    property real cornerRegionWidth: 60
-                    property real cornerRegionHeight: 2
+                    property int cornerRegionWidth: 250
+                    property int cornerRegionHeight: 5
                     property bool visualize: false
                     property bool clicklessCornerEnd: true
+                    property int clicklessCornerVerticalOffset: 1
                 }
 
                 property JsonObject quickToggles: JsonObject {
@@ -435,7 +447,7 @@ Singleton {
                             { "size": 1, "type": "idleInhibitor" },
                             { "size": 1, "type": "audio" },
                             { "size": 2, "type": "nightLight" },
-                            { "size": 1, "type": "gameMode" },
+                            { "size": 1, "type": "musicRecognition" },
                             { "size": 1, "type": "easyEffects" }
                         ]
                     }

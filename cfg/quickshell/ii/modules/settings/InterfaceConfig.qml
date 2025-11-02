@@ -56,6 +56,20 @@ ContentPage {
         }
 
         ContentSubsection {
+            visible: Config.options.background.clock.style === "digital"
+            title: Translation.tr("Digital clock settings")
+
+            ConfigSwitch {
+                buttonIcon: "animation"
+                text: Translation.tr("Animate time change")
+                checked: Config.options.background.clock.digital.animateChange
+                onCheckedChanged: {
+                    Config.options.background.clock.digital.animateChange = checked;
+                }
+            }
+        }
+
+        ContentSubsection {
             visible: Config.options.background.clock.style === "cookie"
             title: Translation.tr("Cookie clock settings")
 
@@ -68,6 +82,18 @@ ContentPage {
                 }
                 StyledToolTip {
                     text: Translation.tr("Uses Gemini to categorize the wallpaper then picks a preset based on it.\nYou'll need to set Gemini API key on the left sidebar first.\nImages are downscaled for performance, but just to be safe,\ndo not select wallpapers with sensitive information.")
+                }
+            }
+
+            ConfigSwitch {
+                buttonIcon: "airwave"
+                text: Translation.tr("Use old sine wave cookie implementation")
+                checked: Config.options.background.clock.cookie.useSineCookie
+                onCheckedChanged: {
+                    Config.options.background.clock.cookie.useSineCookie = checked;
+                }
+                StyledToolTip {
+                    text: "Looks a bit softer and more consistent with different number of sides,\nbut has less impressive morphing"
                 }
             }
 
@@ -530,6 +556,15 @@ ContentPage {
                     Config.options.lock.showLockedText = checked;
                 }
             }
+
+            ConfigSwitch {
+                buttonIcon: "shapes"
+                text: Translation.tr('Use varying shapes for password characters')
+                checked: Config.options.lock.materialShapeChars
+                onCheckedChanged: {
+                    Config.options.lock.materialShapeChars = checked;
+                }
+            }
         }
         ContentSubsection {
             title: Translation.tr("Style: Blurred")
@@ -787,22 +822,22 @@ ContentPage {
                     }
                 }
             }
+            ConfigSwitch {
+                buttonIcon: "highlight_mouse_cursor"
+                text: Translation.tr("Hover to trigger")
+                checked: Config.options.sidebar.cornerOpen.clickless
+                onCheckedChanged: {
+                    Config.options.sidebar.cornerOpen.clickless = checked;
+                }
+
+                StyledToolTip {
+                    text: Translation.tr("When this is off you'll have to click")
+                }
+            }
             Row {
                 ConfigSwitch {
-                    buttonIcon: "highlight_mouse_cursor"
-                    text: Translation.tr("Hover to trigger")
-                    checked: Config.options.sidebar.cornerOpen.clickless
-                    onCheckedChanged: {
-                        Config.options.sidebar.cornerOpen.clickless = checked;
-                    }
-
-                    StyledToolTip {
-                        text: Translation.tr("When this is off you'll have to click")
-                    }
-                }
-                ConfigSwitch {
                     enabled: !Config.options.sidebar.cornerOpen.clickless
-                    text: Translation.tr("but force at absolute corner")
+                    text: Translation.tr("Force hover open at absolute corner")
                     checked: Config.options.sidebar.cornerOpen.clicklessCornerEnd
                     onCheckedChanged: {
                         Config.options.sidebar.cornerOpen.clicklessCornerEnd = checked;
@@ -812,7 +847,29 @@ ContentPage {
                         text: Translation.tr("When the previous option is off and this is on,\nyou can still hover the corner's end to open sidebar,\nand the remaining area can be used for volume/brightness scroll")
                     }
                 }
+                ConfigSpinBox {
+                    icon: "arrow_cool_down"
+                    text: Translation.tr("with vertical offset")
+                    value: Config.options.sidebar.cornerOpen.clicklessCornerVerticalOffset
+                    from: 0
+                    to: 20
+                    stepSize: 1
+                    onValueChanged: {
+                        Config.options.sidebar.cornerOpen.clicklessCornerVerticalOffset = value;
+                    }
+                    MouseArea {
+                        id: mouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        acceptedButtons: Qt.NoButton
+                        StyledToolTip {
+                            extraVisibleCondition: mouseArea.containsMouse
+                            text: Translation.tr("Why this is cool:\nFor non-0 values, it won't trigger when you reach the\nscreen corner along the horizontal edge, but it will when\nyou do along the vertical edge")
+                        }
+                    }
+                }
             }
+            
             ConfigRow {
                 uniform: true
                 ConfigSwitch {
