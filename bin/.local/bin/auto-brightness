@@ -1,0 +1,44 @@
+#!/bin/bash
+# auto_camera_brightness.sh — adjusts screen brightness smoothly using webcam input
+
+VIDEO_DEVICE="/dev/video0"
+STEP=1          # brightness step per iteration (%)
+DELAY=0.02      # seconds between steps
+MIN_BRIGHT=1   # never go below this brightness (%)
+MAX_BRIGHT=100  # max brightness (%)
+
+# Get current brightness (0–100%)
+current=$(brightnessctl g)
+max=$(brightnessctl m)
+current_percent=$((current * 100 / max))
+
+# Capture camera image and compute brightness
+target_percent=$(printf "%.0f\n" "$(ffmpeg -loglevel quiet -f v4l2 -i /dev/video0 -frames:v 1 \
+    -vf "scale=320:240,format=gray,eq=brightness=0.05:contrast=1.2:gamma=0.9" \
+    -f image2 -vcodec png - \
+    | magick png:- -format "%[fx:mean*100]" info:)")
+
+# Apply safety limits
+if (( target_percent < MIN_BRIGHT )); then
+    target_percent=$MIN_BRIGHT
+elif (( target_percent > MAX_BRIGHT )); then
+    target_percent=$MAX_BRIGHT
+fi
+
+echo "Detected brightness: ${target_percent}% (Current: ${current_percent}%)"
+
+# Smoothly adjust brightness
+if (( current_percent < target_percent )); then
+    for ((b=current_percent; b<=target_percent; b+=STEP)); do
+        brightnessctl set "${b}%"
+        sleep $DELAY
+    done
+else
+    for ((b=current_percent; b>=target_percent; b-=STEP)); do
+        brightnessctl set "${b}%"
+        sleep $DELAY
+    done
+fi
+
+# Ensure exact final value
+brightnessctl set "${target_percent}%"
