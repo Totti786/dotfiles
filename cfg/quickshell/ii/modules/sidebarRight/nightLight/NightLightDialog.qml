@@ -102,14 +102,14 @@ WindowDialog {
                 right: parent.right
             }
             iconSize: Appearance.font.pixelSize.larger
-            buttonIcon: "destruction"
+            buttonIcon: "flash_off"
             text: Translation.tr("Enable")
             checked: Config.options.light.antiFlashbang.enable
             onCheckedChanged: {
                 Config.options.light.antiFlashbang.enable = checked;
             }
             StyledToolTip {
-                text: Translation.tr("Example use case: bright window on one workspace, dark window on another")
+                text: Translation.tr("Example use case: eroge on one workspace, dark Discord window on another")
             }
         }
     }
