@@ -144,18 +144,17 @@ change_colors(){
 		-e "s/current_line_grey=.*/current_line_grey=${bg_lighter}/g" \
 		-e "s/selection_blue=.*/selection_blue=${white}/g"
 	
+	# hypr
 	if [[ -f "$hypr" ]]; then 
-	# hypr	
-		cat > "$hypr" <<- EOF 
-		\$black		= rgba(${black:1}aa)
-		\$red 		= rgba(${red:1}ff)
-		\$green		= rgba(${green:1}ff)
-		\$yellow 	= rgba(${yellow:1}ff)
-		\$blue 		= rgba(${blue:1}ff)
-		\$magenta 	= rgba(${magenta:1}ff)
-		\$cyan 		= rgba(${cyan:1}ff)
-		\$white     	= rgba(${white:1}ff)
-		EOF
+		sed -i "$hypr" \
+		  -e "s|\$black[[:space:]]*=.*|\$black = rgba(${black:1}aa)|" \
+		  -e "s|\$red[[:space:]]*=.*|\$red = rgba(${red:1}ff)|" \
+		  -e "s|\$green[[:space:]]*=.*|\$green = rgba(${green:1}ff)|" \
+		  -e "s|\$yellow[[:space:]]*=.*|\$yellow = rgba(${yellow:1}ff)|" \
+		  -e "s|\$blue[[:space:]]*=.*|\$blue = rgba(${blue:1}ff)|" \
+		  -e "s|\$magenta[[:space:]]*=.*|\$magenta = rgba(${magenta:1}ff)|" \
+		  -e "s|\$cyan[[:space:]]*=.*|\$cyan = rgba(${cyan:1}ff)|" \
+		  -e "s|\$white[[:space:]]*=.*|\$white = rgba(${white:1}ff)|"
 	fi
 	
 	# copyq 
