@@ -96,6 +96,10 @@ Singleton {
         return str.toLowerCase().replace(/\s+/g, "-");
     }
 
+    function getUndescoreToKebabAppName(str) {
+        return str.toLowerCase().replace(/_/g, "-");
+    }
+
     function guessIcon(str) {
         if (!str || str.length == 0) return "image-missing";
 
@@ -134,6 +138,8 @@ Singleton {
         const kebabNormalizedGuess = getKebabNormalizedAppName(str);
         if (iconExists(kebabNormalizedGuess)) return kebabNormalizedGuess;
 
+        const undescoreToKebabGuess = getUndescoreToKebabAppName(str);
+        if (iconExists(undescoreToKebabGuess)) return undescoreToKebabGuess;
 
         // Search in desktop entries
         const iconSearchResults = Fuzzy.go(str, preppedIcons, {

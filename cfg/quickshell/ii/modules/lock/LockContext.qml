@@ -38,6 +38,7 @@ Scope {
         root.resetTargetAction();
         root.clearText();
         root.unlockInProgress = false;
+        stopFingerPam();
     }
 
     Timer {
@@ -69,7 +70,9 @@ Scope {
     }
 
     function stopFingerPam() {
-        fingerPam.abort();
+        if (fingerPam.running) {
+            fingerPam.abort();
+        }
     }
 
     Process {
@@ -84,7 +87,7 @@ Scope {
         }
         onExited: (exitCode, exitStatus) => {
             if (exitCode !== 0) {
-                console.warn("fprintd-list command exited with error:", exitCode, exitStatus);
+                // console.warn("[LockContext] fprintd-list command exited with error:", exitCode, exitStatus);
                 root.fingerprintsConfigured = false;
             }
         }
