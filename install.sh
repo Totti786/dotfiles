@@ -276,7 +276,7 @@ update(){
 	install_wayland
 	progressBar "Updating... "
 	ln -sfr "$HOME"/.themes/FlatColor "$HOME"/.themes/Dummy
-	cp "$dir"/deps/.zprofile "$dir"/deps/.zshrc "$dir"/deps/.gtkrc-2.0 "$dir"/deps/.theme "$HOME"/
+	cp "$dir"/deps/.zprofile "$dir"/deps/.profile "$dir"/deps/.zshrc "$dir"/deps/.gtkrc-2.0 "$dir"/deps/.theme "$HOME"/
 	## Move udpated scripts and configs
 	cp -r "$dir"/bin/.local/ "$HOME"/
 	rsync -a --delete \
