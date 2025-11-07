@@ -8,44 +8,97 @@ ContentPage {
     forceWidth: true
 
     ContentSection {
-        icon: "point_scan"
-        title: Translation.tr("Crosshair overlay")
+        icon: "keyboard"
+        title: Translation.tr("Cheat sheet")
 
-        MaterialTextArea {
-            Layout.fillWidth: true
-            placeholderText: Translation.tr("Crosshair code (in Valorant's format)")
-            text: Config.options.crosshair.code
-            wrapMode: TextEdit.Wrap
-            onTextChanged: {
-                Config.options.crosshair.code = text;
+        ContentSubsection {
+            title: Translation.tr("Super key symbol")
+            tooltip: Translation.tr("You can also manually edit cheatsheet.superKey")
+            ConfigSelectionArray {
+                currentValue: Config.options.cheatsheet.superKey
+                onSelected: newValue => {
+                    Config.options.cheatsheet.superKey = newValue;
+                }
+                // Use a nerdfont to see the icons
+                options: ([
+                  "󰖳", "", "󰨡", "", "󰌽", "󰣇", "", "", "", 
+                  "", "", "󱄛", "", "", "⌘", "󰀲", "󰟍", ""
+                ]).map(icon => { return {
+                  displayName: icon,
+                  value: icon
+                  }
+                })
             }
         }
 
-        RowLayout {
-            StyledText {
-                Layout.leftMargin: 10
-                color: Appearance.colors.colSubtext
-                font.pixelSize: Appearance.font.pixelSize.smallie
-                text: Translation.tr("Press Super+G to toggle appearance")
+        ConfigSwitch {
+            buttonIcon: "󰘵"
+            text: Translation.tr("Use macOS-like symbols for mods keys")
+            checked: Config.options.cheatsheet.useMacSymbol
+            onCheckedChanged: {
+                Config.options.cheatsheet.useMacSymbol = checked;
             }
-            Item {
-                Layout.fillWidth: true
+            StyledToolTip {
+                text: Translation.tr("e.g. 󰘴  for Ctrl, 󰘵  for Alt, 󰘶  for Shift, etc")
             }
-            RippleButtonWithIcon {
-                id: editorButton
-                buttonRadius: Appearance.rounding.full
-                materialIcon: "open_in_new"
-                mainText: Translation.tr("Open editor")
-                onClicked: {
-                    Qt.openUrlExternally(`https://www.vcrdb.net/builder?c=${Config.options.crosshair.code}`);
-                }
-                StyledToolTip {
-                    text: "www.vcrdb.net"
-                }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "󱊶"
+            text: Translation.tr("Use symbols for function keys")
+            checked: Config.options.cheatsheet.useFnSymbol
+            onCheckedChanged: {
+                Config.options.cheatsheet.useFnSymbol = checked;
+            }
+            StyledToolTip {
+              text: Translation.tr("e.g. 󱊫 for F1, 󱊶  for F12")
+            }
+        }
+        ConfigSwitch {
+            buttonIcon: "󰍽"
+            text: Translation.tr("Use symbols for mouse")
+            checked: Config.options.cheatsheet.useMouseSymbol
+            onCheckedChanged: {
+                Config.options.cheatsheet.useMouseSymbol = checked;
+            }
+            StyledToolTip {
+              text: Translation.tr("Replace 󱕐   for \"Scroll ↓\", 󱕑   \"Scroll ↑\", L󰍽   \"LMB\", R󰍽   \"RMB\", 󱕒   \"Scroll ↑/↓\" and ⇞/⇟ for \"Page_↑/↓\"")
+            }
+        }
+        ConfigSwitch {
+            buttonIcon: "highlight_keyboard_focus"
+            text: Translation.tr("Split buttons")
+            checked: Config.options.cheatsheet.splitButtons
+            onCheckedChanged: {
+                Config.options.cheatsheet.splitButtons = checked;
+            }
+            StyledToolTip {
+                text: Translation.tr("Display modifiers and keys in multiple keycap (e.g., \"Ctrl + A\" instead of \"Ctrl A\" or \"󰘴 + A\" instead of \"󰘴 A\")")
+            }
+
+        }
+
+        ConfigSpinBox {
+            text: Translation.tr("Keybind font size")
+            value: Config.options.cheatsheet.fontSize.key
+            from: 8
+            to: 30
+            stepSize: 1
+            onValueChanged: {
+                Config.options.cheatsheet.fontSize.key = value;
+            }
+        }
+        ConfigSpinBox {
+            text: Translation.tr("Description font size")
+            value: Config.options.cheatsheet.fontSize.comment
+            from: 8
+            to: 30
+            stepSize: 1
+            onValueChanged: {
+                Config.options.cheatsheet.fontSize.comment = value;
             }
         }
     }
-
     ContentSection {
         icon: "call_to_action"
         title: Translation.tr("Dock")
@@ -210,6 +263,67 @@ ContentPage {
             stepSize: 1000
             onValueChanged: {
                 Config.options.notifications.timeout = value;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "select_window"
+        title: Translation.tr("Overlay: General")
+
+        ConfigSwitch {
+            buttonIcon: "high_density"
+            text: Translation.tr("Enable opening zoom animation")
+            checked: Config.options.overlay.openingZoomAnimation
+            onCheckedChanged: {
+                Config.options.overlay.openingZoomAnimation = checked;
+            }
+        }
+        ConfigSwitch {
+            buttonIcon: "texture"
+            text: Translation.tr("Darken screen")
+            checked: Config.options.overlay.darkenScreen
+            onCheckedChanged: {
+                Config.options.overlay.darkenScreen = checked;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "point_scan"
+        title: Translation.tr("Overlay: Crosshair")
+
+        MaterialTextArea {
+            Layout.fillWidth: true
+            placeholderText: Translation.tr("Crosshair code (in Valorant's format)")
+            text: Config.options.crosshair.code
+            wrapMode: TextEdit.Wrap
+            onTextChanged: {
+                Config.options.crosshair.code = text;
+            }
+        }
+
+        RowLayout {
+            StyledText {
+                Layout.leftMargin: 10
+                color: Appearance.colors.colSubtext
+                font.pixelSize: Appearance.font.pixelSize.smallie
+                text: Translation.tr("Press Super+G to open the overlay and pin the crosshair")
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            RippleButtonWithIcon {
+                id: editorButton
+                buttonRadius: Appearance.rounding.full
+                materialIcon: "open_in_new"
+                mainText: Translation.tr("Open editor")
+                onClicked: {
+                    Qt.openUrlExternally(`https://www.vcrdb.net/builder?c=${Config.options.crosshair.code}`);
+                }
+                StyledToolTip {
+                    text: "www.vcrdb.net"
+                }
             }
         }
     }
@@ -625,4 +739,5 @@ ContentPage {
             }
         }
     }
+
 }
