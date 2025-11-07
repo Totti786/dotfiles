@@ -48,7 +48,7 @@ Rectangle {
             property real horizontalPadding: 10
             radius: 10
             color: root.colBackground
-            border.width: 1
+            border.width: 0
             border.color: Appearance.m3colors.m3outlineVariant
             implicitWidth: regionInfoRow.implicitWidth + horizontalPadding * 2
             implicitHeight: regionInfoRow.implicitHeight + verticalPadding * 2
