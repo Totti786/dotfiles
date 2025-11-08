@@ -340,7 +340,7 @@ Singleton {
 
             property JsonObject lock: JsonObject {
                 property bool useHyprlock: false
-                property bool launchOnStartup: true
+                property bool launchOnStartup: false
                 property JsonObject blur: JsonObject {
                     property bool enable: true
                     property real radius: 100
@@ -378,7 +378,7 @@ Singleton {
             }
 
             property JsonObject overlay: JsonObject {
-                property bool openingZoomAnimation: true
+                property bool openingZoomAnimation: false
                 property bool darkenScreen: true
                 property real clickthroughOpacity: 0.7
             }
@@ -503,8 +503,8 @@ Singleton {
             }
 
             property JsonObject sounds: JsonObject {
-                property bool battery: false
-                property bool pomodoro: false
+                property bool battery: true
+                property bool pomodoro: true
                 property string theme: "freedesktop"
             }
 
