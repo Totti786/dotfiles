@@ -1,508 +1,0 @@
-{
-  "Material cookie": "ملف تعريف الارتباط المادي",
-  "Style: Blurred": "النمط: ضبابي",
-  "Unknown device": "جهاز غير معروف",
-  "No pending tasks": "لا توجد مهام معلقة",
-  "Positioning": "تحديد الموضع",
-  "Set temperature (randomness) of the model. Values range between 0 to 2 for Gemini, 0 to 1 for other models. Default is 0.5.": "ضبط درجة الحرارة (العشوائية) للنموذج. تتراوح القيم بين 0 و 2 لـ Gemini، ومن 0 إلى 1 للنماذج الأخرى. الافتراضي هو 0.5.",
-  "Critical warning": "تحذير حرج",
-  "Unknown Artist": "فنان غير معروف",
-  "Web search": "بحث الويب",
-  "Load prompt from %1": "تحميل المطالبة من %1",
-  "Attach a file. Only works with Gemini.": "إرفاق ملف. يعمل مع Gemini فقط.",
-  "Reboot": "إعادة التشغيل",
-  "API key:\\n\\n```txt\\n%1\\n```": "مفتاح API:\\n\\n```txt\\n%1\\n```",
-  "Pinned on startup": "مثبت عند بدء التشغيل",
-  "Right": "يمين",
-  "Reboot to firmware settings": "إعادة التشغيل إلى إعدادات البرامج الثابتة",
-  "Automatically hide": "إخفاء تلقائيًا",
-  "To Do": "قائمة المهام",
-  "Full": "ممتلئ",
-  "Select Language": "تحديد اللغة",
-  "Password": "كلمة المرور",
-  "Bluetooth devices": "أجهزة البلوتوث",
-  "Enable": "تمكين",
-  "Elements": "العناصر",
-  "Start": "بدء",
-  "The popular one | Best quantity, but quality can vary wildly": "الشائع | أفضل كمية، لكن الجودة قد تختلف بشكل كبير",
-  "System uptime:": "مدة تشغيل النظام:",
-  "illogical-impulse Welcome": "مرحباً بك في illogical-impulse",
-  "Code saved to file": "تم حفظ الرمز إلى ملف",
-  "Info": "معلومات",
-  "Preferred wallpaper zoom (%)": "تكبير خلفية الشاشة المفضل (%)",
-  "Time": "الوقت",
-  "Help & Support": "المساعدة والدعم",
-  "Bubble": "فقاعة",
-  "Large images | God tier quality, no NSFW.": "صور كبيرة | جودة عالية جداً، لا يوجد محتوى غير لائق.",
-  "Dark": "داكن",
-  "Center clock": "الساعة في المنتصف",
-  "Search, calculate or run": "بحث، حساب أو تشغيل",
-  "Region height": "ارتفاع المنطقة",
-  "Load chat": "تحميل الدردشة",
-  "Gives the model search capabilities (immediately)": "يمنح النموذج قدرات البحث (فوراً)",
-  "Depends on workspace": "يعتمد على مساحة العمل",
-  "Screenshot tool": "أداة لقطة الشاشة",
-  "Enter password": "أدخل كلمة المرور",
-  "Search the web": "البحث في الويب",
-  "Local only": "محلي فقط",
-  "at": "في",
-  "Math": "رياضيات",
-  "Consider plugging in your device": "فكر في توصيل جهازك بالشاحن",
-  "Workspaces shown": "مساحات العمل المعروضة",
-  "Place the corners to trigger at the bottom": "ضع الزوايا لتفعيلها في الأسفل",
-  "No API key\\nSet it with /key YOUR_API_KEY": "لا يوجد مفتاح API\\nقم بتعيينه باستخدام /key YOUR_API_KEY",
-  "Auto (System)": "تلقائي (النظام)",
-  "Arrow keys to navigate, Enter to select\\nEsc or click anywhere to cancel": "مفاتيح الأسهم للتنقل، Enter للاختيار\\nEsc أو انقر في أي مكان للإلغاء",
-  "Critically low battery": "بطارية منخفضة جداً",
-  "Open editor": "فتح المحرر",
-  "%1 notifications": "%1 إشعارات",
-  "Region width": "عرض المنطقة",
-  "Max allowed increase": "الحد الأقصى للزيادة المسموح بها",
-  "Enable translator": "تمكين المترجم",
-  "Constantly rotate": "تدوير مستمر",
-  "Automatically suspends the system when battery is low": "يقوم بتعليق النظام تلقائياً عندما تكون البطارية منخفضة",
-  "Cannot find a GPS service. Using the fallback method instead.": "تعذر العثور على خدمة GPS. استخدام الطريقة الاحتياطية بدلاً من ذلك.",
-  "Qt apps": "تطبيقات Qt",
-  "Color picker": "منتقي الألوان",
-  "Interface": "الواجهة",
-  "Tint app icons": "تلوين أيقونات التطبيقات",
-  "Select the language for the user interface.\\n\\\"Auto\\\" will use your system's locale.": "حدد لغة واجهة المستخدم.\\n\"تلقائي\" سيستخدم إعدادات لغة نظامك.",
-  "Show quote": "عرض الاقتباس",
-  "Local Ollama model | %1": "نموذج Ollama المحلي | %1",
-  "Show clock": "عرض الساعة",
-  "Usage: <tt>%1superpaste NUM_OF_ENTRIES[i]</tt>\\nSupply <tt>i</tt> when you want images\\nExamples:\\n<tt>%1superpaste 4i</tt> for the last 4 images\\n<tt>%1superpaste 7</tt> for the last 7 entries": "الاستخدام: <tt>%1superpaste NUM_OF_ENTRIES[i]</tt>\\nأضف <tt>i</tt> عندما تريد صوراً\\nأمثلة:\\n<tt>%1superpaste 4i</tt> لآخر 4 صور\\n<tt>%1superpaste 7</tt> لآخر 7 إدخالات",
-  "Audio": "صوت",
-  "Corner style": "نمط الزاوية",
-  "No media": "لا توجد وسائط",
-  "Unknown function call: %1": "استدعاء دالة غير معروف: %1",
-  "Online | %1's model | Delivers fast, responsive and well-formatted answers. Disadvantages: not very eager to do stuff; might make up unknown function calls": "عبر الإنترنت | نموذج %1 | يقدم إجابات سريعة، متجاوبة ومنسقة جيداً. العيوب: ليس متحمساً جداً للقيام بالأشياء؛ قد يختلق استدعاءات دالة غير معروفة",
-  "Volume": "مستوى الصوت",
-  "Medium": "متوسط",
-  "Copy code": "نسخ الرمز",
-  "Exceeded max allowed": "تجاوز الحد الأقصى المسموح به",
-  "Keep right sidebar loaded": "إبقاء الشريط الجانبي الأيمن محملاً",
-  "Left": "يسار",
-  "High": "عالي",
-  "Rect": "مستطيل",
-  "Lap": "لفة",
-  "Clear": "مسح",
-  "Screen snip": "قص الشاشة",
-  "Reset": "إعادة تعيين",
-  "Back": "رجوع",
-  "Dark/Light toggle": "تبديل الوضع الداكن/الفاتح",
-  "12h am/pm": "12 ساعة صباحاً/مساءً",
-  "Download complete": "اكتمل التنزيل",
-  "Enable blur": "تمكين التمويه",
-  "Second hand": "عقرب الثواني",
-  "Bar & screen": "الشريط والشاشة",
-  "Discharging:": "تفريغ الشحن:",
-  "Up %1": "مرت %1",
-  "Low": "منخفض",
-  "Hour hand": "عقرب الساعات",
-  "Clear chat history": "مسح سجل الدردشة",
-  "Fruit Salad": "سلطة فواكه",
-  "%1 Safe Storage": "%1 تخزين آمن",
-  "Hibernate": "إسبات",
-  "Delete": "حذف",
-  "OK": "موافق",
-  "Settings": "الإعدادات",
-  "This is usually safe and needed for your browser and AI sidebar anyway\\nMostly useful for those who use lock on startup instead of a display manager that does it (GDM, SDDM, etc.)": "هذا آمن عادةً ومطلوب لمتصفحك وشريط AI الجانبي على أي حال\\nمفيد بشكل خاص لأولئك الذين يستخدمون القفل عند بدء التشغيل بدلاً من مدير عرض يقوم بذلك (GDM, SDDM, إلخ.)",
-  "Use Hyprlock (instead of Quickshell)": "استخدام Hyprlock (بدلاً من Quickshell)",
-  "Crosshair code (in Valorant's format)": "رمز نقطة التصويب (بتنسيق Valorant)",
-  "Silent": "صامت",
-  "Useless buttons": "أزرار عديمة الفائدة",
-  "Hover to reveal": "مرر الفأرة للكشف",
-  "Wallpaper & Colors": "الخلفية والألوان",
-  "Auto": "تلقائي",
-  "Visibility": "الرؤية",
-  "Shell & utilities": "الواجهة والأدوات المساعدة",
-  "Hollow": "مجوف",
-  "Use the system file picker instead\\nRight-click to make this the default behavior": "استخدم منتقي ملفات النظام بدلاً من ذلك\\nانقر بزر الفأرة الأيمن لجعله السلوك الافتراضي",
-  "On-screen display": "عرض على الشاشة",
-  "Dotfiles": "ملفات الإعدادات",
-  "Search wallpapers": "البحث عن خلفيات",
-  "Mic toggle": "تبديل الميكروفون",
-  "Input": "إدخال",
-  "Also unlock keyring": "فتح سلسلة المفاتيح أيضاً",
-  "Configuration": "التكوين",
-  "Keep system awake": "إبقاء النظام مستيقظاً",
-  "Unknown command:": "أمر غير معروف:",
-  "Anime boorus": "مواقع صور الأنمي",
-  "To Do:": "قائمة المهام:",
-  "Uses Gemini to categorize the wallpaper then picks a preset based on it.\\nYou'll need to set Gemini API key on the left sidebar first.\\nImages are downscaled for performance, but just to be safe,\\ndo not select wallpapers with sensitive information.": "يستخدم Gemini لتصنيف الخلفية ثم يختار إعداداً مسبقاً بناءً عليها.\\nستحتاج إلى تعيين مفتاح Gemini API في الشريط الجانبي الأيسر أولاً.\\nيتم تقليل حجم الصور لتحسين الأداء، ولكن من باب الأمان،\\nلا تحدد خلفيات تحتوي على معلومات حساسة.",
-  "Bottom": "أسفل",
-  "Clear the current list of images": "مسح قائمة الصور الحالية",
-  "Sunrise": "شروق الشمس",
-  "Show app icons": "عرض أيقونات التطبيقات",
-  "Format": "تنسيق",
-  "Make sure your player has MPRIS support\\nor try turning off duplicate player filtering": "تأكد من أن مشغل الوسائط الخاص بك يدعم MPRIS\\nأو حاول إيقاف تشغيل تصفية المشغلات المكررة",
-  "Pause": "إيقاف مؤقت",
-  "Desktop": "سطح المكتب",
-  "Conflicts with the shell's system tray implementation": "يتعارض مع تنفيذ علبة النظام في الواجهة",
-  "Your package manager is running": "مدير الحزم الخاص بك قيد التشغيل",
-  "Conflicts with the shell's notification implementation": "يتعارض مع تنفيذ الإشعارات في الواجهة",
-  "Unknown Album": "ألبوم غير معروف",
-  "Pick wallpaper image on your system": "اختر صورة خلفية من نظامك",
-  "Used:": ":مستخدم",
-  "Cheat sheet": "ورقة الغش",
-  "Clock style": "نمط الساعة",
-  "No audio source": "لا يوجد مصدر صوت",
-  "Paired": "مقترن",
-  "Documentation": "الوثائق",
-  "No": "لا",
-  "Pills": "حبوب",
-  "Thought": "فكرة",
-  "When this is off you'll have to click": "عندما يكون هذا معطلاً، سيتعين عليك النقر",
-  "Select output device": "تحديد جهاز الإخراج",
-  "Logout": "تسجيل الخروج",
-  "Tip: Close a window with Super+Q": "نصيحة: أغلق نافذة باستخدام Super+Q",
-  "Finished tasks will go here": "المهام المكتملة ستظهر هنا",
-  "Terminal: Harmony (%)": "الطرفية: تناغم (%)",
-  "Corner open": "فتح الزاوية",
-  "Shell conflicts killer": "قاتل تعارضات الواجهة",
-  "Clean stuff | Excellent quality, no NSFW": "أشياء نظيفة | جودة ممتازة، لا يوجد محتوى غير لائق",
-  "Scroll to change volume": "مرر لتغيير مستوى الصوت",
-  "Wind": "رياح",
-  "API key is set\\nChange with /key YOUR_API_KEY": "تم تعيين مفتاح API\\nغيره باستخدام /key YOUR_API_KEY",
-  "Neutral": "محايد",
-  "12h AM/PM": "12 ساعة صباحاً/مساءً",
-  "Number show delay when pressing Super (ms)": "تأخير عرض الأرقام عند الضغط على Super (مللي ثانية)",
-  "Fill": "ملء",
-  "Always show numbers": "إظهار الأرقام دائماً",
-  "Dot": "نقطة",
-  "Provider set to": "تم تعيين المزود إلى",
-  "Unknown Title": "عنوان غير معروف",
-  "Anime": "أنمي",
-  "Refreshing (manually triggered)": "تحديث (تم تفعيله يدوياً)",
-  "Dock": "شريط المهام",
-  "Require password to power off/restart": "طلب كلمة مرور لإيقاف التشغيل/إعادة التشغيل",
-  "Line": "خط",
-  "Weather": "الطقس",
-  "All-rounder | Good quality, decent quantity": "شامل | جودة جيدة، كمية معقولة",
-  "Scale (%)": "مقياس (%)",
-  "Copy": "نسخ",
-  "Usage": "الاستخدام",
-  "Type /key to get started with online models\\nCtrl+O to expand the sidebar\\nCtrl+P to detach sidebar into a window": "اكتب /key للبدء بالنماذج عبر الإنترنت\\nCtrl+O لتوسيع الشريط الجانبي\\nCtrl+P لفصل الشريط الجانبي إلى نافذة",
-  "Set the tool to use for the model.": "عيّن الأداة التي سيستخدمها النموذج.",
-  "Disable tools": "تعطيل الأدوات",
-  "Connect": "اتصال",
-  "Allow NSFW": "السماح بالمحتوى غير اللائق",
-  "Registration failed. Please inspect manually with the <tt>warp-cli</tt> command": "فشل التسجيل. يرجى الفحص يدوياً باستخدام الأمر <tt>warp-cli</tt>",
-  "Time to full:": "الوقت حتى الامتلاء:",
-  "Session": "جلسة",
-  "Services": "الخدمات",
-  "Nothing here!": "لا شيء هنا!",
-  "Overview": "نظرة عامة",
-  "If you want to somehow use fingerprint unlock...": "إذا كنت تريد استخدام فتح القفل ببصمة الإصبع بطريقة ما...",
-  "Minute hand": "عقرب الدقائق",
-  "Notifications": "الإشعارات",
-  "Enable if you want clocks to show seconds accurately": "مكّن هذا إذا كنت تريد أن تعرض الساعات الثواني بدقة",
-  "Timer": "مؤقت",
-  "Quote settings": "إعدادات الاقتباس",
-  "System prompt": "مطالبة النظام",
-  "Classic": "كلاسيكي",
-  "Close": "إغلاق",
-  "Disconnect": "قطع الاتصال",
-  "Go to source (%1)": "انتقال إلى المصدر (%1)",
-  "EasyEffects | Right-click to configure": "EasyEffects | انقر بزر الفأرة الأيمن للتكوين",
-  "Forget": "نسيان",
-  "Output": "إخراج",
-  "Date style": "نمط التاريخ",
-  "System": "النظام",
-  "Usage: %1tool TOOL_NAME": "الاستخدام: %1tool اسم_الأداة",
-  "Workspaces": "مساحات العمل",
-  "Calendar": "التقويم",
-  "**Instructions**: Log into Mistral account, go to Keys on the sidebar, click Create new key": "**التعليمات**: سجل الدخول إلى حساب Mistral، اذهب إلى Keys في الشريط الجانبي، انقر على Create new key",
-  "Volume limit": "حد الصوت",
-  "Sunset": "غروب الشمس",
-  "Dial style": "نمط القرص",
-  "Hi there! First things first...": "مرحباً! أولاً وقبل كل شيء...",
-  "Save chat to %1": "حفظ الدردشة إلى %1",
-  "Security": "الأمان",
-  "Total token count\\nInput: %1\\nOutput: %2": "إجمالي عدد الرموز\\nالإدخال: %1\\nالإخراج: %2",
-  "Cancel wallpaper selection": "إلغاء تحديد الخلفية",
-  "Please charge!\\nAutomatic suspend triggers at %1": "يرجى الشحن!\\nالتعليق التلقائي يتم تفعيله عند %1",
-  "Terminal: Harmonize threshold": "الطرفية: عتبة التناغم",
-  "Be patient...": "كن صبوراً...",
-  "Utility buttons": "أزرار الأدوات المساعدة",
-  "Tonal Spot": "نقطة لونية",
-  "Prevents abrupt increments and restricts volume limit": "يمنع الزيادات المفاجئة ويقيد حد الصوت",
-  "Set the current API provider": "تعيين مزود API الحالي",
-  "Connection failed. Please inspect manually with the <tt>warp-cli</tt> command": "فشل الاتصال. يرجى الفحص يدوياً باستخدام الأمر <tt>warp-cli</tt>",
-  "Networking": "الشبكات",
-  "Tint icons": "تلوين الأيقونات",
-  "Low battery": "بطارية منخفضة",
-  "Make icons pinned by default": "جعل الأيقونات مثبتة افتراضياً",
-  "Get the next page of results": "الحصول على الصفحة التالية من النتائج",
-  "Invalid API provider. Supported: \\n-": "مزود API غير صالح. المدعوم: \\n-",
-  "Show \\\"Locked\\\" text": "إظهار نص \"مغلق\"",
-  "**Pricing**: free. Data use policy varies depending on your OpenRouter account settings.\\n\\n**Instructions**: Log into OpenRouter account, go to Keys on the topright menu, click Create API Key": "**التسعير**: مجاني. سياسة استخدام البيانات تختلف حسب إعدادات حساب OpenRouter الخاص بك.\\n\\n**التعليمات**: سجل الدخول إلى حساب OpenRouter، اذهب إلى Keys في القائمة العلوية اليمنى، انقر على Create API Key",
-  "Not visible to model": "غير مرئي للنموذج",
-  "Lock screen": "قفل الشاشة",
-  "Save to Downloads": "حفظ إلى التنزيلات",
-  "Expressive": "معبر",
-  "Jump to current month": "الانتقال إلى الشهر الحالي",
-  "Bold": "عريض",
-  "Waifus only | Excellent quality, limited quantity": "Waifus فقط | جودة ممتازة، كمية محدودة",
-  "Click to toggle light/dark mode\\n(applied when wallpaper is chosen)": "انقر لتبديل الوضع الفاتح/الداكن\\n(يطبق عند اختيار الخلفية)",
-  "Visualize region": "تصور المنطقة",
-  "Quote": "اقتباس",
-  "Sleep": "نوم",
-  "Hit \\\"/\\\" to search": "اضغط \"/\" للبحث",
-  "Hug": "احتضان",
-  "Report a Bug": "الإبلاغ عن خطأ",
-  "Precipitation": "هطول",
-  "Model set to %1": "تم تعيين النموذج إلى %1",
-  "Rows": "صفوف",
-  "Top": "أعلى",
-  "Long break": "استراحة طويلة",
-  "Superpaste": "لصق فائق",
-  "Screen round corner": "زاوية الشاشة المستديرة",
-  "Online | Google's model\\nNewer model that's slower than its predecessor but should deliver higher quality answers": "عبر الإنترنت | نموذج Google\\nنموذج أحدث أبطأ من سابقه ولكنه يجب أن يقدم إجابات ذات جودة أعلى",
-  "Rainbow": "قوس قزح",
-  "Weeb": "ويبو",
-  "Large language models": "نماذج اللغة الكبيرة",
-  "Online models disallowed\\n\\nControlled by `policies.ai` config option": "النماذج عبر الإنترنت غير مسموح بها\\n\\nيتم التحكم بها بواسطة خيار التكوين `policies.ai`",
-  "Policies": "السياسات",
-  "Temperature must be between 0 and 2": "يجب أن تكون درجة الحرارة بين 0 و 2",
-  "Automatic suspend": "تعليق تلقائي",
-  "Extra wallpaper zoom (%)": "تكبير إضافي للخلفية (%)",
-  "GitHub": "GitHub",
-  "%1 | Right-click to configure": "%1 | انقر بزر الفأرة الأيمن للتكوين",
-  "**Pricing**: Free tier available with limited rates. See https://docs.github.com/en/billing/concepts/product-billing/github-models\\n\\n**Instructions**: Generate a GitHub personal access token with Models permission, then set as API key here\\n\\n**Note**: To use this you will have to set the temperature parameter to 1": "**التسعير**: طبقة مجانية متاحة بمعدلات محدودة. انظر https://docs.github.com/en/billing/concepts/product-billing/github-models\\n\\n**التعليمات**: أنشئ رمز وصول شخصي لـ GitHub بإذن النماذج، ثم عيّنه كمفتاح API هنا\\n\\n**ملاحظة**: لاستخدام هذا، سيتعين عليك تعيين معلمة درجة الحرارة على 1",
-  "Edit directory": "تحرير الدليل",
-  "Action": "إجراء",
-  "Search": "بحث",
-  "Tip: right-clicking a group\\nalso expands it": "نصيحة: النقر بزر الفأرة الأيمن على مجموعة\\nيوسعها أيضاً",
-  "Bar": "شريط",
-  "Show regions of potential interest": "إظهار مناطق الاهتمام المحتملة",
-  "Clipboard": "الحافظة",
-  "Stopwatch": "ساعة توقيت",
-  "Enter text to translate...": "أدخل النص للترجمة...",
-  "App": "تطبيق",
-  "Sides": "جوانب",
-  "No active player": "لا يوجد مشغل نشط",
-  "Not all options are available in this app. You should also check the config file by hitting the \\\"Config file\\\" button on the topleft corner or opening %1 manually.": "ليست كل الخيارات متاحة في هذا التطبيق. يجب عليك أيضاً التحقق من ملف التكوين بالنقر على زر \"ملف التكوين\" في الزاوية العلوية اليسرى أو فتح %1 يدوياً.",
-  "There might be a download in progress": "قد يكون هناك تنزيل قيد التقدم",
-  "Math result": "نتيجة الرياضيات",
-  "Fidelity": "دقة",
-  "Prefixes": "بادئات",
-  "Terminal": "طرفية",
-  "Incorrect password": "كلمة مرور غير صحيحة",
-  "Line-separated": "مفصول بالأسطر",
-  "Always": "دائماً",
-  "☕ Break: %1 minutes": "☕ استراحة: %1 دقيقة",
-  "Depends on sidebars": "يعتمد على الأشرطة الجانبية",
-  "Tool set to: %1": "تم تعيين الأداة إلى: %1",
-  "Save chat": "حفظ الدردشة",
-  "Crosshair overlay": "تراكب نقطة التصويب",
-  "Keybinds": "اختصارات لوحة المفاتيح",
-  "Launch": "تشغيل",
-  "Could be better if you make a ton of typos,\\nbut results can be weird and might not work with acronyms\\n(e.g. \\\"GIMP\\\" might not give you the paint program)": "قد يكون أفضل إذا ارتكبت الكثير من الأخطاء الإملائية،\\nلكن النتائج قد تكون غريبة وقد لا تعمل مع الاختصارات\\n(مثل \"GIMP\" قد لا يعطيك برنامج الرسم)",
-  "Choose model": "اختيار النموذج",
-  "Base URL": "عنوان URL الأساسي",
-  "Float": "عائم",
-  "Wallpaper parallax": "تأثير اختلاف المنظر للخلفية",
-  "Invalid arguments. Must provide `command`.": "وسائط غير صالحة. يجب توفير `command`.",
-  "Fully charged": "مشحون بالكامل",
-  "Earbang protection": "حماية من الصوت العالي المفاجئ",
-  "Low warning": "تحذير منخفض",
-  "Advanced": "متقدم",
-  "Scroll to change brightness": "مرر لتغيير السطوع",
-  "Loaded the following system prompt\\n\\n---\\n\\n%1": "تم تحميل مطالبة النظام التالية\\n\\n---\\n\\n%1",
-  "Show next time": "إظهار في المرة القادمة",
-  "Current tool: %1\\nSet it with %2tool TOOL": "الأداة الحالية: %1\\nعيّنها باستخدام %2tool TOOL",
-  "Unread indicator: show count": "مؤشر غير مقروء: إظهار العدد",
-  "Press Super+G to toggle appearance": "اضغط Super+G لتبديل المظهر",
-  "That didn't work. Tips:\\n- Check your tags and NSFW settings\\n- If you don't have a tag in mind, type a page number": "لم ينجح ذلك. نصائح:\\n- تحقق من علاماتك وإعدادات NSFW\\n- إذا لم يكن لديك علامة في ذهنك، اكتب رقم صفحة",
-  "Dots": "نقاط",
-  "Cloudflare WARP (1.1.1.1)": "Cloudflare WARP (1.1.1.1)",
-  "Volume mixer": "خلاط الصوت",
-  "Config file": "ملف التكوين",
-  "API key set for %1": "تم تعيين مفتاح API لـ %1",
-  "Online via %1 | %2's model": "عبر الإنترنت عبر %1 | نموذج %2",
-  "Shell command": "أمر الواجهة",
-  "Such regions could be images or parts of the screen that have some containment.\\nMight not always be accurate.\\nThis is done with an image processing algorithm run locally and no AI is used.": "قد تكون هذه المناطق صوراً أو أجزاء من الشاشة تحتوي على بعض التضمين.\\nقد لا تكون دقيقة دائماً.\\nيتم ذلك باستخدام خوارزمية معالجة الصور تعمل محلياً ولا يتم استخدام الذكاء الاصطناعي.",
-  "Reload Hyprland & Quickshell": "إعادة تحميل Hyprland و Quickshell",
-  "Resources": "الموارد",
-  "Brightness": "السطوع",
-  "Unknown": "غير معروف",
-  "Polling interval (ms)": "فاصل الاستقصاء (مللي ثانية)",
-  "Lock": "قفل",
-  "Thinking": "جاري التفكير",
-  "Approve": "موافقة",
-  "Unfinished": "غير مكتمل",
-  "Random: Konachan": "عشوائي: Konachan",
-  "Connected": "متصل",
-  "Wallpaper safety enforced": "تم فرض أمان الخلفية",
-  "Invalid arguments. Must provide `key` and `value`.": "وسائط غير صالحة. يجب توفير `key` و `value`.",
-  "24h": "24 ساعة",
-  "Allows you to open sidebars by clicking or hovering screen corners regardless of bar position": "يسمح لك بفتح الأشرطة الجانبية بالنقر أو تمرير الماوس فوق زوايا الشاشة بغض النظر عن موضع الشريط",
-  "Bar style": "نمط الشريط",
-  "Load:": ":تحميل",
-  "Open file link": "فتح رابط الملف",
-  "Ignored if terminal theming is not enabled": "يتجاهل إذا لم يتم تمكين سمات الطرفية",
-  "Shutdown": "إيقاف التشغيل",
-  "Hour marks": "علامات الساعة",
-  "Online | Google's model\\nFast, can perform searches for up-to-date information": "عبر الإنترنت | نموذج Google\\nسريع، يمكنه إجراء عمليات بحث عن معلومات حديثة",
-  "Current model: %1\\nSet it with %2model MODEL": "النموذج الحالي: %1\\nعيّنه باستخدام %2model MODEL",
-  "Select input device": "تحديد جهاز الإدخال",
-  "Connect to Wi-Fi": "الاتصال بشبكة Wi-Fi",
-  "... and %1 more": "... و %1 آخر",
-  "Cookie clock settings": "إعدادات ساعة ملف تعريف الارتباط",
-  "Brightness and volume": "السطوع ومستوى الصوت",
-  "Choose file": "اختيار ملف",
-  "Invalid model. Supported: \\n```": "نموذج غير صالح. المدعوم: \\n```",
-  "Task Manager": "مدير المهام",
-  "Charging:": "جاري الشحن:",
-  "Illegal increment": "زيادة غير قانونية",
-  "Total:": ":الإجمالي",
-  "or": "أو",
-  "Battery": "بطارية",
-  "Timeout duration (if not defined by notification) (ms)": "مدة المهلة (إذا لم يتم تحديدها بواسطة الإشعار) (مللي ثانية)",
-  "Cancel": "إلغاء",
-  "Locked": "مغلق",
-  "Temperature: %1": "درجة الحرارة: %1",
-  "Hover to trigger": "مرر الفأرة للتفعيل",
-  "Command rejected by user": "تم رفض الأمر من قبل المستخدم",
-  "User agent (for services that require it)": "وكيل المستخدم (للخدمات التي تتطلبه)",
-  "Saved to %1": "تم الحفظ إلى %1",
-  "Emojis": "رموز تعبيرية",
-  "Color generation": "توليد الألوان",
-  "Welcome app": "تطبيق الترحيب",
-  "Humidity": "رطوبة",
-  "Page %1": "صفحة %1",
-  "Feels like %1": "الشعور كـ %1",
-  "Distro": "توزيعة",
-  "Transparency": "شفافية",
-  "%1   •   %2 tasks": "%1   •   %2 مهام",
-  "Markdown test": "اختبار Markdown",
-  "Invalid tool. Supported tools:\\n- %1": "أداة غير صالحة. الأدوات المدعومة:\\n- %1",
-  "No notifications": "لا توجد إشعارات",
-  "The hentai one | Great quantity, a lot of NSFW, quality varies wildly": "الهنتاي | كمية كبيرة، الكثير من المحتوى غير اللائق، الجودة تختلف بشكل كبير",
-  "Bluetooth": "بلوتوث",
-  "Resume": "استئناف",
-  "Work safety": "سلامة العمل",
-  "Temperature\\nChange with /temp VALUE": "درجة الحرارة\\nغيرها باستخدام /temp VALUE",
-  "Terminal: Foreground boost (%)": "الطرفية: تعزيز المقدمة (%)",
-  "Night Light | Right-click to toggle Auto mode": "الضوء الليلي | انقر بزر الفأرة الأيمن لتبديل الوضع التلقائي",
-  "Closet": "خزانة",
-  "Yes": "نعم",
-  "Columns": "أعمدة",
-  "To set an API key, pass it with the %4 command\\n\\nTo view the key, pass \\\"get\\\" with the command<br/>\\n\\n### For %1:\\n\\n**Link**: %2\\n\\n%3": "لتعيين مفتاح API، مرره باستخدام الأمر %4\\n\\nلعرض المفتاح، مرر \"get\" مع الأمر<br/>\\n\\n### لـ %1:\\n\\n**الرابط**: %2\\n\\n%3",
-  "Kill conflicting programs?": "قتل البرامج المتعارضة؟",
-  "For storing API keys and other sensitive information": "لتخزين مفاتيح API والمعلومات الحساسة الأخرى",
-  "Reject": "رفض",
-  "Set API key": "تعيين مفتاح API",
-  ". Notes for Zerochan:\\n- You must enter a color\\n- Set your zerochan username in `sidebar.booru.zerochan.username` config option. You [might be banned for not doing so](https://www.zerochan.net/api#:~:text=The%20request%20may%20still%20be%20completed%20successfully%20without%20this%20custom%20header%2C%20but%20your%20project%20may%20be%20banned%20for%20being%20anonymous.)!": ". ملاحظات لـ Zerochan:\\n- يجب عليك إدخال لون\\n- عيّن اسم مستخدم Zerochan الخاص بك في خيار التكوين `sidebar.booru.zerochan.username`. قد [يتم حظرك لعدم القيام بذلك](https://www.zerochan.net/api#:~:text=The%20request%20may%20still%20be%20completed%20successfully%20without%20this%20custom%20header%2C%20but%20your%20project%20may%20be%20banned%20for%20being%20anonymous.)!",
-  "Content": "محتوى",
-  "Pomodoro": "بومودورو",
-  "Vertical": "عمودي",
-  "Pick a wallpaper": "اختر خلفية",
-  "Load chat from %1": "تحميل الدردشة من %1",
-  "Launch on startup": "تشغيل عند بدء التشغيل",
-  "Add": "إضافة",
-  "Style: general": "النمط: عام",
-  "Use Levenshtein distance-based algorithm instead of fuzzy": "استخدم خوارزمية تعتمد على مسافة ليفينشتاين بدلاً من الغامضة",
-  "Shell & utilities theming must also be enabled": "يجب أيضاً تمكين سمات الواجهة والأدوات المساعدة",
-  "Workspace": "مساحة العمل",
-  "Translator": "مترجم",
-  "Free:": ":متاح",
-  "🌿 Long break: %1 minutes": "🌿 استراحة طويلة: %1 دقيقة",
-  "Value scroll": "تمرير القيمة",
-  "Bar position": "موضع الشريط",
-  "Language": "اللغة",
-  "Current API endpoint: %1\\nSet it with %2mode PROVIDER": "نقطة نهاية API الحالية: %1\\nعيّنها باستخدام %2mode PROVIDER",
-  "Remember that on most devices one can always hold the power button to force shutdown\\nThis only makes it a tiny bit harder for accidents to happen": "تذكر أنه في معظم الأجهزة يمكن للمرء دائماً الضغط باستمرار على زر الطاقة لفرض إيقاف التشغيل\\nهذا فقط يجعل حدوث الحوادث أصعب قليلاً",
-  "AI": "الذكاء الاصطناعي",
-  "Task description": "وصف المهمة",
-  "Add task": "إضافة مهمة",
-  "Donate": "تبرع",
-  "Disable NSFW content": "تعطيل المحتوى غير اللائق",
-  "Set the system prompt for the model.": "عيّن مطالبة النظام للنموذج.",
-  "Done": "تم",
-  "Focus": "تركيز",
-  "Open the shell config file.\\nIf the button doesn't work or doesn't open in your favorite editor,\\nyou can manually open ~/.config/illogical-impulse/config.json": "افتح ملف تكوين الواجهة.\\nإذا لم يعمل الزر أو لم يفتح في محرر النصوص المفضل لديك،\\nيمكنك فتح ~/.config/illogical-impulse/config.json يدوياً.",
-  "View Markdown source": "عرض مصدر Markdown",
-  "Border": "حد",
-  "Temperature set to %1": "تم تعيين درجة الحرارة إلى %1",
-  "Online | Google's model\\nGoogle's state-of-the-art multipurpose model that excels at coding and complex reasoning tasks.": "عبر الإنترنت | نموذج Google\\nنموذج Google المتطور متعدد الأغراض الذي يتفوق في مهام البرمجة والاستدلال المعقدة.",
-  "Message the model... \\\"%1\\\" for commands": "راسل النموذج... \"%1\" للأوامر",
-  "Translation goes here...": "الترجمة تظهر هنا...",
-  "When enabled keeps the content of the right sidebar loaded to reduce the delay when opening,\\nat the cost of around 15MB of consistent RAM usage. Delay significance depends on your system's performance.\\nUsing a custom kernel like linux-cachyos might help": "عند التمكين، يحافظ على محتوى الشريط الجانبي الأيمن محملاً لتقليل التأخير عند الفتح،\\nبتكلفة حوالي 15 ميجابايت من استخدام ذاكرة الوصول العشوائي المستمر. تعتمد أهمية التأخير على أداء نظامك.\\nقد يساعد استخدام نواة مخصصة مثل linux-cachyos",
-  "For desktop wallpapers | Good quality": "لخلفيات سطح المكتب | جودة جيدة",
-  "🔴 Focus: %1 minutes": "🔴 تركيز: %1 دقيقة",
-  "The current system prompt is\\n\\n---\\n\\n%1": "مطالبة النظام الحالية هي\\n\\n---\\n\\n%1",
-  "About": "حول",
-  "Quick": "سريع",
-  "General": "عام",
-  "UV Index": "مؤشر الأشعة فوق البنفسجية",
-  "Force dark mode in terminal": "فرض الوضع الداكن في الطرفية",
-  "Drag or click a region • LMB: Copy • RMB: Edit": "اسحب أو انقر منطقة • زر الفأرة الأيسر: نسخ • زر الفأرة الأيمن: تحرير",
-  "%1 characters": "%1 حرف",
-  "Cloudflare WARP": "Cloudflare WARP",
-  "**Pricing**: free. Data used for training.\\n\\n**Instructions**: Log into Google account, allow AI Studio to create Google Cloud project or whatever it asks, go back and click Get API key": "**التسعير**: مجاني. البيانات المستخدمة للتدريب.\\n\\n**التعليمات**: سجل الدخول إلى حساب Google، اسمح لـ AI Studio بإنشاء مشروع Google Cloud أو أي شيء يطلبه، ثم عد وانقر على Get API key",
-  "Monochrome": "أحادي اللون",
-  "Details": "تفاصيل",
-  "Issues": "مشاكل",
-  "Keyboard toggle": "تبديل لوحة المفاتيح",
-  "Might look ass. Unsupported.": "قد يبدو سيئاً. غير مدعوم.",
-  "Download": "تنزيل",
-  "%1 does not require an API key": "%1 لا يتطلب مفتاح API",
-  "Style & wallpaper": "النمط والخلفية",
-  "Second precision": "دقة الثواني",
-  "Group style": "نمط المجموعة",
-  "Break": "استراحة",
-  "Run": "تشغيل",
-  "Enjoy! You can reopen the welcome app any time with <tt>Super+Shift+Alt+/</tt>. To open the settings app, hit <tt>Super+I</tt>": "استمتع! يمكنك إعادة فتح تطبيق الترحيب في أي وقت باستخدام <tt>Super+Shift+Alt+/</tt>. لفتح تطبيق الإعدادات، اضغط <tt>Super+I</tt>",
-  "Interface Language": "لغة الواجهة",
-  "Game mode": "وضع اللعب",
-  "Usage: %1save CHAT_NAME": "الاستخدام: %1save اسم_الدردشة",
-  "Thin": "رفيع",
-  "Light": "فاتح",
-  "When not fullscreen": "عندما لا يكون بملء الشاشة",
-  "Commands, edit configs, search.\\nTakes an extra turn to switch to search mode if that's needed": "أوامر، تحرير التكوينات، بحث.\\nيستغرق دوراً إضافياً للتبديل إلى وضع البحث إذا لزم الأمر",
-  "Privacy Policy": "سياسة الخصوصية",
-  "Timeout (ms)": "مهلة (مللي ثانية)",
-  "Allow NSFW content": "السماح بالمحتوى غير اللائق",
-  "Edit": "تحرير",
-  "Digits in the middle": "أرقام في المنتصف",
-  "Online | Google's model\\nA Gemini 2.5 Flash model optimized for cost-efficiency and high throughput.": "عبر الإنترنت | نموذج Google\\nنموذج Gemini 2.5 Flash مُحسّن لفعالية التكلفة والإنتاجية العالية.",
-  "Weather Service": "خدمة الطقس",
-  "Background": "خلفية",
-  "Pick random from this folder": "اختر عشوائياً من هذا المجلد",
-  "Pressure": "ضغط",
-  "Save": "حفظ",
-  "Run command": "تشغيل أمر",
-  "Time to empty:": "الوقت حتى التفريغ:",
-  "Place at bottom": "وضع في الأسفل",
-  "Switched to search mode. Continue with the user's request.": "تم التبديل إلى وضع البحث. تابع بطلب المستخدم.",
-  "Performance Profile toggle": "تبديل ملف تعريف الأداء",
-  "Sidebars": "أشرطة جانبية",
-  "Usage: %1load CHAT_NAME": "الاستخدام: %1load اسم_الدردشة",
-  "Auto styling with Gemini": "تنسيق تلقائي مع Gemini",
-  "Simple digital": "رقمي بسيط",
-  "No API key set for %1": "لم يتم تعيين مفتاح API لـ %1",
-  "Enter tags, or \\\"%1\\\" for commands": "أدخل العلامات، أو \"%1\" للأوامر",
-  "%1 queries pending": "%1 استعلامات معلقة",
-  "Discussions": "مناقشات",
-  "Tray": "علبة النظام",
-  "Numbers": "أرقام",
-  "Intelligence": "ذكاء",
-  "Open network portal": "فتح بوابة الشبكة",
-  "<i>No further instruction provided</i>": "<i>لم يتم تقديم تعليمات إضافية</i>",
-  "Locale code, e.g. fr_FR, de_DE, zh_CN...": "رمز اللغة المحلية، مثل fr_FR, de_DE, zh_CN...",
-  "Update System & Configs": "تحديث النظام",
-  "Update Wallpapers": "تحديث الخلفيات",
-  "Select language": "تحديد اللغة",
-  "Totti786": "Totti786",
-  "Pywal": "باي وول",
-  "Generate\\nTypically takes 2 minutes": "توليد\\nيستغرق عادةً دقيقتين",
-  "Random wallpaper from Wallhaven\\nImage is saved to ~/Pictures/Wallpapers/walldl": "خلفية عشوائية من Wallhaven\\nيتم حفظ الصورة في ~/Pictures/Wallpapers/walldl",
-  "Generate translation with Gemini": "توليد ترجمة باستخدام Gemini",
-  "Random: Wallhaven": "عشوائي: Wallhaven",
-  "Random Wallpaper": "خلفية عشوائية",
-  "Generating...\\nDon't close this window!": "جاري التوليد...\\nلا تغلق هذه النافذة!",
-  "Change any time later with /dark, /light, /wallpaper in the launcher\\nIf the shell's colors aren't changing:\\n    1. Open the right sidebar with Super+I\\n    2. Click \\\"Reload Hyprland & Quickshell\\\" in the top-right corner": "غيّر في أي وقت لاحق باستخدام /dark, /light, /wallpaper في المشغل\\nإذا لم تتغير ألوان الواجهة:\\n    1. افتح الشريط الجانبي الأيمن باستخدام Super+I\\n    2. انقر على \"إعادة تحميل Hyprland و Quickshell\" في الزاوية العلوية اليمنى",
-  "Language not listed or incomplete translations?\\nYou can choose to generate translations for it with Gemini.\\n1. Open the left sidebar with Super+A, set model to Gemini (if it isn't already)\\n2. Type /key, hit Enter and follow the instructions\\n3. Type /key YOUR_API_KEY\\n4. Type the locale of your language below and press Generate": "اللغة غير مدرجة أو الترجمات غير مكتملة؟\\nيمكنك اختيار توليد ترجمات لها باستخدام Gemini.\\n1. افتح الشريط الجانبي الأيسر باستخدام Super+A، عيّن النموذج إلى Gemini (إذا لم يكن كذلك بالفعل)\\n2. اكتب /key، اضغط Enter واتبع التعليمات\\n3. اكتب /key YOUR_API_KEY\\n4. اكتب رمز اللغة المحلية للغتك أدناه واضغط على توليد"
-}
