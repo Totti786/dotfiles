@@ -17,10 +17,12 @@ Singleton {
 
     property real backgroundTransparency: 0.17
     property real contentTransparency: 0.25
-    property real shadowTransparency: 0.6
     colors: QtObject {
         id: colors
-        property color ambientShadow: ColorUtils.transparentize("#000000", 0.4)
+        property color ambientShadow: ColorUtils.transparentize("#000000", 0.75)
+        property color bgPanelFooter: root.dark ? "#1C1C1C" : "#EEEEEE"
+        property color bgPanelBody: root.dark ? "#242424" : "#F2F2F2"
+        property color bgPanelSeparator: root.dark ? "#191919" : "#E0E0E0"
         property color bg0: root.dark ? "#1C1C1C" : "#EEEEEE"
         property color bg0Border: root.dark ? "#404040" : "#BEBEBE"
         property color bg1: root.dark ? "#2C2C2C" : "#F7F7F7"
@@ -33,6 +35,8 @@ Singleton {
         property color bg2Border: root.dark ? "#464646" : "#EEEEEE"
         property color fg: root.dark ? "#FFFFFF" : "#000000"
         property color fg1: root.dark ? "#D1D1D1" : "#626262"
+        property color controlBg: root.dark ? "#9B9B9B" : "#868686"
+        property color controlFg: root.dark ? "#454545" : "#FFFFFF"
         property color danger: "#C42B1C"
         property color dangerActive: "#B62D1F"
         property color warning: "#FF9900"
@@ -69,6 +73,9 @@ Singleton {
 
     transition: QtObject {
         id: transition
+
+        property int velocity: 850
+
         property QtObject easing: QtObject {
             property QtObject bezierCurve: QtObject {
                 readonly property list<real> easeInOut: [0.42,0.00,0.58,1.00,1,1]
@@ -110,6 +117,14 @@ Singleton {
         }
 
         property Component move: Component {
+            NumberAnimation {
+                duration: 170
+                easing.type: Easing.BezierSpline
+                easing.bezierCurve: transition.easing.bezierCurve.easeInOut
+            }
+        }
+
+        property Component rotate: Component {
             NumberAnimation {
                 duration: 170
                 easing.type: Easing.BezierSpline
