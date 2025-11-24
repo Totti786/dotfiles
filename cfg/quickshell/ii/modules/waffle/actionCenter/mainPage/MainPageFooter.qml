@@ -6,17 +6,12 @@ import qs.services
 import qs.modules.common
 import qs.modules.common.functions
 import qs.modules.waffle.looks
+import qs.modules.waffle.actionCenter
 
-Rectangle {
-    Layout.fillHeight: false
-    Layout.fillWidth: true
-    color: Looks.colors.bgPanelFooter
-
-    implicitWidth: 360
-    implicitHeight: 47
+FooterRectangle {
 
     // Battery button
-    WPanelFooterButton {
+    WBorderlessButton {
         visible: Battery.available
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
@@ -27,7 +22,11 @@ Rectangle {
 
             FluentIcon {
                 anchors.verticalCenter: parent.verticalCenter
-                icon: WIcons.batteryIcon
+                icon: WIcons.batteryLevelIcon
+                FluentIcon {
+                    anchors.fill: parent
+                    icon: WIcons.batteryIcon
+                }
             }
             WText {
                 anchors.verticalCenter: parent.verticalCenter
@@ -37,10 +36,15 @@ Rectangle {
     }
 
     // Settings button
-    WPanelFooterButton {
+    WBorderlessButton {
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
         anchors.rightMargin: 12
+
+        onClicked: {
+            GlobalStates.sidebarLeftOpen = false;
+            Quickshell.execDetached(["qs", "-p", Quickshell.shellPath("settings.qml")]);
+        }
 
         contentItem: FluentIcon {
             icon: "settings"

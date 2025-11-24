@@ -10,7 +10,7 @@ WButton {
     id: root
 
     property alias iconName: iconContent.icon
-    inset: 0
+    property alias monochrome: iconContent.monochrome
     implicitWidth: 40
     implicitHeight: 40
 

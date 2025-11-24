@@ -110,6 +110,15 @@ Singleton {
             property JsonObject appearance: JsonObject {
                 property bool extraBackgroundTint: true
                 property int fakeScreenRounding: 2 // 0: None | 1: Always | 2: When not fullscreen
+                property JsonObject fonts: JsonObject {
+                    property string main: "Google Sans Flex"
+                    property string numbers: "Google Sans Flex"
+                    property string title: "Google Sans Flex"
+                    property string iconNerd: "JetBrains Mono NF"
+                    property string monospace: "JetBrains Mono NF"
+                    property string reading: "Readex Pro"
+                    property string expressive: "Space Grotesk"
+                }
                 property JsonObject transparency: JsonObject {
                     property bool enable: fasle
                     property bool automatic: false
@@ -466,7 +475,7 @@ Singleton {
                     property int delay: 300 // Delay before sending request. Reduces (potential) rate limits and lag.
                 }
                 property JsonObject ai: JsonObject {
-                    property bool textFadeIn: true
+                    property bool textFadeIn: false
                 }
                 property JsonObject booru: JsonObject {
                     property bool allowNsfw: false
@@ -576,13 +585,16 @@ Singleton {
                 // Animations on Windoes are kinda janky. Setting the following to
                 // false will make (some) stuff also be like that for accuracy. 
                 // Example: the right-click menu of the Start button
-                property bool smootherAnimations: true
+                property JsonObject tweaks: JsonObject {
+                    property bool smootherMenuAnimations: true
+                    property bool switchHandlePositionFix: true
+                }
                 property JsonObject bar: JsonObject {
                     property bool bottom: true
                     property bool leftAlignApps: false
                 }
                 property JsonObject actionCenter: JsonObject {
-                    property list<string> toggles: []
+                    property list<string> toggles: [ "network", "bluetooth", "easyEffects", "powerProfile", "idleInhibitor", "nightLight", "darkMode", "antiFlashbang", "cloudflareWarp", "mic", "audio", "musicRecognition", "notifications", "onScreenKeyboard", "gameMode", "screenSnip", "colorPicker" ]
                 }
             }
         }
