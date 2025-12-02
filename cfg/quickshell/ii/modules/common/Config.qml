@@ -154,6 +154,7 @@ Singleton {
             property JsonObject apps: JsonObject {
                 property string bluetooth: "blueman-manager"
                 property string network: "nmgui"
+                property string manageUser: "kcmshell6 kcm_users"
                 property string networkEthernet: "nm-connection-editor"
                 property string taskManager: "missioncenter"
                 property string terminal: "alacritty" // This is only for shell actions
@@ -282,6 +283,10 @@ Singleton {
                 property int suspend: 3
             }
 
+            property JsonObject calendar: JsonObject {
+                property string locale: "en-GB"
+            }
+
             property JsonObject cheatsheet: JsonObject {
                 // Use a nerdfont to see the icons
                 // 0: 󰖳  | 1: 󰌽 | 2: 󰘳 | 3:  | 4: 󰨡
@@ -289,7 +294,7 @@ Singleton {
                 // 10:  | 11:  | 12:  | 13:  | 14: 󱄛
                 property string superKey: ""
                 property bool useMacSymbol: false
-                property bool splitButtons: true
+                property bool splitButtons: false
                 property bool useMouseSymbol: false
                 property bool useFnSymbol: false
                 property JsonObject fontSize: JsonObject {
@@ -582,7 +587,7 @@ Singleton {
             }
 
             property JsonObject waffles: JsonObject {
-                // Animations on Windoes are kinda janky. Setting the following to
+                // Some spots are kinda janky/awkward. Setting the following to
                 // false will make (some) stuff also be like that for accuracy. 
                 // Example: the right-click menu of the Start button
                 property JsonObject tweaks: JsonObject {
@@ -594,7 +599,10 @@ Singleton {
                     property bool leftAlignApps: false
                 }
                 property JsonObject actionCenter: JsonObject {
-                    property list<string> toggles: [ "network", "bluetooth", "easyEffects", "powerProfile", "idleInhibitor", "nightLight", "darkMode", "antiFlashbang", "cloudflareWarp", "mic", "audio", "musicRecognition", "notifications", "onScreenKeyboard", "gameMode", "screenSnip", "colorPicker" ]
+                    property list<string> toggles: [ "network", "bluetooth", "easyEffects", "powerProfile", "idleInhibitor", "nightLight", "darkMode", "antiFlashbang", "cloudflareWarp", "mic", "musicRecognition", "notifications", "onScreenKeyboard", "gameMode", "screenSnip", "colorPicker" ]
+                }
+                property JsonObject calendar: JsonObject {
+                    property bool force2CharDayOfWeek: true
                 }
             }
         }

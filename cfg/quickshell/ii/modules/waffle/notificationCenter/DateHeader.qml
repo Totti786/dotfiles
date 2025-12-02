@@ -12,8 +12,12 @@ import qs.modules.waffle.looks
 FooterRectangle {
     id: root
 
+    implicitWidth: 0
     property bool collapsed
-    implicitWidth: 334
+    color: ColorUtils.transparentize(Looks.colors.bgPanelBody, collapsed ? 0 : 1)
+    Behavior on color {
+        animation: Looks.transition.color.createObject(this)
+    }
 
     RowLayout {
         anchors {
