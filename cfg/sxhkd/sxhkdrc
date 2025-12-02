@@ -79,7 +79,7 @@ XF86MonBrightness{Up,Down}
 
 # Auto Brightness control
 super + XF86MonBrightness{Up,Down}
-	clight.sh --{capture,toggle-pause}
+	auto-brightness
 
 # Volume control
 XF86Audio{RaiseVolume,LowerVolume,Mute}
