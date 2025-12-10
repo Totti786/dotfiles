@@ -12,6 +12,28 @@ SHELL_CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
 MATUGEN_DIR="$XDG_CONFIG_HOME/matugen"
 terminalscheme="$SCRIPT_DIR/terminal/scheme-base.json"
 
+handle_kde_material_you_colors() {
+    # Check if Qt app theming is enabled in config
+    if [ -f "$SHELL_CONFIG_FILE" ]; then
+        enable_qt_apps=$(jq -r '.appearance.wallpaperTheming.enableQtApps' "$SHELL_CONFIG_FILE")
+        if [ "$enable_qt_apps" == "false" ]; then
+            return
+        fi
+    fi
+
+    # Map $type_flag to allowed scheme variants for kde-material-you-colors-wrapper.sh
+    local kde_scheme_variant=""
+    case "$type_flag" in
+        scheme-content|scheme-expressive|scheme-fidelity|scheme-fruit-salad|scheme-monochrome|scheme-neutral|scheme-rainbow|scheme-tonal-spot)
+            kde_scheme_variant="$type_flag"
+            ;;
+        *)
+            kde_scheme_variant="scheme-tonal-spot" # default
+            ;;
+    esac
+    "$XDG_CONFIG_HOME"/matugen/templates/kde/kde-material-you-colors-wrapper.sh --scheme-variant "$kde_scheme_variant"
+}
+
 pre_process() {
     local mode_flag="$1"
     # Set GNOME color-scheme if mode_flag is dark or light
@@ -33,15 +55,8 @@ post_process() {
     local screen_height="$2"
     local wallpaper_path="$3"
 
-    # Determine the largest region on the wallpaper that's sufficiently un-busy to put widgets in
-    # if [ ! -f "$MATUGEN_DIR/scripts/least_busy_region.py" ]; then
-    #     echo "Error: least_busy_region.py script not found in $MATUGEN_DIR/scripts/"
-    # else
-    #     "$MATUGEN_DIR/scripts/least_busy_region.py" \
-    #         --screen-width "$screen_width" --screen-height "$screen_height" \
-    #         --width 300 --height 200 \
-    #         "$wallpaper_path" > "$STATE_DIR"/user/generated/wallpaper/least_busy_region.json
-    # fi
+    handle_kde_material_you_colors &
+#    "$SCRIPT_DIR/code/material-code-set-color.sh" &
 }
 
 check_and_prompt_upscale() {
@@ -146,6 +161,13 @@ switch() {
     type_flag="$3"
     color_flag="$4"
     color="$5"
+
+    # Start Gemini auto-categorization if enabled
+    aiStylingEnabled=$(jq -r '.background.clock.cookie.aiStyling' "$SHELL_CONFIG_FILE")
+    if [[ "$aiStylingEnabled" == "true" ]]; then
+        "$SCRIPT_DIR/../ai/gemini-categorize-wallpaper.sh" "$imgpath" > "$STATE_DIR/user/generated/wallpaper/category.txt" &
+    fi
+
     read scale screenx screeny screensizey < <(hyprctl monitors -j | jq '.[] | select(.focused) | .scale, .x, .y, .height' | xargs)
     cursorposx=$(hyprctl cursorpos -j | jq '.x' 2>/dev/null) || cursorposx=960
     cursorposx=$(bc <<< "scale=0; ($cursorposx - $screenx) * $scale / 1")
@@ -295,6 +317,13 @@ main() {
     get_type_from_config() {
         jq -r '.appearance.palette.type' "$SHELL_CONFIG_FILE" 2>/dev/null || echo "auto"
     }
+    get_accent_color_from_config() {
+        jq -r '.appearance.palette.accentColor' "$SHELL_CONFIG_FILE" 2>/dev/null || echo ""
+    }
+    set_accent_color() {
+        local color="$1"
+        jq --arg color "$color" '.appearance.palette.accentColor = $color' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
+    }
 
     detect_scheme_type_from_image() {
         local img="$1"
@@ -312,12 +341,14 @@ main() {
                 shift 2
                 ;;
             --color)
-                color_flag="1"
                 if [[ "$2" =~ ^#?[A-Fa-f0-9]{6}$ ]]; then
-                    color="$2"
+                    set_accent_color "$2"
+                    shift 2
+                elif [[ "$2" == "clear" ]]; then
+                    set_accent_color ""
                     shift 2
                 else
-                    color=$(hyprpicker --no-fancy)
+                    set_accent_color $(hyprpicker --no-fancy)
                     shift
                 fi
                 ;;
@@ -338,6 +369,13 @@ main() {
                 ;;
         esac
     done
+
+    # If accentColor is set in config, use it
+    config_color="$(get_accent_color_from_config)"
+    if [[ "$config_color" =~ ^#?[A-Fa-f0-9]{6}$ ]]; then
+        color_flag="1"
+        color="$config_color"
+    fi
 
     # If type_flag is not set, get it from config
     if [[ -z "$type_flag" ]]; then
