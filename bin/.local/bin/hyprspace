@@ -5,35 +5,35 @@ apps="$(hyprctl -j clients | jq -r '.[] | .initialTitle')"
 # Unimatrix window
 if ! [[ "$apps" =~ "unimatrix" ]]; then
   hyprctl dispatch exec \
-    "[workspace special:space;float;size 17.71% 55.56%;move 0.52% 4.72%]" \
+    "[workspace special:space;float on;size 340 600;move 10 51]" \
     "alacritty --title 'unimatrix' -e unimatrix -s 93"
 fi
 
 # Btop window
 if ! [[ "$apps" =~ "btop" ]]; then
   hyprctl dispatch exec \
-    "[workspace special:space;float;size 59.90% 55.56%;move 18.75% 4.72%]" \
+    "[workspace special:space;float on;size 1150 600;move 360 51]" \
     "alacritty --title 'btop' -e btop"
 fi
 
 # Gping window
 if ! [[ "$apps" =~ "gping" ]]; then
   hyprctl dispatch exec \
-    "[workspace special:space;float;size 20.31% 55.56%;move 79.17% 4.72%]" \
+    "[workspace special:space;float on;size 390 600;move 1520 51]" \
     "alacritty --title 'gping' -e gping 1.1.1.1"
 fi
 
 # Nvtop window
 if ! [[ "$apps" =~ "nvtop" ]]; then
   hyprctl dispatch exec \
-    "[workspace special:space;float;size 58.33% 37.78%;move 0.52% 61.20%]" \
+    "[workspace special:space;float on;size 1120 408;move 10 661]" \
     "alacritty --title 'nvtop' -e nvtop"
 fi
 
 # Clock window
 if ! [[ "$apps" =~ "clock" ]]; then
   hyprctl dispatch exec \
-    "[workspace special:space;float;size 40.10% 37.78%;move 59.38% 61.20%]" \
+    "[workspace special:space;float on;size 770 408;move 1140 661]" \
     "alacritty --title 'clock' -e tty-clock -cts"
 fi
 
