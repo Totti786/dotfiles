@@ -78,10 +78,7 @@ Singleton {
         JsonAdapter {
             id: configOptionsJsonAdapter
 
-            property list<string> enabledPanels: [
-                "iiBar", "iiBackground", "iiCheatsheet", "iiDock", "iiLock", "iiMediaControls", "iiNotificationPopup", "iiOnScreenDisplay", "iiOnScreenKeyboard", "iiOverlay", "iiOverview", "iiPolkit", "iiRegionSelector", "iiReloadPopup", "iiScreenCorners", "iiSessionScreen", "iiSidebarLeft", "iiSidebarRight", "iiVerticalBar", "iiWallpaperSelector"
-            ]
-            property string panelFamily: "ii" // "ii", "w"
+            property string panelFamily: "ii" // "ii", "waffle"
 
             property JsonObject policies: JsonObject {
                 property int ai: 1 // 0: No | 1: Yes | 2: Local
@@ -109,7 +106,7 @@ Singleton {
 
             property JsonObject appearance: JsonObject {
                 property bool extraBackgroundTint: true
-                property int fakeScreenRounding: 2 // 0: None | 1: Always | 2: When not fullscreen
+                property int fakeScreenRounding: 1 // 0: None | 1: Always | 2: When not fullscreen
                 property JsonObject fonts: JsonObject {
                     property string main: "Google Sans Flex"
                     property string numbers: "Google Sans Flex"
@@ -138,6 +135,7 @@ Singleton {
                 }
                 property JsonObject palette: JsonObject {
                     property string type: "pywal" // Allowed: auto, scheme-content, scheme-expressive, scheme-fidelity, scheme-fruit-salad, scheme-monochrome, scheme-neutral, scheme-rainbow, scheme-tonal-spot
+                    property string accentColor: ""
                 }
             }
 
@@ -153,6 +151,7 @@ Singleton {
 
             property JsonObject apps: JsonObject {
                 property string bluetooth: "blueman-manager"
+                property string changePassword: "kitty -1 --hold=yes fish -i -c 'passwd'"
                 property string network: "nmgui"
                 property string manageUser: "kcmshell6 kcm_users"
                 property string networkEthernet: "nm-connection-editor"
@@ -187,7 +186,17 @@ Singleton {
                             property bool useSineCookie: false
                         }
                         property JsonObject digital: JsonObject {
+                            property bool adaptiveAlignment: true
+                            property bool showDate: true
                             property bool animateChange: true
+                            property bool vertical: false
+                            property JsonObject font: JsonObject {
+                                property string family: "Google Sans Flex"
+                                property real weight: 350
+                                property real width: 100
+                                property real size: 90
+                                property real roundness: 0
+                            }
                         }
                         property JsonObject quote: JsonObject {
                             property bool enable: false
@@ -195,7 +204,7 @@ Singleton {
                         }
                     }
                     property JsonObject weather: JsonObject {
-                        property bool enable: false
+                        property bool enable: true
                         property string placementStrategy: "free" // "free", "leastBusy", "mostBusy"
                         property real x: 400
                         property real y: 100
@@ -416,6 +425,8 @@ Singleton {
                 property real scale: 0.18 // Relative to screen size
                 property real rows: 2
                 property real columns: 5
+                property bool orderRightLeft: false
+                property bool orderBottomUp: false
                 property bool centerIcons: true
             }
 
@@ -502,7 +513,7 @@ Singleton {
                     property bool bottom: false
                     property bool valueScroll: true
                     property bool clickless: true
-                    property int cornerRegionWidth: 250
+                    property int cornerRegionWidth: 50
                     property int cornerRegionHeight: 5
                     property bool visualize: false
                     property bool clicklessCornerEnd: true
